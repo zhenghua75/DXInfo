@@ -1,0 +1,51 @@
+﻿@using Trirand.Web.Mvc
+@model DXInfo.Web.Models.PackageGridModel
+<script type="text/javascript">
+    function serializeGridData(postData) {
+        var sdata = {
+            _search:true,
+            InvType: $("#InvType").val(),
+        };
+        var newPostData = $.extend(postData, sdata);
+        return newPostData;
+    }
+    function showSubGrid(subgrid_id, row_id) {
+        showSubGrid_InvGrid(subgrid_id, row_id);
+    }  
+    function InvIdColumnDataInit(el,opt) {
+        $(el).chosen(
+                {
+                    allow_single_deselect: true,
+                    no_results_text: '没有找到',
+                    search_contains: true,
+                    placeholder_text_single: '请选择......',
+                    width:"300px",
+                }).trigger("chosen:updated")
+                .on("chosen:showing_dropdown", function () { 
+                    $(".ui-jqdialog").css("overflow", "visible");
+                    $(".FormGrid").css("overflow", "visible");
+                })
+                .on("chosen:hiding_dropdown", function () {
+                    $(".FormGrid").css("overflow", "auto");
+                    $(".ui-jqdialog").css("overflow", "hidden");
+                 });
+                 
+                 } 
+    function afterclickPgButtons(whichbutton, formid, rowid) {
+        $("#InventoryId").trigger("chosen:updated");
+    }
+    function afterShowForm($form) {
+        var dialog = $form.closest('div.ui-jqdialog'),
+            frmid=$form.attr('id'),
+            divId = frmid.replace("fbox_","")
+            .replace("DelTbl_","")
+            .replace("FrmGrid_",""),
+            invGrid=$('#'+divId),
+            selRowCoordinates=invGrid.offset();
+            dialog.offset(selRowCoordinates);
+    }
+    
+</script>
+@Html.HiddenFor(m => m.InvType)
+@Html.Trirand().JQGrid(Model.PackageGrid, "PackageGrid")
+@Html.Trirand().JQGrid(Model.InvGrid, "InvGrid")

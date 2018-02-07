@@ -1,0 +1,54 @@
+﻿@model DXInfo.Web.Models.SalesChartModel
+@using DXInfo.Web.Models
+@{
+    var para = "dept=" + Model.dept + "&" + "month=" + Model.month;
+}
+<script type="text/javascript">
+    $(function () {
+        $("#query").button();
+        $("#query").button().click(function () {
+            submitToDiv("Report");
+        });
+        var ctrls = [{ name: "dept", type: "select" },
+                     { name: "month", type: "select" }, ];
+        InitCtrl(ctrls);
+    });
+	</script>
+<h2 class="ui-widget-header h2-center">@ViewBag.Title</h2>
+@using (Html.BeginForm("SalesChart", "Report", FormMethod.Post, new { id = "Report" })) 
+{    
+    @Html.ValidationSummary(true, "请更正错误并重试。", new { @class = "ui-state-error" })
+<fieldset class="ui-widget ui-widget-content ui-corner-all">
+<legend class="ui-widget-header ui-corner-all"></legend> 
+    <table>        
+        <tr>
+        <td>
+            <div class="editor-label">
+                @Html.LabelFor(m => m.dept)
+            </div>
+            </td>
+            <td>
+            <div class="editor-field">
+                @Html.DropDownListFor(m => m.dept, @Html.GetMD())
+                @Html.ValidationMessageFor(m => m.dept)
+            </div>
+            </td>
+        <td>
+            <div class="editor-label">
+                @Html.LabelFor(m => m.month)
+            </div>
+            </td>
+            <td>
+            <div class="editor-field">
+                @Html.DropDownListFor(m => m.month, @Html.GetYeanAndMonths())
+                @Html.ValidationMessageFor(m => m.month)
+            </div>
+            </td>
+        <td>
+                <input id="query" type="submit" value="查询" />
+            </td></tr>
+        
+    </table>
+    </fieldset>
+}
+<img alt="" src="/Report/MyChart2?@para" />

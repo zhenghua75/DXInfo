@@ -1,0 +1,22 @@
+﻿@using DXInfo.Web.Models
+@model DXInfo.Web.Models.VouchsGridModel
+@{
+    Layout = "~/Views/Shared/_StockManageBase.cshtml";
+}
+@Html.HiddenFor(m => m.BusType)
+<fieldset class="ui-widget ui-widget-content ui-corner-all">
+    <legend class="ui-widget-header ui-corner-all"></legend>
+                <table>
+                <tr>
+                    <td>@Html.LabelFor(m => m.Code)</td><td>@Html.TextBoxFor(m => m.Code)@Html.MyValidationMessageFor(m => m.Code)</td>
+                    <td>@Html.LabelFor(m => m.CVDate)</td><td>@Html.TextBoxFor(m => m.CVDate)@Html.MyValidationMessageFor(m => m.CVDate)</td>                    
+                    <td>@Html.LabelFor(m => m.WhId)</td><td>@Html.DropDownListFor(m => m.WhId, @Html.GetWarehouse())@Html.MyValidationMessageFor(m => m.WhId)</td>                                        
+                    <td>@Html.LabelFor(m => m.Salesman)</td><td>@Html.DropDownListFor(m => m.Salesman, @Html.GetOper())</td>   
+                </tr>
+                <tr>                
+                    <td>@Html.LabelFor(m => m.VerifyDate)</td><td>@Html.TextBoxFor(m => m.VerifyDate)</td>                  
+                    <td>@Html.LabelFor(m => m.Memo)</td><td colspan="5">@Html.TextBoxFor(m => m.Memo, new { style = "width:100%" })
+                    </td>
+                </tr>
+            </table>
+</fieldset>

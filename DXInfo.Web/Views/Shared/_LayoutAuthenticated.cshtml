@@ -1,0 +1,387 @@
+﻿@using DXInfo.Web.Models
+@using Trirand.Web.Mvc
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta charset="utf-8" />
+    <title>@Html.DataCenterTitle()@ViewBag.Title</title>
+    <link href="~/favicon.ico" rel="shortcut icon" type="image/x-icon" />
+    @*<meta name="viewport" content="width=device-width" />*@   
+    @Styles.Render("~/Content/themes/cupertino/css")
+    @Styles.Render("~/Content/MyCss")
+    @Scripts.Render("~/bundles/MyJs")
+    <script src="@Url.Content("~/Scripts/jquery.layout-1.30.79.min.js")" type="text/javascript"></script>
+    <link href="@Url.Content("~/Content/jquery.layout-1.30.79.css")" rel="stylesheet" type="text/css" />
+    <link href="@Url.Content("~/Content/My.css")" rel="stylesheet" type="text/css" />
+    <script type="text/javascript">
+    var rCRLF = /\r?\n/g,
+rsubmitterTypes = /^(?:submit|button|image|reset|file)$/i,
+rsubmittable = /^(?:input|select|textarea|keygen)/i,
+manipulation_rcheckableType = /^(?:checkbox|radio)$/i;
+$.fn.mySerializeArray= function() {
+    return this.map(function(){
+	    var elements = jQuery.prop( this, "elements" );
+	    return elements ? jQuery.makeArray( elements ) : this;
+    })
+    .filter(function(){
+	    var type = this.type;
+	    return this.name &&
+		    rsubmittable.test( this.nodeName ) && !rsubmitterTypes.test( type ) &&
+		    ( this.checked || !manipulation_rcheckableType.test( type ) );
+    })
+    .map(function( i, elem ){
+	    var val = jQuery( this ).val();
+
+	    return val == null ?
+		    null :
+		    jQuery.isArray( val ) ?
+			    jQuery.map( val, function( val ){
+				    return { name: elem.name, value: val.replace( rCRLF, "\r\n" ) };
+			    }) :
+			    { name: elem.name, value: val.replace( rCRLF, "\r\n" ) };
+    }).get();
+}
+$.fn.serializeObject = function()
+{
+    var o = {};
+    var a = this.mySerializeArray();
+    $.each(a, function() {
+        if (o[this.name] !== undefined) {
+            if (!o[this.name].push) {
+                o[this.name] = [o[this.name]];
+            }
+            o[this.name].push(this.value || '');
+        } else {
+            o[this.name] = this.value || '';
+        }
+    });
+    return o;
+};
+$.fn.arrayToObj = function()
+{
+    var o = {};
+    var a = jQuery.makeArray( this );
+    $.each(a, function() {
+        if (o[this.name] !== undefined) {
+            if (!o[this.name].push) {
+                o[this.name] = [o[this.name]];
+            }
+            o[this.name].push(this.value || '');
+        } else {
+            o[this.name] = this.value || '';
+        }
+    });
+    return o;
+};
+
+$.jgrid = $.jgrid || {};
+$.extend($.jgrid,{
+    nav : {
+        edittext: "<span class='ui-pg-button-text'>编辑</span>",
+		edittitle: "编辑所选记录",
+		addtext:"<span class='ui-pg-button-text'>添加</span>",
+		addtitle: "添加新记录",
+		deltext: "<span class='ui-pg-button-text'>删除</span>",
+		deltitle: "删除所选记录",
+		searchtext: "<span class='ui-pg-button-text'>查找</span>",
+		searchtitle: "查找",
+		refreshtext: "<span class='ui-pg-button-text'>刷新</span>",
+		refreshtitle: "刷新表格",
+		alertcap: "注意",
+		alerttext: "请选择记录",
+		viewtext: "<span class='ui-pg-button-text'>查看</span>",
+		viewtitle: "查看所选记录"
+	},
+});
+$.ajaxSetup({
+    cache: false
+});
+
+var dateFormat = function () {
+	var	token = /d{1,4}|m{1,4}|yy(?:yy)?|([HhMsTt])\1?|[LloSZ]|"[^"]*"|'[^']*'/g,
+		timezone = /\b(?:[PMCEA][SDP]T|(?:Pacific|Mountain|Central|Eastern|Atlantic) (?:Standard|Daylight|Prevailing) Time|(?:GMT|UTC)(?:[-+]\d{4})?)\b/g,
+		timezoneClip = /[^-+\dA-Z]/g,
+		pad = function (val, len) {
+			val = String(val);
+			len = len || 2;
+			while (val.length < len) val = "0" + val;
+			return val;
+		};
+	return function (date, mask, utc) {
+		var dF = dateFormat;
+        //console.info(date);
+		if (arguments.length == 1 && Object.prototype.toString.call(date) == "[object String]" && !/\d/.test(date)) {
+			mask = date;
+			date = undefined;
+		}
+		date = date ? new Date(date) : new Date;
+		if (isNaN(date)) throw SyntaxError("invalid date");
+
+		mask = String(dF.masks[mask] || mask || dF.masks["default"]);
+		if (mask.slice(0, 4) == "UTC:") {
+			mask = mask.slice(4);
+			utc = true;
+		}
+
+		var	_ = utc ? "getUTC" : "get",
+			d = date[_ + "Date"](),
+			D = date[_ + "Day"](),
+			m = date[_ + "Month"](),
+			y = date[_ + "FullYear"](),
+			H = date[_ + "Hours"](),
+			M = date[_ + "Minutes"](),
+			s = date[_ + "Seconds"](),
+			L = date[_ + "Milliseconds"](),
+			o = utc ? 0 : date.getTimezoneOffset(),
+			flags = {
+				d:    d,
+				dd:   pad(d),
+				ddd:  dF.i18n.dayNames[D],
+				dddd: dF.i18n.dayNames[D + 7],
+				m:    m + 1,
+				mm:   pad(m + 1),
+				mmm:  dF.i18n.monthNames[m],
+				mmmm: dF.i18n.monthNames[m + 12],
+				yy:   String(y).slice(2),
+				yyyy: y,
+				h:    H % 12 || 12,
+				hh:   pad(H % 12 || 12),
+				H:    H,
+				HH:   pad(H),
+				M:    M,
+				MM:   pad(M),
+				s:    s,
+				ss:   pad(s),
+				l:    pad(L, 3),
+				L:    pad(L > 99 ? Math.round(L / 10) : L),
+				t:    H < 12 ? "a"  : "p",
+				tt:   H < 12 ? "am" : "pm",
+				T:    H < 12 ? "A"  : "P",
+				TT:   H < 12 ? "AM" : "PM",
+				Z:    utc ? "UTC" : (String(date).match(timezone) || [""]).pop().replace(timezoneClip, ""),
+				o:    (o > 0 ? "-" : "+") + pad(Math.floor(Math.abs(o) / 60) * 100 + Math.abs(o) % 60, 4),
+				S:    ["th", "st", "nd", "rd"][d % 10 > 3 ? 0 : (d % 100 - d % 10 != 10) * d % 10]
+			};
+
+		return mask.replace(token, function ($0) {
+			return $0 in flags ? flags[$0] : $0.slice(1, $0.length - 1);
+		});
+	};
+}();
+
+dateFormat.masks = {
+	"default":      "ddd mmm dd yyyy HH:MM:ss",
+	shortDate:      "m/d/yy",
+	mediumDate:     "mmm d, yyyy",
+	longDate:       "mmmm d, yyyy",
+	fullDate:       "dddd, mmmm d, yyyy",
+	shortTime:      "h:MM TT",
+	mediumTime:     "h:MM:ss TT",
+	longTime:       "h:MM:ss TT Z",
+	isoDate:        "yyyy-mm-dd",
+	isoTime:        "HH:MM:ss",
+	isoDateTime:    "yyyy-mm-dd'T'HH:MM:ss",
+	isoUtcDateTime: "UTC:yyyy-mm-dd'T'HH:MM:ss'Z'",
+    fullDateTime:   "yyyy-mm-dd HH:MM:ss.l",
+};
+
+dateFormat.i18n = {
+	dayNames: [
+		"Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat",
+		"Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"
+	],
+	monthNames: [
+		"Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec",
+		"January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"
+	]
+};
+
+Date.prototype.format = function (mask, utc) {
+	return dateFormat(this, mask, utc);
+};
+    $.validator.methods["date"] = function (value, element) {
+                try { jQuery.datepicker.parseDate('yy-mm-dd', value); return true; }
+                catch (e) { return false; }
+            };
+    var urls ={addurl:"@Url.Action("GetCode", "StockManage")",
+               saveaddurl:"@Url.Action("AddVouch", "StockManage")",
+               savemodifyurl:"@Url.Action("ModifyVouch", "StockManage")",
+               verifyurl:"@Url.Action("VerifyVouch", "StockManage")",
+               unverifyurl:"@Url.Action("UnVerifyVouch", "StockManage")",
+               deleteurl:"@Url.Action("DeleteVouch", "StockManage")",
+               cururl:"@Url.Action("Cur", "StockManage")",
+               starturl:"@Url.Action("Start", "StockManage")",
+               prevurl:"@Url.Action("Prev", "StockManage")",
+               nexturl:"@Url.Action("Next", "StockManage")",
+               endurl:"@Url.Action("End", "StockManage")",
+               getExtRate:"@Url.Action("GetExtRate", "StockManage")",
+               getLocatorByWh:"@Url.Action("GetLocatorByWh", "StockManage")",
+               getInvInfo:"@Url.Action("GetInvInfo", "StockManage")",
+               getUnitJsonByInv:"@Url.Action("GetUnitJsonByInv", "StockManage")",
+               printurl:"../../Print/PurchaseInStock.aspx",
+               searchurl:"@Url.Action("SearchVouch", "StockManage")",
+               getBatchUrl:"@Url.Action("GetBatch", "StockManage")",
+               getLocatorByWhBatchUrl:"@Url.Action("getLocatorByWhBatch", "StockManage")",
+               getAvaNumUrl:"@Url.Action("getAvaNum", "StockManage")",
+               addInventoryUrl:"@Url.Action("Inventory", "BaseInfo", new { InvType = 2 })",
+               getInvsUrl:"@Url.Action("GetInvs", "StockManage")",
+               GetInvByWh:"@Url.Action("GetInvByWh", "StockManage")",
+               CreateSell:"@Url.Action("CreateSell", "StockManage")",
+               GetReceivers:"@Url.Action("GetReceivers", "StockManage")",
+               Receiver:"@Url.Action("Vendor", "StockManage", new { VendorType = 1 })",
+               BatchInventoryUrl:"@Url.Action("BatchInventory", "StockManage")",
+               BatchWarehouseInventoryUrl:"@Url.Action("BatchWarehouseInventory", "StockManage")",
+               BatchInventory_SyncDataUrl:"@Url.Action("BatchInventory_SyncData", "StockManage")",
+               BatchWarehouseInventory_SyncDataUrl:"@Url.Action("BatchWarehouseInventory_SyncData", "StockManage")",
+               IsHaveCardNoUrl:"@Url.Action("IsHaveCardNo", "Card")",
+               LogOffUrl:"@Url.Action("LogOff", "Account")",
+               IsAMSApp:"@Html.IsAMSApp()",
+               IsNoActiveXCheck:"@Html.IsNoActiveXCheck()",
+               IsNoActiveXCheckUrl:"@Url.Action("IsNoActiveXCheck", "Account")",
+               Register:"@Url.Action("Register", "Account")",
+               Vouchs_RequestData:"@Url.Action("Vouchs_RequestData", "StockManage")"};
+        var icons = {
+            header: "ui-icon-circle-arrow-e",
+            activeHeader: "ui-icon-circle-arrow-s"
+        };
+
+        (function($) {
+  jQuery.jgrid.fluid =
+  {
+    fluidGrid: function(options)
+    {
+      var grid = $(this);
+      var settings = $.extend(
+                        {
+                          example: grid.closest('.ui-jqgrid').parent(),
+                          offset: 0
+                        }, options || {});
+  
+      var width = $(settings.example).innerWidth() + settings.offset;
+      grid.setGridWidth(width);
+    }
+  }
+})(jQuery);
+jQuery.fn.extend({ fluidGrid : jQuery.jgrid.fluid.fluidGrid });
+$.fn.raty.defaults.path = "/Content/jquery.raty/";
+$.fn.raty.defaults.cancelHint="取消";
+$.fn.raty.defaults.hints= ['很差', '差', '一般', '好', '很好'];
+        $(document).ready(function () {
+            CheckEkey();
+            var myLayout = $('body').layout({
+//                north:{
+//                    size:50,
+//                },
+                west:{
+                    size:300,
+                    onresize: resizePaneAccordions,
+                },
+                south:{
+                    //size:20,
+                    onresize: resizePaneAccordions,
+                },
+                center:{
+                    //onresize: resizeGrid,
+                },
+                panes: { 
+                    tips: {
+                        Open:   "打开"
+                    ,   Close:  "关闭"
+                    ,   Resize: "缩放"
+                    ,   Slide:  "打开滑动"
+                    }
+                },
+            });
+            
+            $("#accordion").accordion({
+                heightStyle: "fill",//"content",//
+                //collapsible: true,
+                icons: icons,
+                activate: function( event, ui ) {
+                    var alink = ui.newHeader.find("a");
+                    if(alink.length){
+                        urlToDiv(alink.prop("href"));
+                    }
+                },
+            });
+            $(".ui-menu > li > ul").hide();
+            $(".ui-menu > li > ul>li>ul").hide();
+            $(".ui-menu > li > a").click(function () {
+                if (!$(this).next().is(':visible')) {
+                    $(this).parent().siblings().children("ul").slideUp(300);
+                }
+                $(this).next().slideToggle(300);
+            });
+            $(".ui-menu > li > ul>li>a").click(function () {
+
+                if (!$(this).next().is(':visible')) {
+                    $(this).parent().siblings().children("ul").slideUp(300);
+                }
+                $(this).next().slideToggle(300);
+            });
+        });
+        function CustomMenu() {
+            urlToDiv($("#CustomMenuUrl").val());
+        }
+    </script>
+
+    @Html.Trirand().JQDatePicker(
+            new JQDatePicker
+            {
+                DisplayMode = DatePickerDisplayMode.ControlEditor,
+                ShowOn = ShowOn.Focus,
+                DateFormat = "yyyy-mm-dd",
+            }, "DatePicker")
+            @Html.Trirand().JQDateTimePicker(
+            new JQDateTimePicker
+            {
+            }, "DateTimePicker")
+            @Html.Trirand().JQTimePicker(
+            new JQTimePicker(), "TimePicker"
+            )
+            @Html.Trirand().JQChosen(
+            new JQChosen(), "Chosen"
+            )
+            @Html.Trirand().JQAutoComplete(
+            new JQAutoComplete
+            {
+                DisplayMode = AutoCompleteDisplayMode.ControlEditor,
+                DataField = "InvId",
+                DataUrl = Url.Action("GetInvs", "StockManage", new { InvType = 2 }),
+                Delay = 500
+            }, "AutoCompelete"
+            )
+</head>
+<body>
+    @if (!System.Configuration.ConfigurationManager.AppSettings.AllKeys.Contains("AMSApp"))
+    {
+        <OBJECT ID="kk" WIDTH=0 HEIGHT=0 style="display:none"
+	 CLASSID="CLSID:01A8EC23-6702-476C-AF5F-E934C71D0FE6" codebase="@Url.Content("~/Content/DXInfoCardActiveX.CAB")#version=1,0,0,3">
+        </object>
+    }
+    
+    <div class="pane ui-layout-north ui-widget-content ui-state-default">
+        
+            <h1 style="margin: 0;padding:0;text-align:center;"><a style="text-decoration: none;" href="@Url.Action("Index", "Home")">@Html.DataCenterTitle()</a></h1>
+            @*<input id="CustomMenuUrl" type="text" style="width: 500px; position: relative; left: 300px;" />
+            <button id="CustomMenu" style="position: relative; left: 300px;" onclick="CustomMenu();">
+                自定义菜单</button>*@
+        
+        <h3 style="margin: 0px; text-decoration: none; text-transform: lowercase; line-height: normal;">
+            @Html.Partial("_LogOnPartial")</h3>
+    </div>
+    <div class="pane ui-layout-south ui-widget-content ui-state-default">
+        Copyright ©2011 - 2013 DXInfo. All Rights Reserved. Design by <a href="http://www.kmdx.cn">
+            昆明道讯科技有限公司</a>.
+    </div>
+    <div class="pane ui-layout-center">
+            @RenderBody()
+    </div>
+    <div class="pane ui-layout-west">
+        <div id="accordion" class="basic">
+            @Html.Menu()
+        </div>
+    </div>
+</body>
+</html>

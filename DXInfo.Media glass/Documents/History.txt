@@ -1,0 +1,79 @@
+﻿v 1.0.100828.28 Release Candidate 1 (working)
+
+Bug fixes
+
+- When you resize media window by mouse wheel, Library or Playlist has scrolling. It is fixing now.
+- On English machine when you click Photo button everything was failed. The reason was that there is another data format. And I generate photo file name using data.
+- Snapshot original size is not working sometimes. Fix it.
+- If played file is not exist you will see a message.
+- If you change playlist and click new there was no confirm to save dialog.
+- If you change playlist click on another list, click save, the data saved at new list. Fixing.
+- Eror when you copy group or playlist. The file hadn't copy on a disk.
+
+Enhancement
+
+- Full-screen mode has been completed !!! 
+- Resizing window size for library and playlist !!! 
+- Help window !!!
+- Run only one application instance.
+- You can run you file from file manager correctly. Just clicking on played file.
+- Show file property.
+- Library backup ( create / restore ).
+- Improve playlist file sorting. It was very slowly.
+- Context menu for full-screen mode.
+- Improve playlist and library animation loading ( it loaded without animation when has much data )
+- Get rid off control focusing. You can open play list and press down key and it will be focused on the first control row.
+- Add folder and file icon for library.
+- Add link to play list when it is empty.
+- Replaced all message box icons.
+- Anamorphic ( square ) mode change to 5:4. Because I don't know for what anamorphic mode need. I don't think that somebody has square TV.
+
+
+v 1.0.091125.43 Public Beta 2 
+
+Bug fixes
+
+- Fix label width in playlist header.
+- Fix font family and size for Windows Vista and Windows Seven.
+- Rename edit window title.
+
+Enhancement
+
+- Splash Screen.
+- Running played file name.
+- Close played media stream.
+- Show and save media stream duration time at playlist.
+- Save column width user settings.
+- ToolTip for items and columns in ListView and TreeView.
+- Exit context menu item.
+- Remove played item correctly.
+- Recent files.
+- Open and play file when playlist played.
+- Open only media format in Open File Dialog and save last open file path.
+- Play media stream by Enter.
+- Drug and drop files into playlist.
+- Sort playlist content by name.
+- Set Media Glass as default player for selected formats by Options Window and setup.
+- New camera icon.
+- Create custom glass context menu.
+- Create custom glass tooltip.
+- Application icon for Xp, Vista and Windows Seven.
+- Minimze / maximize all application.
+- Error handling.
+- Vista style for standart windows. 
+
+
+v 1.0.090604.06 Public Beta 1
+
+Bug fixes
+
+Enhancement
+
+- Plays video / audio.
+- Change played video resolution.
+- Make snapshots original / what you see size.
+- Use mouse wheel to resize the media window.
+- Main, Playlist, Library windows.
+- Save application settings.
+- Guesture Keys.
+- Save playlist to the library. 

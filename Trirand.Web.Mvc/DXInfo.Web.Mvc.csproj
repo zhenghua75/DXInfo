@@ -1,0 +1,477 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003" DefaultTargets="Build">
+  <PropertyGroup>
+    <ProjectType>Local</ProjectType>
+    <ProductVersion>8.0.30319</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{999C3286-6D9C-4214-8E16-9DB04764A23B}</ProjectGuid>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ApplicationIcon />
+    <AssemblyKeyContainerName />
+    <AssemblyName>DXInfo.Web.Mvc</AssemblyName>
+    <AssemblyOriginatorKeyFile />
+    <DefaultClientScript>JScript</DefaultClientScript>
+    <DefaultHTMLPageLayout>Grid</DefaultHTMLPageLayout>
+    <DefaultTargetSchema>IE50</DefaultTargetSchema>
+    <DelaySign>false</DelaySign>
+    <OutputType>Library</OutputType>
+    <RootNamespace>Trirand.Web.Mvc</RootNamespace>
+    <RunPostBuildEvent>OnBuildSuccess</RunPostBuildEvent>
+    <StartupObject />
+    <FileUpgradeFlags>
+    </FileUpgradeFlags>
+    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
+    <OldToolsVersion>0.0</OldToolsVersion>
+    <UpgradeBackupLocation />
+    <PublishUrl>publish\</PublishUrl>
+    <Install>true</Install>
+    <InstallFrom>Disk</InstallFrom>
+    <UpdateEnabled>false</UpdateEnabled>
+    <UpdateMode>Foreground</UpdateMode>
+    <UpdateInterval>7</UpdateInterval>
+    <UpdateIntervalUnits>Days</UpdateIntervalUnits>
+    <UpdatePeriodically>false</UpdatePeriodically>
+    <UpdateRequired>false</UpdateRequired>
+    <MapFileExtensions>true</MapFileExtensions>
+    <ApplicationRevision>0</ApplicationRevision>
+    <ApplicationVersion>1.0.0.%2a</ApplicationVersion>
+    <IsWebBootstrapper>false</IsWebBootstrapper>
+    <UseApplicationTrust>false</UseApplicationTrust>
+    <BootstrapperEnabled>true</BootstrapperEnabled>
+    <TargetFrameworkProfile />
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <OutputPath>bin\Debug\</OutputPath>
+    <AllowUnsafeBlocks>false</AllowUnsafeBlocks>
+    <BaseAddress>285212672</BaseAddress>
+    <CheckForOverflowUnderflow>false</CheckForOverflowUnderflow>
+    <ConfigurationOverrideFile />
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <DocumentationFile />
+    <DebugSymbols>true</DebugSymbols>
+    <FileAlignment>4096</FileAlignment>
+    <NoStdLib>false</NoStdLib>
+    <NoWarn />
+    <Optimize>false</Optimize>
+    <RegisterForComInterop>false</RegisterForComInterop>
+    <RemoveIntegerChecks>false</RemoveIntegerChecks>
+    <TreatWarningsAsErrors>false</TreatWarningsAsErrors>
+    <WarningLevel>4</WarningLevel>
+    <DebugType>full</DebugType>
+    <ErrorReport>prompt</ErrorReport>
+    <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <OutputPath>bin\Release\</OutputPath>
+    <AllowUnsafeBlocks>false</AllowUnsafeBlocks>
+    <BaseAddress>285212672</BaseAddress>
+    <CheckForOverflowUnderflow>false</CheckForOverflowUnderflow>
+    <ConfigurationOverrideFile />
+    <DefineConstants>TRACE</DefineConstants>
+    <DocumentationFile />
+    <DebugSymbols>false</DebugSymbols>
+    <FileAlignment>4096</FileAlignment>
+    <NoStdLib>false</NoStdLib>
+    <NoWarn />
+    <Optimize>true</Optimize>
+    <RegisterForComInterop>false</RegisterForComInterop>
+    <RemoveIntegerChecks>false</RemoveIntegerChecks>
+    <TreatWarningsAsErrors>false</TreatWarningsAsErrors>
+    <WarningLevel>4</WarningLevel>
+    <DebugType>none</DebugType>
+    <ErrorReport>prompt</ErrorReport>
+    <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|x86'">
+    <PlatformTarget>x86</PlatformTarget>
+    <OutputPath>bin\x86\Debug\</OutputPath>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|x86'">
+    <PlatformTarget>x86</PlatformTarget>
+    <OutputPath>bin\x86\Release\</OutputPath>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="mscorlib">
+      <Name>mscorlib</Name>
+      <HintPath>mscorlib.dll</HintPath>
+    </Reference>
+    <Reference Include="System">
+      <Name>System</Name>
+      <HintPath>System.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Data">
+      <Name>System.Data</Name>
+      <HintPath>System.Data.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web">
+      <Name>System.Web</Name>
+      <HintPath>System.Web.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.Extensions" />
+    <Reference Include="System.Web.Mvc">
+      <Name>System.Web.Mvc</Name>
+      <HintPath>System.Web.Mvc.dll</HintPath>
+    </Reference>
+    <Reference Include="System.XML" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Dynamic.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Trirand.Web.Mvc\AddDialogSettings.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Trirand.Web.Mvc\AjaxCallBackMode.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Trirand.Web.Mvc\AppearanceSettings.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Trirand.Web.Mvc\AutoCompleteDisplayMode.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Trirand.Web.Mvc\AutoCompleteMode.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Trirand.Web.Mvc\ChartAxisLabelSettings.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Trirand.Web.Mvc\ChartAxisType.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Trirand.Web.Mvc\ChartBaseAxisSettings.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Trirand.Web.Mvc\ChartCrossHairSettings.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Trirand.Web.Mvc\ChartGridLineDashStyle.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Trirand.Web.Mvc\ChartHorizontalAlign.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Trirand.Web.Mvc\ChartLegendLayout.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Trirand.Web.Mvc\ChartLegendSettings.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Trirand.Web.Mvc\ChartPlotLineSettings.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Trirand.Web.Mvc\ChartPoint.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Trirand.Web.Mvc\ChartSeriesSettings.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Trirand.Web.Mvc\ChartTitleSettings.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Trirand.Web.Mvc\ChartToolTipSettings.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Trirand.Web.Mvc\ChartType.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Trirand.Web.Mvc\ChartVerticalAlign.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Trirand.Web.Mvc\ChartXAxisSettings.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Trirand.Web.Mvc\ChartYAxisSettings.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Trirand.Web.Mvc\ChartZoomType.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Trirand.Web.Mvc\CheckBoxFormatter.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Trirand.Web.Mvc\ClientSideEvents.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Trirand.Web.Mvc\CompiledOn.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Trirand.Web.Mvc\CurrencyFormatter.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Trirand.Web.Mvc\CustomFormatter.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Trirand.Web.Mvc\CustomValidator.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Trirand.Web.Mvc\DataTypeNotSetException.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Trirand.Web.Mvc\DatePickerDisplayMode.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Trirand.Web.Mvc\DateValidator.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Trirand.Web.Mvc\DeleteDialogSettings.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Trirand.Web.Mvc\EditActionIconsSettings.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Trirand.Web.Mvc\EditDialogSettings.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Trirand.Web.Mvc\EditType.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Trirand.Web.Mvc\EmailFormatter.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Trirand.Web.Mvc\EmailValidator.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Trirand.Web.Mvc\GridUtil.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Trirand.Web.Mvc\GroupField.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Trirand.Web.Mvc\GroupSettings.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Trirand.Web.Mvc\GroupSummaryType.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Trirand.Web.Mvc\Guard.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Trirand.Web.Mvc\HierarchyMode.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Trirand.Web.Mvc\HierarchySettings.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Trirand.Web.Mvc\HtmlHelperExtensions.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Trirand.Web.Mvc\IEnumerableExtensions.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Trirand.Web.Mvc\IntegerFormatter.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Trirand.Web.Mvc\IntegerValidator.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Trirand.Web.Mvc\JQAutoComplete.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Trirand.Web.Mvc\JQAutoCompleteRenderer.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Trirand.Web.Mvc\JQChart.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Trirand.Web.Mvc\JQChartRenderer.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Trirand.Web.Mvc\JQDatePicker.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Trirand.Web.Mvc\JQDatePickerRenderer.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Trirand.Web.Mvc\JQGrid.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Trirand.Web.Mvc\JQGridColumn.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Trirand.Web.Mvc\JQGridColumnFormatter.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Trirand.Web.Mvc\JQGridDataResolvedEventArgs.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Trirand.Web.Mvc\JQGridDataResolvedEventHandler.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Trirand.Web.Mvc\JQGridEditClientSideValidator.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Trirand.Web.Mvc\JQGridEditData.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Trirand.Web.Mvc\JQGridEditFieldAttribute.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Trirand.Web.Mvc\JQGridRenderer.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Trirand.Web.Mvc\JQGridState.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Trirand.Web.Mvc\JQGridToolBarButton.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Trirand.Web.Mvc\JQTree.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Trirand.Web.Mvc\JQTreeNode.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Trirand.Web.Mvc\JQTreeRenderer.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Trirand.Web.Mvc\JsonAddDialog.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Trirand.Web.Mvc\JsonColModel.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Trirand.Web.Mvc\JsonCustomButton.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Trirand.Web.Mvc\JsonDelDialog.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Trirand.Web.Mvc\JsonEditDialog.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Trirand.Web.Mvc\JsonMultipleSearch.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Trirand.Web.Mvc\JsonResponse.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Trirand.Web.Mvc\JsonRow.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Trirand.Web.Mvc\JsonSearchDialog.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Trirand.Web.Mvc\JsonToolBar.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Trirand.Web.Mvc\LinkFormatter.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Trirand.Web.Mvc\MaxValueValidator.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Trirand.Web.Mvc\MinValueValidator.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Trirand.Web.Mvc\MultipleSearchRule.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Trirand.Web.Mvc\MultiSelectKey.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Trirand.Web.Mvc\MultiSelectMode.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Trirand.Web.Mvc\NumberFormatter.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Trirand.Web.Mvc\NumberValidator.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Trirand.Web.Mvc\PagerSettings.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Trirand.Web.Mvc\RenderingMode.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Trirand.Web.Mvc\RequiredValidator.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Trirand.Web.Mvc\SearchDataType.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Trirand.Web.Mvc\SearchDialogSettings.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Trirand.Web.Mvc\SearchOperation.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Trirand.Web.Mvc\SearchType.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Trirand.Web.Mvc\ShowOn.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Trirand.Web.Mvc\SortAction.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Trirand.Web.Mvc\SortDirection.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Trirand.Web.Mvc\SortIconsPosition.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Trirand.Web.Mvc\SortSettings.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Trirand.Web.Mvc\StringBuilderExtensions.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Trirand.Web.Mvc\StringExtensions.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Trirand.Web.Mvc\TextAlign.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Trirand.Web.Mvc\TimeValidator.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Trirand.Web.Mvc\ToolBarAlign.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Trirand.Web.Mvc\ToolBarButtonPosition.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Trirand.Web.Mvc\ToolBarPosition.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Trirand.Web.Mvc\ToolBarSettings.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Trirand.Web.Mvc\TreeGridModel.cs" />
+    <Compile Include="Trirand.Web.Mvc\TrirandNamespace.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Trirand.Web.Mvc\UrlValidator.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Trirand.Web.Mvc\Util.cs">
+      <SubType>Code</SubType>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <BootstrapperPackage Include="Microsoft.Net.Client.3.5">
+      <Visible>False</Visible>
+      <ProductName>.NET Framework 3.5 SP1 Client Profile</ProductName>
+      <Install>false</Install>
+    </BootstrapperPackage>
+    <BootstrapperPackage Include="Microsoft.Net.Framework.3.5.SP1">
+      <Visible>False</Visible>
+      <ProductName>.NET Framework 3.5 SP1</ProductName>
+      <Install>true</Install>
+    </BootstrapperPackage>
+    <BootstrapperPackage Include="Microsoft.Windows.Installer.3.1">
+      <Visible>False</Visible>
+      <ProductName>Windows Installer 3.1</ProductName>
+      <Install>true</Install>
+    </BootstrapperPackage>
+  </ItemGroup>
+  <ItemGroup />
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <PropertyGroup>
+    <PreBuildEvent />
+    <PostBuildEvent />
+  </PropertyGroup>
+</Project>

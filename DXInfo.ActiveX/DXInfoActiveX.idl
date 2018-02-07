@@ -1,0 +1,61 @@
+// DXInfoActiveX.idl : DXInfo.ActiveX 的 IDL 源
+//
+
+// 此文件将由 MIDL 工具处理以
+// 产生类型库(DXInfoActiveX.tlb)和封送处理代码。
+
+#include "olectl.h"
+import "oaidl.idl";
+import "ocidl.idl";
+
+[
+	object,
+	uuid(674D940C-6604-4062-9396-5B7855B809CB),
+	dual,
+	nonextensible,
+	pointer_default(unique)
+]
+interface ICard : IDispatch{
+	[id(1)] HRESULT ReadCard([out,retval] BSTR* data);
+	[id(2)] HRESULT PutCard([in] BSTR data, [out,retval] VARIANT_BOOL* issuc);
+	[id(3)] HRESULT RecycleCard([out,retval] VARIANT_BOOL* issuc);
+};
+
+[
+	object,
+	uuid(3E5BEA52-378C-4918-9FE3-168BA37C893B),
+	dual,
+	nonextensible,
+	pointer_default(unique)
+]
+interface IKey : IDispatch{
+	[id(1)] HRESULT Verify([out,retval] VARIANT_BOOL* issuc);
+	[id(2)] HRESULT GetHardwareID([out,retval] BSTR* hdId);
+	[id(3)] HRESULT GetKeyNo([out,retval] BSTR* data);
+};
+
+[
+	uuid(35C80262-64F5-409F-8FA9-37546C00CE94),
+	version(1.0),
+]
+library DXInfoActiveXLib
+{
+	importlib("stdole2.tlb");
+	[
+		uuid(195FD03D-EC38-4F72-B3BA-E5F243E404F5),		
+		control
+	]
+	coclass Card
+	{
+		[default] interface ICard;
+	};
+	[
+		uuid(01A8EC23-6702-476C-AF5F-E934C71D0FE6),		
+		control
+	]
+	coclass Key
+	{
+		[default] interface IKey;
+	};
+};
+

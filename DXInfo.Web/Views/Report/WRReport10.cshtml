@@ -1,0 +1,116 @@
+﻿@using DXInfo.Web.Models
+@model DXInfo.Web.Models.WRReport10Model           
+<script type="text/javascript">
+    $(function () {
+        $('#BeginDate').datetimepicker();
+        $('#EndDate').datetimepicker();
+        $("#query").button();
+        $("#export").button();
+        $("#query").button().click(function () {
+            submitToDiv("Report");
+        });
+        var ctrls = [{ name: "DeptId", type: "select" },
+                     { name: "Section", type: "select" },
+                     { name: "Category", type: "select" },
+                     { name: "BeginDate", type: "date" },
+                     { name: "EndDate", type: "date" }, ];
+        InitCtrl(ctrls);
+        $("th>a,td>a[id!='export']").click(function () { addToDiv(this); return false; });
+    });
+	</script>
+<h2 class="ui-widget-header h2-center">@ViewBag.Title</h2>
+@using (Html.BeginReportForm("WRReport10", "Report", this.Model))
+{
+@Html.ValidationSummary(true, "参数错误。请更正错误并重试。", new { @class = "ui-state-error" })
+@Html.HiddenFor(m => m.InvType)
+@Html.HiddenFor(m => m.CategoryType)
+@Html.HiddenFor(m => m.DeptType)
+<fieldset class="ui-widget ui-widget-content ui-corner-all">
+<legend class="ui-widget-header ui-corner-all"></legend> 
+    <table>
+            <tr>
+                <td>
+                @Html.LabelFor(m => m.DeptId)
+            </td>
+                <td>
+                @Html.DropDownListFor(m => m.DeptId, @Html.GetDept())
+                @Html.ValidationMessageFor(m => m.DeptId)
+                </td>            
+                <td>
+                @Html.LabelFor(m => m.Section)
+            </td>
+                <td>
+                @Html.DropDownListFor(m => m.Section, @Html.GetSectionType())
+                @Html.ValidationMessageFor(m => m.DeptId)
+                </td>
+               
+                <td>
+                @Html.LabelFor(m => m.Category)
+                </td>
+                <td>
+                @Html.DropDownListFor(m => m.Category, @Html.GetCategory())
+                @Html.ValidationMessageFor(m => m.Category)
+                </td>
+               
+                <td>
+                @Html.LabelFor(m => m.BeginDate)
+                </td>
+                <td>
+                @Html.TextBoxFor(m => m.BeginDate)
+                @Html.ValidationMessageFor(m => m.BeginDate)
+                </td>
+            
+                <td>
+                @Html.LabelFor(m => m.EndDate)
+                </td>
+                <td>
+                @Html.TextBoxFor(m => m.EndDate)
+                @Html.ValidationMessageFor(m => m.EndDate)
+                </td>
+            
+                <td>
+                <input id="query" type="submit" value="查询" /></td><td>
+                @Html.ActionLink("导出EXCEL", "WRReport10ExportToExcel", "Report", null, new { id = "export" })
+                </td>
+            </tr>
+        </table>
+</fieldset>
+
+<fieldset class="ui-widget ui-widget-content ui-corner-all">
+<legend class="ui-widget-header ui-corner-all"></legend>         
+    @{var grid = new MyWebGrid(source: Model.result, defaultSort: "Amount");
+      var gridColumns = new List<WebGridColumn>();
+      gridColumns.Add(grid.Column("DeptName", "门店"));
+      gridColumns.Add(grid.Column("SectionName", "位置"));
+      gridColumns.Add(grid.Column("CategoryName", "系列名称"));
+      gridColumns.Add(grid.Column("Quantity", "销售数量", format: (item) => string.Format("{0:f2}", item.Quantity)));
+      gridColumns.Add(grid.Column("Amount", "销售金额", format: (item) => string.Format("{0:f2}", item.Amount)));
+      gridColumns.Add(grid.Column("AmountOfDayAvg", "日均销量", format: (item) => string.Format("{0:f2}", item.AmountOfDayAvg)));
+      gridColumns.Add(grid.Column("QuantityRatio", "数量比例", format: (item) => string.Format("{0:P}", item.QuantityRatio)));
+      gridColumns.Add(grid.Column("AmountRatio", "金额比例", format: (item) => string.Format("{0:P}", item.AmountRatio)));
+      }
+	@grid.GetHtml(gridColumns)
+</fieldset>
+
+<fieldset class="ui-widget ui-widget-content ui-corner-all">
+<legend class="ui-widget-header ui-corner-all">汇总信息</legend>         
+        <table>
+            <tr>            
+                <td>
+                @Html.LabelFor(m => m.Amount)
+                </td>
+                <td>
+                @Html.TextBoxFor(m => m.Amount)
+                @Html.ValidationMessageFor(m => m.Amount)
+                </td>
+                <td>
+                @Html.LabelFor(m => m.AmountOfDayAvg)
+                </td>
+                <td>
+                @Html.TextBoxFor(m => m.AmountOfDayAvg)
+                @Html.ValidationMessageFor(m => m.AmountOfDayAvg)
+                </td>                                                    
+            </tr>
+        </table>
+</fieldset>
+}

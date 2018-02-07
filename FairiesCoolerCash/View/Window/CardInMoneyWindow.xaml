@@ -1,0 +1,64 @@
+﻿<Window x:Class="FairiesCoolerCash.Business.CardInMoneyWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="充值信息打印" SizeToContent="Height" Width="240" ResizeMode="NoResize" WindowStartupLocation="CenterScreen" FontSize="9">
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"></RowDefinition>
+            <RowDefinition Height="*"></RowDefinition>
+        </Grid.RowDefinitions>
+        <Border Padding="3">
+            <Grid Name="GridPrint" Margin="20,0,20,0">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto"></ColumnDefinition>
+                <ColumnDefinition Width="*"></ColumnDefinition>
+            </Grid.ColumnDefinitions>
+            <Grid.RowDefinitions>
+                <RowDefinition></RowDefinition>
+                <RowDefinition></RowDefinition>
+                <RowDefinition></RowDefinition>
+                <RowDefinition></RowDefinition>
+                <RowDefinition></RowDefinition>
+                <RowDefinition></RowDefinition>
+                <RowDefinition></RowDefinition>
+                <RowDefinition></RowDefinition>
+                <RowDefinition></RowDefinition>
+                <RowDefinition></RowDefinition>
+                    <RowDefinition></RowDefinition>
+                </Grid.RowDefinitions>
+            <TextBlock Name="txtTitle" FontSize="25" Grid.ColumnSpan="2" HorizontalAlignment="Center" VerticalAlignment="Center">寻仙记,里约</TextBlock>
+
+            <TextBlock Grid.Row="1">卡号：</TextBlock>
+            <TextBlock Text="{Binding CardNo}" Grid.Row="1" Grid.Column="1"></TextBlock>
+
+            <TextBlock Grid.Row="2">会员名：</TextBlock>
+            <TextBlock Text="{Binding MemberName}" Grid.Row="2" Grid.Column="1"></TextBlock>
+
+            <TextBlock Grid.Row="3">上次余额：</TextBlock>
+            <TextBlock Text="{Binding LastBalance}" Grid.Row="3" Grid.Column="1"></TextBlock>
+
+            <TextBlock Grid.Row="4">充值金额：</TextBlock>
+            <TextBlock Text="{Binding Amount}" Grid.Row="4" Grid.Column="1"></TextBlock>
+
+            <TextBlock Grid.Row="5">赠送金额：</TextBlock>
+            <TextBlock Text="{Binding Donate}" Grid.Row="5" Grid.Column="1"></TextBlock>
+
+                <TextBlock Grid.Row="6">支付方式：</TextBlock>
+                <TextBlock Text="{Binding PayTypeName}" Grid.Row="6" Grid.Column="1"></TextBlock>
+            
+                <TextBlock Grid.Row="7">当前余额：</TextBlock>
+            <TextBlock Text="{Binding Balance}" Grid.Row="7" Grid.Column="1"></TextBlock>
+
+            <TextBlock Grid.Row="8">操作员：</TextBlock>
+            <TextBlock Text="{Binding FullName}" Grid.Row="8" Grid.Column="1"></TextBlock>
+
+            <TextBlock Grid.Row="9">门店：</TextBlock>
+            <TextBlock Text="{Binding DeptName}" Grid.Row="9" Grid.Column="1"></TextBlock>
+
+            <TextBlock Grid.Row="10">充值时间：</TextBlock>
+                <TextBlock Grid.Row="10" Grid.Column="1" Text="{Binding CreateDate,StringFormat={}{0:yyyy-MM-dd HH:mm:ss}}"></TextBlock>            
+        </Grid>
+        </Border>
+        <Button Grid.Row="1" Click="Button_Click" Height="100">打印</Button>
+    </Grid>
+</Window>

@@ -1,0 +1,93 @@
+﻿@using Trirand.Web.Mvc
+@model ynhnTransportManage.Models.StockManage.BillOfMaterialsGridModel
+@Html.Trirand().JQGrid(Model.BillOfMaterialsGrid, "BillOfMaterialsGrid")
+<div id="getInvInfo" data-url="@Url.Action("GetInvInfo", "StockManage")"></div>
+<script type="text/javascript">
+    $(document).ready(function () {
+        $("#BillOfMaterialsGrid").closest("div.ui-jqgrid-view")
+                .children("div.ui-jqgrid-titlebar")
+                .css("text-align", "center")
+                .css("font-size", "large")
+                .children("span.ui-jqgrid-title")
+                .css("float", "none");
+    });
+    function populate() {
+        $("#PartInvId").attr("data-placeholder", "选择存货");
+        $("#PartInvId").css("width", "140px");
+        $("#PartInvId").chosen({ allow_single_deselect: true, no_results_text: "没有找到", search_contains: true });
+
+        $("#ComponentInvId").attr("data-placeholder", "选择存货");
+        $("#ComponentInvId").css("width", "140px");
+        $("#ComponentInvId").chosen({ allow_single_deselect: true, no_results_text: "没有找到", search_contains: true });
+
+        $("#PartSpecs").attr("disabled", "disabled");
+        $("#PartStockUnitName").attr("disabled", "disabled");
+        //$("#BaseQtyD").attr("disabled", "disabled");
+
+        $("#ComponentSpecs").attr("disabled", "disabled");
+        $("#ComponentStockUnitName").attr("disabled", "disabled");
+
+        $("#PartInvId").bind("change", function (e) {
+            updateInvCallBack($("#PartInvId").val(),true);
+        });
+        $("#ComponentInvId").bind("change", function (e) {
+            updateInvCallBack($("#PartInvId").val(), false);
+        });
+    }
+
+    function updateInvCallBack(inv,part) {
+        var url = $("#getInvInfo").data('url');
+        $.ajax({
+            url: url + "?inv=" + inv,
+            type: "GET",
+            success: function (invInfo) {
+                if (invInfo.Sucess != undefined && !invInfo.Sucess) {
+                    alert(invInfo.Message);
+                    if (part) {
+                        $("#PartSpecs").val("");
+                        $("#PartStockUnitName").val("");
+                        $("#BaseQtyD").val(1);
+                    }
+                    else {
+                        $("#ComponentSpecs").val("");
+                        $("#ComponentStockUnitName").val("");
+                    }
+                }
+                else {
+                    var invs = eval(invInfo);
+                    if (invs) {
+                        if (part) {
+                            $("#PartSpecs").val(invs.Specs);
+                            $("#PartStockUnitName").val(invs.StockUnitName);
+                            $("#BaseQtyD").val(1);
+                        }
+                        else {
+                            $("#ComponentSpecs").val(invs.Specs);
+                            $("#ComponentStockUnitName").val(invs.StockUnitName);
+                        }
+                    }
+                }
+            }
+        });
+    }
+    function populateEdit() {
+        populate();
+        var rowid = $("#BillOfMaterialsGrid").jqGrid("getGridParam", "selrow");
+        if (rowid) {
+            var ret = $("#BillOfMaterialsGrid").jqGrid("getRowData", rowid);
+            $("#PartInvId").val(ret.PartInvId);
+            $("#PartSpecs").val(ret.PartSpecs);
+            $("#PartStockUnitName").val(ret.PartStockUnitName);
+            $("#BaseQtyD").val(1);
+
+            $("#ComponentInvId").val(ret.ComponentInvId);
+            $("#ComponentSpecs").val(ret.ComponentSpecs);
+            $("#ComponentStockUnitName").val(ret.ComponentStockUnitName);
+
+            $("#PartInvId").trigger("liszt:updated");
+            $("#ComponentInvId").trigger("liszt:updated");
+        }
+    }
+
+    
+</script>

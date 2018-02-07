@@ -1,0 +1,180 @@
+﻿@using Trirand.Web.Mvc
+@using ynhnTransportManage
+@model ynhnTransportManage.Models.StockManage.MixVouchModel
+<style type="text/css">
+	#toolbar {
+		padding: 10px 4px;
+	}
+	#mixVouch_Memo{width: 390px;}
+	</style>
+<script src="@Url.Content("~/Scripts/chosen/chosen.jquery.min.js")" type="text/javascript"></script>
+<link href="@Url.Content("~/Scripts/chosen/chosen.css")" rel="stylesheet" type="text/css" />
+<script src="@Url.Content("~/Scripts/jquery.blockUI.js")" type="text/javascript"></script>
+<script src="@Url.Content("~/Scripts/jquery.dateFormat-1.0.js")" type="text/javascript"></script>
+<script src="@Url.Content("~/Scripts/RdRecord/resetForm.js")" type="text/javascript"></script>
+<script src="@Url.Content("~/Scripts/RdRecord/resetValidation.js")" type="text/javascript"></script>
+<script src="@Url.Content("~/Scripts/RdRecord/setButton.js")" type="text/javascript"></script>
+<script src="@Url.Content("~/Scripts/RdRecord/setButtonState.js")" type="text/javascript"></script>
+<script src="@Url.Content("~/Scripts/RdRecord/resetGrid.js")" type="text/javascript"></script>
+<script type="text/javascript">
+    $(function () {
+        prefix = "#mixVouch_";
+        mainId = "MVId";
+        gridId = "#MixVouchsGrid";
+        gridId2 = "MixVouchsGrid";
+        formId = "#MixVouchForm";
+        initForm();
+        resetGrid();
+        DisabledDiv();
+        setButton();
+        setButtonState("0");
+        invId = "#InvId";                        
+    });
+    
+</script>
+
+<div id="addurl" data-url="@Url.Action("GetMixVouch", "StockManage")"></div>
+<div id="saveaddurl" data-url="@Url.Action("AddMixVouch", "StockManage")"></div>
+<div id="savemodifyurl" data-url="@Url.Action("ModifyMixVouch", "StockManage")"></div>
+<div id="verifyurl" data-url="@Url.Action("VerifyMixVouch", "StockManage")"></div>
+<div id="unverifyurl" data-url="@Url.Action("UnVerifyMixVouch", "StockManage")"></div>
+<div id="deleteurl" data-url="@Url.Action("DeleteMixVouch", "StockManage")"></div>
+<div id="cururl" data-url="@Url.Action("CurMixVouch", "StockManage")"></div>
+<div id="starturl" data-url="@Url.Action("StartMixVouch", "StockManage")"></div>
+<div id="prevurl" data-url="@Url.Action("PrevMixVouch", "StockManage")"></div>
+<div id="nexturl" data-url="@Url.Action("NextMixVouch", "StockManage")"></div>
+<div id="endurl" data-url="@Url.Action("EndMixVouch", "StockManage")"></div>
+<div id="getExtRate" data-url="@Url.Action("GetExtRate", "StockManage")"></div>
+<div id="getLocatorByWh" data-url="@Url.Action("GetLocatorByWh", "StockManage")"></div>
+<div id="getInvInfo" data-url="@Url.Action("GetInvInfo", "StockManage")"></div>
+<div id="getUnitJsonByInv" data-url="@Url.Action("GetUnitJsonByInv", "StockManage")"></div>
+<div id="printurl" data-url="../../Print/PurchaseInStock.aspx"></div>
+<div id="searchurl" data-url="@Url.Action("SearchMixVouch", "StockManage")"></div>
+<div id="getBatchUrl" data-url="@Url.Action("GetBatch", "StockManage")"></div>
+<div id="getLocatorByWhBatchUrl" data-url="@Url.Action("getLocatorByWhBatch", "StockManage")"></div>
+<div id="getAvaNumUrl" data-url="@Url.Action("getAvaNum", "StockManage")"></div>
+<div id="BatchInventoryUrl" data-url="@Url.Action("BatchInventory", "StockManage", new { AddInventory = "true" })"></div>
+<div id="BatchWarehouseInventoryUrl" data-url="@Url.Action("BatchWarehouseInventory", "StockManage", new { AddInventory = "true" })"></div>
+<div id="BatchInventory_SyncDataUrl" data-url="@Url.Action("BatchInventory_SyncData", "StockManage")"></div>
+<div id="BatchWarehouseInventory_SyncDataUrl" data-url="@Url.Action("BatchWarehouseInventory_SyncData", "StockManage")"></div>
+<div id="GetInvByWh" data-url="@Url.Action("GetInvByWh", "StockManage")"></div>
+<div style="margin:0px auto;width:1024px;height:600px;background-color:#dfeffc;padding:30px;">
+            @Html.Partial("_ToolbarPartial");            
+            <h1  style="text-align:center">@ViewBag.Title</h1>
+            <div id="divForm">
+            @using (Html.BeginForm("MixVouch", "StockManage", FormMethod.Post, new { id = "MixVouchForm", name = "MixVouchForm" }))
+            {
+                
+                @Html.ValidationSummary()
+                <table>
+                <tr>
+                    <td>@Html.LabelFor(m => m.mixVouch.Code)</td><td>@Html.TextBoxFor(m => m.mixVouch.Code)@Html.ValidationMessageFor(m => m.mixVouch.Code, "*")</td>
+                    <td>@Html.LabelFor(m => m.mixVouch.MVDate)</td><td>@Html.TextBoxFor(m => m.mixVouch.MVDate)@Html.ValidationMessageFor(m => m.mixVouch.MVDate, "*")</td>                    
+                    <td>@Html.LabelFor(m => m.mixVouch.InWhId)</td><td>@Html.DropDownListFor(m => m.mixVouch.InWhId, @Helpers.GetWhsByOperDept())@Html.ValidationMessageFor(m => m.mixVouch.InWhId, "*")</td>                                                                     
+                    <td>@Html.LabelFor(m => m.mixVouch.OutWhId)</td><td>@Html.DropDownListFor(m => m.mixVouch.OutWhId, @Helpers.GetWhsDeptByOperDept())@Html.ValidationMessageFor(m => m.mixVouch.OutWhId, "*")</td>                                                                     
+                </tr>
+                <tr>
+                    <td>@Html.LabelFor(m => m.mixVouch.Salesman)</td><td>@Html.DropDownListFor(m => m.mixVouch.Salesman, @Helpers.GetUsers())@Html.ValidationMessageFor(m => m.mixVouch.Salesman, "*")</td>                                   
+                    <td>@Html.LabelFor(m => m.mixVouch.VerifyDate)</td><td>@Html.TextBoxFor(m => m.mixVouch.VerifyDate)@Html.ValidationMessageFor(m => m.mixVouch.VerifyDate, "*")</td>
+                    <td>@Html.LabelFor(m => m.mixVouch.Memo)</td><td colspan="3">@Html.TextBoxFor(m => m.mixVouch.Memo)
+                    @Html.HiddenFor(m => m.mixVouch.IsVerify)
+                    @Html.HiddenFor(m => m.mixVouch.IsModify)
+                    @Html.HiddenFor(m => m.mixVouch.Id)
+                    @Html.HiddenFor(m => m.mixVouch.MakeTime)
+                    @Html.HiddenFor(m => m.vouchType.Code)</td>
+                </tr>
+            </table>
+            }
+            </div>
+            <div id="divGrid">
+            @Html.Trirand().JQGrid(Model.mixVouchs.MixVouchsGrid, "MixVouchsGrid")
+            <div id="divBatchInventory" title="批量添加"></div>
+            </div>
+            <div id="divBatchWarehouseInventory" title="仓库关联添加"></div>
+            <script src="@Url.Content("~/Scripts/RdRecord/afterGrid.js")" type="text/javascript"></script>  
+</div>
+
+ <script type="text/javascript">
+     function customButtonClicked() {
+         if (!$("#mixVouch_InWhId").val() || !$("#mixVouch_OutWhId").val()) {
+             alert("请选择仓库");
+             return;
+         }
+         if ($("#mixVouch_Id").val()) {
+             alert("请重新添加配料单");
+             return;
+         }
+         $("#divBatchInventory").dialog({
+             autoOpen: false,
+             modal: true,
+             width: 800,
+             height: 600,
+             closeText: "关闭",
+             beforeClose: function (event, ui) { updateInvs(); },
+             buttons: { "确定": function () { $(this).dialog("close"); } },
+             open: function () { $("#divBatchInventory").html('<iframe style="border: 0px; " src="' + $("#BatchInventoryUrl").data('url') + "&WhId=" + $("#mixVouch_OutWhId").val() + '" width="100%" height="100%"></iframe>'); }
+         });
+         $("#divBatchInventory").dialog('open');
+     }
+     function customButtonClicked1() {
+         if (!$("#mixVouch_InWhId").val() || !$("#mixVouch_OutWhId").val()) {
+             alert("请选择仓库");
+             return;
+         }
+         if ($("#mixVouch_Id").val()) {
+             alert("请重新添加配料单");
+             return;
+         }
+         $("#divBatchWarehouseInventory").dialog({
+             autoOpen: false,
+             modal: true,
+             width: 800,
+             height: 600,
+             closeText: "关闭",
+             beforeClose: function (event, ui) { updateInvs1(); },
+             buttons: { "确定": function () { $(this).dialog("close"); } },
+             open: function () { $("#divBatchWarehouseInventory").html('<iframe style="border: 0px; " src="' + $("#BatchWarehouseInventoryUrl").data('url') + "&WhId=" + $("#mixVouch_InWhId").val() + '" width="100%" height="100%"></iframe>'); }
+         });
+         $("#divBatchWarehouseInventory").dialog('open');
+     }
+     function updateInvs() {
+         var url = $("#BatchInventory_SyncDataUrl").data('url');
+         $.ajax({
+             url: url,
+             type: "GET",
+             success: function (invsJson) {
+                 $("#MixVouchsGrid").jqGrid("setGridParam", { search: true }).trigger("reloadGrid", [{ page: 1}]);
+             }
+         });
+     }
+     function updateInvs1() {
+         var url = $("#BatchWarehouseInventory_SyncDataUrl").data('url');
+         $.ajax({
+             url: url,
+             type: "GET",
+             success: function (invsJson) {
+                 $("#MixVouchsGrid").jqGrid("setGridParam", { search: true }).trigger("reloadGrid", [{ page: 1}]);
+             }
+         });
+     }
+
+//     function GetInvId(elem, operation, value) {
+//         if (operation === 'get') {
+//             return $(elem).val();
+//         } else if (operation === 'set') {
+//             $(elem).val(value);
+//             $(elem).trigger("liszt:updated");
+//         }
+//     }
+//     function CreateInvId(value, editOptions) {
+//         var slt = $("<select id='" + editOptions.id + "'>");
+//         var parts = editOptions.value.split(';');
+//         $(parts).each(function (i, option) {
+//             var oParts = option.split(':');
+//             var opt = $('<option value="' + oParts[0] + '">' + oParts[1] + '</option>');
+//             slt.append(opt);
+//         });
+//         slt.val(value);
+//         return slt;
+//     }    
+</script>

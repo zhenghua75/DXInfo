@@ -1,0 +1,190 @@
+﻿@using DXInfo.Web.Models
+@model DXInfo.Web.Models.WRReport4Model         
+<script type="text/javascript">
+    $(function () {
+        $('#BeginDate').datetimepicker();
+        $('#EndDate').datetimepicker();
+
+        $("#Category").change(function () {
+            var selvalue = $("#Category").val();
+            var url = "@Url.Action("GetCatOfInvs", "WRReport")";
+            $("#Inventory>option").remove();
+            $.getJSON(url,{category:selvalue}, function (data) {
+                $.each(data, function (i, itemvalue) {
+                    $("#Inventory").append($("<option></option>").val(itemvalue.Value).text(itemvalue.Text));
+                });
+            });
+        });  
+
+        $("#DeptId").change(function () {
+            var selvalue = $("#DeptId").val();
+            var url = "@Url.Action("GetDeptOfCats", "WRReport")";
+            $("#Category>option").remove();
+            $.getJSON(url,{deptId:selvalue}, function (data) {
+                $.each(data, function (i, itemvalue) {
+                    $("#Category").append($("<option></option>").val(itemvalue.Value).text(itemvalue.Text));
+                });
+            });
+        });  
+
+        $("#query").button();
+        $("#export").button();
+        $("#query").button().click(function () {
+            submitToDiv("Report");
+        });
+        var ctrls = [{ name: "IsDept", type: "checkbox" },
+                     { name: "DeptId", type: "select" },
+                     { name: "IsSection", type: "checkbox" },
+                     { name: "Section", type: "select" },
+                     { name: "IsConsumeType", type: "checkbox" },
+                     { name: "ConsumeType", type: "select" },
+                     { name: "IsPayType", type: "checkbox" },
+                     { name: "PayType", type: "select" },
+                     { name: "IsCategory", type: "checkbox" },
+                     { name: "Category", type: "select" },
+                     { name: "IsInventory", type: "checkbox" },
+                     { name: "Inventory", type: "select" },
+                     { name: "IsCupType", type: "checkbox" },
+                     { name: "CupType", type: "select" },
+                     { name: "BeginDate", type: "date" },
+                     { name: "EndDate", type: "date" }, ];
+        InitCtrl(ctrls);
+        $("th>a,td>a[id!='export']").click(function () { addToDiv(this); return false; });
+    });
+</script>
+ <h2 class="ui-widget-header h2-center">@ViewBag.Title</h2>
+@using (Html.BeginReportForm("WRReport4", "Report", this.Model))
+{
+    @Html.ValidationSummary(true, "参数错误。请更正错误并重试。", new { @class = "ui-state-error" })
+    @Html.HiddenFor(m => m.InvType)
+    @Html.HiddenFor(m => m.CategoryType)
+    @Html.HiddenFor(m => m.DeptType)
+<fieldset class="ui-widget ui-widget-content ui-corner-all">
+<legend class="ui-widget-header ui-corner-all"></legend>
+<table>
+    <tr>
+        <td>
+                @Html.CheckBoxFor(m => m.IsDept)
+        </td>
+        <td>@Html.LabelFor(m => m.DeptId)</td>
+        <td>
+                @Html.DropDownListFor(m => m.DeptId, @Html.GetDept())
+                @Html.ValidationMessageFor(m => m.DeptId)
+        </td>
+
+        <td>
+                @Html.CheckBoxFor(m => m.IsSection)                
+        </td>
+        <td>@Html.LabelFor(m => m.Section)</td>
+        <td>
+                @Html.DropDownListFor(m => m.Section, @Html.GetSectionType())
+                @Html.ValidationMessageFor(m => m.DeptId)
+        </td>
+
+        <td>
+                @Html.CheckBoxFor(m => m.IsConsumeType)                
+        </td>
+        <td>@Html.LabelFor(m => m.ConsumeType)</td>
+        <td>
+                @Html.DropDownListFor(m => m.ConsumeType, @Html.GetConsumeType())
+                @Html.ValidationMessageFor(m => m.ConsumeType)
+        </td>
+
+        <td>
+                @Html.CheckBoxFor(m => m.IsPayType)                
+        </td>
+        <td>@Html.LabelFor(m => m.PayType)</td>
+        <td>
+                @Html.DropDownListFor(m => m.PayType, @Html.GetPayType())
+                @Html.ValidationMessageFor(m => m.PayType)
+        </td>
+
+        <td></td>
+        <td></td>
+        <td>
+            <input id="query" type="submit" value="查询" />
+        </td>
+    </tr>
+    <tr>
+        <td>
+                @Html.CheckBoxFor(m => m.IsCategory)                
+        </td>
+        <td>@Html.LabelFor(m => m.Category)</td>
+        <td>
+                @Html.DropDownListFor(m => m.Category, @Html.GetCategory())
+                @Html.ValidationMessageFor(m => m.Category)
+        </td>
+
+        <td>
+                @Html.CheckBoxFor(m => m.IsInventory)                
+        </td>
+        <td>@Html.LabelFor(m => m.Inventory)</td>
+        <td>
+                @Html.DropDownListFor(m => m.Inventory, @Html.GetInventory())
+                @Html.ValidationMessageFor(m => m.Inventory)
+        </td>
+
+        <td></td>
+        <td>
+                @Html.LabelFor(m => m.BeginDate)
+        </td>
+        <td>
+                @Html.TextBoxFor(m => m.BeginDate)
+                @Html.ValidationMessageFor(m => m.BeginDate)
+        </td>
+
+        <td></td>
+        <td>
+                @Html.LabelFor(m => m.EndDate)
+        </td>
+        <td>
+                @Html.TextBoxFor(m => m.EndDate)
+                @Html.ValidationMessageFor(m => m.EndDate)
+        </td>
+
+        <td></td>
+        <td></td>
+        <td>
+            @Html.ActionLink("导出EXCEL", "WRReport4ExportToExcel", "Report", null, new { id = "export" })
+        </td>
+    </tr>
+</table>
+</fieldset>
+                    var grid = new MyWebGrid(source: Model.result, defaultSort: "Quantity");
+                      var gridColumns = new List<WebGridColumn>();
+                      gridColumns.Add(grid.Column("DeptName", "门店"));
+                      gridColumns.Add(grid.Column("SectionName", "部门"));
+                      gridColumns.Add(grid.Column("CategoryName", "分类"));
+                      gridColumns.Add(grid.Column("InventoryName", "商品"));
+                      gridColumns.Add(grid.Column("ConsumeType", "消费类型"));
+                      gridColumns.Add(grid.Column("PayType", "支付方式"));
+                      gridColumns.Add(grid.Column("Amount", "金额", format: (item) => string.Format("{0:f2}", item.Amount)));
+                      gridColumns.Add(grid.Column("Quantity", "数量"));
+                    
+<fieldset class="ui-widget ui-widget-content ui-corner-all">
+<legend class="ui-widget-header ui-corner-all"></legend>    
+    @grid.GetHtml(gridColumns)
+</fieldset>
+    
+<fieldset class="ui-widget ui-widget-content ui-corner-all">
+<legend class="ui-widget-header ui-corner-all">汇总信息</legend>
+<table>
+    <tr>
+        <td>
+                @Html.LabelFor(m => m.Amount)
+        </td>
+        <td>
+                @Html.TextBoxFor(m => m.Amount)
+                @Html.ValidationMessageFor(m => m.Amount)
+        </td>
+        <td>
+                @Html.LabelFor(m => m.Quantity)
+        </td>
+        <td>
+                @Html.TextBoxFor(m => m.Quantity)
+                @Html.ValidationMessageFor(m => m.Quantity)
+        </td>
+    </tr>
+</table>
+</fieldset>
+}

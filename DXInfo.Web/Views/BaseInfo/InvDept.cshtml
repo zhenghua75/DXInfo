@@ -1,0 +1,89 @@
+﻿@using Trirand.Web.Mvc
+@model DXInfo.Web.Models.InvDeptGridModel
+<script type="text/javascript">
+    function serializeGridData(postData) {
+        var sdata = {
+            _search:true,
+            InvType: $("#InvType").val()
+        };
+        var newPostData = $.extend(postData, sdata);
+        return newPostData;
+    }
+    function serializeGridData2(postData) {
+        var sdata = {
+            _search:true,
+            DeptType: $("#DeptType").val()
+        };
+        var newPostData = $.extend(postData, sdata);
+        return newPostData;
+    }
+    function serializeRowData(postData) {
+        var sdata = {
+            InvType: $("#InvType").val(),
+            DeptType: $("#DeptType").val()
+        };
+        var newPostData = $.extend(postData, sdata);
+        return newPostData;
+    }
+    function showDeptSubGrid(subgrid_id, row_id) {
+        showSubGrid_DeptGrid(subgrid_id, row_id);
+    }
+    function beforeSubmit(postdata, formid) {
+        var sdata = { 
+            InvType: $("#InvType").val(),
+            DeptType: $("#DeptType").val()
+        };
+        $.extend(postdata, sdata);
+        return [true, ''];
+    }
+    function customButtonClicked() {
+         var grid = $("#InvGrid");
+         
+         var ids = grid.jqGrid('getGridParam', 'selarrrow');
+         
+          var url = "@Url.Action("InvDept2_EditData","BaseInfo")";
+          
+                if (ids.length>0) {                    
+                    $("#dialog-confirm").dialog({
+                        height: 480,
+                        width:650,
+                        modal:true,
+                        open: function( event, ui ) {$("#Dept2Grid").trigger("reloadGrid", [{ page: 1}]);},
+                        buttons:{
+                            '关闭': function(){
+                                $(this).dialog('close');
+                            },
+                            '确定': function(){
+                                var grid2 = $("#Dept2Grid");
+                                var ids2 = grid2.jqGrid('getGridParam', 'selarrrow');
+                                if (ids2.length>0) {
+                                $.ajax({
+                                    type: "POST",
+                                    url:  url,
+                                    data: { invs: ids.join(", "),
+                                        depts: ids2.join(", ")
+                                    },
+                                    dataType: "json",
+                                    success: function(msg){
+                                        alert(msg);                                        
+                                    },
+                                    error: function(res, status, exeption) {
+                                        alert(res);
+                                    }
+                                });
+                                $(this).dialog('close');
+                                }
+                            }
+                        }
+                    });
+                };
+     }
+    </script>
+@Html.Trirand().JQGrid(Model.InvGrid, "InvGrid")
+@Html.Trirand().JQGrid(Model.DeptGrid, "DeptGrid")
+@Html.HiddenFor(m => m.InvType)
+@Html.HiddenFor(m => m.DeptType)
+
+<div style="display:none;" id="dialog-confirm" title="商品门店设置">
+@Html.Trirand().JQGrid(Model.Dept2Grid, "Dept2Grid")
+</div>

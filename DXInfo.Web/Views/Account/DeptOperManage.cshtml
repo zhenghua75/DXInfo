@@ -1,0 +1,18 @@
+﻿@using Trirand.Web.Mvc
+@model DXInfo.Web.Models.DeptOperManageGridModel
+<script type="text/javascript">
+    function showSubGrid(subgrid_id, row_id) {
+        showSubGrid_FuncGrid(subgrid_id, row_id);
+    }
+
+    function disableFields() {
+        $("#vcOperID").attr("disabled", "disabled");
+    }
+
+    function enableFields() {
+        $("#vcOperID").removeAttr("disabled")
+    }
+    
+    </script>
+@Html.Trirand().JQGrid(Model.DeptOperManageGrid, "DeptOperManageGrid")
+@Html.Trirand().JQGrid(Model.FuncGrid, "FuncGrid")

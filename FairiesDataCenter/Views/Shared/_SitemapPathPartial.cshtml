@@ -1,0 +1,20 @@
+﻿@{
+    SiteMapNode node = SiteMap.Provider.CurrentNode.ParentNode;
+    List<SiteMapNode> nodes = new List<SiteMapNode>();
+    while (node != null)
+    {
+        nodes.Add(node);
+        node = node.ParentNode;
+    }
+    nodes.Reverse();
+    nodes.RemoveAt(0);
+    
+}
+<ul>
+@foreach(SiteMapNode item in nodes){
+    <li><a href="@Url.Content(item.Url)">@item.Title</a></li>
+}
+</ul>    
+@SiteMap.Provider.CurrentNode
+
+

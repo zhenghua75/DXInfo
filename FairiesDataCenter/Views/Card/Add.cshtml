@@ -1,0 +1,58 @@
+﻿@using Trirand.Web.Mvc
+@model ynhnTransportManage.Models.AddCardsGridModel
+@{
+    ViewBag.Title = "补卡";
+}
+@Html.Trirand().JQGrid(Model.CardsGrid, "CardsGrid")
+
+<script type="text/javascript">
+    function ShowName(cellvalue, options, rowObject) {
+        return rowObject[4];
+    }
+    function UnShowName(cellvalue, options, rowObject) {
+        return "";
+    }
+</script>
+
+ <script type="text/javascript">
+
+     //debugger; 
+     // The javascript executed specified by JQGridColumn.EditTypeCustomCreateElement when EditType = EditType.Custom 
+     // The two parameters are the value of the field
+     // and the edit options - passed from JQGridColumn.EditFieldAttributes collection
+     function createCardElement(value, editOptions) {
+         var span = $("<span>");
+         //var label = $("<span>", { html: "0" });
+         var txt = $("<input>", { type: "text", val: value, name: "txtCardNo", id: "txtCardNo" });
+         //var btn = $("<input>", { type: "button", val: "刷卡", name: "btnCard", id: "btnCard", onclick: "FlushCard" });
+         var el = document.createElement("input");
+         el.type = "button";
+         el.id = "btnCard";
+         el.name = "btnCard";
+         el.value = "发卡";
+         el.onclick = FlushCard;
+         span.append(txt).append(el);
+
+         return span;
+     }
+
+     // The javascript executed specified by JQGridColumn.EditTypeCustomGetValue when EditType = EditType.Custom
+     // One parameter passed - the custom element created in JQGridColumn.EditTypeCustomCreateElement
+     function getCardElementValue(elem) {
+         return $(elem).find("input:text").val()
+     }
+     function FlushCard() {
+
+         //$("#txtCardNo").val("1235");
+         var CardNo = $("#txtCardNo").val();
+         //alert(CardNo);
+         if (CardNo.length != 5) {
+             alert("请输入5位卡号");
+             return
+         }
+         if (!PutCard(CardNo)) alert("发卡失败");
+         else
+             alert("发卡成功，请提交");
+         //$("#txtCardNo").val("1234");
+     }
+</script>

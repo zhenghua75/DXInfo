@@ -1,0 +1,69 @@
+﻿@using Trirand.Web.Mvc
+@using ynhnTransportManage
+<!DOCTYPE html>
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+    <title>@Html.DataCenterTitle()@ViewBag.Title</title> 
+    <link rel="stylesheet" type="text/css" href="@Url.Content("~/Content/themes/redmond/jquery-ui-1.8.21.custom.css")" />    
+    <link rel="stylesheet" type="text/css" href="@Url.Content("~/Content/themes/ui.jqgrid.css")" />   
+    <link rel="stylesheet" type="text/css" href="@Url.Content("~/Content/themes/ui.jqdropdownlist.css")" />  
+    <link rel="stylesheet" type="text/css" href="@Url.Content("~/Content/themes/ui.jqtreeview.css")" />  
+   <link rel="stylesheet" type="text/css" href="@Url.Content("~/Content/themes/base/jquery-ui-timepicker-addon.css")" /> 
+    <script src="@Url.Content("~/Scripts/jquery-1.8.1.min.js")" type="text/javascript"></script>
+    <script src="@Url.Content("~/Scripts/jquery.validate.min.js")" type="text/javascript"></script>
+    <script src="@Url.Content("~/Scripts/jquery.validate.unobtrusive.min.js")" type="text/javascript"></script>
+    <script src="@Url.Content("~/Scripts/jquery.ui.datepicker-zh-CN.js")" type="text/javascript"></script>
+    <script src="@Url.Content("~/Scripts/jquery-ui-1.8.23.min.js")" type="text/javascript"></script>
+    <script src="@Url.Content("~/Scripts/jQuery-Timepicker-Addon/jquery-ui-timepicker-addon.js")" type="text/javascript"></script>
+    <script src="@Url.Content("~/Scripts/jQuery-Timepicker-Addon/localization/jquery-ui-timepicker-zh-CN.js")" type="text/javascript"></script>
+    <script src="@Url.Content("~/Scripts/trirand/i18n/grid.locale-cn.js")" type="text/javascript"></script> 
+    <script src="@Url.Content("~/Scripts/trirand/jquery.jqGrid.min.js")" type="text/javascript"></script>
+    <script type="text/javascript">
+        function EnterKeyPress(e) {
+            //var key = e.charCode || e.keyCode;
+            var key = e.charCode ? e.charCode : e.keyCode ? e.keyCode : 0;
+            if (key == 13) {
+            }
+            /* ENTER PRESSED*/
+            if (key == 13) {
+                /* FOCUS ELEMENT */
+                var inputs = $(this).parents("form").eq(0).find(":input");
+                var idx = inputs.index(this);
+                //console.log(idx);
+                if (idx == inputs.length - 2) {
+                    inputs[0].select()
+                } else {
+                    if ($(inputs[idx + 1]).attr("disabled") == "disabled") {
+                        for (var i = idx + 2; i < inputs.length - 1; i++) {
+                            if ($(inputs[i]).attr("disabled") != "disabled") {
+                                inputs[i].focus();
+                                return false;
+                            }
+                        }
+                    }
+                    inputs[idx + 1].focus(); //  handles submit buttons
+                    //inputs[idx + 1].select();
+                }
+                return false;
+            }
+        }
+    </script>
+</head>
+
+<body>       
+            @RenderBody()
+            @Html.Trirand().JQDatePicker(
+            new JQDatePicker
+            {
+                DisplayMode = DatePickerDisplayMode.ControlEditor,
+                ShowOn = ShowOn.Focus,
+                DateFormat = "yyyy-mm-dd"
+            }, "DatePicker")
+            @Html.Trirand().JQDateTimePicker(
+            new JQDateTimePicker
+            {
+            }, "DateTimePicker")
+
+</body>
+</html>

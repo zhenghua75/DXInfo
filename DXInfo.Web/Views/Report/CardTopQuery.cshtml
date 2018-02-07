@@ -1,0 +1,56 @@
+﻿@using Trirand.Web.Mvc
+@using DXInfo.Web.Models
+@model DXInfo.Web.Models.CardTopQueryGridModel
+<script type="text/javascript">
+    $(function () {
+        $("#query").button();
+        var myDate = new Date();
+        $("#BeginDate").datetimepicker();
+        $("#EndDate").datetimepicker();
+        var beginDateStr = myDate.getFullYear() + "-" + (myDate.getMonth() + 1) + "-" + myDate.getDate() + " 00:00";
+        var endDateStr = myDate.getFullYear() + "-" + (myDate.getMonth() + 1) + "-" + myDate.getDate() + " 23:59";
+        $("#BeginDate").datetimepicker("setDate", beginDateStr);
+        $("#EndDate").datetimepicker("setDate", endDateStr);
+
+        $("#query").button().click(function () {
+            query();
+        });
+        $("#export").button();
+        $("#export").button().click(function () {
+            excelExport();
+        });
+        var ctrls = [{ name: "BeginDate", type: "datetime" },
+                 { name: "EndDate", type: "datetime" },
+                 { name: "vcDeptID", type: "select" },
+                 ];
+        InitCtrl(ctrls);
+    });
+    function serializeGridData(postData){        
+        var sdata = {
+            _search: true,
+            vcDeptID:$("#vcDeptID").val(),
+            BeginDate:$("#BeginDate").val(),
+            EndDate:$("#EndDate").val(),
+        };
+        var newPostData = $.extend(postData, sdata);
+        return $.param(newPostData);
+    }
+    function query() {
+            $("#CardTopQueryGrid").jqGrid('setGridParam', { datatype: 'json' }).trigger('reloadGrid', [{ page: 1}]); 
+    }
+	</script>
+<h2 class="ui-widget-header h2-center">@ViewBag.Title</h2>
+<fieldset class="ui-widget ui-widget-content ui-corner-all">
+            <legend class="ui-widget-header ui-corner-all"></legend>
+<table>
+    <tr>        
+        <td>开始时间</td><td>@Html.TextBox("BeginDate")</td>    
+        <td>结束时间</td><td>@Html.TextBox("EndDate")</td>            
+        </tr><tr>
+        <td>门店</td><td>@Html.DropDownList("vcDeptID", @Html.GetMD())</td>
+        <td><button id="query">查询</button></td>        
+        <td><button id="export">导出EXCEL</button></td>
+    </tr>
+</table>
+</fieldset>
+@Html.Trirand().JQGrid(Model.CardTopQueryGrid, "CardTopQueryGrid")

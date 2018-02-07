@@ -1,0 +1,31 @@
+﻿@using Trirand.Web.Mvc
+@model ynhnTransportManage.Models.StockManage.MixVouchGridModel
+@{
+    ViewBag.Title = "搜索库存配料单";
+}
+@Html.Trirand().JQGrid(Model.MixVouchGrid, "MixVouchGrid")
+<script type="text/javascript">
+$(document).ready(function () {
+        $("#MixVouchGrid").closest("div.ui-jqgrid-view")
+                .children("div.ui-jqgrid-titlebar")
+                .css("text-align", "center")
+                .css("font-size", "large")
+                .children("span.ui-jqgrid-title")
+                .css("float", "none");
+    });
+    function FormatNumber(num) {
+        return parseFloat(num);
+    }
+    function UnFormatNumber(num) {
+        return num;
+    }
+    function DblClick(rowid) {
+        self.location = "@Url.Action("MixVouch", "StockManage")"+"?Id="+rowid;
+    }
+    function beforeRefresh() {
+        $("#MixVouchGrid").jqGrid("setGridParam", {search: true}).trigger("reloadGrid", [{ page: 1}]);
+    }
+    function serializeGridData(postData){
+        return postData;
+    }
+</script>

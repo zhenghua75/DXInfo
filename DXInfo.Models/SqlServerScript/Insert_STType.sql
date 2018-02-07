@@ -1,0 +1,1 @@
+﻿if not exists (select * from STType where Code='001')insert into STType(Code,Name,RdCode,IsDefault)values('001','普通销售','002',1)

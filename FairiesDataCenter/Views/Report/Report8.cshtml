@@ -1,0 +1,176 @@
+﻿@using ynhnTransportManage
+@model ynhnTransportManage.Models.Report8Model           
+<script type="text/javascript">
+    $(function () {
+        $("#BeginDate").datepicker();
+        $("#EndDate").datepicker();
+    });
+	</script>
+ 
+@using (Html.BeginForm("Report8", "Report"))
+{
+@Html.ValidationSummary(true, "参数错误。请更正错误并重试。")
+    <div>
+        <fieldset>
+        <table>
+            <tr>
+                <td colspan="8" align="center"><legend>收款差异查询</legend></td>
+            </tr>
+            <tr>
+                <td>
+                <div class="editor-label">
+                @Html.LabelFor(m => m.DeptId)
+            </div>
+            </td>
+                <td>
+                <div class="editor-field">
+                @Html.DropDownListFor(m => m.DeptId, @Helpers.GetDepts2())
+                @Html.ValidationMessageFor(m => m.DeptId)
+            </div>
+                </td>
+                <td>
+                <div class="editor-label">
+                @Html.LabelFor(m => m.UserId)
+            </div>
+            </td>
+                <td>
+                <div class="editor-field">
+                @Html.DropDownListFor(m => m.UserId, @Helpers.GetUsers())
+                @Html.ValidationMessageFor(m => m.UserId)
+            </div>
+                </td>
+               
+               
+                <td>
+                    <div class="editor-label">
+                @Html.LabelFor(m => m.BeginDate)
+            </div>
+                </td>
+                <td>
+                    <div class="editor-field">
+                @Html.TextBoxFor(m => m.BeginDate, new { @class = "wide" })
+                @Html.ValidationMessageFor(m => m.BeginDate)
+            </div>
+                </td>
+                <td>
+                    <div class="editor-label">
+                @Html.LabelFor(m => m.EndDate)
+            </div>
+                </td>
+                <td>
+                    <div class="editor-field">
+                @Html.TextBoxFor(m => m.EndDate, new { @class = "wide" })
+                @Html.ValidationMessageFor(m => m.EndDate)
+            </div>
+                </td>
+                <td colspan="4">
+                    <p>
+                <input type="submit" value="查询" />
+                @Html.ActionLink("导出EXCEL", "Report8ExportToExcel", "Report")
+            </p>
+                </td>
+            </tr>
+        </table>
+        </fieldset>
+    </div>
+    if (Model.result != null)
+    {
+        var grid = new WebGrid(source: Model.result,
+            defaultSort: "Amount",
+        canPage: true,
+        canSort: true,
+        rowsPerPage: 20);
+
+	<div id="DivGrid" style="width:1800px;">
+	@grid.GetHtml(
+         mode: WebGridPagerModes.All,
+        numericLinksCount: 50,
+        firstText: "首页",
+        previousText: "上页",
+        nextText: "下页",
+        lastText: "最后页", 
+        columns: grid.Columns(
+                                grid.Column("FullName", "收银员"),
+                                                        grid.Column("Amount", "应收总金额", format: (item) => string.Format("{0:f2}", item.Amount)),
+                                                            grid.Column("MoreDays", "长款天数"),
+                                grid.Column("More", "长款金额", format: (item) => string.Format("{0:f2}", item.More)),
+                                        grid.Column("LessDays", "短款天数", format: (item) => string.Format("{0:f2}", item.LessDays)),
+                                                grid.Column("Less", "短款金额", format: (item) => string.Format("{0:f2}", item.Less)),
+                                                                grid.Column("MoreRatio", "长款金额比例", format: (item) => string.Format("{0:P}", item.MoreRatio)),
+                                                        grid.Column("LessRatio", "短款金额比例", format: (item) => string.Format("{0:P}", item.LessRatio)),
+                                                                grid.Column("NormalRatio", "正常比例", format: (item) => string.Format("{0:P}", item.NormalRatio)),
+                                                        grid.Column("Comment", "情况说明")
+        )
+    )
+	</div>
+<div>
+        <fieldset>
+        <table>
+            <tr>
+                <td colspan="6" align="center">
+                <legend>汇总信息</legend>
+                </td>
+            </tr>
+            <tr>
+            <td>
+                <div class="editor-label">
+                @Html.LabelFor(m => m.Amount)
+            </div>
+                </td>
+                <td>
+                <div class="editor-field">
+                @Html.TextBoxFor(m => m.Amount, new { @class = "wide" })
+                @Html.ValidationMessageFor(m => m.Amount)
+            </div>
+                </td>
+                <td>
+                <div class="editor-label">
+                @Html.LabelFor(m => m.MoreDays)
+            </div>
+                </td>
+                <td>
+                <div class="editor-field">
+                @Html.TextBoxFor(m => m.MoreDays, new { @class = "wide" })
+                @Html.ValidationMessageFor(m => m.MoreDays)
+            </div>
+                </td>
+                <td>
+                <div class="editor-label">
+                @Html.LabelFor(m => m.More)
+            </div>
+                </td>
+                <td>
+                <div class="editor-field">
+                @Html.TextBoxFor(m => m.More, new { @class = "wide" })
+                @Html.ValidationMessageFor(m => m.More)
+            </div>
+                </td>                                              
+                
+                <td>
+                <div class="editor-label">
+                @Html.LabelFor(m => m.LessDays)
+            </div>
+                </td>
+                <td>
+                <div class="editor-field">
+                @Html.TextBoxFor(m => m.LessDays, new { @class = "wide" })
+                @Html.ValidationMessageFor(m => m.LessDays)
+            </div>
+                </td>
+                <td>
+                <div class="editor-label">
+                @Html.LabelFor(m => m.Less)
+            </div>
+                </td>
+                <td>
+                <div class="editor-field">
+                @Html.TextBoxFor(m => m.Less, new { @class = "wide" })
+                @Html.ValidationMessageFor(m => m.Less)
+            </div>
+                </td>                                                    
+            </tr>
+        </table>
+        </fieldset>
+    </div>
+    }
+}

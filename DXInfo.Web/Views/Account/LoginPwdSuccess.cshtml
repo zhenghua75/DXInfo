@@ -1,0 +1,13 @@
+﻿@{
+    ViewBag.Title = "更改密码";
+}
+<script type="text/javascript">
+    $(function () {
+        $("#btnReturn").button();
+    });
+</script>
+<h2 class="ui-widget-header h2-center">更改密码</h2>
+<p class="ui-state-highlight">
+    您的密码已成功更改。
+</p>
+@Html.ActionLink("返回", "LoginPwd", "Account", new { onclick = "addToDiv(this);return false;", id = "btnReturn" })

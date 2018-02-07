@@ -1,0 +1,55 @@
+﻿@using Trirand.Web.Mvc
+@model DXInfo.Web.Models.VouchGridModel
+<script type="text/javascript">
+    function DblClick(rowid) {
+        switch($("#VouchType").val()){        
+            case "001":
+                urlToDiv("@Url.Action("PurchaseInStock", "StockManage")"+"?Id="+rowid);
+            break;
+            case "002":
+                urlToDiv("@Url.Action("SaleOutStock", "StockManage")"+"?Id="+rowid);
+            break;
+            case "003":
+                urlToDiv("@Url.Action("OtherInStock", "StockManage")"+"?Id="+rowid);
+            break;
+            case "004":
+                urlToDiv("@Url.Action("OtherOutStock", "StockManage")"+"?Id="+rowid);
+            break;
+            case "005":
+                urlToDiv("@Url.Action("MaterialOutStock", "StockManage")"+"?Id="+rowid);
+            break;
+            case "006":
+                urlToDiv("@Url.Action("ProductInStock", "StockManage")"+"?Id="+rowid);
+            break;
+            case "007":
+                urlToDiv("@Url.Action("InitStock", "StockManage")"+"?Id="+rowid);
+            break;
+            case "008":
+                urlToDiv("@Url.Action("ScrapVouch", "StockManage")"+"?Id="+rowid);
+            break;
+            case "009":
+                urlToDiv("@Url.Action("TransVouch", "StockManage")"+"?Id="+rowid);
+            break;
+            case "010":
+                urlToDiv("@Url.Action("CheckVouch", "StockManage")"+"?Id="+rowid);
+            break;
+            case "011":
+                urlToDiv("@Url.Action("AdjustLocatorVouch", "StockManage")"+"?Id="+rowid);
+            break;
+            case "012":
+                urlToDiv("@Url.Action("MixVouch", "StockManage")"+"?Id="+rowid);
+            break;
+        }
+    }
+    function serializeGridData(postData){
+        var sdata = {
+            _search:true,
+            VouchType:$("#VouchType").val()
+        };
+        var newPostData = $.extend(postData, sdata);
+        return newPostData;
+    }
+</script>
+@Html.HiddenFor(m => m.VouchType)
+@Html.Trirand().JQGrid(Model.VouchGrid, "VouchGrid")
+

@@ -1,0 +1,42 @@
+﻿<Window x:Class="FairiesCoolerCash.Business.DeskBookWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:xctk="http://schemas.xceed.com/wpf/xaml/toolkit" FontSize="20" ResizeMode="NoResize"
+        Title="预定信息" SizeToContent="WidthAndHeight" Loaded="Window_Loaded" WindowStartupLocation="CenterScreen">
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition></RowDefinition>
+            <RowDefinition></RowDefinition>
+            <RowDefinition></RowDefinition>
+            <RowDefinition></RowDefinition>
+            <RowDefinition></RowDefinition>
+            <RowDefinition></RowDefinition>
+            <RowDefinition></RowDefinition>
+            <RowDefinition></RowDefinition>
+            
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition></ColumnDefinition>
+            <ColumnDefinition></ColumnDefinition>
+        </Grid.ColumnDefinitions>
+        
+        <TextBlock>人数：</TextBlock>
+        <TextBox Name="txtQuantity" Grid.Column="1"></TextBox>
+
+        <TextBlock Grid.Row="1">预定开始时间：</TextBlock>
+        <DatePicker Grid.Row="1" Grid.Column="1" Name="dpBeginDate" SelectedDateFormat="Short"></DatePicker>
+        <xctk:TimePicker Grid.Row="2" Grid.Column="1" Name="tpBeginTime" ></xctk:TimePicker>
+
+        
+        <TextBlock Grid.Row="3">预定结束时间：</TextBlock>
+        <DatePicker Grid.Row="3" Grid.Column="1" Name="dpEndDate"></DatePicker>
+        <xctk:TimePicker Grid.Row="4" Grid.Column="1" Name="tpEndTime" ></xctk:TimePicker>
+
+        <TextBlock  Grid.Row="5">预定联系人：</TextBlock>
+        <TextBox  Grid.Row="5"  Grid.Column="1" Name="txtLinkName"></TextBox>
+
+        <TextBlock  Grid.Row="6">预定联系电话：</TextBlock>
+        <TextBox  Grid.Row="6" Grid.Column="1" Name="txtLinkPhone"></TextBox>
+        <Button Grid.Row="7" Grid.ColumnSpan="2"  Click="Button_Click">确定</Button>
+    </Grid>
+</Window>

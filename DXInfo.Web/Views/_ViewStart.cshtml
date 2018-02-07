@@ -1,0 +1,10 @@
+﻿@if (Request.IsAuthenticated)
+{
+
+    Layout = "~/Views/Shared/_LayoutAuthenticated.cshtml";
+}
+else
+{
+
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}

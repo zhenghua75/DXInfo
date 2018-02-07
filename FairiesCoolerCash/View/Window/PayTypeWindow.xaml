@@ -1,0 +1,17 @@
+﻿<Window x:Class="FairiesCoolerCash.Business.PayTypeWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="支付方式" Height="200" Width="200" ResizeMode="NoResize" 
+        WindowStartupLocation="CenterScreen" FontSize="20"
+        xmlns:local="clr-namespace:FairiesCoolerCash.Business"
+        Background="{DynamicResource WindowBackgroundBrush}"  SizeToContent="WidthAndHeight"
+        local:DialogCloser.DialogResult="{Binding DialogResult}">
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition></RowDefinition>
+            <RowDefinition></RowDefinition>
+        </Grid.RowDefinitions>
+        <ComboBox ItemsSource="{Binding lPayTypeOfPutCard}" DisplayMemberPath="Name" SelectedItem="{Binding SelectedPayType}" />
+        <Button Grid.Row="1" Content="确定" Command="{Binding Confirm}" IsDefault="True"/>
+    </Grid>
+</Window>

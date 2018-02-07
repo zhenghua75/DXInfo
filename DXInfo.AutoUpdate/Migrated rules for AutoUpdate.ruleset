@@ -1,0 +1,6 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<RuleSet Name="Migrated rules for AutoUpdate.ruleset" Description="已通过项目“E:\FairiesMemberManage20110427\program\FairiesMemberManage\DXInfo.AutoUpdate\AutoUpdate.csproj”中的“Debug (x86)”配置的 CodeAnalysisRules 属性创建此规则集。" ToolsVersion="10.0">
+  <RuleHintPaths>
+    <Path>C:\Program Files (x86)\Microsoft Visual Studio 8\Team Tools\Static Analysis Tools\FxCop\\rules</Path>
+  </RuleHintPaths>
+</RuleSet>

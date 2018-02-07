@@ -1,0 +1,8 @@
+﻿<FlowDocument xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    ColumnWidth="400" FontSize="16" FontFamily="Georgia">
+    <Paragraph FontSize="22" FontWeight="Bold">Target Platform</Paragraph>
+
+    <Paragraph>
+        Windows XP.
+    </Paragraph>
+</FlowDocument>

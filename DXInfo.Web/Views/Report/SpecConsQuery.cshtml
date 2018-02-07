@@ -1,0 +1,63 @@
+﻿@using Trirand.Web.Mvc
+@using DXInfo.Web.Models
+@model DXInfo.Web.Models.SpecConsQueryGridModel
+<script type="text/javascript">
+    $(function () {
+        $("#query").button();
+        var myDate = new Date();
+        $("#BeginDate").datetimepicker();
+        $("#EndDate").datetimepicker();
+        var beginDateStr = myDate.getFullYear() + "-" + (myDate.getMonth() + 1) + "-" + myDate.getDate() + " 00:00";
+        var endDateStr = myDate.getFullYear() + "-" + (myDate.getMonth() + 1) + "-" + myDate.getDate() + " 23:59";
+        $("#BeginDate").datetimepicker("setDate", beginDateStr);
+        $("#EndDate").datetimepicker("setDate", endDateStr);
+
+        $("#query").button().click(function () {
+            query();
+        });
+        $("#export").button();
+        $("#export").button().click(function () {
+            excelExport();
+        });
+        var ctrls = [{ name: "BeginDate", type: "datetime" },
+                 { name: "EndDate", type: "datetime" },
+                 { name: "vcDeptID", type: "select" },
+                 { name: "vcConsType", type: "select" },
+                 { name: "vcOperName", type: "select" },
+                 ];
+        InitCtrl(ctrls);
+    });
+    function serializeGridData(postData){        
+        var sdata = {
+            _search: true,
+            vcConsType:$("#vcConsType").val(),
+            vcDeptID:$("#vcDeptID").val(),
+            vcOperName:$("#vcOperName").val(),
+            BeginDate:$("#BeginDate").val(),
+            EndDate:$("#EndDate").val(),
+        };
+        var newPostData = $.extend(postData, sdata);
+        return $.param(newPostData);
+    }
+    function query() {
+            $("#SpecConsQueryGrid").jqGrid('setGridParam', { datatype: 'json' }).trigger('reloadGrid', [{ page: 1}]); 
+    }
+	</script>
+<h2 class="ui-widget-header h2-center">@ViewBag.Title</h2>
+<fieldset class="ui-widget ui-widget-content ui-corner-all">
+            <legend class="ui-widget-header ui-corner-all"></legend>
+<table>
+    <tr>        
+        <td>特殊类型</td><td>@Html.DropDownList("vcConsType", @Html.GetSpecPT())</td>
+        <td>开始时间</td><td>@Html.TextBox("BeginDate")</td>    
+        <td>门店</td><td>@Html.DropDownList("vcDeptID", @Html.GetMD())</td>
+         <td><button id="query">查询</button></td>          
+     </tr><tr>
+        <td></td><td></td>
+        <td>结束时间</td><td>@Html.TextBox("EndDate")</td>  
+        <td>操作员</td><td>@Html.DropDownList("vcOperName", @Html.GetOperName())</td>               
+        <td><button id="export">导出EXCEL</button></td>
+    </tr>
+</table>
+</fieldset>
+@Html.Trirand().JQGrid(Model.SpecConsQueryGrid, "SpecConsQueryGrid")

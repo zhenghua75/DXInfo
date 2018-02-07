@@ -1,0 +1,60 @@
+﻿@using Trirand.Web.Mvc
+@using ynhnTransportManage
+@model ynhnTransportManage.Models.StockManage.ProduceEvaluationGridModel
+<script type="text/javascript">
+    $(function () {
+        $("#query").button();
+        $("#BeginDate").datepicker();
+        $("#EndDate").datepicker();
+        $("#query").button().click(function () {
+            query();
+        });
+        $("#export").button();
+        $("#export").button().click(function () {
+            ExportToExcel();
+        });
+    });
+    function query() {
+            var postData = $("#ProduceEvaluationGrid").jqGrid("getGridParam", "postData");
+            var sdata = {
+                DeptId:$("#DeptId").val(),
+                BeginDate: $("#BeginDate").val(),
+                EndDate: $("#EndDate").val()
+            };
+            var newPostData = $.extend(postData, sdata);
+            $("#ProduceEvaluationGrid").jqGrid().trigger("reloadGrid", [{ page: 1}]);
+        }
+	</script>
+<h2 class="ui-jqgrid-titlebar ui-widget-header ui-corner-top ui-helper-clearfix" style="text-align:center">@ViewBag.Title</h2>
+<div class="ui-state-default ui-jqgrid-toppager">
+<table>
+    <tr>
+        
+        <td>@Html.LabelFor(m => m.DeptId)</td><td>@Html.DropDownListFor(m => m.DeptId, @Helpers.GetDepts())@Html.ValidationMessageFor(m => m.DeptId, "*")</td>
+        <td>查询日期</td><td>@Html.TextBoxFor(m => m.BeginDate)-</td><td>@Html.TextBoxFor(m => m.EndDate)</td>        
+        <td><button id="query">查询</button></td><td><button id="export">导出EXCEL</button></td>
+    </tr>
+</table>
+</div>
+@Html.Trirand().JQGrid(Model.ProduceEvaluationGrid, "ProduceEvaluationGrid")
+@using (Html.BeginForm("ProduceEvaluationGrid_RequestData", "StockManage", FormMethod.Post, new { id = "ExportToExcel" })) { } 
+
+<script type="text/javascript">
+    function ExportToExcel() {
+        var input1 = $("<input>").attr("type", "hidden").attr("name", "oper").val("excel");
+        var input2 = $("<input>").attr("type", "hidden").attr("name", "DeptId").val($("#DeptId").val());
+        var input3 = $("<input>").attr("type", "hidden").attr("name", "BeginDate").val($("#BeginDate").val());
+        var input4 = $("<input>").attr("type", "hidden").attr("name", "EndDate").val($("#EndDate").val());
+        $("#ExportToExcel").append($(input1));
+        $("#ExportToExcel").append($(input2));
+        $("#ExportToExcel").append($(input3));
+        $("#ExportToExcel").append($(input4));
+        $("#ExportToExcel").submit();
+    }
+    function FormatNumber(num) {
+        return parseFloat(num);
+    }
+    function UnFormatNumber(num) {
+        return num;
+    }
+</script>

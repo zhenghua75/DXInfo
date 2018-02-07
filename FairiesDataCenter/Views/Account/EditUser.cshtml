@@ -1,0 +1,52 @@
+﻿@using ynhnTransportManage.Helpers
+@model ynhnTransportManage.Models.EditUserModel
+
+@{
+    ViewBag.Title = "编辑用户";
+}
+
+<h2>编辑用户</h2>
+
+<script src="@Url.Content("~/Scripts/jquery.validate.min.js")" type="text/javascript"></script>
+<script src="@Url.Content("~/Scripts/jquery.validate.unobtrusive.min.js")" type="text/javascript"></script>
+
+@using (Html.BeginForm()) {
+    @Html.ValidationSummary(true)
+    <fieldset>
+        <legend>编辑用户</legend>
+
+        <div class="editor-label">
+            @Html.LabelFor(model => model.UserName)
+        </div>
+        <div class="editor-field">
+            @Html.EditorFor(model => model.UserName)
+            @Html.ValidationMessageFor(model => model.UserName)
+        </div>
+
+        <div class="editor-label">
+            @Html.LabelFor(model => model.FullName)
+        </div>
+        <div class="editor-field">
+            @Html.EditorFor(model => model.FullName)
+            @Html.ValidationMessageFor(model => model.FullName)
+        </div>
+
+        <div class="editor-label">
+            @Html.LabelFor(model => model.DeptId)
+        </div>
+        <div class="editor-field">
+            @Html.DropDownListFor(m => m.DeptId, @Helper.GetDepts())
+            @*@Html.EditorFor(model => model.DeptId)*@
+            @Html.ValidationMessageFor(model => model.DeptId)
+        </div>
+
+        <p>
+            <input type="submit" value="保存" />
+        </p>
+    </fieldset>
+}
+
+<div>
+    @Html.ActionLink("返回", "Users")
+</div>
+

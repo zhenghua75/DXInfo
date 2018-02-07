@@ -1,0 +1,27 @@
+﻿<Window x:Class="Media_glass.SmallWindows.FileTypesWindow"
+     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:sys="clr-namespace:System;assembly=mscorlib"    
+    Title="选项" Height="494" Width="398" WindowStartupLocation="CenterScreen" MouseLeftButtonDown="Window_MouseLeftButtonDown" SizeToContent="WidthAndHeight">
+    <Window.Resources>        
+        <DataTemplate x:Key="CheckBoxCell">
+            <StackPanel Orientation="Horizontal">
+                <CheckBox Margin="11,11,6,11" IsChecked="{Binding Path=IsAssigned}" VerticalAlignment="Center" Click="CheckBox_Click"/>                
+                <Label Content ="{Binding}" ToolTip="{Binding Path=Content, RelativeSource={RelativeSource Self}}" Margin="0,0,0,0" VerticalAlignment="Center" FontFamily="Verdana" FontSize="11"/>
+            </StackPanel>
+        </DataTemplate>        
+    </Window.Resources>
+    <Grid Width="360" Height="420">
+        <ListBox Margin="11,59,11,0" Name="listBox1" ItemTemplate="{StaticResource CheckBoxCell}" Height="220" VerticalAlignment="Top" SelectionChanged="listBox1_SelectionChanged"/>
+        <Label Height="24" HorizontalAlignment="Left" Margin="6,38,0,0" Name="label1" VerticalAlignment="Top" Width="120">文件类型:</Label>
+        <TextBlock Height="33" Margin="11,0,11,81" Name="descriptionTextBlock" VerticalAlignment="Bottom" Text="windows媒体文件格式(ASF)包括 .asf .asx .wpl .wm .wmx .wmd .wmz 等扩展" TextWrapping="Wrap" FontFamily="Tahoma" FontSize="11"/>
+
+        <Button Height="23" HorizontalAlignment="Right" Margin="0,0,11,11" Name="cancelButton" VerticalAlignment="Bottom" Width="75" Click="cancelButton_Click">取消</Button>
+        <Button Height="23" Margin="0,0,93,11" Name="applyButton" VerticalAlignment="Bottom" HorizontalAlignment="Right" Width="75" IsEnabled="False" Click="apply_Button_Click">确定</Button>                
+        <Label Height="23" HorizontalAlignment="Left" Margin="6,282,0,0" Name="label2" VerticalAlignment="Top" Width="120" >描述 :</Label>
+        <Separator Height="1" Margin="5,0,4,45" Name="separator1" VerticalAlignment="Bottom" />
+        <TextBlock Height="28" Margin="11,11,11,0" Name="textBlock2" VerticalAlignment="Top" Text="选择使用道讯播放器作为缺省播放器播放的文件类型。" TextWrapping="Wrap" FontFamily="Tahoma" FontSize="11"/>
+        <Button Height="23" Margin="0,0,93,56" Name="selectAllButton" VerticalAlignment="Bottom" HorizontalAlignment="Right" Width="75" Click="selectAllButton_Click">选择所有</Button>       
+        <Button Height="23" Margin="0,0,11,56" Name="deselectAllButton" VerticalAlignment="Bottom" HorizontalAlignment="Right" Width="75" Click="deselectAllButton_Click">取消选择</Button>        
+    </Grid>
+</Window>

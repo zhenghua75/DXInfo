@@ -1,0 +1,93 @@
+﻿@using DXInfo.Web.Models
+@model DXInfo.Web.Models.VouchsGridModel
+@{
+    Layout = "~/Views/Shared/_StockManageBase.cshtml";
+}
+@Html.HiddenFor(m => m.BusType)
+<fieldset class="ui-widget ui-widget-content ui-corner-all">
+    <legend class="ui-widget-header ui-corner-all"></legend>
+                <table>
+                <tr>
+                    <td>@Html.LabelFor(m => m.Code)</td><td>@Html.TextBoxFor(m => m.Code)@Html.MyValidationMessageFor(m => m.Code)</td>
+                    <td>@Html.LabelFor(m => m.MVDate)</td><td>@Html.TextBoxFor(m => m.MVDate)@Html.MyValidationMessageFor(m => m.MVDate)</td>                    
+                    <td>@Html.LabelFor(m => m.InWhId)</td><td>@Html.DropDownListFor(m => m.InWhId, @Html.GetWarehouse())@Html.MyValidationMessageFor(m => m.InWhId)</td>                                                                     
+                    <td>@Html.LabelFor(m => m.OutWhId)</td><td>@Html.DropDownListFor(m => m.OutWhId, @Html.GetWarehouseDept())@Html.MyValidationMessageFor(m => m.OutWhId)</td>                                                                     
+                </tr>
+                <tr>
+                    <td>@Html.LabelFor(m => m.Salesman)</td><td>@Html.DropDownListFor(m => m.Salesman, @Html.GetOper())</td>                                   
+                    <td>@Html.LabelFor(m => m.VerifyDate)</td><td>@Html.TextBoxFor(m => m.VerifyDate)</td>
+                    <td>@Html.LabelFor(m => m.Memo)</td><td colspan="3">@Html.TextBoxFor(m => m.Memo, new { style = "width:100%" })</td>
+                </tr>
+            </table>
+</fieldset>
+            <div id="divBatchInventory" title="批量添加"></div>
+            <div id="divBatchWarehouseInventory" title="仓库关联添加"></div> 
+
+ <script type="text/javascript">
+     function customButtonClicked() {
+         if (!$("#InWhId").val() || !$("#OutWhId").val()) {
+             alert("请选择仓库");
+             return;
+         }
+         if ($("#Id").val()) {
+             alert("请重新添加配料单");
+             return;
+         }
+         var url = urls.BatchInventoryUrl + "?WhId=" + $("#OutWhId").val();
+         $("#divBatchInventory")
+         .load(url, function (response, status, xhr) {
+             if (status == "error") {
+                 alert(xhr.status + " " + xhr.statusText);
+             }
+         })
+         .dialog({
+             autoOpen: false,
+             modal: false,
+             width: 800,
+             height: 600,
+             closeText: "关闭",
+             beforeClose: function (event, ui) { updateInvs(); },
+             buttons: { "确定": function () { $(this).dialog("close"); } }, 
+         });
+         $("#divBatchInventory").dialog('open');
+     }
+     function customButtonClicked1() {
+         if (!$("#InWhId").val() || !$("#OutWhId").val()) {
+             alert("请选择仓库");
+             return;
+         }
+         if ($("#Id").val()) {
+             alert("请重新添加配料单");
+             return;
+         }
+         var url = urls.BatchWarehouseInventoryUrl + "?WhId=" + $("#InWhId").val();
+         $("#divBatchWarehouseInventory")
+         .load(url, function (response, status, xhr) {
+             if (status == "error") {
+                 alert(xhr.status + " " + xhr.statusText);
+             }
+         })
+         .dialog({
+             autoOpen: false,
+             modal: false,
+             width: 800,
+             height: 600,
+             closeText: "关闭",
+             beforeClose: function (event, ui) { updateInvs1(); },
+             buttons: { "确定": function () { $(this).dialog("close"); } },  
+         });
+         $("#divBatchWarehouseInventory").dialog('open');
+     }
+     function updateInvs() {
+         var url = urls.BatchInventory_SyncDataUrl;
+         var oldUrl = $("#VouchsGrid").jqGrid("getGridParam","url");
+         $("#VouchsGrid").jqGrid("setGridParam", { datatype: 'json',url: url }).trigger("reloadGrid", [{ page: 1}]);
+         //$("#VouchsGrid").jqGrid("setGridParam", {  datatype: 'local',url: oldUrl });//.trigger("reloadGrid", [{ page: 1}]);
+     }
+     function updateInvs1() {
+         var url = urls.BatchWarehouseInventory_SyncDataUrl;
+         var oldUrl = $("#VouchsGrid").jqGrid("getGridParam","url");
+         $("#VouchsGrid").jqGrid("setGridParam", { datatype: 'json',url: url }).trigger("reloadGrid", [{ page: 1}]);
+         //$("#VouchsGrid").jqGrid("setGridParam", { datatype: 'local',url: oldUrl });//.trigger("reloadGrid", [{ page: 1}]);
+     }   
+</script>

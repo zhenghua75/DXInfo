@@ -1,0 +1,24 @@
+﻿@using Trirand.Web.Mvc
+@model DXInfo.Web.Models.WarehouseInventoryGridModel
+<script type="text/javascript">
+    function InventoryColumnDataInit(el,opt) {
+        $(el).chosen(
+                {
+                    allow_single_deselect: true,
+                    no_results_text: '没有找到',
+                    search_contains: true,
+                    placeholder_text_single: '请选择......',
+                    width:"300px",
+                })
+                .trigger("chosen:updated")                
+                .on("chosen:showing_dropdown", function () { 
+                    $("#editmodWarehouseInventoryGrid").css("overflow", "visible");
+                    $("#FrmGrid_WarehouseInventoryGrid").css("overflow", "visible");
+                })
+                .on("chosen:hiding_dropdown", function () {
+                    $("#FrmGrid_WarehouseInventoryGrid").css("overflow", "auto");
+                    $("#editmodWarehouseInventoryGrid").css("overflow", "hidden");
+                 });        
+    }
+</script>
+@Html.Trirand().JQGrid(Model.WarehouseInventoryGrid, "WarehouseInventoryGrid")

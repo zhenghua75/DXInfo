@@ -1,0 +1,30 @@
+﻿@using Trirand.Web.Mvc
+@model ynhnTransportManage.Models.StockManage.BatchInventoryGridModel
+@Html.HiddenFor(m=>m.WhId)
+@Html.Trirand().JQGrid(Model.BatchInventoryGrid, "BatchInventoryGrid")
+<script type="text/javascript">
+    $(document).ready(function () {
+        $("#BatchInventoryGrid").closest("div.ui-jqgrid-view")
+                .children("div.ui-jqgrid-titlebar")
+                .css("text-align", "center")
+                .css("font-size", "large")
+                .children("span.ui-jqgrid-title")
+                .css("float", "none");
+    });
+    var lastSelection;
+    function editRow(id) {
+        if (id && id !== lastSelection) {
+            var grid = $("#BatchInventoryGrid");
+            grid.saveRow(lastSelection,null,null,{ WhId: $("#WhId").val() });
+            grid.editRow(id, true);
+            lastSelection = id;
+        }
+    }
+    function serializeGridData(postData) {
+        var sdata = {
+            WhId: $("#WhId").val()
+        };
+        var newPostData = $.extend(postData, sdata);
+        return $.param(newPostData);
+    }
+</script>

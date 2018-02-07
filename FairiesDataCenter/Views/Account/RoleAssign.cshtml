@@ -1,0 +1,18 @@
+﻿@using Trirand.Web.Mvc
+@model ynhnTransportManage.Models.RoleAssignGridModel
+@Html.Trirand().JQGrid(Model.RolesGrid, "RolesGrid")
+@Html.Trirand().JQGrid(Model.UsersGrid, "UsersGrid")
+
+<script type="text/javascript">
+    $(document).ready(function () {
+        $("#RolesGrid").closest("div.ui-jqgrid-view")
+                .children("div.ui-jqgrid-titlebar")
+                .css("text-align", "center")
+                .css("font-size", "large")
+                .children("span.ui-jqgrid-title")
+                .css("float", "none");
+    });
+    function showUsersSubGrid(subgrid_id, row_id) {
+        showSubGrid_UsersGrid(subgrid_id, row_id);
+    }   
+    </script>

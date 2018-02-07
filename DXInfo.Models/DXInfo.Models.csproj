@@ -1,0 +1,707 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>8.0.30703</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{5CCDEF4A-ED6F-4899-8F9C-419ED1E32D5F}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>DXInfo.Models</RootNamespace>
+    <AssemblyName>DXInfo.Models</AssemblyName>
+    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>TRACE;DEBUG</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|x86'">
+    <PlatformTarget>x86</PlatformTarget>
+    <OutputPath>bin\x86\Debug\</OutputPath>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|x86'">
+    <PlatformTarget>x86</PlatformTarget>
+    <OutputPath>bin\x86\Release\</OutputPath>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="AutoMapper">
+      <HintPath>..\packages\AutoMapper.3.1.0\lib\net40\AutoMapper.dll</HintPath>
+    </Reference>
+    <Reference Include="AutoMapper.Net4">
+      <HintPath>..\packages\AutoMapper.3.1.0\lib\net40\AutoMapper.Net4.dll</HintPath>
+    </Reference>
+    <Reference Include="EntityFramework, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
+      <HintPath>..\packages\EntityFramework.6.0.2\lib\net40\EntityFramework.dll</HintPath>
+    </Reference>
+    <Reference Include="EntityFramework.SqlServer, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
+      <HintPath>..\packages\EntityFramework.6.0.2\lib\net40\EntityFramework.SqlServer.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.ComponentModel.DataAnnotations" />
+    <Reference Include="System.configuration" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Runtime.Serialization" />
+    <Reference Include="System.Security" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="AMSCM\dtproperties.cs" />
+    <Compile Include="AMSCM\ProductionInStorage.cs" />
+    <Compile Include="AMSCM\SaleCheck.cs" />
+    <Compile Include="AMSCM\tbAssignDetail.cs" />
+    <Compile Include="AMSCM\tbAssignDetailLog.cs" />
+    <Compile Include="AMSCM\tbAssignLog.cs" />
+    <Compile Include="AMSCM\tbAssociator.cs" />
+    <Compile Include="AMSCM\tbAssociatorLog.cs" />
+    <Compile Include="AMSCM\tbAssociatorSync.cs" />
+    <Compile Include="AMSCM\tbBespeakLog.cs" />
+    <Compile Include="AMSCM\tbBill.cs" />
+    <Compile Include="AMSCM\tbBillHis.cs" />
+    <Compile Include="AMSCM\tbBillOfEnterStorageDetail.cs" />
+    <Compile Include="AMSCM\tbBillOfEnterStorageLog.cs" />
+    <Compile Include="AMSCM\tbBillOfMaterials.cs" />
+    <Compile Include="AMSCM\tbBillOfReceiveDetail.cs" />
+    <Compile Include="AMSCM\tbBillOfReceiveLog.cs" />
+    <Compile Include="AMSCM\tbBillOther.cs" />
+    <Compile Include="AMSCM\tbBusiIncomeReport.cs" />
+    <Compile Include="AMSCM\tbBusiLog.cs" />
+    <Compile Include="AMSCM\tbBusiLogHis.cs" />
+    <Compile Include="AMSCM\tbBusiLogOther.cs" />
+    <Compile Include="AMSCM\tbCheckSerial.cs" />
+    <Compile Include="AMSCM\tbCheckSerialLog.cs" />
+    <Compile Include="AMSCM\tbCommCode.cs" />
+    <Compile Include="AMSCM\tbComputationGroup.cs" />
+    <Compile Include="AMSCM\tbComputationUnit.cs" />
+    <Compile Include="AMSCM\tbConsItem.cs" />
+    <Compile Include="AMSCM\tbConsItemHis.cs" />
+    <Compile Include="AMSCM\tbConsItemOther.cs" />
+    <Compile Include="AMSCM\tbConsSerialNo.cs" />
+    <Compile Include="AMSCM\tbCurrentStock.cs" />
+    <Compile Include="AMSCM\tbDataSoftUpdateLog.cs" />
+    <Compile Include="AMSCM\tbDept.cs" />
+    <Compile Include="AMSCM\tbDosage.cs" />
+    <Compile Include="AMSCM\tbEmployee.cs" />
+    <Compile Include="AMSCM\tbEmpSign.cs" />
+    <Compile Include="AMSCM\tbFillFee.cs" />
+    <Compile Include="AMSCM\tbFillFeeHis.cs" />
+    <Compile Include="AMSCM\tbFillFeeOther.cs" />
+    <Compile Include="AMSCM\tbFormula.cs" />
+    <Compile Include="AMSCM\tbFunc.cs" />
+    <Compile Include="AMSCM\tbGoods.cs" />
+    <Compile Include="AMSCM\tbGroupGoods.cs" />
+    <Compile Include="AMSCM\tbGroupMake.cs" />
+    <Compile Include="AMSCM\tbIntegralLog.cs" />
+    <Compile Include="AMSCM\tbIntegralLogHis.cs" />
+    <Compile Include="AMSCM\tbIntegralLogOther.cs" />
+    <Compile Include="AMSCM\tbInventory.cs" />
+    <Compile Include="AMSCM\tbLogin.cs" />
+    <Compile Include="AMSCM\tbMacAddress.cs" />
+    <Compile Include="AMSCM\tbMakeDetail.cs" />
+    <Compile Include="AMSCM\tbMakeLog.cs" />
+    <Compile Include="AMSCM\tbMaterial.cs" />
+    <Compile Include="AMSCM\tbMaterialEnter.cs" />
+    <Compile Include="AMSCM\tbMaterialOut.cs" />
+    <Compile Include="AMSCM\tbMaterialPara.cs" />
+    <Compile Include="AMSCM\tbMonthlyBalance.cs" />
+    <Compile Include="AMSCM\tbMonthlyBalanceLog.cs" />
+    <Compile Include="AMSCM\tbMoveDetail.cs" />
+    <Compile Include="AMSCM\tbMoveLog.cs" />
+    <Compile Include="AMSCM\tbNameCode.cs" />
+    <Compile Include="AMSCM\tbNotice.cs" />
+    <Compile Include="AMSCM\tbOper.cs" />
+    <Compile Include="AMSCM\tbOperFunc.cs" />
+    <Compile Include="AMSCM\tbOperLog.cs" />
+    <Compile Include="AMSCM\tbOperStandard.cs" />
+    <Compile Include="AMSCM\tbOrderAddLog.cs" />
+    <Compile Include="AMSCM\tbOrderBook.cs" />
+    <Compile Include="AMSCM\tbOrderBookDetail.cs" />
+    <Compile Include="AMSCM\tbOrderReduceLog.cs" />
+    <Compile Include="AMSCM\tbOrderSerialNo.cs" />
+    <Compile Include="AMSCM\tbProduceCheckLog.cs" />
+    <Compile Include="AMSCM\tbProduceDetail.cs" />
+    <Compile Include="AMSCM\tbProduceDetailAdd.cs" />
+    <Compile Include="AMSCM\tbProduceDetailReduce.cs" />
+    <Compile Include="AMSCM\tbProduceLog.cs" />
+    <Compile Include="AMSCM\tbProduceOrderLog.cs" />
+    <Compile Include="AMSCM\tbProductClass.cs" />
+    <Compile Include="AMSCM\tbProductLostSerial.cs" />
+    <Compile Include="AMSCM\tbProductLostSerialLog.cs" />
+    <Compile Include="AMSCM\tbProductSerial.cs" />
+    <Compile Include="AMSCM\tbProductSerialLog.cs" />
+    <Compile Include="AMSCM\tbRepAssConsDaily.cs" />
+    <Compile Include="AMSCM\tbRepAssCount.cs" />
+    <Compile Include="AMSCM\tbRepAssDailyIGCharge.cs" />
+    <Compile Include="AMSCM\tbRepAssFill.cs" />
+    <Compile Include="AMSCM\tbRepAssLarg.cs" />
+    <Compile Include="AMSCM\tbRepAssSpecCons.cs" />
+    <Compile Include="AMSCM\tbSellDayCheckDetail.cs" />
+    <Compile Include="AMSCM\tbSellDayCheckLog.cs" />
+    <Compile Include="AMSCM\tbSellLoseLog.cs" />
+    <Compile Include="AMSCM\tbSignList.cs" />
+    <Compile Include="AMSCM\tbStockDetail.cs" />
+    <Compile Include="AMSCM\tbStockDetailLog.cs" />
+    <Compile Include="AMSCM\tbStockMain.cs" />
+    <Compile Include="AMSCM\tbStockMainLog.cs" />
+    <Compile Include="AMSCM\tbStockPlan.cs" />
+    <Compile Include="AMSCM\tbStockPlanDetail.cs" />
+    <Compile Include="AMSCM\tbStorage.cs" />
+    <Compile Include="AMSCM\tbStorageLog.cs" />
+    <Compile Include="AMSCM\tbSupplier.cs" />
+    <Compile Include="AMSCM\tbSysErrorLog.cs" />
+    <Compile Include="AMSCM\tbUnitInvert.cs" />
+    <Compile Include="AMSCM\tbWarehouse.cs" />
+    <Compile Include="AMSCM\vwBill.cs" />
+    <Compile Include="AMSCM\vwBusiLog.cs" />
+    <Compile Include="AMSCM\vwConsItem.cs" />
+    <Compile Include="AMSCM\vwFillFee.cs" />
+    <Compile Include="aspnet_CustomProfileEx.cs" />
+    <Compile Include="BusinessException.cs" />
+    <Compile Include="CardDonateInventoryEx.cs" />
+    <Compile Include="ClientRetailOutStock.cs" />
+    <Compile Include="DeskEx.cs" />
+    <Compile Include="DownloadFileInfo.cs" />
+    <Compile Include="Dynamic.cs" />
+    <Compile Include="ExcelLoadConfiguration.cs" />
+    <Compile Include="FairiesCoolerCashConfiguration.cs" />
+    <Compile Include="FairiesMemberManage\MenuStatus.cs" />
+    <Compile Include="FairiesMemberManage\WarehouseDept.cs" />
+    <Compile Include="FairiesMemberManage\WarehouseInventory.cs" />
+    <Compile Include="FairiesMemberManage\InvPrice.cs" />
+    <Compile Include="FairiesMemberManage\ConsumeInvPrice.cs" />
+    <Compile Include="FairiesMemberManage\OrderInvPrice.cs" />
+    <Compile Include="FairiesMemberManage\ConsumeListRds.cs" />
+    <Compile Include="FairiesMemberManage\ReceiptHis.cs" />
+    <Compile Include="Info.cs" />
+    <Compile Include="MenuDeskInfo.cs" />
+    <Compile Include="MenuInfo.cs" />
+    <Compile Include="MyFormat.cs" />
+    <Compile Include="MyReg.cs" />
+    <Compile Include="OrderBookEx.cs" />
+    <Compile Include="OrderMenuEx.cs" />
+    <Compile Include="DXInfoTracer.cs" />
+    <Compile Include="Entity.cs" />
+    <Compile Include="EnumHelper.cs" />
+    <Compile Include="FairiesMemberManage\AdjustLocatorVouch.cs" />
+    <Compile Include="FairiesMemberManage\AdjustLocatorVouchs.cs" />
+    <Compile Include="FairiesMemberManage\aspnet_Applications.cs" />
+    <Compile Include="FairiesMemberManage\aspnet_AuthorizationRules.cs" />
+    <Compile Include="FairiesMemberManage\aspnet_CustomProfile.cs" />
+    <Compile Include="FairiesMemberManage\aspnet_Membership.cs" />
+    <Compile Include="FairiesMemberManage\aspnet_Paths.cs" />
+    <Compile Include="FairiesMemberManage\aspnet_PersonalizationAllUsers.cs" />
+    <Compile Include="FairiesMemberManage\aspnet_PersonalizationPerUser.cs" />
+    <Compile Include="FairiesMemberManage\aspnet_Profile.cs" />
+    <Compile Include="FairiesMemberManage\aspnet_Roles.cs" />
+    <Compile Include="FairiesMemberManage\aspnet_SchemaVersions.cs" />
+    <Compile Include="FairiesMemberManage\aspnet_Sitemaps.cs" />
+    <Compile Include="FairiesMemberManage\aspnet_Users.cs" />
+    <Compile Include="FairiesMemberManage\aspnet_UsersInRoles.cs" />
+    <Compile Include="FairiesMemberManage\aspnet_WebEvent_Events.cs" />
+    <Compile Include="FairiesMemberManage\BillDonateInvLists.cs" />
+    <Compile Include="FairiesMemberManage\BillInvLists.cs" />
+    <Compile Include="FairiesMemberManage\BillOfMaterials.cs" />
+    <Compile Include="FairiesMemberManage\Bills.cs" />
+    <Compile Include="FairiesMemberManage\Books.cs" />
+    <Compile Include="FairiesMemberManage\BusType.cs" />
+    <Compile Include="FairiesMemberManage\CardDonateInventory.cs" />
+    <Compile Include="FairiesMemberManage\CardLevels.cs" />
+    <Compile Include="FairiesMemberManage\CardPoints.cs" />
+    <Compile Include="FairiesMemberManage\Cards.cs" />
+    <Compile Include="FairiesMemberManage\CardsLog.cs" />
+    <Compile Include="FairiesMemberManage\CardTypes.cs" />
+    <Compile Include="FairiesMemberManage\CategoryDepts.cs" />
+    <Compile Include="FairiesMemberManage\CheckDifferences.cs" />
+    <Compile Include="FairiesMemberManage\CheckVouch.cs" />
+    <Compile Include="FairiesMemberManage\CheckVouchs.cs" />
+    <Compile Include="FairiesMemberManage\Consume.cs" />
+    <Compile Include="FairiesMemberManage\ConsumeDonateInv.cs" />
+    <Compile Include="FairiesMemberManage\ConsumeList.cs" />
+    <Compile Include="FairiesMemberManage\ConsumePackages.cs" />
+    <Compile Include="FairiesMemberManage\ConsumePoints.cs" />
+    <Compile Include="FairiesMemberManage\ConsumeTastes.cs" />
+    <Compile Include="FairiesMemberManage\CurrentInvLocator.cs" />
+    <Compile Include="FairiesMemberManage\CurrentStock.cs" />
+    <Compile Include="FairiesMemberManage\Depts.cs" />
+    <Compile Include="FairiesMemberManage\Desks.cs" />
+    <Compile Include="FairiesMemberManage\Drivers.cs" />
+    <Compile Include="FairiesMemberManage\ekey.cs" />
+    <Compile Include="FairiesMemberManage\EnumType.cs" />
+    <Compile Include="FairiesMemberManage\EnumTypeDescription.cs" />
+    <Compile Include="FairiesMemberManage\InvDepts.cs" />
+    <Compile Include="FairiesMemberManage\Inventory.cs" />
+    <Compile Include="FairiesMemberManage\InventoryCategory.cs" />
+    <Compile Include="FairiesMemberManage\InventoryDeptPrice.cs" />
+    <Compile Include="FairiesMemberManage\InvLocator.cs" />
+    <Compile Include="FairiesMemberManage\IPads.cs" />
+    <Compile Include="FairiesMemberManage\KitchenBill.cs" />
+    <Compile Include="FairiesMemberManage\KitchenMenuDesk.cs" />
+    <Compile Include="FairiesMemberManage\KitchenMiss.cs" />
+    <Compile Include="FairiesMemberManage\Lines.cs" />
+    <Compile Include="FairiesMemberManage\Locator.cs" />
+    <Compile Include="FairiesMemberManage\MeasurementUnitGroup.cs" />
+    <Compile Include="FairiesMemberManage\Members.cs" />
+    <Compile Include="FairiesMemberManage\MembersLog.cs" />
+    <Compile Include="FairiesMemberManage\MixVouch.cs" />
+    <Compile Include="FairiesMemberManage\MixVouchs.cs" />
+    <Compile Include="FairiesMemberManage\MonthBalance.cs" />
+    <Compile Include="FairiesMemberManage\NameCode.cs" />
+    <Compile Include="FairiesMemberManage\OrderBookDeskes.cs" />
+    <Compile Include="FairiesMemberManage\OrderBookDeskesHis.cs" />
+    <Compile Include="FairiesMemberManage\OrderBooks.cs" />
+    <Compile Include="FairiesMemberManage\OrderBooksHis.cs" />
+    <Compile Include="FairiesMemberManage\OrderDeskes.cs" />
+    <Compile Include="FairiesMemberManage\OrderDeskesHis.cs" />
+    <Compile Include="FairiesMemberManage\OrderDishes.cs" />
+    <Compile Include="FairiesMemberManage\OrderDishesHis.cs" />
+    <Compile Include="FairiesMemberManage\OrderHurry.cs" />
+    <Compile Include="FairiesMemberManage\OrderIpads.cs" />
+    <Compile Include="FairiesMemberManage\OrderMenus.cs" />
+    <Compile Include="FairiesMemberManage\OrderMenusHis.cs" />
+    <Compile Include="FairiesMemberManage\OrderPackages.cs" />
+    <Compile Include="FairiesMemberManage\OrderPackagesHis.cs" />
+    <Compile Include="FairiesMemberManage\OrderSequences.cs" />
+    <Compile Include="FairiesMemberManage\Organizations.cs" />
+    <Compile Include="FairiesMemberManage\Packages.cs" />
+    <Compile Include="FairiesMemberManage\PayTypes.cs" />
+    <Compile Include="FairiesMemberManage\Period.cs" />
+    <Compile Include="FairiesMemberManage\PlayLists.cs" />
+    <Compile Include="FairiesMemberManage\PTType.cs" />
+    <Compile Include="FairiesMemberManage\RdRecord.cs" />
+    <Compile Include="FairiesMemberManage\RdRecords.cs" />
+    <Compile Include="FairiesMemberManage\RdType.cs" />
+    <Compile Include="FairiesMemberManage\RechargeDonations.cs" />
+    <Compile Include="FairiesMemberManage\Recharges.cs" />
+    <Compile Include="FairiesMemberManage\Rooms.cs" />
+    <Compile Include="FairiesMemberManage\schema_info.cs" />
+    <Compile Include="FairiesMemberManage\scope_config.cs" />
+    <Compile Include="FairiesMemberManage\scope_info.cs" />
+    <Compile Include="FairiesMemberManage\ScrapVouch.cs" />
+    <Compile Include="FairiesMemberManage\ScrapVouchs.cs" />
+    <Compile Include="FairiesMemberManage\STType.cs" />
+    <Compile Include="FairiesMemberManage\Tastes.cs" />
+    <Compile Include="FairiesMemberManage\Transports.cs" />
+    <Compile Include="FairiesMemberManage\TransportsLog.cs" />
+    <Compile Include="FairiesMemberManage\TransVouch.cs" />
+    <Compile Include="FairiesMemberManage\TransVouchs.cs" />
+    <Compile Include="FairiesMemberManage\UnitOfMeasures.cs" />
+    <Compile Include="FairiesMemberManage\Vehicles.cs" />
+    <Compile Include="FairiesMemberManage\Vendor.cs" />
+    <Compile Include="FairiesMemberManage\VouchAuthority.cs" />
+    <Compile Include="FairiesMemberManage\VouchCodeRule.cs" />
+    <Compile Include="FairiesMemberManage\VouchCodeSn.cs" />
+    <Compile Include="FairiesMemberManage\VouchType.cs" />
+    <Compile Include="FairiesMemberManage\Warehouse.cs" />
+    <Compile Include="FairiesMemberManage\WRCardLevels.cs" />
+    <Compile Include="IEntity.cs" />
+    <Compile Include="JsonObject.cs" />
+    <Compile Include="MyEnums.cs" />
+    <Compile Include="OrganizationCode.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="MyEventArgs.cs" />
+    <Compile Include="Properties\Resources.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Resources.resx</DependentUpon>
+    </Compile>
+    <Compile Include="RegexCheck.cs" />
+    <Compile Include="InventoryEx.cs" />
+    <Compile Include="TasteEx.cs" />
+    <Compile Include="StockManage\CheckCycle.cs" />
+    <Compile Include="StockManage\RdFlag.cs" />
+    <Compile Include="StockManage\ShelfLifeType.cs" />
+    <Compile Include="StockManage\ValueType.cs" />
+    <Compile Include="StockManage\VouchTypeCode.cs" />
+    <Compile Include="SyncTableStruct.cs" />
+    <Compile Include="XmlFiles.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="App.config" />
+    <Compile Include="FairiesMemberManage\Receipts.cs" />
+    <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\DXInfo.EFConventions\DXInfo.EFConventions.csproj">
+      <Project>{71A68946-91CB-49F4-A787-872A84F90901}</Project>
+      <Name>DXInfo.EFConventions</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="SqlServerScript\aspnet_Users_RemoveOtherIndex.sql" />
+    <EmbeddedResource Include="SqlServerScript\DropFK.sql" />
+    <EmbeddedResource Include="SqlServerScript\aspnet_Roles_RemoveOtherIndex.sql" />
+    <EmbeddedResource Include="SqlServerScript\MembersLog_Sex.sql" />
+    <EmbeddedResource Include="SqlServerScript\MembersLog_Birthday.sql" />
+    <EmbeddedResource Include="SqlServerScript\aspnet_Membership_GetUserByName.sql" />
+    <EmbeddedResource Include="SqlServerScript\aspnet_Membership_GetPasswordWithFormat.sql" />
+    <EmbeddedResource Include="SqlServerScript\aspnet_CheckSchemaVersion.sql" />
+    <EmbeddedResource Include="SqlServerScript\insert_schema_info.sql" />
+    <EmbeddedResource Include="SqlServerScript\AdjustLocatorVouchs.sql" />
+    <EmbeddedResource Include="SqlServerScript\aspnet_Applications.sql" />
+    <EmbeddedResource Include="SqlServerScript\aspnet_AuthorizationRules.sql" />
+    <EmbeddedResource Include="SqlServerScript\aspnet_CustomProfile.sql" />
+    <EmbeddedResource Include="SqlServerScript\aspnet_Membership.sql" />
+    <EmbeddedResource Include="SqlServerScript\aspnet_Paths.sql" />
+    <EmbeddedResource Include="SqlServerScript\aspnet_PersonalizationAllUsers.sql" />
+    <EmbeddedResource Include="SqlServerScript\aspnet_PersonalizationPerUser.sql" />
+    <EmbeddedResource Include="SqlServerScript\aspnet_Profile.sql" />
+    <EmbeddedResource Include="SqlServerScript\aspnet_Roles.sql" />
+    <EmbeddedResource Include="SqlServerScript\aspnet_SchemaVersions.sql" />
+    <EmbeddedResource Include="SqlServerScript\aspnet_Sitemaps.sql" />
+    <EmbeddedResource Include="SqlServerScript\aspnet_Users.sql" />
+    <EmbeddedResource Include="SqlServerScript\aspnet_UsersInRoles.sql" />
+    <EmbeddedResource Include="SqlServerScript\aspnet_WebEvent_Events.sql" />
+    <EmbeddedResource Include="SqlServerScript\BillDonateInvLists.sql" />
+    <EmbeddedResource Include="SqlServerScript\BillInvLists.sql" />
+    <EmbeddedResource Include="SqlServerScript\BillOfMaterials.sql" />
+    <EmbeddedResource Include="SqlServerScript\Bills.sql" />
+    <EmbeddedResource Include="SqlServerScript\Books.sql" />
+    <EmbeddedResource Include="SqlServerScript\BusType.sql" />
+    <EmbeddedResource Include="SqlServerScript\CardDonateInventory.sql" />
+    <EmbeddedResource Include="SqlServerScript\CardLevels.sql" />
+    <EmbeddedResource Include="SqlServerScript\CardPoints.sql" />
+    <EmbeddedResource Include="SqlServerScript\Cards.sql" />
+    <EmbeddedResource Include="SqlServerScript\CardsLog.sql" />
+    <EmbeddedResource Include="SqlServerScript\CardTypes.sql" />
+    <EmbeddedResource Include="SqlServerScript\CategoryDepts.sql" />
+    <EmbeddedResource Include="SqlServerScript\CheckDifferences.sql" />
+    <EmbeddedResource Include="SqlServerScript\CheckVouch.sql" />
+    <EmbeddedResource Include="SqlServerScript\CheckVouchs.sql" />
+    <EmbeddedResource Include="SqlServerScript\Consume.sql" />
+    <EmbeddedResource Include="SqlServerScript\ConsumeDonateInv.sql" />
+    <EmbeddedResource Include="SqlServerScript\ConsumeList.sql" />
+    <EmbeddedResource Include="SqlServerScript\ConsumePackages.sql" />
+    <EmbeddedResource Include="SqlServerScript\ConsumePoints.sql" />
+    <EmbeddedResource Include="SqlServerScript\ConsumeTastes.sql" />
+    <EmbeddedResource Include="SqlServerScript\CurrentInvLocator.sql" />
+    <EmbeddedResource Include="SqlServerScript\CurrentStock.sql" />
+    <EmbeddedResource Include="SqlServerScript\Depts.sql" />
+    <EmbeddedResource Include="SqlServerScript\Desks.sql" />
+    <EmbeddedResource Include="SqlServerScript\Drivers.sql" />
+    <EmbeddedResource Include="SqlServerScript\ekey.sql" />
+    <EmbeddedResource Include="SqlServerScript\EnumType.sql" />
+    <EmbeddedResource Include="SqlServerScript\InvDepts.sql" />
+    <EmbeddedResource Include="SqlServerScript\Inventory.sql" />
+    <EmbeddedResource Include="SqlServerScript\InventoryCategory.sql" />
+    <EmbeddedResource Include="SqlServerScript\InventoryDeptPrice.sql" />
+    <EmbeddedResource Include="SqlServerScript\InvLocator.sql" />
+    <EmbeddedResource Include="SqlServerScript\IPads.sql" />
+    <EmbeddedResource Include="SqlServerScript\KitchenBill.sql" />
+    <EmbeddedResource Include="SqlServerScript\KitchenMenuDesk.sql" />
+    <EmbeddedResource Include="SqlServerScript\KitchenMiss.sql" />
+    <EmbeddedResource Include="SqlServerScript\Lines.sql" />
+    <EmbeddedResource Include="SqlServerScript\Locator.sql" />
+    <EmbeddedResource Include="SqlServerScript\MeasurementUnitGroup.sql" />
+    <EmbeddedResource Include="SqlServerScript\Members.sql" />
+    <EmbeddedResource Include="SqlServerScript\MembersLog.sql" />
+    <EmbeddedResource Include="SqlServerScript\MenuStatus.sql" />
+    <EmbeddedResource Include="SqlServerScript\MixVouch.sql" />
+    <EmbeddedResource Include="SqlServerScript\MixVouchs.sql" />
+    <EmbeddedResource Include="SqlServerScript\MonthBalance.sql" />
+    <EmbeddedResource Include="SqlServerScript\OrderBookDeskes.sql" />
+    <EmbeddedResource Include="SqlServerScript\OrderBookDeskesHis.sql" />
+    <EmbeddedResource Include="SqlServerScript\OrderBooks.sql" />
+    <EmbeddedResource Include="SqlServerScript\OrderBooksHis.sql" />
+    <EmbeddedResource Include="SqlServerScript\OrderDeskes.sql" />
+    <EmbeddedResource Include="SqlServerScript\OrderDeskesHis.sql" />
+    <EmbeddedResource Include="SqlServerScript\OrderDishes.sql" />
+    <EmbeddedResource Include="SqlServerScript\OrderDishesHis.sql" />
+    <EmbeddedResource Include="SqlServerScript\OrderHurry.sql" />
+    <EmbeddedResource Include="SqlServerScript\OrderIpads.sql" />
+    <EmbeddedResource Include="SqlServerScript\OrderMenus.sql" />
+    <EmbeddedResource Include="SqlServerScript\OrderMenusHis.sql" />
+    <EmbeddedResource Include="SqlServerScript\OrderPackages.sql" />
+    <EmbeddedResource Include="SqlServerScript\OrderPackagesHis.sql" />
+    <EmbeddedResource Include="SqlServerScript\OrderSequences.sql" />
+    <EmbeddedResource Include="SqlServerScript\Organizations.sql" />
+    <EmbeddedResource Include="SqlServerScript\Packages.sql" />
+    <EmbeddedResource Include="SqlServerScript\PayTypes.sql" />
+    <EmbeddedResource Include="SqlServerScript\Period.sql" />
+    <EmbeddedResource Include="SqlServerScript\PlayLists.sql" />
+    <EmbeddedResource Include="SqlServerScript\PTType.sql" />
+    <EmbeddedResource Include="SqlServerScript\RdRecord.sql" />
+    <EmbeddedResource Include="SqlServerScript\RdRecords.sql" />
+    <EmbeddedResource Include="SqlServerScript\RdType.sql" />
+    <EmbeddedResource Include="SqlServerScript\RechargeDonations.sql" />
+    <EmbeddedResource Include="SqlServerScript\Recharges.sql" />
+    <EmbeddedResource Include="SqlServerScript\Rooms.sql" />
+    <EmbeddedResource Include="SqlServerScript\schema_info.sql" />
+    <EmbeddedResource Include="SqlServerScript\scope_config.sql" />
+    <EmbeddedResource Include="SqlServerScript\scope_info.sql" />
+    <EmbeddedResource Include="SqlServerScript\ScrapVouch.sql" />
+    <EmbeddedResource Include="SqlServerScript\ScrapVouchs.sql" />
+    <EmbeddedResource Include="SqlServerScript\STType.sql" />
+    <EmbeddedResource Include="SqlServerScript\Tastes.sql" />
+    <EmbeddedResource Include="SqlServerScript\Transports.sql" />
+    <EmbeddedResource Include="SqlServerScript\TransportsLog.sql" />
+    <EmbeddedResource Include="SqlServerScript\TransVouch.sql" />
+    <EmbeddedResource Include="SqlServerScript\TransVouchs.sql" />
+    <EmbeddedResource Include="SqlServerScript\UnitOfMeasures.sql" />
+    <EmbeddedResource Include="SqlServerScript\Vehicles.sql" />
+    <EmbeddedResource Include="SqlServerScript\Vendor.sql" />
+    <EmbeddedResource Include="SqlServerScript\VouchAuthority.sql" />
+    <EmbeddedResource Include="SqlServerScript\VouchCodeRule.sql" />
+    <EmbeddedResource Include="SqlServerScript\VouchCodeSn.sql" />
+    <EmbeddedResource Include="SqlServerScript\VouchType.sql" />
+    <EmbeddedResource Include="SqlServerScript\Warehouse.sql" />
+    <EmbeddedResource Include="SqlServerScript\WarehouseDept.sql" />
+    <EmbeddedResource Include="SqlServerScript\WarehouseInventory.sql" />
+    <EmbeddedResource Include="SqlServerScript\WRCardLevels.sql" />
+    <EmbeddedResource Include="SqlServerScript\AdjustLocatorVouch.sql" />
+    <EmbeddedResource Include="SqlServerScript\NameCode.sql" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Properties\Resources.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="SqlServerScript\sp_DXInfo_UpdateOrderMenuData.sql" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="SqlServerScript\Insert_NameCode.sql" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="SqlServerScript\Insert_aspnet_SchemaVersions.sql" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="SqlServerScript\aspnet_Membership_CreateUser.sql" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="SqlServerScript\aspnet_Applications_CreateApplication.sql" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="SqlServerScript\aspnet_Users_CreateUser.sql" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="SqlServerScript\vw_aspnet_Users.sql" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="SqlServerScript\aspnet_Membership_UpdateUserInfo.sql" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="SqlServerScript\Insert_aspnet_Sitemaps.sql" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="SqlServerScript\aspnet_Membership_GetUserByUserId.sql" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="SqlServerScript\aspnet_Membership_UpdateUser.sql" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="SqlServerScript\aspnet_Roles_CreateRole.sql" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="SqlServerScript\aspnet_Roles_DeleteRoleById.sql" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="SqlServerScript\aspnet_Users_DeleteUser.sql" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="SqlServerScript\vw_aspnet_MembershipUsers.sql" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="SqlServerScript\vw_aspnet_UsersInRoles.sql" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="SqlServerScript\vw_aspnet_Profiles.sql" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="SqlServerScript\vw_aspnet_WebPartState_User.sql" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="SqlServerScript\aspnet_Membership_UnlockUser.sql" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="SqlServerScript\aspnet_Membership_GetPassword.sql" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="SqlServerScript\aspnet_Membership_SetPassword.sql" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="SqlServerScript\aspnet_UsersInRoles_IsUserInRole.sql" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="SqlServerScript\aspnet_UsersInRoles_AddUsersToRoles.sql" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="SqlServerScript\Insert_EnumTypeDescription.sql" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="SqlServerScript\Insert_EnumType.sql" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="SqlServerScript\EnumTypeDescription.sql" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="SqlServerScript\Insert_VouchType.sql" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="SqlServerScript\Insert_VouchCodeRule.sql" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="SqlServerScript\Insert_RdType.sql" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="SqlServerScript\Insert_BusType.sql" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="SqlServerScript\sp_DXInfo_UpdateOrderMenuDataComplete.sql" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="SqlServerScript\vw_MenuDeskInfo.sql" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="SqlServerScript\vw_UpdateInfoData.sql" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="SqlServerScript\sp_DXInfo_GetDeptInventoryCategory.sql" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="SqlServerScript\sp_DXInfo_GetDeptInventory.sql" />
+    <EmbeddedResource Include="SqlServerScript\sp_DXInfo_GetDeptInventoryByCategory.sql" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="SqlServerScript\Depts_DeptType.sql" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="SqlServerScript\proc_balance_bydate.sql" />
+    <EmbeddedResource Include="SqlServerScript\proc_Balance_Report.sql" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="SqlServerScript\BalanceProc.sql" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="SqlServerScript\aspnet_Sitemaps_Sort.sql" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="SqlServerScript\InvPrice.sql" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="SqlServerScript\ConsumeInvPrice.sql" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="SqlServerScript\OrderInvPrice.sql" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="SqlServerScript\RdRecords_SourceId.sql" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="SqlServerScript\ConsumeListRds.sql" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="SqlServerScript\CardTypes_IsVirtual.sql" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="SqlServerScript\CardTypes_CardNoRule.sql" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="SqlServerScript\Receipts.sql" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="SqlServerScript\aspnet_UsersInRoles_RemoveUsersFromRoles.sql" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="SqlServerScript\Insert_PTType.sql" />
+    <EmbeddedResource Include="SqlServerScript\Insert_STType.sql" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="SqlServerScript\tbLogin.sql" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="SqlServerScript\tbCommCode.sql" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="SqlServerScript\tbFunc.sql" />
+    <EmbeddedResource Include="SqlServerScript\tbOperFunc.sql" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="SqlServerScript\tbGoods.sql" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="SqlServerScript\tbOper.sql" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="SqlServerScript\tbNotice.sql" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="SqlServerScript\tbAssociator.sql" />
+    <EmbeddedResource Include="SqlServerScript\tbAssociatorLog.sql" />
+    <EmbeddedResource Include="SqlServerScript\tbAssociatorSync.sql" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="SqlServerScript\vwBill.sql" />
+    <EmbeddedResource Include="SqlServerScript\vwConsItem.sql" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="SqlServerScript\tbConsItem.sql" />
+    <EmbeddedResource Include="SqlServerScript\tbConsItemHis.sql" />
+    <EmbeddedResource Include="SqlServerScript\tbConsItemOther.sql" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="SqlServerScript\tbBill.sql" />
+    <EmbeddedResource Include="SqlServerScript\tbBillHis.sql" />
+    <EmbeddedResource Include="SqlServerScript\tbBillOther.sql" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="SqlServerScript\tbFillFee.sql" />
+    <EmbeddedResource Include="SqlServerScript\tbFillFeeHis.sql" />
+    <EmbeddedResource Include="SqlServerScript\tbFillFeeOther.sql" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="SqlServerScript\vwFillFee.sql" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="SqlServerScript\tbBusiLog.sql" />
+    <EmbeddedResource Include="SqlServerScript\tbBusiLogHis.sql" />
+    <EmbeddedResource Include="SqlServerScript\tbBusiLogOther.sql" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="SqlServerScript\vwBusiLog.sql" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="SqlServerScript\ProductionInStorage.sql" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="SqlServerScript\SaleCheck.sql" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="SqlServerScript\SyncAnchor.sql" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="SqlServerScript\sp_DXInfo_GetCurrentInvLocatorOfCheck.sql" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="SqlServerScript\sp_DXInfo_GetCurrentStockOfCheck.sql" />
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

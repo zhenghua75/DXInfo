@@ -1,0 +1,30 @@
+﻿<FlowDocument xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    ColumnWidth="400" FontSize="16" FontFamily="Georgia">
+    <Paragraph FontSize="22" FontWeight="Bold">
+        Library backup
+    </Paragraph>
+    
+    <Paragraph>
+        You can create library backup or restore library from the previous state. 
+    </Paragraph>
+    
+    <Paragraph>
+        1. Click "Library backup" context menu item.
+    </Paragraph>
+    
+    <Paragraph>
+        2. Choose restore or create mode. 
+    </Paragraph>
+
+    <Paragraph>
+        3. Choose folder.
+    </Paragraph>
+    
+    <Paragraph>
+        4. Click "Next".
+    </Paragraph>   
+
+    <Paragraph>
+        If you have some troubles with library backup look at RestoreLibrary.log or CreateBackup.log at Media Glass folder.
+    </Paragraph>  
+</FlowDocument>

@@ -1,0 +1,20 @@
+﻿@using Trirand.Web.Mvc
+@model ynhnTransportManage.Models.StockManage.UnitOfMeasuresGridModel
+@Html.Trirand().JQGrid(Model.UnitOfMeasuresGrid, "UnitOfMeasuresGrid")
+@Html.HiddenFor(m => m.UOMType)
+<script type="text/javascript">
+    function serializeGridData(postData) {
+        var sdata = {
+            _search:"true",
+            UOMType: $("#UOMType").val()
+        };
+        var newPostData = $.extend(postData, sdata);
+        return newPostData;
+    }
+    function beforeSubmit(postdata, formid) {
+        var sdata = { UOMType: $("#UOMType").val()
+        };
+        $.extend(postdata, sdata);
+        return [true, ''];
+    }
+    </script>

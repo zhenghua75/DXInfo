@@ -1,0 +1,19 @@
+﻿@{
+    ViewBag.Title = "文件批量上传";
+}
+<link rel="stylesheet" type="text/css" href="@Url.Content("~/Scripts/uploadify-v3.1/uploadify.css")" />
+<script src="@Url.Content("~/Scripts/uploadify-v3.1/jquery.uploadify-3.1.min.js")" type="text/javascript"></script>
+<h2>文件批量上传</h2>
+    <script type="text/javascript">
+        $(function () {
+    $('#file_upload').uploadify({
+        'swf': '@Url.Content("~/Scripts/uploadify-v3.1/uploadify.swf")',
+        'uploader': '@Url.Action("UploadHandler", "BaseInfo")',
+        'buttonText' : '浏览...',
+        'fileTypeDesc' : '图片',
+        'fileTypeExts' : '*.gif; *.jpg; *.png',
+        // Your options here
+    });
+});
+    </script>
+<input type="file" name="file_upload" id="file_upload" />

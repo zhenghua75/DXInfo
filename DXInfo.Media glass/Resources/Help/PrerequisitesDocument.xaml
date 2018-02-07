@@ -1,0 +1,62 @@
+﻿<FlowDocument xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    ColumnWidth="400" FontFamily="Georgia" FontSize="16" >
+    <Paragraph FontSize="22" FontWeight="Bold">Prerequisites</Paragraph>
+
+    <Paragraph>
+        1 .NET Framework 3.5 或更高。
+    </Paragraph>
+
+    <List MarkerStyle="None">
+        <ListItem>
+            <Paragraph>
+                <Hyperlink Name="webLink1" FontFamily="Georgia" FontSize="16" NavigateUri="http://www.microsoft.com/Net/Download.aspx">.NET Framework Download</Hyperlink>
+            </Paragraph>
+        </ListItem>
+    </List>
+
+    <Paragraph>
+        Windows 7 已经安装。
+    </Paragraph>
+
+    <Paragraph>
+        2. Windows Media Player 10 or 更高版本
+    </Paragraph>
+
+    <List MarkerStyle="None">
+        <ListItem>
+            <Paragraph>
+                <Hyperlink FontFamily="Georgia" FontSize="16" NavigateUri="http://www.microsoft.com/windows/windowsmedia/player/10/default.aspx">Windows Media Player 10</Hyperlink>
+            </Paragraph>
+        </ListItem>
+
+        <ListItem>
+            <Paragraph>
+                <Hyperlink FontFamily="Georgia" FontSize="16" NavigateUri="http://www.microsoft.com/windows/windowsmedia/player/11/default.aspx">Windows Media Player 11</Hyperlink>
+            </Paragraph>
+        </ListItem>
+
+        <ListItem>
+            <Paragraph>
+                <Hyperlink FontFamily="Georgia" FontSize="16" NavigateUri="http://windows.microsoft.com/en-US/windows7/products/features/windows-media-player-12">Windows Media Player 12</Hyperlink>
+            </Paragraph>
+        </ListItem>
+    </List>
+
+    <Paragraph>
+        3. 解码器，推荐如下：
+    </Paragraph>
+
+    <List MarkerStyle="None">
+        <ListItem>
+            <Paragraph>
+                <Hyperlink FontFamily="Georgia" FontSize="16" NavigateUri="http://www.free-codecs.com/download/K_lite_codec_pack.htm">K-Lite Code Pack</Hyperlink>
+            </Paragraph>
+        </ListItem>
+        <ListItem>
+            <Paragraph>
+                <Hyperlink FontFamily="Georgia" FontSize="16" NavigateUri="http://www.cccp-project.net/">CCCP</Hyperlink>
+            </Paragraph>
+        </ListItem>
+    </List>
+    
+</FlowDocument>

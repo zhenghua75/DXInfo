@@ -1,0 +1,10 @@
+﻿<FlowDocument xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    ColumnWidth="400" FontFamily="Georgia" FontSize="16">
+    
+    <Paragraph FontSize="22" FontWeight="Bold">欢迎使用道讯播放器</Paragraph>
+
+    <Paragraph>
+        播放声音和视频
+    </Paragraph>
+
+</FlowDocument>

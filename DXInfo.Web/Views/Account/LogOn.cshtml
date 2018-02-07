@@ -1,0 +1,63 @@
+﻿@using DXInfo.Web.Models
+@model DXInfo.Web.Models.LogOnModel
+@{
+    ViewBag.Title = "登录";
+}
+<script src="@Url.Content("~/Scripts/MyJs.js")" type="text/javascript"></script>
+<div id="logo">
+    @using (Html.BeginForm())
+    {
+        <div id="form">
+            <div class="title">
+                @{
+        string logonCss = DXInfo.Web.Models.Helper.LogonCss;
+        if (!(logonCss == "logon.css" || logonCss == "logon2.css"))
+        {
+                    @Html.DataCenterTitle()
+        }
+                }
+            </div>
+            <div class="left">
+                <table>
+                    <tr>
+                        <td>
+                            <div class="user">
+                            </div>
+                        </td>
+                        <td>
+                            @Html.TextBoxFor(m => m.UserName)
+                            @Html.ValidationMessageFor(m => m.UserName)
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <div class="pwd">
+                            </div>
+                        </td>
+                        <td>
+                            @Html.PasswordFor(m => m.Password)
+                            @Html.ValidationMessageFor(m => m.Password)
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                        </td>
+                        <td>
+                            <input type="submit" class="submit" title="登录" value="" onclick="return check(); " />
+                            <div class="editor-field" style="display: none">
+                                @Html.TextBoxFor(m => m.HardwareID)
+                                @Html.TextBoxFor(m => m.CardNo)
+                                @Html.TextBoxFor(m => m.MacAddress)
+                            </div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td colspan="2">
+                            @Html.ValidationSummary(true, "登录不成功。请更正错误并重试。")
+                        </td>
+                    </tr>
+                </table>
+            </div>
+        </div>
+    }
+</div>

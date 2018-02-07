@@ -1,0 +1,60 @@
+﻿<FlowDocument 
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" FontFamily="Georgia" FontSize="16" >
+
+    <Paragraph FontSize="22" FontWeight="Bold">
+        目录
+    </Paragraph>
+
+    <List MarkerStyle="None">
+        <ListItem>
+            <Paragraph>
+                <Hyperlink Name="welcomeLink" FontFamily="Georgia" FontSize="16" NavigateUri="WelcomeDocument.xaml">欢迎使用道讯播放器</Hyperlink>
+            </Paragraph>
+            <Paragraph/>
+        </ListItem>
+        <ListItem>
+            <Paragraph>产品概述</Paragraph>
+            <List  MarkerStyle="None">
+                <ListItem >
+                    <Paragraph>
+                        <Hyperlink Name="prerequisitesLink" FontFamily="Georgia" FontSize="16" NavigateUri="PrerequisitesDocument.xaml">要求</Hyperlink>
+                    </Paragraph>
+                </ListItem>
+            </List>
+            <!--<Paragraph/>-->
+        </ListItem>
+        <ListItem>
+            <Paragraph>使用道讯播放器</Paragraph>
+            <List   MarkerStyle="None">
+                <ListItem >
+                    <Paragraph>
+                        <Hyperlink Name="keyboardShortcutsLink" FontFamily="Georgia" FontSize="16" NavigateUri="KeyboardShortcutsDocument.xaml">快捷方式</Hyperlink>
+                    </Paragraph>
+                </ListItem>
+                <ListItem >
+                    <Paragraph>
+                        <Hyperlink Name="savePlaylistLink" FontFamily="Georgia" FontSize="16" NavigateUri="CreatePlaylistDocument.xaml">播放</Hyperlink>
+                    </Paragraph>
+                </ListItem>
+            </List>
+            <!--<Paragraph/>-->
+        </ListItem>
+        <ListItem>
+            <Paragraph>产品支持</Paragraph>
+            <List  MarkerStyle="None">
+                <ListItem >
+                    <Paragraph>
+                        <Hyperlink Name="fileBugLink" FontFamily="Georgia" FontSize="16" NavigateUri="FileABugDocument.xaml">错误报告</Hyperlink>
+                    </Paragraph>
+                </ListItem>
+                <ListItem >
+                    <Paragraph>
+                        <Hyperlink Name="webSiteLink" FontFamily="Georgia" FontSize="16" NavigateUri="WebSiteDocument.xaml">站点</Hyperlink>
+                    </Paragraph>
+                </ListItem>
+            </List>
+        </ListItem>
+    </List>
+
+</FlowDocument>

@@ -1,0 +1,126 @@
+﻿<UserControl x:Class="FairiesCoolerCash.Business.WRReport10UserControl"
+      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+      xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+      mc:Ignorable="d" 
+      xmlns:local="clr-namespace:FairiesCoolerCash.Business"
+      Background="{DynamicResource WindowBackgroundBrush}" 
+      xmlns:xctk="http://schemas.xceed.com/wpf/xaml/toolkit"
+             DataContext="{Binding WRReport10ViewModel, Source={StaticResource Locator}}" FontSize="20">    
+        <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"></RowDefinition>
+            <RowDefinition Height="*"></RowDefinition>
+            <RowDefinition Height="25"></RowDefinition>
+        </Grid.RowDefinitions>
+        <Label Content="前厅消费明细查询" HorizontalAlignment="Center"  FontSize="26"  FontWeight="Bold"/>
+
+        <Grid HorizontalAlignment="Center" Grid.Row="1">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"></ColumnDefinition>
+                <ColumnDefinition Width="Auto"></ColumnDefinition>
+            </Grid.ColumnDefinitions>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="*"></RowDefinition>
+                <RowDefinition Height="50"></RowDefinition>
+            </Grid.RowDefinitions>
+            <DataGrid Name="MemberList" AutoGenerateColumns="False" IsReadOnly="True"
+                      ItemsSource="{Binding ElementName=pageControl,Path=ItemsSource,Mode=OneWay, UpdateSourceTrigger=PropertyChanged}" 
+                      >
+                <DataGrid.Columns>
+                    <DataGridTextColumn Header="Id" Visibility="Hidden" Binding="{Binding Path=Id}" local:DataGridExcelTools.IsExported="False"></DataGridTextColumn>
+                    <DataGridTextColumn Header="消费类型" Binding="{Binding Path=ConsumeTypeName}" SortDirection="Ascending"></DataGridTextColumn>
+                    <DataGridTextColumn Header="支付方式" Binding="{Binding Path=PayTypeName}"></DataGridTextColumn>
+                    <DataGridTextColumn Header="卡号" Binding="{Binding Path=CardNo}"></DataGridTextColumn>
+                    <DataGridTextColumn Header="会员名" Binding="{Binding Path=MemberName}"></DataGridTextColumn>
+                    <DataGridTextColumn Header="商品" Binding="{Binding Path=InventoryName}"></DataGridTextColumn>
+                    <!--<DataGridTextColumn Header="杯型" Binding="{Binding Path=Cup}"></DataGridTextColumn>-->
+                    <DataGridTextColumn Header="单价" Binding="{Binding Path=Price,StringFormat={}{0:N2}}"></DataGridTextColumn>
+                    <DataGridTextColumn Header="数量" Binding="{Binding Path=Quantity,StringFormat={}{0:N0}}"></DataGridTextColumn>
+                    <DataGridTextColumn Header="合计" Binding="{Binding Path=Sum,StringFormat={}{0:N2}}"></DataGridTextColumn>
+                    <DataGridTextColumn Header="折扣" Binding="{Binding Path=Discount,StringFormat={}{0:N0}}"></DataGridTextColumn>
+                    <DataGridTextColumn Header="金额" Binding="{Binding Path=Amount,StringFormat={}{0:N2}}"></DataGridTextColumn>
+                    <DataGridTextColumn Header="操作员" Binding="{Binding Path=FullName}"></DataGridTextColumn>
+                    <DataGridTextColumn Header="部门" Binding="{Binding Path=DeptName}"></DataGridTextColumn>
+                    <DataGridTextColumn Header="消费日期"  Binding="{Binding Path=CreateDate,StringFormat={}{0:yyyy-MM-dd HH:mm}}"></DataGridTextColumn>
+
+                </DataGrid.Columns>
+            </DataGrid>
+            <Grid Grid.Column="1" Grid.RowSpan="2">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto"></ColumnDefinition>
+                    <ColumnDefinition Width="*"></ColumnDefinition>
+                </Grid.ColumnDefinitions>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"></RowDefinition>
+                    <RowDefinition Height="Auto"></RowDefinition>
+                    <RowDefinition Height="Auto"></RowDefinition>
+                    <RowDefinition Height="Auto"></RowDefinition>
+                    <RowDefinition Height="Auto"></RowDefinition>
+                    <RowDefinition Height="Auto"></RowDefinition>
+                    <RowDefinition Height="Auto"></RowDefinition>
+                    <RowDefinition Height="Auto"></RowDefinition>
+                    <RowDefinition Height="Auto"></RowDefinition>
+                    <RowDefinition Height="50"></RowDefinition>
+                    <RowDefinition Height="50"></RowDefinition>
+                    <RowDefinition Height="50"></RowDefinition>
+                </Grid.RowDefinitions>
+                
+                <Label Content="卡号" Grid.Row="0"/>
+                <TextBox Text="{Binding CardNo}"  Grid.Row="0" Grid.Column="1" local:VirtualKeyboard.FloatingTouchScreenKeyboard="{Binding IsOpen}" />
+                
+                <Label Content="会员名" Grid.Row="1"/>
+                <TextBox Text="{Binding MemberName}" Grid.Column="1" Grid.Row="1" local:VirtualKeyboard.FloatingTouchScreenKeyboard="{Binding IsOpen}" />
+                
+                <Label Content="操作员" Grid.Row="2"/>
+                <ComboBox IsEditable="True" ItemsSource="{Binding lOper}" Grid.Column="1" Grid.Row="2" DisplayMemberPath="FullName" SelectedItem="{Binding SelectedOper}"/>
+                
+                <Label Content="消费类型" Grid.Row="3"/>
+                <ComboBox IsEditable="True" ItemsSource="{Binding lConsumeType}" Grid.Column="1" Grid.Row="3" DisplayMemberPath="Name" SelectedItem="{Binding SelectedConsumeType}"/>
+                
+                <Label Content="支付方式" Grid.Row="4"/>
+                <ComboBox IsEditable="True" ItemsSource="{Binding lPayType}" Grid.Column="1" Grid.Row="4" DisplayMemberPath="Name" SelectedItem="{Binding SelectedPayType}"/>
+                
+                <Label Content="开始日期" Grid.Row="5"/>
+
+                <DatePicker Grid.Column="1" Grid.Row="5" SelectedDate="{Binding BeginDate}"  />
+                <xctk:TimePicker Grid.Column="1" Grid.Row="6" Value="{Binding BeginTime}" ></xctk:TimePicker>
+
+                
+                <Label Content="结束日期" Grid.Row="7"/>
+                <DatePicker Grid.Column="1" Grid.Row="7" SelectedDate="{Binding EndDate}" />
+                <xctk:TimePicker Grid.Column="1" Grid.Row="8" Value="{Binding EndTime}" ></xctk:TimePicker>
+
+
+                <Button  Content="查询" Command="{Binding Query}" Grid.ColumnSpan="2" Grid.Row="9" />
+                <Button  Content="导出EXCEL" Command="{Binding ExportToExcel}" Grid.ColumnSpan="2" Grid.Row="10" />
+                <Button  Content="取消" Command="{Binding CloseUserControl}" Grid.ColumnSpan="2" Grid.Row="11"/>
+
+            </Grid>
+            <local:PaggingControl x:Name="pageControl" Grid.Row="1" MyQuery="{Binding MyQuery,Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"  />
+        </Grid>
+        
+        <StatusBar Name="sbFooter" Grid.Row="2">
+            <StatusBar.ItemsPanel>
+                <ItemsPanelTemplate>
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*"/>
+                        </Grid.ColumnDefinitions>
+                    </Grid>
+                </ItemsPanelTemplate>
+            </StatusBar.ItemsPanel>
+            <StatusBarItem Grid.Column="0">
+                <TextBlock>
+                    <Run Text="数量合计"/>
+                    <Run Text="{Binding SumQuantity}"/>
+                    <Run Text="应付合计："/>
+                    <Run Text="{Binding SumPayable}" />
+                    <Run Text="金额合计"/>
+                    <Run Text="{Binding SumAmount}"/>
+                </TextBlock>
+            </StatusBarItem>
+        </StatusBar>
+    </Grid>
+</UserControl>

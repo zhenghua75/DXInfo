@@ -1,0 +1,96 @@
+﻿<Window x:Class="FairiesCoolerCash.Business.NoMemberCashWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="{Binding Title}" Height="200" Width="300" ResizeMode="NoResize" FontSize="20"
+         xmlns:WpfKb="clr-namespace:WpfKb.Controls;assembly=WpfKb"
+        SizeToContent="WidthAndHeight"
+        WindowStartupLocation="CenterScreen"
+        xmlns:local="clr-namespace:FairiesCoolerCash.Business"
+        Background="{DynamicResource WindowBackgroundBrush}" 
+        local:DialogCloser.DialogResult="{Binding DialogResult}">
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition></RowDefinition>
+            <RowDefinition></RowDefinition>
+            <RowDefinition></RowDefinition>
+            <RowDefinition></RowDefinition>
+        </Grid.RowDefinitions>
+
+        <Grid>
+            <Grid.RowDefinitions>
+                <RowDefinition></RowDefinition>
+            </Grid.RowDefinitions>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto"></ColumnDefinition>
+                <ColumnDefinition></ColumnDefinition>
+                <ColumnDefinition Width="Auto"></ColumnDefinition>
+                <ColumnDefinition></ColumnDefinition>
+            </Grid.ColumnDefinitions>
+        
+        <Label Content="应收：" Visibility="{Binding ReceivableVisibility}"></Label>
+            <TextBlock Text="{Binding ReceivableAmount,StringFormat={}￥{0:0.00}}" Grid.Column="1" Visibility="{Binding ReceivableVisibility}"></TextBlock>
+        <Label Content="找零：" Grid.Column="2" Visibility="{Binding ReceivableVisibility}"></Label>
+            <TextBlock Text="{Binding Change,UpdateSourceTrigger=PropertyChanged,StringFormat={}￥{0:0.00}}" Grid.Column="3" Visibility="{Binding ReceivableVisibility}"></TextBlock>
+</Grid>
+        <Grid Grid.Row="1">
+            <Grid.RowDefinitions>
+                <RowDefinition></RowDefinition>
+            </Grid.RowDefinitions>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto"></ColumnDefinition>
+                <ColumnDefinition></ColumnDefinition>
+                <ColumnDefinition Width="Auto"></ColumnDefinition>
+                <ColumnDefinition></ColumnDefinition>
+                <ColumnDefinition Width="Auto"></ColumnDefinition>
+                <ColumnDefinition></ColumnDefinition>
+            </Grid.ColumnDefinitions>
+        
+        <Label Content="实收："  Visibility="{Binding ReceivableVisibility}"></Label>
+            <TextBox Name="txtCash" Text="{Binding Cash,UpdateSourceTrigger=PropertyChanged}" Visibility="{Binding ReceivableVisibility}"
+                 Grid.Row="1" Grid.Column="1"  Width="200" local:TextBoxMaskBehavior.Mask="Decimal"/>
+
+        <Label Content="号牌：" Grid.Column="2" Visibility="{Binding DeskNoVisibility}"></Label>
+        <TextBox Name="txtDeskNo" Visibility="{Binding DeskNoVisibility}" Text="{Binding DeskNo,UpdateSourceTrigger=PropertyChanged}" 
+                 Grid.Column="3"  Width="200"/>
+
+        <Label Content="密码：" Grid.Column="4" Visibility="{Binding PasswordVisibility}"></Label>
+        <PasswordBox Name="txtPwd" Grid.Column="5" Visibility="{Binding PasswordVisibility}" 
+                     local:PasswordHelper.Password="{Binding Password, ValidatesOnDataErrors=True,Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                     Width="200"></PasswordBox>
+        </Grid>
+        <Grid Grid.Row="2">
+            <Grid.RowDefinitions>
+                <RowDefinition></RowDefinition>
+            </Grid.RowDefinitions>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition></ColumnDefinition>
+                <ColumnDefinition></ColumnDefinition>
+                <ColumnDefinition></ColumnDefinition>
+            </Grid.ColumnDefinitions>
+            
+        
+        <WpfKb:OnScreenKeypad  Grid.Column="0" Width="300"
+            MouseDown="Keyboard1_MouseDown" TouchDown="Keyboard1_TouchDown" Visibility="{Binding ReceivableVisibility}"
+            />
+
+            <WpfKb:OnScreenKeypad  Grid.Column="1" Width="300"
+            MouseDown="Keyboard2_MouseDown" TouchDown="Keyboard2_TouchDown" Visibility="{Binding DeskNoVisibility}"
+            />
+
+            <WpfKb:OnScreenKeypad Grid.Column="2" Width="300"
+            MouseDown="Keyboard3_MouseDown" TouchDown="Keyboard3_TouchDown" Visibility="{Binding PasswordVisibility}"
+            />
+        </Grid>
+        <Button Grid.Row="3" Command="{Binding Confirm}" IsDefault="True">确定</Button>
+        <!--<Grid Grid.Row="3" Grid.ColumnSpan="6">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition></ColumnDefinition>
+                <ColumnDefinition></ColumnDefinition>
+            </Grid.ColumnDefinitions>
+            <Button Grid.Column="1" Command="{Binding Confirm}" IsDefault="True" Height="50">确定</Button>
+            <Button IsCancel="True"  Height="50">取消</Button>
+        </Grid>-->
+        
+        
+    </Grid>
+</Window>

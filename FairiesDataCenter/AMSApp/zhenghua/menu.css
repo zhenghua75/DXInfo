@@ -1,0 +1,20 @@
+* { BORDER-RIGHT: 0px; PADDING-RIGHT: 0px; BORDER-TOP: 0px; PADDING-LEFT: 0px; PADDING-BOTTOM: 0px; MARGIN: 0px; BORDER-LEFT: 0px; PADDING-TOP: 0px; BORDER-BOTTOM: 0px }
+	BODY { FONT-SIZE: 12px; FONT-FAMILY: arial, ËÎÌו, serif }
+	#nav { WIDTH: 140px; LINE-HEIGHT: 24px; LIST-STYLE-TYPE: none; TEXT-ALIGN: center }
+	#nav A { DISPLAY: block; PADDING-LEFT: 5px; WIDTH: 140px }
+	#nav LI { BACKGROUND: #ba4d85; FLOAT: left; BORDER-BOTTOM: #fff 1px solid }
+	#nav LI A:hover { BACKGROUND: #ba4d85 }
+	#nav A:link { COLOR: white; TEXT-DECORATION: none }
+	#nav A:visited { COLOR: white; TEXT-DECORATION: none }
+	#nav A:hover { FONT-WEIGHT: bold; COLOR: white; TEXT-DECORATION: none }
+	#nav LI UL { LIST-STYLE-TYPE: none; TEXT-ALIGN: left }
+	#nav LI UL LI { PADDING-LEFT: 5px;WIDTH: 140px;BACKGROUND: #ebebeb }
+	#nav LI UL A { PADDING-LEFT: 5px; WIDTH: 140px }
+	#nav LI UL A:link { COLOR: #666; TEXT-DECORATION: none }
+	#nav LI UL A:visited { COLOR: #666; TEXT-DECORATION: none }
+	#nav LI UL A:hover { FONT-WEIGHT: bold;BACKGROUND:#666; COLOR: white; TEXT-DECORATION: none }
+	#nav LI:hover UL { LEFT: auto }
+	#nav LI.sfhover UL { LEFT: auto }
+	#content { CLEAR: left }
+	#nav UL.collapsed { DISPLAY: none }
+	#PARENT { PADDING-LEFT: 5px; WIDTH: 140px }

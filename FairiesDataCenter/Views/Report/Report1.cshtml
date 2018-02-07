@@ -1,0 +1,218 @@
+﻿@using ynhnTransportManage
+@model ynhnTransportManage.Models.Report1Model           
+<script type="text/javascript">
+    $(function () {
+        $("#BeginDate").datepicker();
+        $("#EndDate").datepicker();
+    });
+	</script>
+ 
+@using (Html.BeginForm("Report1", "Report"))
+{
+@Html.ValidationSummary(true, "参数错误。请更正错误并重试。")
+    <div>
+        <fieldset>
+        <table>
+            <tr>
+                <td colspan="10" align="center"><legend>会员资料查询</legend></td>
+            </tr>
+            <tr>
+                <td>
+                <div class="editor-label">
+                @Html.LabelFor(m => m.CardType)
+            </div>
+            </td>
+                <td>
+                <div class="editor-field">
+                @Html.DropDownListFor(m => m.CardType, @Helpers.GetCardType())
+                @Html.ValidationMessageFor(m => m.CardType)
+            </div>
+                </td>
+                <td>
+                    <div class="editor-label">
+                @Html.LabelFor(m => m.CardLevel)
+            </div>
+                </td>
+                <td>
+                    <div class="editor-field">
+                @Html.DropDownListFor(m => m.CardLevel, @Helpers.GetCardLevel())
+                @Html.ValidationMessageFor(m => m.CardLevel)
+            </div>
+                </td>
+                <td>
+                <div class="editor-label">
+                @Html.LabelFor(m => m.DeptId)
+            </div>
+            </td>
+                <td>
+                <div class="editor-field">
+                @Html.DropDownListFor(m => m.DeptId, @Helpers.GetDepts2())
+                @Html.ValidationMessageFor(m => m.DeptId)
+            </div>
+                </td>
+                <td>
+                    <div class="editor-label">
+                @Html.LabelFor(m => m.CardNo)
+            </div>
+                </td>
+                <td>
+                    <div class="editor-field">
+                @Html.TextBoxFor(m => m.CardNo, new { @class = "wide" })
+                @Html.ValidationMessageFor(m => m.CardNo)
+            </div>
+                </td>
+
+                <td>
+                    <div class="editor-label">
+                @Html.LabelFor(m => m.MemberName)
+            </div>
+                </td>
+                
+                <td>
+                    <div class="editor-field">
+                @Html.TextBoxFor(m => m.MemberName, new { @class = "wide" })
+                @Html.ValidationMessageFor(m => m.MemberName)
+            </div>
+                </td>
+                </tr>
+                <tr>
+                <td>
+                    <div class="editor-label">
+                @Html.LabelFor(m => m.Status)
+            </div>
+                </td>
+                <td>
+                    <div class="editor-field">
+                @Html.DropDownListFor(m => m.Status, @Helpers.GetCardStatus())
+                @Html.ValidationMessageFor(m => m.Status)
+            </div>
+                </td>
+                <td>
+                    <div class="editor-label">
+                @Html.LabelFor(m => m.BeginDate)
+            </div>
+                </td>
+                <td>
+                    <div class="editor-field">
+                @Html.TextBoxFor(m => m.BeginDate, new { @class = "wide" })
+                @Html.ValidationMessageFor(m => m.BeginDate)
+            </div>
+                </td>
+                <td>
+                    <div class="editor-label">
+                @Html.LabelFor(m => m.EndDate)
+            </div>
+                </td>
+                <td>
+                    <div class="editor-field">
+                @Html.TextBoxFor(m => m.EndDate, new { @class = "wide" })
+                @Html.ValidationMessageFor(m => m.EndDate)
+            </div>
+                </td>
+                <td colspan="4">
+                    <p>
+                <input type="submit" value="查询" />
+                @Html.ActionLink("导出EXCEL", "Report1ExportToExcel", "Report")
+            </p>
+                </td>
+            </tr>
+        </table>
+        </fieldset>
+    </div>
+
+    var grid = new WebGrid(source: Model.result,
+        defaultSort: "CreateDate",
+    canPage: true,
+    canSort: true,
+    rowsPerPage: 20);
+
+	<div id="DivGrid" style="width:1800px;">
+	@grid.GetHtml(
+     mode: WebGridPagerModes.All,
+    numericLinksCount: 50,
+    firstText: "首页",
+    previousText: "上页",
+    nextText: "下页",
+    lastText: "最后页",      
+        columns: grid.Columns(
+        grid.Column("CardType", "卡类型"),
+                    grid.Column("CardLevel", "卡级别"),
+                    grid.Column("DeptName", "门店"),
+                    grid.Column("CardNo", "卡号"),
+                    grid.Column("MemberName", "会员名"),
+                    grid.Column("Balance", "余额"),
+                    grid.Column("Recharge", "充值"),
+                    grid.Column("Points", "积分"),
+                    grid.Column("CreateDate", "发卡日期"),
+                    grid.Column("FullName", "操作员"),
+                    grid.Column("Status", "状态"),
+                    grid.Column("Email", "EMAIL"),
+                    grid.Column("IdCard", "证件号"),
+                    grid.Column("LinkAddress", "联系地址"),
+                    grid.Column("LinkPhone", "联系电话"),
+                         grid.Column("Sex", "性别"),
+                                        grid.Column("Birthday", "生日"),
+
+                        grid.Column("LossDate", "挂失日期"),
+                    grid.Column("LossFullName", "挂失操作员"),
+                    grid.Column("LossDeptName", "挂失部门"),
+
+                        grid.Column("FoundDate", "解挂日期"),
+                    grid.Column("FoundFullName", "解挂操作员"),
+                    grid.Column("FoundDeptName", "解挂部门"),
+                    
+                    grid.Column("SecondCardNo", "补卡卡号"),
+                        grid.Column("AddDate", "补卡日期"),
+                    grid.Column("AddReason", "补卡原因"),
+                    grid.Column("AddFullName", "补卡操作员"),
+                    grid.Column("AddDeptName", "补卡门店")
+        )
+    )
+	</div>
+<div>
+        <fieldset>
+        <table>
+            <tr>
+                <td colspan="6" align="center">
+                <legend>汇总信息</legend>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                <div class="editor-label">
+                @Html.LabelFor(m => m.Points)
+            </div>
+                </td>
+                <td>
+                <div class="editor-field">
+                @Html.TextBoxFor(m => m.Points, new { @class = "wide" })
+                @Html.ValidationMessageFor(m => m.Points)
+            </div>
+                </td>
+                <td>
+                <div class="editor-label">
+                @Html.LabelFor(m => m.Balance)
+            </div>
+                </td>
+                <td>
+                <div class="editor-field">
+                @Html.TextBoxFor(m => m.Balance, new { @class = "wide" })
+                @Html.ValidationMessageFor(m => m.Balance)
+            </div>
+                </td>
+                <td>
+                <div class="editor-label">
+                @Html.LabelFor(m => m.Recharge)
+            </div>
+                </td>
+                <td>
+                 <div class="editor-field">
+                @Html.TextBoxFor(m => m.Recharge, new { @class = "wide" })
+                @Html.ValidationMessageFor(m => m.Recharge)
+            </div>
+                </td>                
+            </tr>
+        </table>
+        </fieldset>
+    </div>
+}

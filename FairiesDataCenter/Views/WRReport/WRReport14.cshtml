@@ -1,0 +1,248 @@
+﻿@using ynhnTransportManage
+@model ynhnTransportManage.Models.WRReport14Model           
+<script type="text/javascript">
+    $(function () {
+        $('#BeginDate').datetimepicker({ dateFormat: 'yy-mm-dd', timeFormat: 'hh:mm' });
+        $('#EndDate').datetimepicker({ dateFormat: 'yy-mm-dd', timeFormat: 'hh:mm' });
+        $("#query").button();
+        $("#export").button();
+    });
+	</script>
+ @{
+    RouteValueDictionary routeValues = new RouteValueDictionary();
+    routeValues.Add("InvType",this.Model.InvType);
+    routeValues.Add("CategoryType", this.Model.CategoryType);
+    }
+@using (Html.BeginForm("WRReport14", "WRReport",routeValues))
+{
+@Html.ValidationSummary(true, "参数错误。请更正错误并重试。")
+<table style="width:100%;">
+<tr>
+<td>
+    <h2 class="ui-jqgrid-titlebar ui-widget-header ui-corner-top ui-helper-clearfix" style="text-align:center">@ViewBag.Title</h2>
+</td>
+</tr>
+    <tr>
+        <td>
+        
+    <div class="ui-state-default ui-jqgrid-toppager">
+        <table>
+            <tr>
+                <td>
+                <div class="editor-label">
+                @Html.LabelFor(m => m.DeptId)
+            </div>
+            </td>
+                <td>
+                <div class="editor-field">
+                @Html.DropDownListFor(m => m.DeptId, @Helpers.GetDepts001())
+                @Html.ValidationMessageFor(m => m.DeptId)
+            </div>
+                </td>
+            
+                <td>
+                <div class="editor-label">
+                @Html.LabelFor(m => m.Section)
+            </div>
+            </td>
+                <td>
+                <div class="editor-field">
+                @Html.DropDownListFor(m => m.Section, @Helpers.GetSection())
+                @Html.ValidationMessageFor(m => m.DeptId)
+            </div>
+                </td>
+                
+                <td>
+                    <div class="editor-label">
+                @Html.LabelFor(m => m.UserId)
+            </div>
+                </td>
+                <td>
+                    <div class="editor-field">
+                @Html.DropDownListFor(m => m.UserId, @Helpers.GetUsers())
+                @Html.ValidationMessageFor(m => m.UserId)
+            </div>
+                </td>
+            
+                <td>
+                    <div class="editor-label">
+                @Html.LabelFor(m => m.ConsumeType)
+            </div>
+                </td>
+                <td>
+                    <div class="editor-field">
+                @Html.DropDownListFor(m => m.ConsumeType, @Helpers.GetConsumeType())
+                @Html.ValidationMessageFor(m => m.ConsumeType)
+            </div>
+                </td>
+            
+                <td>
+                    <div class="editor-label">
+                @Html.LabelFor(m => m.PayType)
+            </div>
+                </td>
+                <td>
+                    <div class="editor-field">
+                @Html.DropDownListFor(m => m.PayType, @Helpers.GetPayType())
+                @Html.ValidationMessageFor(m => m.PayType)
+            </div>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <div class="editor-label">
+                @Html.LabelFor(m => m.CardNo)
+            </div>
+                </td>
+                <td>
+                    <div class="editor-field">
+                @Html.TextBoxFor(m => m.CardNo)
+                @Html.ValidationMessageFor(m => m.CardNo)
+            </div>
+                </td>
+               
+                <td>
+                    <div class="editor-label">
+                @Html.LabelFor(m => m.MemberName)
+            </div>
+                </td>
+                
+                <td>
+                    <div class="editor-field">
+                @Html.TextBoxFor(m => m.MemberName)
+                @Html.ValidationMessageFor(m => m.MemberName)
+            </div>
+                </td>
+            
+                <td>
+                    <div class="editor-label">
+                @Html.LabelFor(m => m.BeginDate)
+            </div>
+                </td>
+                <td>
+                    <div class="editor-field">
+                @Html.TextBoxFor(m => m.BeginDate)
+                @Html.ValidationMessageFor(m => m.BeginDate)
+            </div>
+                </td>
+           
+                <td>
+                    <div class="editor-label">
+                @Html.LabelFor(m => m.EndDate)
+            </div>
+                </td>
+                <td>
+                    <div class="editor-field">
+                @Html.TextBoxFor(m => m.EndDate)
+                @Html.ValidationMessageFor(m => m.EndDate)
+            </div>
+                </td>
+            
+                <td>
+                <input id="query" type="submit" value="查询" /></td><td>
+                @Html.ActionLink("导出EXCEL", "WRReport14ExportToExcel", "WRReport", null, new { id = "export" })
+                </td>
+            </tr>
+        </table>
+    </div>
+
+    </td>
+    </tr>
+        <tr>
+    <td >
+	<div class="ui-jqgrid ui-widget ui-widget-content ui-corner-all">
+    @{var grid = new WebGrid(source: Model.result,
+        defaultSort: "CreateDate",
+    canPage: true,
+    canSort: true,
+    rowsPerPage: 20);}
+	@grid.GetHtml(
+     mode: WebGridPagerModes.All,
+    numericLinksCount: 50,
+    firstText: "首页",
+    previousText: "上页",
+    nextText: "下页",
+    lastText: "最后页",      
+        columns: grid.Columns(
+                     grid.Column("Consume", "单号"),
+            grid.Column("DeptName", "门店"),
+                grid.Column("SectionName", "部门"),
+                        grid.Column("FullName", "操作员"),
+                        grid.Column("ConsumeType", "消费类型"),
+                        grid.Column("PayType", "支付方式"),
+                        grid.Column("CardNo", "卡号"),
+                        grid.Column("MemberName", "会员名"),
+                        grid.Column("Quantity", "数量"),
+                        grid.Column("Sum", "合计"),
+                        grid.Column("Discount", "折扣"),
+                            grid.Column("Amount", "金额", format: (item) => string.Format("{0:f2}", item.Amount)),
+                        grid.Column("CreateDate", "消费日期")                        
+        ),
+            tableStyle: "ui-jqgrid-view ui-jqgrid-bdiv ui-jqgrid-btable",
+                                rowStyle: "ui-widget-content jqgrow ui-row-ltr",
+                                    alternatingRowStyle: "ui-widget-content jqgrow ui-row-ltr",
+                            headerStyle: "ui-state-default ui-jqgrid-hdiv",
+                                    footerStyle: "ui-state-default ui-jqgrid-pager ui-corner-bottom ui-pager-control ui-pg-table"
+    )
+	</div>
+    <div  class="ui-state-default ui-jqgrid-pager ui-corner-bottom">
+        <table>
+            <tr>
+                <td colspan="8" style="text-align:center;">
+                汇总信息
+                </td>
+            </tr>
+            <tr>
+            <td>
+                <div class="editor-label">
+                @Html.LabelFor(m => m.Count)
+            </div>
+                </td>
+                <td>
+                <div class="editor-field">
+                @Html.TextBoxFor(m => m.Count)
+                @Html.ValidationMessageFor(m => m.Count)
+            </div>
+                </td>
+
+
+                <td>
+                <div class="editor-label">
+                @Html.LabelFor(m => m.Quantity)
+            </div>
+                </td>
+                <td>
+                <div class="editor-field">
+                @Html.TextBoxFor(m => m.Quantity)
+                @Html.ValidationMessageFor(m => m.Quantity)
+            </div>
+                </td>
+                <td>
+                <div class="editor-label">
+                @Html.LabelFor(m => m.Sum)
+            </div>
+                </td>
+                <td>
+                <div class="editor-field">
+                @Html.TextBoxFor(m => m.Sum)
+                @Html.ValidationMessageFor(m => m.Sum)
+            </div>
+                </td>
+                <td>
+                <div class="editor-label">
+                @Html.LabelFor(m => m.Amount)
+            </div>
+                </td>
+                <td>
+                 <div class="editor-field">
+                @Html.TextBoxFor(m => m.Amount)
+                @Html.ValidationMessageFor(m => m.Amount)
+            </div>
+                </td>                
+            </tr>
+        </table>
+    </div>
+</td>
+    </tr>
+</table>
+}

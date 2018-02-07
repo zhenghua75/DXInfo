@@ -1,0 +1,5 @@
+﻿if not exists (select * from EnumType where Code='CheckCycle')insert into EnumType(Code,Name,Comment)values('CheckCycle','盘点周期','天、周、月，默认值为天')
+if not exists (select * from EnumType where Code='MeasurementUnitGroupCategory')insert into EnumType(Code,Name,Comment)values('MeasurementUnitGroupCategory','计量单位组类别','0无换算、1浮动换算、2固定换算三种类别')
+if not exists (select * from EnumType where Code='ProductType')insert into EnumType(Code,Name,Comment)values('ProductType','产品类型','产品类型')
+if not exists (select * from EnumType where Code='ShelfLifeType')insert into EnumType(Code,Name,Comment)values('ShelfLifeType','保质期单位','天、周、月、年')
+if not exists (select * from EnumType where Code='ValueType')insert into EnumType(Code,Name,Comment)values('ValueType','计价方式','默认个别计价')

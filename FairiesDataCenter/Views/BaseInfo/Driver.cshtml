@@ -1,0 +1,6 @@
+﻿@using Trirand.Web.Mvc
+@model ynhnTransportManage.Models.DriversGridModel
+@{
+    ViewBag.Title = "驾驶员信息";
+}
+@Html.Trirand().JQGrid(Model.DriversGrid, "DriversGrid")

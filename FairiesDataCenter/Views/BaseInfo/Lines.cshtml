@@ -1,0 +1,6 @@
+﻿@using Trirand.Web.Mvc
+@model ynhnTransportManage.Models.LinesGridModel
+@{
+    ViewBag.Title = "运输路线";
+}
+@Html.Trirand().JQGrid(Model.LinesGrid, "LinesGrid")

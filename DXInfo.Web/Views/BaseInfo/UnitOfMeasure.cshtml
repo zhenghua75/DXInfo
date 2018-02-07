@@ -1,0 +1,22 @@
+﻿@using Trirand.Web.Mvc
+@model DXInfo.Web.Models.UnitOfMeasureGridModel
+<script type="text/javascript">
+    function serializeGridData(postData) {
+        var sdata = {
+            _search: "true",
+            UOMType: $("#UOMType").val()
+        };
+        var newPostData = $.extend(postData, sdata);
+        return newPostData;
+    }
+    function beforeSubmit(postdata, formid) {
+        var sdata = { UOMType: $("#UOMType").val()
+        };
+        $.extend(postdata, sdata);
+        return [true, ''];
+    }
+    </script>
+@Html.HiddenFor(m => m.UOMType)
+@Html.Trirand().JQGrid(Model.UnitOfMeasuresGrid, "UnitOfMeasuresGrid")
+
+

@@ -1,0 +1,21 @@
+﻿@using Trirand.Web.Mvc
+@model DXInfo.Web.Models.InvPriceGridModel
+<script type="text/javascript">
+    function serializeGridData(postData) {
+        var sdata = {
+            _search: true,
+            InvType: $("#InvType").val()
+        };
+        var newPostData = $.extend(postData, sdata);
+        return newPostData;
+    }
+
+    function beforeSubmit(postdata, formid) {
+        var sdata = { InvType: $("#InvType").val() };
+        $.extend(postdata, sdata);
+        return [true, ''];
+    }
+</script>
+@Html.Trirand().JQGrid(Model.InvPriceGrid, "InvPriceGrid")
+@Html.HiddenFor(m => m.InvType)
+

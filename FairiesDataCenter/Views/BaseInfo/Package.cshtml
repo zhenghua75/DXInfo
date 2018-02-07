@@ -1,0 +1,20 @@
+﻿@using Trirand.Web.Mvc
+@model ynhnTransportManage.Models.PackageGridModel
+@Html.HiddenFor(m => m.InvType)
+@Html.Trirand().JQGrid(Model.PackageGrid, "PackageGrid")
+@Html.Trirand().JQGrid(Model.InvGrid, "InvGrid")
+<script type="text/javascript">
+    function serializeGridData(postData) {
+        var sdata = {
+            _search:true,
+            InvType: $("#InvType").val(),
+        };
+        var newPostData = $.extend(postData, sdata);
+        return newPostData;
+    }
+    function showSubGrid(subgrid_id, row_id) {
+        showSubGrid_InvGrid(subgrid_id, row_id);
+    }   
+    </script>
+
+

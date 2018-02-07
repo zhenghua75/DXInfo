@@ -1,0 +1,162 @@
+﻿@using ynhnTransportManage
+@model ynhnTransportManage.Models.WRReport16Model
+<script type="text/javascript">
+    $(function () {
+        $('#BeginDate').datetimepicker({ dateFormat: 'yy-mm-dd', timeFormat: 'hh:mm' });
+        $('#EndDate').datetimepicker({ dateFormat: 'yy-mm-dd', timeFormat: 'hh:mm' });
+        $("#query").button();
+        $("#export").button();
+    });
+</script>
+@using (Html.BeginForm("WRReport16", "WRReport"))
+{
+    @Html.ValidationSummary(true, "参数错误。请更正错误并重试。")
+<table style="width:100%;">
+<tr>
+<td>
+    <h2 class="ui-jqgrid-titlebar ui-widget-header ui-corner-top ui-helper-clearfix" style="text-align:center">@ViewBag.Title</h2>
+</td>
+</tr>
+        <tr>
+            <td>
+<div class="ui-state-default ui-jqgrid-toppager">
+                        <table>
+                            <tr>
+                                <td>
+                                    <div class="editor-label">
+                                        @Html.LabelFor(m => m.DeptId)
+                                    </div>
+                                </td>
+                                <td>
+                                    <div class="editor-field">
+                                        @Html.DropDownListFor(m => m.DeptId, @Helpers.GetDepts001())
+                                        @Html.ValidationMessageFor(m => m.DeptId)
+                                    </div>
+                                </td>                           
+                                <td>
+                                    <div class="editor-label">
+                                        @Html.LabelFor(m => m.UserId)
+                                    </div>
+                                </td>
+                                <td>
+                                    <div class="editor-field">
+                                        @Html.DropDownListFor(m => m.UserId, @Helpers.GetUsers001())
+                                        @Html.ValidationMessageFor(m => m.UserId)
+                                    </div>
+                                </td>
+                                <td>
+                                    <div class="editor-label">
+                                        @Html.LabelFor(m => m.OrderDishStatus)
+                                    </div>
+                                </td>
+                                <td>
+                                    <div class="editor-field">
+                                        @Html.DropDownListFor(m => m.OrderDishStatus, @Helpers.GetOrderDishStatus())
+                                        @Html.ValidationMessageFor(m => m.OrderDishStatus)
+                                    </div>
+                                </td>
+                                <td>
+                                    <div class="editor-label">
+                                        @Html.LabelFor(m => m.OrderMenuStatus)
+                                    </div>
+                                </td>
+                                <td>
+                                    <div class="editor-field">
+                                        @Html.DropDownListFor(m => m.OrderMenuStatus, @Helpers.GetOrderMenuStatus())
+                                        @Html.ValidationMessageFor(m => m.OrderMenuStatus)
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <div class="editor-label">
+                                        @Html.LabelFor(m => m.DeskNo)
+                                    </div>
+                                </td>
+                                <td>
+                                    <div class="editor-field">
+                                        @Html.TextBoxFor(m => m.DeskNo)
+                                        @Html.ValidationMessageFor(m => m.DeskNo)
+                                    </div>
+                                </td>
+                                <td>
+                                    <div class="editor-label">
+                                        @Html.LabelFor(m => m.BeginDate)
+                                    </div>
+                                </td>
+                                <td>
+                                    <div class="editor-field">
+                                        @Html.TextBoxFor(m => m.BeginDate)
+                                        @Html.ValidationMessageFor(m => m.BeginDate)
+                                    </div>
+                                </td>
+                                <td>
+                                    <div class="editor-label">
+                                        @Html.LabelFor(m => m.EndDate)
+                                    </div>
+                                </td>
+                                <td>
+                                    <div class="editor-field">
+                                        @Html.TextBoxFor(m => m.EndDate)
+                                        @Html.ValidationMessageFor(m => m.EndDate)
+                                    </div>
+                                </td>
+                                <td>
+                                    <input id="query" type="submit" value="查询" />
+                                </td>
+                                <td>
+                                    @Html.ActionLink("导出EXCEL", "WRReport16ExportToExcel", "WRReport", null, new { id = "export" })
+                                </td>
+                            </tr>
+                        </table>
+                </div>
+            </td>
+</tr>
+        <tr>
+            <td>
+                    @{ 
+    var grid = new WebGrid(
+    canPage: true,
+    canSort: true,
+    rowsPerPage: 20
+    );
+    grid.Bind(Model.result2, rowCount: Model.rowCount, autoSortAndPage: false);    
+                       }
+                <div class="ui-jqgrid ui-widget ui-widget-content ui-corner-all">
+                       @grid.GetHtml(
+  mode: WebGridPagerModes.All,
+  previousText: "上页",
+  nextText: "下页",
+  firstText: "首页",
+  lastText: "末页",
+  numericLinksCount: 50,
+       columns: grid.Columns(
+grid.Column("DeptName", "门店"),
+grid.Column("Quantity", "人数"),
+grid.Column("OrderDishStatus", "订单状态"),
+grid.Column("OrderDishFullName", "订单操作"),
+grid.Column(columnName: "OrderDishCreateDate", header: "订单时间", format: (item) => string.Format("{0:yyyy-MM-dd HH:mm:ss}", item.OrderDishCreateDate)),
+
+grid.Column("DeskNo", "桌台"),
+grid.Column("OrderDeskFullName", "桌台操作"),
+grid.Column(columnName: "OrderDeskCreateDate", header: "桌台时间", format: (item) => string.Format("{0:yyyy-MM-dd HH:mm:ss}", item.OrderDeskCreateDate)),
+grid.Column("OrderMenuInvName", "菜品"),
+grid.Column("OrderMenuStatus", "菜品状态"),
+grid.Column("OrderMenuInvPrice", "单价", format: (item) => string.Format("{0:f2}", item.OrderMenuInvPrice)),
+grid.Column("OrderMenuInvQuantity", "数量", format: (item) => string.Format("{0:f2}", item.OrderMenuInvQuantity)),
+grid.Column("OrderMenuInvAmount", "合计", format: (item) => string.Format("{0:f2}", item.OrderMenuInvAmount)),
+grid.Column("OrderMenuFullName", "菜品操作"),
+grid.Column(columnName: "OrderMenuCreateDate", header: "菜品时间", format: (item) => string.Format("{0:yyyy-MM-dd HH:mm:ss}", item.OrderMenuCreateDate))
+),
+tableStyle: "ui-jqgrid-view ui-jqgrid-bdiv ui-jqgrid-btable",
+              rowStyle: "ui-widget-content jqgrow ui-row-ltr",
+                  alternatingRowStyle: "ui-widget-content jqgrow ui-row-ltr",
+          headerStyle: "ui-state-default ui-jqgrid-hdiv",
+                  footerStyle: "ui-state-default ui-jqgrid-pager ui-corner-bottom ui-pager-control ui-pg-table"
+       )
+                </div>
+
+            </td>
+        </tr>
+    </table>
+}

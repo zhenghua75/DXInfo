@@ -1,0 +1,62 @@
+*{padding:0px;margin:0px;}
+body{
+   background:#d5e4f2 url('login_bg.jpg') left top no-repeat;
+   font-size:12px;
+   color:#383838;
+}
+.update_tips{position:absolute;left:10px;top:10px;color:#FFFFFF;}
+#logo{
+   margin:0px auto;
+   margin-top:200px;
+   margin-left:400px;
+   padding-left:23px;
+   padding-top:107px;
+   width:498px;
+   height:200px;
+   background:url('input.png') left top no-repeat;
+}
+#logo #form{
+   width:405px;
+   height:206px;
+   padding-left:10px;
+}
+
+
+#logo .msg{
+   width:345px;
+   padding-top:15px;
+   line-height:20px;
+   text-align:center;
+}
+#logo #form .user{
+  background:url('User.gif') left top no-repeat;
+  height:32px;
+  width:120px;
+  padding:0px 5px;
+}
+#logo #form .pwd{
+   background:url('Pass.gif') left top no-repeat;
+   height:32px;
+   width:120px;
+   padding:0px 5px;
+}
+
+input.submit{
+   width:188px;
+   height:53px;
+   background:url("Login.gif") left top no-repeat;
+   border:0px;
+   cursor:pointer;
+   padding-left:100px;
+}
+
+input.text{
+   border:1px #cccccc solid;
+   padding:0px 5px;
+   width:188px;
+   height:42px;
+}
+.title
+{
+    visibility:hidden;
+}

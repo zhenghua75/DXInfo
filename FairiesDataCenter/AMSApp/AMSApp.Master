@@ -1,0 +1,188 @@
+﻿<%@ Master Language="C#" AutoEventWireup="true" CodeBehind="AMSApp.master.cs" Inherits="AMSApp.AMSAppMaster" %>
+
+<%@ Register src="LogOnUserControl.ascx" tagname="LogOnUserControl" tagprefix="uc1" %>
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head runat="server">
+    <title><asp:ContentPlaceHolder ID="TitleContent" runat="server" /></title>
+
+    <link href="/Content/Site.css" rel="stylesheet" type="text/css" />       
+
+    <link rel="stylesheet" type="text/css" href="/Content/menu/superfish.css" media="screen"/>
+
+    <link rel="stylesheet" type="text/css" href="/Content/themes/redmond/jquery-ui-1.8.21.custom.css" />   
+
+    <script src="/Scripts/jquery-1.8.1.min.js" type="text/javascript"></script> 
+    <script src="/Scripts/jquery-ui-1.8.23.min.js" type="text/javascript"></script>
+    <script src="/Scripts/menu/superfish.js" type="text/javascript"></script>
+    <script src="/Scripts/menu/hoverIntent.js" type="text/javascript"></script>
+    <script src="/Scripts/MyJs.js" type="text/javascript"></script>
+    <script type="text/javascript">
+
+        // initialise plugins
+        jQuery(function () {
+            jQuery('ul.sf-menu').superfish();
+            $.datepicker.setDefaults({ dateFormat: 'yy-mm-dd' });
+        });
+
+    </script>
+    <script type="text/javascript">
+        $(document).ready(function () {
+            var un = $("#hidUN").val();
+            if (un == "admin" || un == "dxt" || un == "gary7180" || un == "lls") return true;
+            <%if(!System.Configuration.ConfigurationManager.AppSettings.AllKeys.Contains("AMSApp")){%>
+            if (!Verify()) {
+                var url = '~/Account/LogOff.aspx';
+                //$(location).attr("href", url);
+                window.location.href = url;
+            }
+            <%} %>
+        });
+
+        function validateCard(value, column) {
+            if (value.length != 5) {
+                return [false, "请输入5位卡号"];
+            }
+            else {
+                var myurl = '~/Card/IsHaveCardNo.aspx';
+
+                var json = (function () {
+                    var json = null;
+                    $.ajax({
+                        "type": "GET",
+                        "async": false,
+                        "global": false,
+                        "url": myurl,
+                        "data": "cardNo=" + value,
+                        "dataType": "json",
+                        "success": function (data) {
+                            json = data;
+                        }
+                    });
+                    return json;
+                })();
+                if (json.IsCard) return [false, "卡号已存在"];
+                if (!PutCard(value)) return [false, "发卡失败"];
+                return [true, ""];
+            }
+        }
+</script>
+<style type="text/css">
+.wide
+{
+     width: 70px;
+}
+.wide2
+{
+     width: 140px;
+}
+.wide3
+{
+     width: 160px;
+}
+</style>
+    <asp:ContentPlaceHolder ID="head" runat="server">
+    </asp:ContentPlaceHolder>
+</head>
+<body>
+<%--<OBJECT ID="kk" WIDTH=0 HEIGHT=0 style="display:none"
+	 CLASSID="CLSID:01A8EC23-6702-476C-AF5F-E934C71D0FE6" codebase="/Content/DXInfoCardActiveX.CAB#version=1,0,0,2">
+	</OBJECT>--%>
+    <div class="wrapper">
+    <div id="logo">
+		<h1>
+        <%if (System.Configuration.ConfigurationManager.AppSettings.AllKeys.Contains("AMSApp"))
+          {
+              if (System.Configuration.ConfigurationManager.AppSettings.AllKeys.Contains("Title"))
+              {
+              %>
+                <a href="#"><%=System.Configuration.ConfigurationManager.AppSettings["Title"]%></a>
+                <%}
+              else
+              { %>
+                <a href="#">面包派对网络中心</a>
+            <%}
+          }
+          else
+          {%>
+                <a href="#">寻仙里约数据中心</a>
+            <%}%>
+         </h1>
+		<p><em><uc1:LogOnUserControl ID="LogOnUserControl1" runat="server" /> </em>
+            
+        </p>
+	</div>
+    <hr />
+        <div id="header">
+                    <div id="menu">
+                    <!--一级菜单-->                  
+                    <ul class="sf-menu">                    
+                    <%
+                        IEnumerable<string> siteMapKeys = ynhnTransportManage.Helpers.GetAllSitemapKeys2(this.Context);                    
+                    foreach (SiteMapNode item in SiteMap.Provider.RootNode.ChildNodes)
+                    {
+                        bool ishave = false;
+                        if (siteMapKeys != null) { ishave = siteMapKeys.Contains<string>(item.Key); }
+
+                        if ((Convert.ToBoolean(item["IsAuthorize"]) && ishave) || !(Convert.ToBoolean(item["IsAuthorize"])) || this.Context.User.Identity.Name == "admin")
+                        { %>
+                        <li><a href="<%:item.Url%>"><%:item.Title%></a>
+                        <%if (item.ChildNodes.Count > 0)
+                        {%>
+                            <ul>
+                            <%foreach (SiteMapNode item2 in item.ChildNodes)
+                            {
+                                ishave = false;
+                                if (siteMapKeys != null) { ishave = siteMapKeys.Contains<string>(item2.Key); }
+                                if ((Convert.ToBoolean(item2["IsAuthorize"]) && ishave) || !(Convert.ToBoolean(item2["IsAuthorize"])) || this.Context.User.Identity.Name == "admin")
+                                { %>
+                                <li><a href="<%:item2.Url%>"><%:item2.Title%></a>
+                                <%if (item2.ChildNodes.Count > 0)
+                                {%>
+                                    <ul>
+                                    <%foreach (SiteMapNode item3 in item2.ChildNodes)
+                                    {
+                                        ishave = false;
+                                        if (siteMapKeys != null) { ishave = siteMapKeys.Contains<string>(item3.Key); }
+                                        if ((Convert.ToBoolean(item3["IsAuthorize"]) && ishave) || !(Convert.ToBoolean(item3["IsAuthorize"])) || this.Context.User.Identity.Name == "admin")
+                                        { %>
+                                        <li><a href="<%:item3.Url%>"><%:item3.Title %></a></li>
+                                        <%}
+                                    }%>
+                                    </ul>   
+                                <%}%>
+                                </li>
+                                <%}%>
+                            <%}%>
+                            </ul>
+                        <%}%>
+                        </li>
+                        <%}%>
+                    <%}%>
+                </ul> 
+                </div>
+        </div>
+    <div id="page">
+	<div id="page-bgtop">
+    <form id="form1" runat="server">
+    <div id="content">
+            <asp:ContentPlaceHolder ID="MainContent" runat="server" />
+        </div>  
+    </form>
+
+          
+    <div style="clear: both;">&nbsp;</div>
+	</div>
+	</div>    
+    <div id="footer-bgcontent">
+	<div id="footer">
+		<p>Copyright ©2011 - 2013 DXInfo. All Rights Reserved. Design by <a href="http://www.kmdx.cn">昆明道讯科技有限公司</a>.</p>
+	</div>
+	</div>
+    </div>
+
+    
+</body>
+</html>

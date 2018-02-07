@@ -1,0 +1,46 @@
+﻿@using Trirand.Web.Mvc
+@using DXInfo.Web
+@model DXInfo.Web.Models.SecurityStockGridModel
+<script type="text/javascript">
+    $(function () {
+        $("#query").button();
+        $("#BeginDate").datepicker();
+        $("#EndDate").datepicker();
+        $("#query").button().click(function () {
+            query();
+        });
+        $("#export").button();
+        $("#export").button().click(function () {
+            excelExport();
+        });
+        var ctrls = [{ name: "QueryType", type: "select" },]
+        InitCtrl(ctrls);
+    });
+    function serializeGridData(postData) {
+        var sdata = {
+            _search:true,
+            QueryType: $("#QueryType").val()
+        };
+        var newPostData = $.extend(postData, sdata);
+        return $.param(newPostData);
+    }
+    function query() {
+        $("#SecurityStockGrid").jqGrid('setGridParam', { datatype: 'json' }).trigger("reloadGrid", [{ page: 1}]);
+    }
+	</script>
+<h2 class="ui-widget-header h2-center">@ViewBag.Title</h2>
+<fieldset class="ui-widget ui-widget-content ui-corner-all">
+            <legend class="ui-widget-header ui-corner-all"></legend>
+<table>
+    <tr>
+        
+        <td><label>查询类别</label></td><td><select id="QueryType">
+                                <option value="0">所有存货</option>
+                                <option value="1">高于安全库存量的存货</option>
+                                <option value="2">不高于安全库存量的存货</option>
+                            </select></td>
+        <td><button id="query">查询</button></td><td><button id="export">导出EXCEL</button></td>
+    </tr>
+</table>
+</fieldset>
+@Html.Trirand().JQGrid(Model.SecurityStockGrid, "SecurityStockGrid")

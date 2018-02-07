@@ -1,0 +1,16 @@
+﻿@{
+    ViewBag.Title = "文件批量上传";
+}
+<h2 class="ui-widget-header h2-center">文件批量上传</h2>
+    <script type="text/javascript">
+        $(function () {
+    $('#file_upload').uploadify({
+        'swf': '@Url.Content("~/Content/uploadify/uploadify.swf")',
+        'uploader': '@Url.Action("UploadHandler", "BaseInfo")',
+        'buttonText' : '浏览...',
+        'fileTypeDesc' : '图片',
+        'fileTypeExts' : '*.gif; *.jpg; *.png',
+    });
+});
+    </script>
+<input type="file" name="file_upload" id="file_upload" />

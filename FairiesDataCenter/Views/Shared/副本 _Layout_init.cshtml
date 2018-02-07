@@ -1,0 +1,155 @@
+﻿@using Trirand.Web.Mvc
+<!DOCTYPE html>
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+    <title>@ViewBag.Title</title>
+    <link href="@Url.Content("~/Content/Site.css")" rel="stylesheet" type="text/css" />    
+    @*<link href="@Url.Content("~/Content/themes/base/jquery-ui.css")" rel="stylesheet" type="text/css" />*@
+    <link rel="stylesheet" type="text/css" href="@Url.Content("~/Content/themes/redmond/jquery-ui-1.8.2.custom.css")" />    
+    <link rel="stylesheet" type="text/css" href="@Url.Content("~/Content/themes/ui.jqgrid.css")" />   
+    
+   <link rel="stylesheet" type="text/css" href="@Url.Content("~/Content/menu/superfish.css")" media="screen"/>
+
+
+    <script src="@Url.Content("~/Scripts/jquery-1.4.4.min.js")" type="text/javascript"></script>
+    <script src="@Url.Content("~/Scripts/jquery.ui.datepicker-zh-CN.js")" type="text/javascript"></script>
+    <script src="@Url.Content("~/Scripts/jquery-ui.min.js")" type="text/javascript"></script>
+
+    <script src="@Url.Content("~/Scripts/trirand/i18n/grid.locale-cn.js")" type="text/javascript"></script> 
+    <script src="@Url.Content("~/Scripts/trirand/jquery.jqGrid.min.js")" type="text/javascript"></script>
+    
+    <script src="@Url.Content("~/Scripts/menu/superfish.js")" type="text/javascript"></script>
+    <script src="@Url.Content("~/Scripts/menu/hoverIntent.js")" type="text/javascript"></script>
+    <script src="@Url.Content("~/Scripts/jquery.AddIncSearch.js")" type="text/javascript"></script>
+    <script type="text/javascript">
+
+        // initialise plugins
+        jQuery(function () {
+            jQuery('ul.sf-menu').superfish();
+        });
+
+    </script>
+    <script type="text/javascript">
+
+        function customButtonClicked() {
+            $(ExcelForm).submit();
+        }       
+    
+    </script>
+
+    <script type="text/javascript">
+        function addIS() {
+            jQuery("select").AddIncSearch({
+                maxListSize: 20,
+                maxMultiMatch: 50,
+                warnNoMatch: "没找到",
+                warnMultiMatch: "前{0}个匹配项"
+            });
+        }
+        function removeIS() {
+            jQuery("select").RemoveIncSearch();
+        }
+        jQuery(document).ready(addIS);
+</script>
+<script type="text/javascript">
+    function ReadCard() {
+//        if (!cc.hasOwnProperty("ReadCard")) {
+//            if (Date > "2011-05-12") {
+//                alert("请安装读卡器插件");
+//                return false;
+//            }
+//            return true;
+//        }
+        return cc.ReadCard();
+    }
+    function PutCard(CardNo) {
+//        if (!cc.hasOwnProperty("PutCard")) {
+//            if (Date > "2011-05-12") {
+//                alert("请安装读卡器插件");
+//                return false;
+//            }
+//            return true;
+//        }
+        return cc.PutCard(CardNo);
+    }
+</script>
+</head>
+
+<body>
+       <OBJECT ID="cc" WIDTH=0 HEIGHT=0  style="display:none"
+	 CLASSID="CLSID:195FD03D-EC38-4F72-B3BA-E5F243E404F5" codebase="@Url.Content("~/Content/DXInfoCardActiveX.CAB")#version=1.0.0.1">
+	</OBJECT>
+    <div class="page">
+        <div id="header">
+            <table id="top"  style="border:0;width:100%">
+                <tr>
+                    <td align="center"><h1>华能物资运输监控系统</h1></td>
+                    <td align="right">@Html.Partial("_LogOnPartial")</td>
+                </tr>
+                <tr>
+                    <td colspan="2">
+                    <!--一级菜单-->                  
+                                                                                                                                                                                    <ul class="sf-menu">                    
+                    @{
+                        IEnumerable<string> siteMapKeys = ynhnTransportManage.Helpers.GetAllSitemapKeys(Context);
+                    }
+                    @foreach (SiteMapNode item in SiteMap.Provider.RootNode.ChildNodes)
+                    {
+                        bool ishave = false;
+                        if (siteMapKeys != null) { ishave = siteMapKeys.Contains<string>(item.Key); }
+                        
+                        if ((Convert.ToBoolean(item["IsAuthorize"]) && ishave) || !(Convert.ToBoolean(item["IsAuthorize"])) || User.Identity.Name=="admin")
+                        { 
+                        <li><a href="@Url.Content(item.Url)">@item.Title</a>
+                        @if (item.ChildNodes.Count > 0)
+                        {
+                            <ul>
+                            @foreach (SiteMapNode item2 in item.ChildNodes)
+                            {
+                                if ((Convert.ToBoolean(item2["IsAuthorize"]) && ishave) || !(Convert.ToBoolean(item2["IsAuthorize"])) || User.Identity.Name == "admin")
+                                { 
+                                <li><a href="@Url.Content(item2.Url)">@item2.Title</a>
+                                @if (item2.ChildNodes.Count > 0)
+                                {
+                                    <ul>
+                                    @foreach (SiteMapNode item3 in item2.ChildNodes)
+                                    {
+                                        if ((Convert.ToBoolean(item3["IsAuthorize"]) && ishave) || !(Convert.ToBoolean(item3["IsAuthorize"])) || User.Identity.Name == "admin")
+                                        { 
+                                        <li><a href="@Url.Content(item3.Url)">@item3.Title</a></li>
+                                        }
+                                    }
+                                    </ul>   
+                                }
+                                </li>
+                                }
+                            }
+                            </ul>
+                        }
+                        </li>
+                        }
+                    }
+                </ul> 
+                    </td>
+                </tr>
+            </table>
+        </div>
+        <div id="main">
+            @RenderBody()
+            @Html.Trirand().JQDatePicker(
+            new JQDatePicker
+            {
+                DisplayMode = DatePickerDisplayMode.ControlEditor,
+                ShowOn = ShowOn.Focus,
+                DateFormat = "yyyy-mm-dd"
+            }, "DatePicker")
+              <form id="ExcelForm" action="ExportToExcel"></form> 
+            <div id="footer">               
+                <p>Copyright ©2011 - 2013 DXInfo. All Rights Reserved</p>
+            </div>
+             
+        </div>        
+    </div>
+</body>
+</html>

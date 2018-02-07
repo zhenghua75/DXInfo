@@ -1,0 +1,29 @@
+﻿@model DXInfo.Web.Models.UserGridModel
+@using Trirand.Web.Mvc
+<script type="text/javascript">
+    function Register() {
+        urlToDiv(urls.Register); 
+    }
+</script>
+@Html.Trirand().JQGrid(Model.UserGrid, "UserGrid")       
+<script type="text/javascript">
+     function customButtonClicked() {
+         if (confirm("是否重置密码？")) {             
+             var grid = $("#UserGrid");
+             var rowid = grid.jqGrid('getGridParam', 'selrow');
+             var url = "@Url.Action("ChangePassword2","Account")";
+             $.getJSON(url, { UserId: rowid,time:new Date().getTime() },
+            function (json) {if(json.Error!="") alert(json.Error); else alert("重置密码成功");});
+         }
+     }       
+     function customButton2Clicked() {
+         if (confirm("是否解锁用户？")) {             
+             var grid = $("#UserGrid");
+             var rowid = grid.jqGrid('getGridParam', 'selrow');
+             var url = "@Url.Action("UnLock","Account")";
+             $.getJSON(url, { UserId: rowid,time:new Date().getTime() },
+            function (json) {if(json.Error!="") alert(json.Error); else alert("解锁用户成功");});
+         }
+        
+     }
+</script>

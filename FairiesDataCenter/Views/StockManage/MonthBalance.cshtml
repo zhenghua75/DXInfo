@@ -1,0 +1,39 @@
+﻿@using Trirand.Web.Mvc
+@model ynhnTransportManage.Models.StockManage.MonthBalanceGridModel
+@Html.Trirand().JQGrid(Model.MonthBalanceGrid, "MonthBalanceGrid")
+<script type="text/javascript">
+$(document).ready(function () {
+        $("#MonthBalanceGrid").closest("div.ui-jqgrid-view")
+                .children("div.ui-jqgrid-titlebar")
+                .css("text-align", "center")
+                .css("font-size", "large")
+                .children("span.ui-jqgrid-title")
+                .css("float", "none");
+    });
+    function FormatNumber(num) {
+        return parseFloat(num);
+    }
+    function UnFormatNumber(num) {
+        return num;
+    }
+    function customButtonClicked() {
+        var grid = $("#MonthBalanceGrid");
+        var rowid = grid.jqGrid('getGridParam', 'selrow');
+        if(rowid){
+            var url = "@Url.Action("MonthBalance_Verify","StockManage")";
+            $.getJSON(url, { MonthBalanceId: rowid,time:new Date().getTime() },
+            function (json) {if(json.Error!="") alert(json.Error); });
+            grid.jqGrid().trigger("reloadGrid", [{ page: 1}]);
+        }
+    }
+    function customButtonClicked2() {
+        var grid = $("#MonthBalanceGrid");
+        var rowid = grid.jqGrid('getGridParam', 'selrow');
+        if(rowid){
+            var url = "@Url.Action("MonthBalance_UnVerify","StockManage")";
+            $.getJSON(url, { MonthBalanceId: rowid,time:new Date().getTime() },
+            function (json) {if(json.Error!="") alert(json.Error); });
+            grid.jqGrid().trigger("reloadGrid", [{ page: 1}]);
+        }
+    }
+</script>

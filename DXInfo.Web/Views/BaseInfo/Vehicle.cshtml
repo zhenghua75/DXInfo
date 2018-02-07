@@ -1,0 +1,6 @@
+﻿@using Trirand.Web.Mvc
+@model DXInfo.Web.Models.VehicleGridModel
+@{
+    ViewBag.Title = "车辆信息";
+}
+@Html.Trirand().JQGrid(Model.VehicleGrid, "VehicleGrid")

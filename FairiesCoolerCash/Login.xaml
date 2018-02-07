@@ -1,0 +1,223 @@
+﻿<Window x:Class="FairiesCoolerCash.Login"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        Height="274.3" Width="549.092" 
+        Background="{x:Null}" 
+        WindowStartupLocation="CenterScreen" 
+        ResizeMode="NoResize"
+        WindowStyle="None" 
+        ShowInTaskbar="True" 
+        AllowsTransparency="True"        
+        xmlns:local="clr-namespace:FairiesCoolerCash.Business"
+        DataContext="{Binding LoginViewModel, Source={StaticResource Locator}}">
+    <Window.Resources>
+        <!-- Style for the User Name textbox -->
+        <Style x:Key="txtUserStyle" TargetType="{x:Type TextBox}" BasedOn="{x:Null}">
+            <Setter Property="Foreground" Value="Black"/>
+            <Setter Property="HorizontalAlignment" Value="Center"/>
+            <Setter Property="VerticalContentAlignment" Value="Center"/>
+            <Setter Property="Width" Value="225"/>
+            <Setter Property="Height" Value="25"/>
+            <Setter Property="FontSize" Value="12"/>
+            <Setter Property="Padding" Value="1"/>
+            <Setter Property="Margin" Value="5"/>
+            <Setter Property="AllowDrop" Value="true"/>
+            <Setter Property="FocusVisualStyle" Value="{x:Null}"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="{x:Type TextBox}">
+                        <Border x:Name="OuterBorder" BorderBrush="#5AFFFFFF" BorderThickness="1,1,1,1" CornerRadius="4,4,4,4">
+                            <Border x:Name="InnerBorder" Background="#FFFFFFFF" BorderBrush="#33000000" BorderThickness="1,1,1,1" CornerRadius="3,3,3,3">
+                                <Grid>
+                                    <Label x:Name="lblUsr" Content="用户名" FontSize="12" VerticalAlignment="Center" Margin="2,0,0,0" Foreground="#828385" Padding="0" HorizontalAlignment="Left"/>
+                                    <ScrollViewer SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}" x:Name="PART_ContentHost"/>
+                                </Grid>
+                            </Border>
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="ClipToBounds" Value="True">
+                                <Setter Property="Visibility" TargetName="lblUsr" Value="Hidden"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+            <Setter Property="Validation.ErrorTemplate">
+                <Setter.Value>
+                    <ControlTemplate>
+                        <DockPanel LastChildFill="True">
+                            <!--<TextBlock DockPanel.Dock="Right" Foreground="Red" FontSize="12pt" >!</TextBlock>-->
+                            <Image DockPanel.Dock="Right" Width="16" Height="16" Source="Images\validate.png">
+                            </Image>
+                            <AdornedElementPlaceholder/>
+                        </DockPanel>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+            <Style.Triggers>
+                <Trigger Property="Validation.HasError" Value="True">
+                    <Setter Property="ToolTip"
+                Value="{Binding RelativeSource={x:Static RelativeSource.Self},
+                Path=(Validation.Errors).CurrentItem.ErrorContent}"/>
+                </Trigger>
+            </Style.Triggers>
+        </Style>
+
+        <!-- Style for the Password textbox -->
+        <Style x:Key="txtPasswordStyle" TargetType="{x:Type PasswordBox}" BasedOn="{x:Null}">
+            <Setter Property="Foreground" Value="Black"/>
+            <Setter Property="HorizontalAlignment" Value="Center"/>
+            <Setter Property="VerticalContentAlignment" Value="Center"/>
+            <Setter Property="Width" Value="225"/>
+            <Setter Property="Height" Value="25"/>
+            <Setter Property="FontSize" Value="12"/>
+            <Setter Property="Padding" Value="1"/>
+            <Setter Property="Margin" Value="5"/>
+            <Setter Property="AllowDrop" Value="true"/>
+            <Setter Property="FocusVisualStyle" Value="{x:Null}"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="{x:Type PasswordBox}">
+                        <Border x:Name="OuterBorder" BorderBrush="#5AFFFFFF" BorderThickness="1,1,1,1" CornerRadius="4,4,4,4">
+                            <Border x:Name="InnerBorder" Background="#FFFFFFFF" BorderBrush="#33000000" BorderThickness="1,1,1,1" CornerRadius="3,3,3,3">
+                                <Grid>
+                                    <Label x:Name="lblPwd" Content="密码" FontSize="12" VerticalAlignment="Center" Margin="2,0,0,0" Foreground="#828385" Padding="0"/>
+                                    <ScrollViewer SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}" x:Name="PART_ContentHost"/>
+                                </Grid>
+                            </Border>
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="ClipToBounds" Value="True">
+                                <Setter Property="Visibility" TargetName="lblPwd" Value="Hidden"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+            <Setter Property="Validation.ErrorTemplate">
+                <Setter.Value>
+                    <ControlTemplate>
+                        <DockPanel LastChildFill="True">
+                            <!--<TextBlock DockPanel.Dock="Right" Foreground="Red" FontSize="12pt" >!</TextBlock>-->
+                            <Image DockPanel.Dock="Right" Width="16" Height="16" Source="Images\validate.png">
+                            </Image>
+                            <AdornedElementPlaceholder/>
+                        </DockPanel>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+            <Style.Triggers>
+                <Trigger Property="Validation.HasError" Value="True">
+                    <Setter Property="ToolTip"
+                Value="{Binding RelativeSource={x:Static RelativeSource.Self},
+                Path=(Validation.Errors).CurrentItem.ErrorContent}"/>
+                </Trigger>
+            </Style.Triggers>
+        </Style>
+
+        <!-- Button Style -->
+        <Style x:Key="Button" TargetType="{x:Type Button}">
+            <Setter Property="OverridesDefaultStyle" Value="True"/>
+            <Setter Property="Margin" Value="2"/>
+            <Setter Property="FontSize" Value="12px"/>
+            <Setter Property="Foreground" Value="#FFFFFFFF"/>
+            <Setter Property="Background" Value="#FF154693"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="{x:Type Button}">
+                        <Border x:Name="Border" BorderThickness="2" Padding="4,2" BorderBrush="DarkGray" CornerRadius="3" Background="{TemplateBinding Background}">
+                            <Grid>
+                                <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center" x:Name="Content"/>
+                            </Grid>
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter TargetName="Border" Property="BorderBrush" Value="#FF286CAF" />
+                                <Setter Property="Foreground" Value="#FF4788c8" />
+                            </Trigger>
+                            <Trigger Property="IsPressed" Value="True">
+                                <Setter Property="Background" Value="#FF112F60" />
+                                <Setter TargetName="Content" Property="RenderTransform" >
+                                    <Setter.Value>
+                                        <TranslateTransform Y="1.0" />
+                                    </Setter.Value>
+                                </Setter>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+    </Window.Resources>
+
+    <Window.Effect>
+        <DropShadowEffect BlurRadius="25" Opacity="0.405" ShadowDepth="20" RenderingBias="Performance"/>
+    </Window.Effect>
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="0.772*" />
+            <ColumnDefinition Width="0.228*" />
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="0.393*" />
+            <RowDefinition Height="0.607*" />
+        </Grid.RowDefinitions>
+
+        <Canvas x:Name="Background" Margin="0,0,30.092,31.3" Grid.ColumnSpan="2" Grid.RowSpan="2">
+            <Path Data="F1 M 534.000,245.000 C 534.000,251.627 528.627,257.000 522.000,257.000 L 27.001,257.000 C 20.373,257.000 15.001,251.627 15.001,245.000 L 15.001,27.000 C 15.001,20.373 20.373,15.000 27.001,15.000 L 522.000,15.000 C 528.627,15.000 534.000,20.373 534.000,27.000 L 534.000,245.000 Z" Stretch="Fill" Width="519" Height="243">
+                <Path.Fill>
+                    <LinearGradientBrush MappingMode="Absolute" StartPoint="-208.332,952.442" EndPoint="118.961,562.390">
+                        <LinearGradientBrush.Transform>
+                            <MatrixTransform Matrix="1.000,0.000,-0.000,-1.000,319.186,893.416" />
+                        </LinearGradientBrush.Transform>
+                        <!--<GradientStop Offset="0.000" Color="#2f64b9"/>-->
+                        <GradientStop Offset="0.000" Color="#ff00698d"/>
+                        <GradientStop Offset="1.000" Color="#dfe9f5"/>
+                        <!--<GradientStop Offset="1.000" Color="#ff1b75bb"/>-->
+                    </LinearGradientBrush>
+                </Path.Fill>
+            </Path>
+            <Path Data="F1 M 534.000,245.000 L 534.000,27.000 C 534.000,20.373 528.627,15.000 522.000,15.000 L 495.790,15.000 C 518.093,85.111 555.962,200.770 437.124,221.195 C 323.772,240.678 130.870,206.203 15.000,181.094 L 15.000,245.000 C 15.000,251.627 20.372,257.000 27.000,257.000 L 522.000,257.000 C 528.627,257.000 534.000,251.627 534.000,245.000 Z" Stretch="Fill" Width="519" Height="243">
+                <Path.Fill>
+                    <LinearGradientBrush MappingMode="Absolute" StartPoint="-129.701,858.732" EndPoint="118.961,562.389">
+                        <LinearGradientBrush.Transform>
+                            <MatrixTransform Matrix="1.000,0.000,-0.000,-1.000,319.186,893.416" />
+                        </LinearGradientBrush.Transform>
+                        <GradientStop Offset="0.012" Color="#ff1b75bb"/>
+                        <GradientStop Offset="1.000" Color="#ff213f99"/>
+                    </LinearGradientBrush>
+                </Path.Fill>
+            </Path>
+        </Canvas>
+        <TextBlock x:Name="txtAppName" MouseDown="Window_MouseDown" Margin="26,27.416,5.313,23.888" FontStyle="Italic" FontWeight="Bold" FontSize="36"  Text="{Binding Title}" Foreground="#FFA3A4A9">
+        	<TextBlock.Effect>
+        		<DropShadowEffect/>
+        	</TextBlock.Effect>
+        </TextBlock>
+        <TextBlock x:Name="txtMsg" Margin="26,0,5.313,38.851" FontSize="16" FontWeight="Bold" VerticalAlignment="Bottom" Height="21" FontStyle="Normal" Grid.Row="1" Foreground="#FFFF0000" Visibility="Hidden"/>
+        <Canvas x:Name="grdMainControls" Margin="164.174,-10.594,34.725,0" VerticalAlignment="Top" Height="85.551" Grid.Row="1" >
+            <TextBox x:Name="txtUser" Style="{StaticResource txtUserStyle}" Margin="0" TextWrapping="Wrap" Height="25 " 
+                     HorizontalAlignment="Stretch" GotFocus="txtUser_GotFocus" 
+                     LostFocus="txtUser_LostFocus" TextChanged="txtUser_TextChanged" 
+                     local:VirtualKeyboard.FloatingTouchScreenKeyboard="{Binding IsOpen}"
+                     Text="{Binding UserName, ValidatesOnDataErrors=True, UpdateSourceTrigger=PropertyChanged}"/>
+            <PasswordBox x:Name="txtPassword" Style="{StaticResource txtPasswordStyle}" Margin="0" 
+                         local:VirtualKeyboard.FloatingTouchScreenKeyboard="{Binding IsOpen}"
+                         HorizontalAlignment="Stretch" 
+                         LostFocus="txtPassword_LostFocus" 
+                         GotFocus="txtPassword_GotFocus"
+                         Canvas.Top="31.551"
+                         PasswordChanged="txtPassword_PasswordChanged" local:PasswordHelper.Attach="True"
+                         local:PasswordHelper.Password="{Binding Password, ValidatesOnDataErrors=True,Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+
+            <Button x:Name="btnLogin" IsDefault="True" Style="{StaticResource Button}" Margin="0" 
+                    Content="登录" FontWeight="Bold" FontSize="14" FontStyle="Normal" Width="110" Height="25" Canvas.Top="60.551"
+                    Command="{Binding Login}">
+            </Button>
+            <Button x:Name="btnCancel" IsCancel="True" Command="{Binding Exit}" Style="{StaticResource Button}" Width="110" Margin="0" Content="取消" FontWeight="Bold" FontSize="14" Height="25" Canvas.Left="115" Canvas.Top="60.551"/>
+        </Canvas>
+        <TextBlock x:Name="txtVersion" Margin="0,8,-56.768,0" FontStyle="Normal" FontWeight="Bold" FontSize="16" VerticalAlignment="Top" Height="21" TextAlignment="Right" Text="{Binding Version}" Width="229.623" HorizontalAlignment="Right" Foreground="#FF3F3F3F"/>
+    </Grid>
+</Window>

@@ -1,0 +1,314 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>8.0.30703</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{1B360754-1837-49C4-9721-9307FDDBACF3}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>DXInfo.Data</RootNamespace>
+    <AssemblyName>DXInfo.Data</AssemblyName>
+    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="EntityFramework, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
+      <HintPath>..\packages\EntityFramework.6.0.2\lib\net40\EntityFramework.dll</HintPath>
+    </Reference>
+    <Reference Include="EntityFramework.SqlServer, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
+      <HintPath>..\packages\EntityFramework.6.0.2\lib\net40\EntityFramework.SqlServer.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.ComponentModel.DataAnnotations" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="AMSCMDbContext.cs" />
+    <Compile Include="AMSCMUow.cs" />
+    <Compile Include="Configuration\AdjustLocatorVouchConfiguration.cs" />
+    <Compile Include="Configuration\AdjustLocatorVouchsConfiguration.cs" />
+    <Compile Include="Configuration\aspnet_ApplicationsConfiguration.cs" />
+    <Compile Include="Configuration\aspnet_AuthorizationRulesConfiguration.cs" />
+    <Compile Include="Configuration\aspnet_CustomProfileConfiguration.cs" />
+    <Compile Include="Configuration\aspnet_MembershipConfiguration.cs" />
+    <Compile Include="Configuration\aspnet_PathsConfiguration.cs" />
+    <Compile Include="Configuration\aspnet_PersonalizationAllUsersConfiguration.cs" />
+    <Compile Include="Configuration\aspnet_PersonalizationPerUserConfiguration.cs" />
+    <Compile Include="Configuration\aspnet_ProfileConfiguration.cs" />
+    <Compile Include="Configuration\aspnet_RolesConfiguration.cs" />
+    <Compile Include="Configuration\aspnet_SchemaVersionsConfiguration.cs" />
+    <Compile Include="Configuration\aspnet_SitemapsConfiguration.cs" />
+    <Compile Include="Configuration\aspnet_UsersConfiguration.cs" />
+    <Compile Include="Configuration\aspnet_UsersInRolesConfiguration.cs" />
+    <Compile Include="Configuration\aspnet_WebEvent_EventsConfiguration.cs" />
+    <Compile Include="Configuration\BillDonateInvListsConfiguration.cs" />
+    <Compile Include="Configuration\BillInvListsConfiguration.cs" />
+    <Compile Include="Configuration\BillOfMaterialsConfiguration.cs" />
+    <Compile Include="Configuration\BillsConfiguration.cs" />
+    <Compile Include="Configuration\BooksConfiguration.cs" />
+    <Compile Include="Configuration\BusTypeConfiguration.cs" />
+    <Compile Include="Configuration\CardDonateInventoryConfiguration.cs" />
+    <Compile Include="Configuration\CardLevelsConfiguration.cs" />
+    <Compile Include="Configuration\CardPointsConfiguration.cs" />
+    <Compile Include="Configuration\CardsConfiguration.cs" />
+    <Compile Include="Configuration\CardsLogConfiguration.cs" />
+    <Compile Include="Configuration\CardTypesConfiguration.cs" />
+    <Compile Include="Configuration\CategoryDeptsConfiguration.cs" />
+    <Compile Include="Configuration\CheckDifferencesConfiguration.cs" />
+    <Compile Include="Configuration\CheckVouchConfiguration.cs" />
+    <Compile Include="Configuration\CheckVouchsConfiguration.cs" />
+    <Compile Include="Configuration\ConsumeConfiguration.cs" />
+    <Compile Include="Configuration\ConsumeDonateInvConfiguration.cs" />
+    <Compile Include="Configuration\ConsumeListConfiguration.cs" />
+    <Compile Include="Configuration\ConsumePackagesConfiguration.cs" />
+    <Compile Include="Configuration\ConsumePointsConfiguration.cs" />
+    <Compile Include="Configuration\ConsumeTastesConfiguration.cs" />
+    <Compile Include="Configuration\CurrentInvLocatorConfiguration.cs" />
+    <Compile Include="Configuration\CurrentStockConfiguration.cs" />
+    <Compile Include="Configuration\DeptsConfiguration.cs" />
+    <Compile Include="Configuration\DesksConfiguration.cs" />
+    <Compile Include="Configuration\DriversConfiguration.cs" />
+    <Compile Include="Configuration\ekeyConfiguration.cs" />
+    <Compile Include="Configuration\EnumTypeConfiguration.cs" />
+    <Compile Include="Configuration\EnumTypeDescriptionConfiguration.cs" />
+    <Compile Include="Configuration\InvDeptsConfiguration.cs" />
+    <Compile Include="Configuration\InventoryCategoryConfiguration.cs" />
+    <Compile Include="Configuration\InventoryConfiguration.cs" />
+    <Compile Include="Configuration\InventoryDeptPriceConfiguration.cs" />
+    <Compile Include="Configuration\InvLocatorConfiguration.cs" />
+    <Compile Include="Configuration\IPadsConfiguration.cs" />
+    <Compile Include="Configuration\KitchenBillConfiguration.cs" />
+    <Compile Include="Configuration\KitchenMenuDeskConfiguration.cs" />
+    <Compile Include="Configuration\KitchenMissConfiguration.cs" />
+    <Compile Include="Configuration\LinesConfiguration.cs" />
+    <Compile Include="Configuration\LocatorConfiguration.cs" />
+    <Compile Include="Configuration\MeasurementUnitGroupConfiguration.cs" />
+    <Compile Include="Configuration\MembersConfiguration.cs" />
+    <Compile Include="Configuration\MembersLogConfiguration.cs" />
+    <Compile Include="Configuration\MenuStatusConfiguration.cs" />
+    <Compile Include="Configuration\MixVouchConfiguration.cs" />
+    <Compile Include="Configuration\MixVouchsConfiguration.cs" />
+    <Compile Include="Configuration\MonthBalanceConfiguration.cs" />
+    <Compile Include="Configuration\NameCodeConfiguration.cs" />
+    <Compile Include="Configuration\OrderBookDeskesConfiguration.cs" />
+    <Compile Include="Configuration\OrderBookDeskesHisConfiguration.cs" />
+    <Compile Include="Configuration\OrderBooksConfiguration.cs" />
+    <Compile Include="Configuration\OrderBooksHisConfiguration.cs" />
+    <Compile Include="Configuration\OrderDeskesConfiguration.cs" />
+    <Compile Include="Configuration\OrderDeskesHisConfiguration.cs" />
+    <Compile Include="Configuration\OrderDishesConfiguration.cs" />
+    <Compile Include="Configuration\OrderDishesHisConfiguration.cs" />
+    <Compile Include="Configuration\OrderHurryConfiguration.cs" />
+    <Compile Include="Configuration\OrderIpadsConfiguration.cs" />
+    <Compile Include="Configuration\OrderMenusConfiguration.cs" />
+    <Compile Include="Configuration\OrderMenusHisConfiguration.cs" />
+    <Compile Include="Configuration\OrderPackagesConfiguration.cs" />
+    <Compile Include="Configuration\OrderPackagesHisConfiguration.cs" />
+    <Compile Include="Configuration\OrderSequencesConfiguration.cs" />
+    <Compile Include="Configuration\OrganizationsConfiguration.cs" />
+    <Compile Include="Configuration\PackagesConfiguration.cs" />
+    <Compile Include="Configuration\PayTypesConfiguration.cs" />
+    <Compile Include="Configuration\PeriodConfiguration.cs" />
+    <Compile Include="Configuration\PlayListsConfiguration.cs" />
+    <Compile Include="Configuration\ProductionInStorageConfiguration.cs" />
+    <Compile Include="Configuration\PTTypeConfiguration.cs" />
+    <Compile Include="Configuration\RdRecordConfiguration.cs" />
+    <Compile Include="Configuration\RdRecordsConfiguration.cs" />
+    <Compile Include="Configuration\RdTypeConfiguration.cs" />
+    <Compile Include="Configuration\RechargeDonationsConfiguration.cs" />
+    <Compile Include="Configuration\RechargesConfiguration.cs" />
+    <Compile Include="Configuration\RoomsConfiguration.cs" />
+    <Compile Include="Configuration\SaleCheckConfiguration.cs" />
+    <Compile Include="Configuration\schema_infoConfiguration.cs" />
+    <Compile Include="Configuration\scope_configConfiguration.cs" />
+    <Compile Include="Configuration\scope_infoConfiguration.cs" />
+    <Compile Include="Configuration\ScrapVouchConfiguration.cs" />
+    <Compile Include="Configuration\ScrapVouchsConfiguration.cs" />
+    <Compile Include="Configuration\STTypeConfiguration.cs" />
+    <Compile Include="Configuration\TastesConfiguration.cs" />
+    <Compile Include="Configuration\tbAssignDetailConfiguration.cs" />
+    <Compile Include="Configuration\tbAssignDetailLogConfiguration.cs" />
+    <Compile Include="Configuration\tbAssignLogConfiguration.cs" />
+    <Compile Include="Configuration\tbAssociatorConfiguration.cs" />
+    <Compile Include="Configuration\tbAssociatorLogConfiguration.cs" />
+    <Compile Include="Configuration\tbAssociatorSyncConfiguration.cs" />
+    <Compile Include="Configuration\tbBespeakLogConfiguration.cs" />
+    <Compile Include="Configuration\tbBillConfiguration.cs" />
+    <Compile Include="Configuration\tbBillHisConfiguration.cs" />
+    <Compile Include="Configuration\tbBillOfEnterStorageDetailConfiguration.cs" />
+    <Compile Include="Configuration\tbBillOfEnterStorageLogConfiguration.cs" />
+    <Compile Include="Configuration\tbBillOfMaterialsConfiguration.cs" />
+    <Compile Include="Configuration\tbBillOfReceiveDetailConfiguration.cs" />
+    <Compile Include="Configuration\tbBillOfReceiveLogConfiguration.cs" />
+    <Compile Include="Configuration\tbBillOtherConfiguration.cs" />
+    <Compile Include="Configuration\tbBusiIncomeReportConfiguration.cs" />
+    <Compile Include="Configuration\tbBusiLogConfiguration.cs" />
+    <Compile Include="Configuration\tbBusiLogHisConfiguration.cs" />
+    <Compile Include="Configuration\tbBusiLogOtherConfiguration.cs" />
+    <Compile Include="Configuration\tbCheckSerialConfiguration.cs" />
+    <Compile Include="Configuration\tbCheckSerialLogConfiguration.cs" />
+    <Compile Include="Configuration\tbCommCodeConfiguration.cs" />
+    <Compile Include="Configuration\tbComputationGroupConfiguration.cs" />
+    <Compile Include="Configuration\tbComputationUnitConfiguration.cs" />
+    <Compile Include="Configuration\tbConsItemConfiguration.cs" />
+    <Compile Include="Configuration\tbConsItemHisConfiguration.cs" />
+    <Compile Include="Configuration\tbConsItemOtherConfiguration.cs" />
+    <Compile Include="Configuration\tbConsSerialNoConfiguration.cs" />
+    <Compile Include="Configuration\tbCurrentStockConfiguration.cs" />
+    <Compile Include="Configuration\tbDataSoftUpdateLogConfiguration.cs" />
+    <Compile Include="Configuration\tbDeptConfiguration.cs" />
+    <Compile Include="Configuration\tbDosageConfiguration.cs" />
+    <Compile Include="Configuration\tbEmployeeConfiguration.cs" />
+    <Compile Include="Configuration\tbEmpSignConfiguration.cs" />
+    <Compile Include="Configuration\tbFillFeeConfiguration.cs" />
+    <Compile Include="Configuration\tbFillFeeHisConfiguration.cs" />
+    <Compile Include="Configuration\tbFillFeeOtherConfiguration.cs" />
+    <Compile Include="Configuration\tbFormulaConfiguration.cs" />
+    <Compile Include="Configuration\tbFuncConfiguration.cs" />
+    <Compile Include="Configuration\tbGoodsConfiguration.cs" />
+    <Compile Include="Configuration\tbGroupGoodsConfiguration.cs" />
+    <Compile Include="Configuration\tbGroupMakeConfiguration.cs" />
+    <Compile Include="Configuration\tbIntegralLogConfiguration.cs" />
+    <Compile Include="Configuration\tbIntegralLogHisConfiguration.cs" />
+    <Compile Include="Configuration\tbIntegralLogOtherConfiguration.cs" />
+    <Compile Include="Configuration\tbInventoryConfiguration.cs" />
+    <Compile Include="Configuration\tbLoginConfiguration.cs" />
+    <Compile Include="Configuration\tbMacAddressConfiguration.cs" />
+    <Compile Include="Configuration\tbMakeDetailConfiguration.cs" />
+    <Compile Include="Configuration\tbMakeLogConfiguration.cs" />
+    <Compile Include="Configuration\tbMaterialConfiguration.cs" />
+    <Compile Include="Configuration\tbMaterialEnterConfiguration.cs" />
+    <Compile Include="Configuration\tbMaterialOutConfiguration.cs" />
+    <Compile Include="Configuration\tbMaterialParaConfiguration.cs" />
+    <Compile Include="Configuration\tbMonthlyBalanceConfiguration.cs" />
+    <Compile Include="Configuration\tbMonthlyBalanceLogConfiguration.cs" />
+    <Compile Include="Configuration\tbMoveDetailConfiguration.cs" />
+    <Compile Include="Configuration\tbMoveLogConfiguration.cs" />
+    <Compile Include="Configuration\tbNameCodeConfiguration.cs" />
+    <Compile Include="Configuration\tbNoticeConfiguration.cs" />
+    <Compile Include="Configuration\tbOperConfiguration.cs" />
+    <Compile Include="Configuration\tbOperFuncConfiguration.cs" />
+    <Compile Include="Configuration\tbOperLogConfiguration.cs" />
+    <Compile Include="Configuration\tbOperStandardConfiguration.cs" />
+    <Compile Include="Configuration\tbOrderAddLogConfiguration.cs" />
+    <Compile Include="Configuration\tbOrderBookConfiguration.cs" />
+    <Compile Include="Configuration\tbOrderBookDetailConfiguration.cs" />
+    <Compile Include="Configuration\tbOrderReduceLogConfiguration.cs" />
+    <Compile Include="Configuration\tbOrderSerialNoConfiguration.cs" />
+    <Compile Include="Configuration\tbProduceCheckLogConfiguration.cs" />
+    <Compile Include="Configuration\tbProduceDetailAddConfiguration.cs" />
+    <Compile Include="Configuration\tbProduceDetailConfiguration.cs" />
+    <Compile Include="Configuration\tbProduceDetailReduceConfiguration.cs" />
+    <Compile Include="Configuration\tbProduceLogConfiguration.cs" />
+    <Compile Include="Configuration\tbProduceOrderLogConfiguration.cs" />
+    <Compile Include="Configuration\tbProductClassConfiguration.cs" />
+    <Compile Include="Configuration\tbProductLostSerialConfiguration.cs" />
+    <Compile Include="Configuration\tbProductLostSerialLogConfiguration.cs" />
+    <Compile Include="Configuration\tbProductSerialConfiguration.cs" />
+    <Compile Include="Configuration\tbProductSerialLogConfiguration.cs" />
+    <Compile Include="Configuration\tbRepAssConsDailyConfiguration.cs" />
+    <Compile Include="Configuration\tbRepAssCountConfiguration.cs" />
+    <Compile Include="Configuration\tbRepAssDailyIGChargeConfiguration.cs" />
+    <Compile Include="Configuration\tbRepAssFillConfiguration.cs" />
+    <Compile Include="Configuration\tbRepAssLargConfiguration.cs" />
+    <Compile Include="Configuration\tbRepAssSpecConsConfiguration.cs" />
+    <Compile Include="Configuration\tbSellDayCheckDetailConfiguration.cs" />
+    <Compile Include="Configuration\tbSellDayCheckLogConfiguration.cs" />
+    <Compile Include="Configuration\tbSellLoseLogConfiguration.cs" />
+    <Compile Include="Configuration\tbSignListConfiguration.cs" />
+    <Compile Include="Configuration\tbStockDetailConfiguration.cs" />
+    <Compile Include="Configuration\tbStockDetailLogConfiguration.cs" />
+    <Compile Include="Configuration\tbStockMainConfiguration.cs" />
+    <Compile Include="Configuration\tbStockMainLogConfiguration.cs" />
+    <Compile Include="Configuration\tbStockPlanConfiguration.cs" />
+    <Compile Include="Configuration\tbStockPlanDetailConfiguration.cs" />
+    <Compile Include="Configuration\tbStorageConfiguration.cs" />
+    <Compile Include="Configuration\tbStorageLogConfiguration.cs" />
+    <Compile Include="Configuration\tbSupplierConfiguration.cs" />
+    <Compile Include="Configuration\tbSysErrorLogConfiguration.cs" />
+    <Compile Include="Configuration\tbUnitInvertConfiguration.cs" />
+    <Compile Include="Configuration\tbWarehouseConfiguration.cs" />
+    <Compile Include="Configuration\TransportsConfiguration.cs" />
+    <Compile Include="Configuration\TransportsLogConfiguration.cs" />
+    <Compile Include="Configuration\TransVouchConfiguration.cs" />
+    <Compile Include="Configuration\TransVouchsConfiguration.cs" />
+    <Compile Include="Configuration\UnitOfMeasuresConfiguration.cs" />
+    <Compile Include="Configuration\VehiclesConfiguration.cs" />
+    <Compile Include="Configuration\VendorConfiguration.cs" />
+    <Compile Include="Configuration\VouchAuthorityConfiguration.cs" />
+    <Compile Include="Configuration\VouchCodeRuleConfiguration.cs" />
+    <Compile Include="Configuration\VouchCodeSnConfiguration.cs" />
+    <Compile Include="Configuration\VouchTypeConfiguration.cs" />
+    <Compile Include="Configuration\vwBillConfiguration.cs" />
+    <Compile Include="Configuration\vwBusiLogConfiguration.cs" />
+    <Compile Include="Configuration\vwConsItemConfiguration.cs" />
+    <Compile Include="Configuration\vwFillFeeConfiguration.cs" />
+    <Compile Include="Configuration\WarehouseConfiguration.cs" />
+    <Compile Include="Configuration\WarehouseDeptConfiguration.cs" />
+    <Compile Include="Configuration\WarehouseInventoryConfiguration.cs" />
+    <Compile Include="Configuration\WRCardLevelsConfiguration.cs" />
+    <Compile Include="Configuration\InvPriceConfiguration.cs" />
+    <Compile Include="Configuration\ConsumeInvPriceConfiguration.cs" />
+    <Compile Include="Configuration\OrderInvPriceConfiguration.cs" />
+    <Compile Include="Configuration\ConsumeListRdsConfiguration.cs" />
+    <Compile Include="Configuration\ReceiptHisConfiguration.cs" />
+    <Compile Include="EFRepository.cs" />
+    <Compile Include="FairiesMemberManageDbContext.cs" />
+    <Compile Include="FairiesMemberManageUow.cs" />
+    <Compile Include="Helpers\IRepositoryProvider.cs" />
+    <Compile Include="Helpers\RepositoryFactories.cs" />
+    <Compile Include="Helpers\RepositoryProvider.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="SampleData\AMSCMDatabaseInitializer.cs" />
+    <Compile Include="SampleData\FairiesMemberManageDatabaseInitializer.cs" />
+    <Compile Include="Uow.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\DXInfo.Data.Contracts\DXInfo.Data.Contracts.csproj">
+      <Project>{17D20D66-1646-4DDC-9261-BFB28AB43640}</Project>
+      <Name>DXInfo.Data.Contracts</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\DXInfo.Models\DXInfo.Models.csproj">
+      <Project>{5CCDEF4A-ED6F-4899-8F9C-419ED1E32D5F}</Project>
+      <Name>DXInfo.Models</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="App.config" />
+    <Compile Include="Configuration\ReceiptsConfiguration.cs" />
+    <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup />
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

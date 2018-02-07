@@ -1,0 +1,177 @@
+﻿@using ynhnTransportManage
+@model ynhnTransportManage.Models.Report10Model           
+<script type="text/javascript">
+    $(function () {
+        $("#BeginDate").datepicker();
+        $("#EndDate").datepicker();
+        $("#query").button();
+        $("#export").button();
+    });
+	</script>
+@{
+    RouteValueDictionary routeValues = new RouteValueDictionary();
+    routeValues.Add("InvType",this.Model.InvType);
+    routeValues.Add("CategoryType", this.Model.CategoryType);
+    routeValues.Add("DeptType", this.Model.DeptType);
+    }
+@using (Html.BeginForm("Report10", "Report", routeValues))
+{
+@Html.ValidationSummary(true, "参数错误。请更正错误并重试。")
+<table style="width:100%;">
+<tr>
+<td>
+    <h2 class="ui-jqgrid-titlebar ui-widget-header ui-corner-top ui-helper-clearfix" style="text-align:center">@ViewBag.Title</h2>
+</td>
+</tr>
+    <tr>
+        <td>
+        <div class="ui-state-default ui-jqgrid-toppager">
+        <table>
+            <tbody>
+            <tr>
+                <td>
+                <div class="editor-label">
+                @Html.LabelFor(m => m.DeptId)
+            </div>
+            </td>
+                <td>
+                <div class="editor-field">
+                @Html.DropDownListFor(m => m.DeptId, @Helpers.GetDepts002())
+                @Html.ValidationMessageFor(m => m.DeptId)
+            </div>
+                </td>
+                
+                <td>
+                    <div class="editor-label">
+                @Html.LabelFor(m => m.Category)
+            </div>
+                </td>
+                <td>
+                    <div class="editor-field">
+                @Html.DropDownListFor(m => m.Category, @Html.GetCategory002())
+                @Html.ValidationMessageFor(m => m.Category)
+            </div>
+                </td>
+                
+                    
+                <td>
+                    <div class="editor-label">
+                @Html.LabelFor(m => m.BeginDate)
+            </div>
+                </td>
+                <td>
+                    <div class="editor-field">
+                @Html.TextBoxFor(m => m.BeginDate)
+                @Html.ValidationMessageFor(m => m.BeginDate)
+            </div>
+                </td>
+                
+                <td>
+                    <div class="editor-label">
+                @Html.LabelFor(m => m.EndDate)
+            </div>
+                </td>
+                <td>
+                    <div class="editor-field">
+                @Html.TextBoxFor(m => m.EndDate)
+                @Html.ValidationMessageFor(m => m.EndDate)
+            </div>
+                </td>
+                <td>
+                <input id="query" type="submit" value="查询" />
+                </td>
+                <td>                
+                @Html.ActionLink("导出EXCEL", "Report10ExportToExcel", "Report", null, new { id = "export" })
+                </td>
+            </tr>
+            </tbody>
+        </table>
+        </div>
+        </td>
+        </tr>
+        <tr>
+        <td>
+        @{
+    var grid = new WebGrid(source: Model.result,
+    defaultSort: "Amount",
+canPage: true,
+canSort: true,
+rowsPerPage: 20);
+    var gridColumns = new List<WebGridColumn>();
+    gridColumns.Add(grid.Column("DeptName", "店名"));
+    gridColumns.Add(grid.Column("CategoryName", "系列名称"));
+    gridColumns.Add(grid.Column("Cups", "销售数量", format: (item) => string.Format("{0:f2}", item.Cups)));
+    gridColumns.Add(grid.Column("Amount", "销售金额", format: (item) => string.Format("{0:f2}", item.Amount)));
+    gridColumns.Add(grid.Column("AmountOfDayAvg", "日均销量", format: (item) => string.Format("{0:f2}", item.AmountOfDayAvg)));
+    gridColumns.Add(grid.Column("CupsRatio", "数量比例", format: (item) => string.Format("{0:P}", item.CupsRatio)));
+    gridColumns.Add(grid.Column("AmountRatio", "金额比例", format: (item) => string.Format("{0:P}", item.AmountRatio)));
+}
+	<div class="ui-jqgrid ui-widget ui-widget-content ui-corner-all">
+	@grid.GetHtml(
+     mode: WebGridPagerModes.All,
+    numericLinksCount: 50,
+    firstText: "首页",
+    previousText: "上页",
+    nextText: "下页",
+    lastText: "最后页",
+            columns: gridColumns,
+                    tableStyle: "ui-jqgrid-view ui-jqgrid-bdiv ui-jqgrid-btable",
+                            rowStyle: "ui-widget-content jqgrow ui-row-ltr",
+                                alternatingRowStyle: "ui-widget-content jqgrow ui-row-ltr",
+                        headerStyle: "ui-state-default ui-jqgrid-hdiv",
+                                footerStyle: "ui-state-default ui-jqgrid-pager ui-corner-bottom ui-pager-control ui-pg-table")
+            </div>
+            
+        </td>
+    </tr>
+    <tr>
+        <td>
+        <div  class="ui-state-default ui-jqgrid-pager ui-corner-bottom">
+        <table>
+            <tr>
+                <td colspan="6" style="text-align:center;">
+                汇总信息
+                </td>
+            </tr>
+            <tr>
+            <td>
+                <div class="editor-label">
+                @Html.LabelFor(m => m.Cups)
+            </div>
+                </td>
+                <td>
+                <div class="editor-field">
+                @Html.TextBoxFor(m => m.Cups, new { @class = "wide" })
+                @Html.ValidationMessageFor(m => m.Cups)
+            </div>
+                </td>
+                <td>
+                <div class="editor-label">
+                @Html.LabelFor(m => m.Amount)
+            </div>
+                </td>
+                <td>
+                <div class="editor-field">
+                @Html.TextBoxFor(m => m.Amount, new { @class = "wide" })
+                @Html.ValidationMessageFor(m => m.Amount)
+            </div>
+                </td>
+                <td>
+                <div class="editor-label">
+                @Html.LabelFor(m => m.AmountOfDayAvg)
+            </div>
+                </td>
+                <td>
+                <div class="editor-field">
+                @Html.TextBoxFor(m => m.AmountOfDayAvg, new { @class = "wide" })
+                @Html.ValidationMessageFor(m => m.AmountOfDayAvg)
+            </div>
+                </td>                                                    
+            </tr>
+        </table>
+        </div>
+        </td>
+    </tr>
+</table>
+
+}

@@ -1,0 +1,32 @@
+﻿<Window x:Class="FairiesCoolerCash.Business.CardConsumePwdWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="消费" Height="300" Width="300" ResizeMode="NoResize" SizeToContent="WidthAndHeight"
+        WindowStartupLocation="CenterScreen" Background="{DynamicResource WindowBackgroundBrush}"
+        FontSize="20" Closing="Window_Closing"
+         xmlns:WpfKb="clr-namespace:WpfKb.Controls;assembly=WpfKb">
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition></RowDefinition>
+            <RowDefinition></RowDefinition>
+            <RowDefinition></RowDefinition>
+            <RowDefinition></RowDefinition>
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition></ColumnDefinition>
+            <ColumnDefinition></ColumnDefinition>
+        </Grid.ColumnDefinitions>
+        <Label Name="lblPwd" Content="密码："></Label>
+        <PasswordBox Name="txtPwd" GotFocus="txtPwd_GotFocus" 
+                 GotKeyboardFocus="txtPwd_GotKeyboardFocus" 
+                 GotMouseCapture="txtPwd_GotMouseCapture"
+                 GotTouchCapture="txtPwd_GotTouchCapture"
+                 Grid.Column="1" Width="200"></PasswordBox>
+        <Label Name="lblDeskNo" Grid.Row="1" Content="号牌："></Label>
+        <TextBox Name="txtDeskNo" Grid.Row="1" Grid.Column="1" Width="200"></TextBox>
+        <Button Grid.Row="3" Grid.ColumnSpan="2" Content="确定" Click="Button_Click" Height="50"></Button>
+        <WpfKb:OnScreenKeypad Grid.Row="2" Grid.ColumnSpan="2" MouseDown="Keyboard_MouseDown" TouchDown="Keyboard_TouchDown"
+            x:Name="Keyboard"
+            />
+    </Grid>
+</Window>

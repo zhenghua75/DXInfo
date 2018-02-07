@@ -1,0 +1,105 @@
+﻿@using DXInfo.Web.Models
+@model DXInfo.Web.Models.VouchsGridModel
+@{
+    Layout = "~/Views/Shared/_StockManageBase.cshtml";
+}
+@Html.HiddenFor(m => m.BusType)
+<script type="text/javascript">
+    $(function () {
+        $("#AddReceiver").button();
+        $("#AddReceiver").button().click(function () {
+            AddReceiver();
+        });
+    });
+
+    function AddReceiver() {
+        var url = urls.Receiver;
+        $("#AddReceiverDiv")
+        .load(url, function (response, status, xhr) {
+            if (status == "error") {
+                alert(xhr.status + " " + xhr.statusText);
+            }
+        }).dialog({ 
+                    title:"收货单位",
+                    modal: false,
+                    width:1050,  
+                    close: function (event, ui) {$(this).dialog('destroy');$(this).empty(); },
+                    beforeClose: function (event, ui) { VenIdCallBack(); },
+                    buttons:{'关闭': function(){$(this).dialog('close');}},
+                    });  
+              
+        return false;                                        
+    }
+
+    function Discount(ro){
+	    if(!$("#OriginPrice").val()){
+		    $("#OriginPrice").val($("#Price").val());
+        }	
+	    $("#Price").val(Math.round($(ro).val()*$("#OriginPrice").val())/100);
+        $("#Amount").val(Math.round($("#Price").val()*$("#Num").val()*100)/100);
+    }
+</script>
+<fieldset class="ui-widget ui-widget-content ui-corner-all">
+    <legend class="ui-widget-header ui-corner-all"></legend>
+    <table>
+        <tr>
+            <td>
+                <label for="Code">
+                    出库单号</label>
+            </td>
+            <td>@Html.TextBoxFor(m => m.Code)@Html.MyValidationMessageFor(m => m.Code)
+            </td>
+            <td>
+                <label for="RdDate">
+                    出库日期</label>
+            </td>
+            <td>@Html.TextBoxFor(m => m.RdDate)@Html.MyValidationMessageFor(m => m.RdDate)
+            </td>
+            <td>@Html.LabelFor(m => m.WhId)
+            </td>
+            <td>@Html.DropDownListFor(m => m.WhId, @Html.GetWarehouse())@Html.MyValidationMessageFor(m => m.WhId)
+            </td>
+            <td>@Html.LabelFor(m => m.Salesman)
+            </td>
+            <td>@Html.DropDownListFor(m => m.Salesman, @Html.GetOper())
+            </td>
+        </tr>
+        <tr>
+            <td>@Html.LabelFor(m => m.VerifyDate)
+            </td>
+            <td>@Html.TextBoxFor(m => m.VerifyDate)
+            </td>
+            @if (Html.IsReceiver())
+            {
+                <td>
+                    <label for="VenId">
+                        收货单位</label>
+                </td>
+                <td>@Html.DropDownListFor(m => m.VenId, @Html.GetReceiver())
+                <button id="AddReceiver">添加</button><div id="AddReceiverDiv"></div>
+                </td>                
+            }
+            else
+            {
+                <td>
+                </td>
+                <td>
+                </td>
+            }
+            <td>
+            </td>
+            <td>
+            </td>
+            <td>
+            </td>
+            <td>
+            </td>
+        </tr>
+        <tr>
+            <td>@Html.LabelFor(m => m.Memo)
+            </td>
+            <td colspan="7">@Html.TextBoxFor(m => m.Memo, new { style = "width:100%" })
+            </td>
+        </tr>
+    </table>
+</fieldset>

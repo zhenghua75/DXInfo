@@ -1,0 +1,319 @@
+﻿<UserControl x:Class="FairiesCoolerCash.Business.CardConsumeUserControl"
+      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+      xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+      xmlns:local="clr-namespace:FairiesCoolerCash.Business"
+             xmlns:sys="clr-namespace:System;assembly=mscorlib"
+      mc:Ignorable="d" 
+      Background="{DynamicResource WindowBackgroundBrush}" 
+      FontSize="20"
+             DataContext="{Binding CardConsumeViewModel,Source={StaticResource Locator}}"    
+                     xmlns:xctk="http://schemas.xceed.com/wpf/xaml/toolkit"
+             >
+    <UserControl.Resources>
+        <!--<CollectionViewSource Source="{Binding OCInventory}" x:Key="CVS_OCInventory">
+        </CollectionViewSource>-->
+        <Style x:Key="ComboBox2" TargetType="ComboBox" BasedOn="{StaticResource {x:Type ComboBox}}">
+            <Style.Triggers>
+                <MultiDataTrigger>
+                    <MultiDataTrigger.Conditions>
+                        <Condition Binding="{Binding IsCard}" Value="True"/>
+                        <Condition Binding="{Binding IsMoney}" Value="False"/>
+                    </MultiDataTrigger.Conditions>
+                    <Setter Property="ComboBox.ItemsSource" Value="{Binding lPayTypeAll}" />
+                </MultiDataTrigger>
+                <MultiDataTrigger>
+                    <MultiDataTrigger.Conditions>
+                        <Condition Binding="{Binding IsCard}" Value="False"/>
+                        <Condition Binding="{Binding IsMoney}" Value="False"/>
+                    </MultiDataTrigger.Conditions>
+                    <Setter Property="ComboBox.ItemsSource" Value="{Binding lPayType}" />
+                </MultiDataTrigger>
+                <MultiDataTrigger>
+                    <MultiDataTrigger.Conditions>
+                        <Condition Binding="{Binding IsCard}" Value="True"/>
+                        <Condition Binding="{Binding IsMoney}" Value="True"/>
+                    </MultiDataTrigger.Conditions>
+                    <Setter Property="ComboBox.ItemsSource" Value="{Binding lPayTypeCard}" />
+                </MultiDataTrigger>
+            </Style.Triggers>
+        </Style>
+        
+    </UserControl.Resources>
+    <Grid Margin="30,0,30,0">
+         <Grid.RowDefinitions>
+            <RowDefinition Height="50"></RowDefinition>    
+            <local:RowDefinitionExtended Height="Auto"  Visible="{Binding CardColumnVisibility}" />
+            <RowDefinition Height="*"></RowDefinition>
+        </Grid.RowDefinitions>
+        <Label HorizontalAlignment="Center" FontSize="26" Grid.ColumnSpan="2" FontWeight="Bold">消费</Label>
+        <Border Grid.Row="1" BorderThickness="5" BorderBrush="AliceBlue" Margin="5"
+                Visibility="{Binding CardVisibility}">
+            <TextBlock TextWrapping="Wrap" Visibility="{Binding CardVisibility}">
+                    <Run Text="{Binding Card.CardNo,StringFormat={}卡号：{0}|}"/>
+                    <Run Text="{Binding Member.MemberName,StringFormat={}会员名：{0}|}"/>
+                    <Run Text="{Binding Member.IdCard,StringFormat={}证件号码：{0}|}"/>
+                    <Run Text="{Binding CardType.Name,StringFormat={}卡类型：{0}|}"/>
+                    <Run Text="{Binding CardLevel.Name,StringFormat={}卡级别：{0}|}"/>
+                    <Run Text="{Binding CardLevel.Discount,StringFormat={}折扣：{0}|}"/>
+                    <Run Text="{Binding CardDept.DeptName,StringFormat={}发卡门店：{0}|}"/>
+                    <Run Text="{Binding CardBalance,TargetNullValue={x:Null},StringFormat={}余额：{0}|}"/>
+                    <Run Text="{Binding Points,TargetNullValue={x:Null},StringFormat={}积分：{0}}"/>
+            </TextBlock>
+        </Border>
+        
+        <Grid Grid.Row="2">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"></ColumnDefinition>
+                <ColumnDefinition Width="*"></ColumnDefinition>
+            </Grid.ColumnDefinitions>
+
+            <Grid Name="Container">
+                <Grid.RowDefinitions>
+                    <!--<RowDefinition Height="50"></RowDefinition>-->
+                    <local:RowDefinitionExtended Height="50"  Visible="{Binding BarcodeColumnVisibility}" />
+                    <RowDefinition Height="*"></RowDefinition>
+                    <RowDefinition Height="*"></RowDefinition>
+                </Grid.RowDefinitions>
+                <TextBox Grid.Row="0" BorderThickness="5" HorizontalAlignment="Stretch" 
+                         Width="{Binding ElementName=Container,Path=ActualWidth}"
+                         GotKeyboardFocus="TextBox_GotKeyboardFocus"
+                         GotMouseCapture="TextBox_GotMouseCapture"
+                         GotTouchCapture="TextBox_GotTouchCapture"
+                         Text="{Binding Barcode,UpdateSourceTrigger=PropertyChanged}" 
+                         BorderBrush="AliceBlue" Margin="5"  Visibility="{Binding BarcodeVisibility}" >
+                    <TextBox.InputBindings>
+                        <KeyBinding Command="{Binding BarcodeCmd}" CommandParameter="{Binding RelativeSource=
+        {RelativeSource FindAncestor, AncestorType={x:Type TextBox}}}" Key="Enter"></KeyBinding>
+                    </TextBox.InputBindings>
+                </TextBox>
+                <ListBox Name="lvCategory" Grid.Row="1"
+                         ItemsSource="{Binding OCInventoryCategory}"
+                         SelectedItem="{Binding SelectedInventoryCategory}"
+                         Background="{DynamicResource WindowBackgroundBrush}"
+                       BorderThickness="5" BorderBrush="AliceBlue" Margin="5" Style="{x:Null}"
+                         ScrollViewer.HorizontalScrollBarVisibility="Disabled">
+                      <ListBox.Resources>
+                        <Style x:Key="{x:Type ScrollBar}" TargetType="{x:Type ScrollBar}">
+                            <Style.Triggers>
+                                <Trigger Property="Orientation" Value="Horizontal">
+                                    <Setter Property="Width" Value="Auto"/>
+                                    <Setter Property="Height" Value="18" />
+                                </Trigger>
+                                <Trigger Property="Orientation" Value="Vertical">
+                                    <Setter Property="Width" Value="60"/>
+                                    <Setter Property="Height" Value="Auto" />
+                                </Trigger>
+                            </Style.Triggers>
+                        </Style>
+                    </ListBox.Resources>
+                    <ListBox.ItemsPanel>
+                        <ItemsPanelTemplate>
+                            <WrapPanel Width="{Binding ElementName=lvCategory, Path=Width}"/>
+                        </ItemsPanelTemplate>
+                    </ListBox.ItemsPanel>
+                    <ListBox.ItemTemplate>
+                        <DataTemplate>
+                                <Border BorderThickness="1" BorderBrush="AliceBlue">
+                                <TextBlock Height="100" Width="90"
+                     HorizontalAlignment="Center" Margin="1,1,1,1" TextWrapping="Wrap" Text="{Binding Path=Name}"  FontSize="20" ></TextBlock>
+                            </Border>
+                        </DataTemplate>
+                    </ListBox.ItemTemplate>
+                </ListBox>
+                <ListBox Name="lvInv" 
+                        Grid.Row="2"  ItemsSource="{Binding OCInventory}"
+                         IsSynchronizedWithCurrentItem="False" SelectionMode="Single"
+                         PreviewMouseDown="lvInv_PreviewMouseDown"
+                             SelectedItem="{Binding SelectedInventory}"
+                          Background="{DynamicResource WindowBackgroundBrush}"
+                      BorderThickness="5" BorderBrush="AliceBlue" Margin="5" Style="{x:Null}"
+                             ScrollViewer.HorizontalScrollBarVisibility="Disabled"                              
+                             >
+                    <ListBox.Resources>
+                        <Style x:Key="{x:Type ScrollBar}" TargetType="{x:Type ScrollBar}">
+                            <Style.Triggers>
+                                <Trigger Property="Orientation" Value="Horizontal">
+                                    <Setter Property="Width" Value="Auto"/>
+                                    <Setter Property="Height" Value="18" />
+                                </Trigger>
+                                <Trigger Property="Orientation" Value="Vertical">
+                                    <Setter Property="Width" Value="60"/>
+                                    <Setter Property="Height" Value="Auto" />
+                                </Trigger>
+                            </Style.Triggers>
+                        </Style>
+                    </ListBox.Resources>
+                        <ListBox.ItemsPanel>
+                        <ItemsPanelTemplate>
+                            <WrapPanel Width="{Binding ElementName=lvInv, Path=Width}"/>
+                        </ItemsPanelTemplate>
+                    </ListBox.ItemsPanel>
+                    <ListBox.ItemTemplate>
+                        <DataTemplate>
+                            <StackPanel >
+                                <Border BorderThickness="1" BorderBrush="AliceBlue">
+                                    <TextBlock 
+                      Height="100" Width="90" VerticalAlignment="Center" 
+                     HorizontalAlignment="Center" Margin="1,1,1,1" TextWrapping="Wrap">
+                                         <Run FontSize="20" Text="{Binding Path=Name}"/>
+                                        <Run Text="默认价：" FontSize="13"></Run>
+                                        <Run Text="{Binding Path=SalePrice}" FontSize="13"/>
+                                    </TextBlock>
+                                </Border>
+                            </StackPanel>
+                        </DataTemplate>
+                    </ListBox.ItemTemplate>
+                </ListBox>
+            </Grid>
+            <Grid Grid.Column="1">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"></RowDefinition>
+                    <RowDefinition Height="*"></RowDefinition>
+                    <RowDefinition Height="25"></RowDefinition>
+                </Grid.RowDefinitions>
+                <Border Grid.Column="0" Grid.Row="0" BorderThickness="5" BorderBrush="AliceBlue" Margin="5">
+                    <Grid Margin="10" >
+
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="50"></RowDefinition>
+                            <RowDefinition Height="50"></RowDefinition>                            
+                        </Grid.RowDefinitions>
+                        <Grid.ColumnDefinitions>
+                            <!--<ColumnDefinition Width="0.5*"></ColumnDefinition>-->
+                            <local:ColumnDefinitionExtended Width="0.5*" Visible="{Binding CardPayTypeColumnVisibility}" />
+                            <ColumnDefinition Width="0.5*"></ColumnDefinition>
+                        </Grid.ColumnDefinitions>
+
+                        <Border x:Name="MyBorder" Margin="10,0,0,0"/>
+                        <ComboBox Width="{Binding ElementName=MyBorder, Path=ActualWidth}"  
+                                  Visibility="{Binding PayTypeVisibility}"                                  
+                                  DisplayMemberPath="Name" SelectedItem="{Binding SelectedPayType}"
+                                  Style="{StaticResource ComboBox2}">
+                            <!--<local:CueBannerService.CueBanner>
+                                <TextBlock FontSize="20" Text="支付方式"></TextBlock>
+                            </local:CueBannerService.CueBanner>-->
+                        </ComboBox>
+
+                        <Grid Grid.Row="0" Grid.Column="1">
+                            <Grid.ColumnDefinitions>
+                                <local:ColumnDefinitionExtended Visible="{Binding VoucherColumnVisibility}" />
+                                <local:ColumnDefinitionExtended Visible="{Binding CancelCheckOutColumnVisibility}" />
+                            </Grid.ColumnDefinitions>
+
+                            <Border x:Name="MyBorder1" Margin="0,0,0,0"/>
+                            <TextBox Grid.Row="0" Grid.Column="0" Visibility="{Binding VoucherVisibility}"
+                                     Width="{Binding ElementName=MyBorder1, Path=ActualWidth}"  
+                                     local:TextBoxMaskBehavior.Mask="Decimal"
+                                                local:VirtualKeyboard.FloatingTouchScreenKeyboard="{Binding IsOpen}"
+                                                       Text="{Binding Voucher,Converter={StaticResource decimalNullConverter}}">
+                                <local:CueBannerService.CueBanner>
+                                    <TextBlock FontSize="20" Text="输入代金券金额"></TextBlock>
+                                </local:CueBannerService.CueBanner>
+                            </TextBox>
+                            <TextBox Grid.Row="0" Grid.Column="1" Visibility="{Binding CancelCheckOutVisibility}"
+                                                local:VirtualKeyboard.FloatingTouchScreenKeyboard="{Binding IsOpen}"
+                                                       Text="{Binding Sn,UpdateSourceTrigger=PropertyChanged}">
+                                <local:CueBannerService.CueBanner>
+                                    <TextBlock FontSize="20" Text="输入结账流水"></TextBlock>
+                                </local:CueBannerService.CueBanner>
+                                <TextBox.InputBindings>
+                                    <KeyBinding Command="{Binding ConsumeSnCmd}" CommandParameter="{Binding RelativeSource=
+        {RelativeSource FindAncestor, AncestorType={x:Type TextBox}}}" Key="Enter"></KeyBinding>
+                                </TextBox.InputBindings>
+                            </TextBox>
+                        </Grid>
+                        <Grid Grid.Row="1" Grid.Column="0">
+                            <Grid.ColumnDefinitions>
+                                <local:ColumnDefinitionExtended Visible="{Binding CardColumnVisibility}" />
+                                <local:ColumnDefinitionExtended Visible="{Binding SearchCardColumnVisibility}" />
+                                <local:ColumnDefinitionExtended Visible="{Binding CardColumnVisibility}" />
+                            </Grid.ColumnDefinitions>
+                            <Button Grid.Column="0" Visibility="{Binding CardVisibility}" Command="{Binding SwipingCard}">刷卡</Button>
+                            <Button Grid.Column="1" Visibility="{Binding SearchCardVisibility}" Command="{Binding SearchCard}">查找</Button>
+                            <Button Grid.Column="2" Visibility="{Binding CardVisibility}" Command="{Binding CancelSwipingCard}">重置</Button>
+                        </Grid>
+
+                        <Grid Grid.Row="1" Grid.Column="1">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition></ColumnDefinition>
+                                <local:ColumnDefinitionExtended Visible="{Binding CancelCheckOutColumnVisibility}" />
+                            </Grid.ColumnDefinitions>
+                            <Button Grid.Row="0" Grid.Column="0" Command="{Binding CheckOut}">结账</Button>
+                            <Button Grid.Row="0" Grid.Column="1" Command="{Binding CancelCheckOut}" Visibility="{Binding CancelCheckOutVisibility}">结账撤销</Button>
+                        </Grid>
+                    </Grid>
+                </Border>                
+                <DataGrid Grid.Row="1" Grid.Column="0" AutoGenerateColumns="False" 
+                  CanUserDeleteRows="True" SelectionMode="Single"
+                          Name="MyDataGrid"
+                  CanUserAddRows="False"  ColumnHeaderHeight="50" MinColumnWidth="80" MinRowHeight="25"
+                      HeadersVisibility="None" 
+                          ItemsSource="{Binding OCInventoryEx}"
+                          SelectedItem="{Binding SelectedInventoryEx,Mode=TwoWay}"
+                      Background="{DynamicResource WindowBackgroundBrush}" RowHeight="50"
+                      BorderThickness="5" BorderBrush="AliceBlue" Margin="5">
+
+                <DataGrid.Columns>
+                    <DataGridTextColumn  Header="名称" Binding="{Binding Path=Name}" IsReadOnly="True">
+                            <DataGridTextColumn.ElementStyle>
+                                <Style TargetType="{x:Type TextBlock}">
+                                    <Setter Property="VerticalAlignment" Value="Center" />
+                                </Style>
+                            </DataGridTextColumn.ElementStyle>
+                        </DataGridTextColumn>
+
+
+                        <DataGridTextColumn Header="价格" Binding="{Binding Path=CurrentSalePrice}" IsReadOnly="True">
+                            <DataGridTextColumn.ElementStyle>
+                                <Style TargetType="{x:Type TextBlock}">
+                                    <Setter Property="VerticalAlignment" Value="Center" />
+                                </Style>
+                            </DataGridTextColumn.ElementStyle>
+                        </DataGridTextColumn>
+                    <DataGridTemplateColumn Header="数量">
+                        <DataGridTemplateColumn.CellTemplate>
+                            <DataTemplate>
+                                    <TextBox MaxHeight="50" HorizontalAlignment="Stretch" Width="80"
+                                        Text="{Binding Quantity,UpdateSourceTrigger=PropertyChanged}" 
+                                             local:TextBoxMaskBehavior.Mask="Decimal"
+                                             local:VirtualKeyboard.FloatingTouchScreenKeyboard="{Binding Path=DataContext.IsOpen,RelativeSource={RelativeSource AncestorType={x:Type DataGrid}}}"
+                                      ></TextBox>
+                            </DataTemplate>
+                        </DataGridTemplateColumn.CellTemplate>
+                    </DataGridTemplateColumn>
+                        <DataGridTextColumn Header="金额" Binding="{Binding Path=CurrentAmount}" IsReadOnly="True">
+                            <DataGridTextColumn.ElementStyle>
+                                <Style TargetType="{x:Type TextBlock}">
+                                    <Setter Property="VerticalAlignment" Value="Center" />
+                                </Style>
+                            </DataGridTextColumn.ElementStyle>
+                        </DataGridTextColumn>
+                    <DataGridTemplateColumn Header="撤销">
+                        <DataGridTemplateColumn.CellTemplate>
+                            <DataTemplate>
+                                    <Button MaxHeight="50"
+                                        Command="{Binding Path=DataContext.DeleteSelectedInventoryEx,RelativeSource={RelativeSource AncestorType={x:Type DataGrid}}}">撤销</Button>
+                            </DataTemplate>
+                        </DataGridTemplateColumn.CellTemplate>
+                    </DataGridTemplateColumn>
+                        <!--<DataGridTextColumn Header="当前库存" Binding="{Binding Path=CurrentStock.Num,StringFormat={}中心库存：{0:N2}}" IsReadOnly="True"></DataGridTextColumn>-->
+                        <DataGridTemplateColumn IsReadOnly="True">
+                            <DataGridTemplateColumn.CellTemplate>
+                                <DataTemplate>
+                                    <Image Visibility="{Binding Path=DataContext.ImageColumnVisibility,RelativeSource={RelativeSource AncestorType={x:Type DataGrid}}}"
+                                           Source="{Binding ImageFileName,Converter={StaticResource myImageConverter}}" Width="94.5" Height="132.3" />
+                                </DataTemplate>
+                            </DataGridTemplateColumn.CellTemplate>
+                        </DataGridTemplateColumn>
+                    </DataGrid.Columns>
+            </DataGrid>
+                <TextBlock Grid.Row="2">                                        
+                    <Run Text="{Binding SumQuantity,StringFormat={}数量合计：{0}}"/>
+                    <Run Text="{Binding SumAmount,StringFormat={}金额合计：{0}}"/>
+                </TextBlock>
+            </Grid>
+        </Grid>
+    </Grid>
+</UserControl>

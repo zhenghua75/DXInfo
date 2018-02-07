@@ -1,0 +1,13 @@
+﻿@using Trirand.Web.Mvc
+@model ynhnTransportManage.Models.TasteGridModel
+@Html.Trirand().JQGrid(Model.TasteGrid, "TasteGrid")
+<script type="text/javascript">
+        $(document).ready(function () {
+            $("#TasteGrid").closest("div.ui-jqgrid-view")
+                .children("div.ui-jqgrid-titlebar")
+                .css("text-align", "center")
+                .css("font-size", "large")
+                .children("span.ui-jqgrid-title")
+                .css("float", "none");
+        });
+</script>

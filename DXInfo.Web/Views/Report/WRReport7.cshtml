@@ -1,0 +1,465 @@
+﻿@using DXInfo.Web.Models
+@model DXInfo.Web.Models.WRReport7Model
+<script type="text/javascript">
+    $(function () {
+        $('#BeginDate').datetimepicker();
+        $('#EndDate').datetimepicker();
+        $("#query").button();
+        $("#export").button();
+        $("#query").button().click(function () {
+            submitToDiv("Report");
+        });
+        var ctrls = [{ name: "DeptId", type: "select" },
+                     { name: "UserId", type: "select" },
+                     { name: "BeginDate", type: "date" },
+                     { name: "EndDate", type: "date" }, ];
+        InitCtrl(ctrls);
+        $("th>a,td>a[id!='export']").click(function () { addToDiv(this); return false; });
+    });
+</script>
+<h2 class="ui-widget-header h2-center">@ViewBag.Title</h2>
+@using (Html.BeginForm("WRReport7", "Report", FormMethod.Post, new { id = "Report", @class = "form-overflow" }))
+{
+    @Html.ValidationSummary(true, "参数错误。请更正错误并重试。", new { @class = "ui-state-error" })
+    <fieldset class="ui-widget ui-widget-content ui-corner-all">
+    <legend class="ui-widget-header ui-corner-all"></legend>  
+       <table>
+        <tr>
+            <td>
+                    @Html.LabelFor(m => m.DeptId)
+            </td>
+            <td>
+                    @Html.DropDownListFor(m => m.DeptId, @Html.GetDept())
+                    @Html.ValidationMessageFor(m => m.DeptId)
+            </td>
+            <td>
+                    @Html.LabelFor(m => m.UserId)
+            </td>
+            <td>
+                    @Html.DropDownListFor(m => m.UserId, @Html.GetOper())
+                    @Html.ValidationMessageFor(m => m.UserId)
+            </td>
+            <td>
+                    @Html.LabelFor(m => m.BeginDate)
+            </td>
+            <td>
+                    @Html.TextBoxFor(m => m.BeginDate)
+                    @Html.ValidationMessageFor(m => m.BeginDate)
+            </td>
+            <td>
+                    @Html.LabelFor(m => m.EndDate)
+            </td>
+            <td>
+                    @Html.TextBoxFor(m => m.EndDate)
+                    @Html.ValidationMessageFor(m => m.EndDate)
+            </td>
+            <td>
+                <input id="query" type="submit" value="查询" />
+            </td>
+            <td>
+                @Html.ActionLink("导出EXCEL", "WRReport7ExportToExcel", "Report", null, new { id = "export" })
+            </td>
+        </tr>
+    </table>
+    </fieldset>
+
+    var grid = new MyWebGrid();
+    grid.Bind(Model.result2, rowCount: Model.rowCount, autoSortAndPage: false);
+    var gridColumns = new List<WebGridColumn>();
+    gridColumns.Add(grid.Column(columnName: "CreateDate", header: "日期", format: (item) => string.Format("{0:yyyy-MM-dd}", item.CreateDate)));
+    gridColumns.Add(grid.Column("DeptName", "店名"));
+    gridColumns.Add(grid.Column("FullName", "收银员"));
+    if (Html.OperatorsOnDuty())
+    {
+        gridColumns.Add(grid.Column("OperatorsOnDuty", "当班操作员"));
+    }
+    gridColumns.Add(grid.Column("Sum", "资金总收入", format: (item) => string.Format("{0:f2}", item.Sum)));
+    gridColumns.Add(grid.Column("Cash", "实收现金", format: (item) => string.Format("{0:f2}", item.Cash)));
+    gridColumns.Add(grid.Column("Bank", "实收银行卡", format: (item) => string.Format("{0:f2}", item.Bank)));
+    gridColumns.Add(grid.Column("Other", "实收其它", format: (item) => string.Format("{0:f2}", item.Other)));
+    gridColumns.Add(grid.Column("SumConsume", "销售收入", format: (item) => string.Format("{0:f2}", item.SumConsume)));
+    gridColumns.Add(grid.Column("CardConsume", "会员卡消费", format: (item) => string.Format("{0:f2}", item.CardConsume)));
+    gridColumns.Add(grid.Column("CashConsume", "现金消费", format: (item) => string.Format("{0:f2}", item.CashConsume)));
+    gridColumns.Add(grid.Column("BankConsume", "银行卡消费", format: (item) => string.Format("{0:f2}", item.BankConsume)));
+    gridColumns.Add(grid.Column("VoucherConsume", "代金券消费", format: (item) => string.Format("{0:f2}", item.VoucherConsume)));
+    gridColumns.Add(grid.Column("OtherConsume", "其它消费", format: (item) => string.Format("{0:f2}", item.OtherConsume)));
+    gridColumns.Add(grid.Column("DiscountCardConsume", "打折卡消费", format: (item) => string.Format("{0:f2}", item.DiscountCardConsume)));
+    gridColumns.Add(grid.Column("CardQuantity", "办卡（张）"));
+    gridColumns.Add(grid.Column("CashCardQuantity", "现金办卡（张）"));
+    gridColumns.Add(grid.Column("BankCardQuantity", "银行卡办卡（张）"));
+    gridColumns.Add(grid.Column("OtherCardQuantity", "其它办卡（张）"));
+    gridColumns.Add(grid.Column("CardAmount", "办卡（元）", format: (item) => string.Format("{0:f2}", item.CardAmount)));
+    gridColumns.Add(grid.Column("CashCardAmount", "现金办卡（元）", format: (item) => string.Format("{0:f2}", item.CashCardAmount)));
+    gridColumns.Add(grid.Column("BankCardAmount", "银行卡办卡（元）", format: (item) => string.Format("{0:f2}", item.BankCardAmount)));
+    gridColumns.Add(grid.Column("OtherCardAmount", "其它办卡（元）", format: (item) => string.Format("{0:f2}", item.OtherCardAmount)));
+    gridColumns.Add(grid.Column("RechargeQuantity", "充值（张）"));
+    gridColumns.Add(grid.Column("CashRechargeQuantity", "现金充值（张）"));
+    gridColumns.Add(grid.Column("BankRechargeQuantity", "银行卡充值（张）"));
+    gridColumns.Add(grid.Column("OtherRechargeQuantity", "其它充值（张）"));
+    gridColumns.Add(grid.Column("RechargeAmount", "充值（元）", format: (item) => string.Format("{0:f2}", item.RechargeAmount)));
+    gridColumns.Add(grid.Column("CashRechargeAmount", "现金充值（元）", format: (item) => string.Format("{0:f2}", item.CashRechargeAmount)));
+    gridColumns.Add(grid.Column("BankRechargeAmount", "银行卡充值（元）", format: (item) => string.Format("{0:f2}", item.BankRechargeAmount)));
+    gridColumns.Add(grid.Column("OtherRechargeAmount", "其它充值（元）", format: (item) => string.Format("{0:f2}", item.OtherRechargeAmount)));
+    gridColumns.Add(grid.Column("AddCardQuantity", "补卡（张）"));
+    gridColumns.Add(grid.Column("AddCardAmount", "补卡（元）", format: (item) => string.Format("{0:f2}", item.AddCardAmount)));
+    gridColumns.Add(grid.Column("SumQuantity", "数量"));
+    gridColumns.Add(grid.Column(columnName: "AvgPrice", header: "平均单价", format: (item) => string.Format("{0:f2}", item.AvgPrice)));
+    gridColumns.Add(grid.Column("ComeQuantity", "到店人数", format: (item) => string.Format("{0:f2}", item.ComeQuantity)));
+
+<fieldset class="ui-widget ui-widget-content ui-corner-all">
+<legend class="ui-widget-header ui-corner-all"></legend> 
+    @grid.GetHtml(gridColumns)
+</fieldset>
+<fieldset class="ui-widget ui-widget-content ui-corner-all">
+<legend class="ui-widget-header ui-corner-all">汇总信息</legend> 
+<table>
+    <tr>
+        <td>
+                @Html.LabelFor(m => m.SumConsume)
+        </td>
+        <td>
+                @Html.DecimalBoxFor(Model, m => m.SumConsume, "f2")
+                @Html.ValidationMessageFor(m => m.SumConsume)
+        </td>
+
+        <td>
+                @Html.LabelFor(m => m.CardConsume)
+        </td>
+        <td>
+                @Html.DecimalBoxFor(Model, m => m.CardConsume, "f2")
+                @Html.ValidationMessageFor(m => m.CardConsume)
+        </td>
+
+        <td>
+                @Html.LabelFor(m => m.CashConsume)
+        </td>
+        <td>
+                @Html.DecimalBoxFor(Model, m => m.CashConsume, "f2")
+                @Html.ValidationMessageFor(m => m.CashConsume)
+        </td>
+
+        <td>
+                @Html.LabelFor(m => m.BankConsume)
+        </td>
+        <td>
+                @Html.DecimalBoxFor(Model, m => m.BankConsume, "f2")
+                @Html.ValidationMessageFor(m => m.BankConsume)
+        </td>
+
+        <td>
+                @Html.LabelFor(m => m.VoucherConsume)
+        </td>
+        <td>
+                @Html.DecimalBoxFor(Model, m => m.VoucherConsume, "f2")
+                @Html.ValidationMessageFor(m => m.VoucherConsume)
+        </td>
+
+        <td>
+                @Html.LabelFor(m => m.OtherConsume)
+        </td>
+        <td>
+                @Html.DecimalBoxFor(Model, m => m.OtherConsume, "f2")
+                @Html.ValidationMessageFor(m => m.OtherConsume)
+        </td>
+
+        <td>
+                @Html.LabelFor(m => m.DiscountCardConsume)
+        </td>
+        <td>
+                @Html.DecimalBoxFor(Model, m => m.DiscountCardConsume, "f2")
+                @Html.ValidationMessageFor(m => m.DiscountCardConsume)
+        </td>
+    </tr>
+
+    <tr>
+        <td>
+                @Html.LabelFor(m => m.Sum)
+        </td>
+        <td>
+                @Html.DecimalBoxFor(Model, m => m.Sum, "f2")
+                @Html.ValidationMessageFor(m => m.Sum)
+        </td>
+
+        <td>
+                @Html.LabelFor(m => m.Cash)
+        </td>
+        <td>
+                @Html.DecimalBoxFor(Model, m => m.Cash, "f2")
+                @Html.ValidationMessageFor(m => m.Cash)
+        </td>
+
+        <td>
+                @Html.LabelFor(m => m.Bank)
+        </td>
+        <td>
+                @Html.DecimalBoxFor(Model, m => m.Bank, "f2")
+        </td>
+
+        <td>
+                @Html.LabelFor(m => m.Other)
+        </td>
+        <td>
+                @Html.DecimalBoxFor(Model, m => m.Other, "f2")
+                @Html.ValidationMessageFor(m => m.Other)
+        </td>
+
+        <td></td>
+        <td></td>
+
+        <td></td>
+        <td></td>
+
+        <td></td>
+        <td></td>
+    </tr>
+    <tr>
+        <td>
+                @Html.LabelFor(m => m.SumQuantity)
+        </td>
+        <td>
+                @Html.DecimalBoxFor(Model, m => m.SumQuantity, "f2")
+                @Html.ValidationMessageFor(m => m.SumQuantity)
+        </td>
+
+        <td>
+                @Html.LabelFor(m => m.AvgPrice)
+        </td>
+        <td>
+                @Html.DecimalBoxFor(Model, m => m.AvgPrice, "f2")
+                @Html.ValidationMessageFor(m => m.AvgPrice)
+        </td>
+
+        <td></td>
+        <td></td>
+
+        <td></td>
+        <td></td>
+
+        <td></td>
+        <td></td>
+
+        <td></td>
+        <td></td>
+
+        <td></td>
+        <td></td>
+    </tr>
+    <tr>
+        <td>
+                @Html.LabelFor(m => m.CardQuantity)
+        </td>
+        <td>
+                @Html.TextBoxFor(m => m.CardQuantity)
+                @Html.ValidationMessageFor(m => m.CardQuantity)
+        </td>
+
+        <td>
+                @Html.LabelFor(m => m.CardAmount)
+        </td>
+        <td>
+                @Html.DecimalBoxFor(Model, m => m.CardAmount, "f2")
+                @Html.ValidationMessageFor(m => m.CardAmount)
+        </td>
+
+        <td>
+                @Html.LabelFor(m => m.RechargeQuantity)
+        </td>
+        <td>
+                @Html.TextBoxFor(m => m.RechargeQuantity)
+                @Html.ValidationMessageFor(m => m.RechargeQuantity)
+        </td>
+
+        <td>
+                @Html.LabelFor(m => m.RechargeAmount)
+        </td>
+        <td>
+                @Html.DecimalBoxFor(Model, m => m.RechargeAmount, "f2")
+                @Html.ValidationMessageFor(m => m.RechargeAmount)
+        </td>
+
+        <td>
+                @Html.LabelFor(m => m.AddCardQuantity)
+        </td>
+        <td>
+                @Html.TextBoxFor(m => m.AddCardQuantity)
+                @Html.ValidationMessageFor(m => m.AddCardQuantity)
+        </td>
+
+        <td>
+                @Html.LabelFor(m => m.AddCardAmount)
+        </td>
+        <td>
+                @Html.DecimalBoxFor(Model, m => m.AddCardAmount, "f2")
+                @Html.ValidationMessageFor(m => m.AddCardAmount)
+        </td>
+
+        <td></td>
+        <td></td>
+    </tr>
+    <tr>
+        <td>
+                @Html.LabelFor(m => m.ComeQuantity)
+        </td>
+        <td>
+                @Html.DecimalBoxFor(Model, m => m.ComeQuantity, "f2")
+                @Html.ValidationMessageFor(m => m.ComeQuantity)
+        </td>
+
+        <td></td>
+        <td></td>
+
+        <td></td>
+        <td></td>
+
+        <td></td>
+        <td></td>
+
+        <td></td>
+        <td></td>
+
+        <td></td>
+        <td></td>
+
+        <td></td>
+        <td></td>
+    </tr>
+</table>
+</fieldset>
+<fieldset class="ui-widget ui-widget-content ui-corner-all">
+<legend class="ui-widget-header ui-corner-all">办卡充值分项汇总</legend>     
+<table>
+<tr>
+    <td>
+            @Html.LabelFor(m => m.Sum1)
+    </td>
+    <td>
+            @Html.DecimalBoxFor(Model, m => m.Sum1, "f2")
+            @Html.ValidationMessageFor(m => m.Sum1)
+    </td>
+
+    <td>
+            @Html.LabelFor(m => m.Sum2)
+    </td>
+    <td>
+            @Html.DecimalBoxFor(Model, m => m.Sum2, "f2")
+            @Html.ValidationMessageFor(m => m.Sum2)
+    </td>
+
+    <td>
+            @Html.LabelFor(m => m.Sum3)
+    </td>
+    <td>
+            @Html.DecimalBoxFor(Model, m => m.Sum3, "f2")
+            @Html.ValidationMessageFor(m => m.Sum3)
+    </td>
+
+    <td></td>
+    <td></td>
+
+    <td></td>
+    <td></td>
+
+    <td></td>
+    <td></td>
+</tr>
+<tr>
+    <td>
+            @Html.LabelFor(m => m.CashCardQuantity)
+    </td>
+    <td>
+            @Html.TextBoxFor(m => m.CashCardQuantity)
+            @Html.ValidationMessageFor(m => m.CashCardQuantity)
+    </td>
+
+    <td>
+            @Html.LabelFor(m => m.BankCardQuantity)
+    </td>
+    <td>
+            @Html.TextBoxFor(m => m.BankCardQuantity)
+            @Html.ValidationMessageFor(m => m.BankCardQuantity)
+    </td>
+
+    <td>
+            @Html.LabelFor(m => m.OtherCardQuantity)
+    </td>
+    <td>
+            @Html.TextBoxFor(m => m.OtherCardQuantity)
+            @Html.ValidationMessageFor(m => m.OtherCardQuantity)
+    </td>
+
+    <td>
+            @Html.LabelFor(m => m.CashCardAmount)
+    </td>
+    <td>
+            @Html.DecimalBoxFor(Model, m => m.CashCardAmount, "f2")
+            @Html.ValidationMessageFor(m => m.CashCardAmount)
+    </td>
+
+    <td>
+            @Html.LabelFor(m => m.BankCardAmount)
+    </td>
+    <td>
+            @Html.DecimalBoxFor(Model, m => m.BankCardAmount, "f2")
+            @Html.ValidationMessageFor(m => m.BankCardAmount)
+    </td>
+
+    <td>
+            @Html.LabelFor(m => m.OtherCardAmount)
+    </td>
+    <td>
+            @Html.DecimalBoxFor(Model, m => m.OtherCardAmount, "f2")
+            @Html.ValidationMessageFor(m => m.OtherCardAmount)
+    </td>
+</tr>
+<tr>
+    <td>
+            @Html.LabelFor(m => m.CashRechargeQuantity)
+    </td>
+    <td>
+            @Html.TextBoxFor(m => m.CashRechargeQuantity)
+            @Html.ValidationMessageFor(m => m.CashRechargeQuantity)
+    </td>
+
+    <td>
+            @Html.LabelFor(m => m.BankRechargeQuantity)
+    </td>
+    <td>
+            @Html.TextBoxFor(m => m.BankRechargeQuantity)
+            @Html.ValidationMessageFor(m => m.BankRechargeQuantity)
+    </td>
+
+    <td>
+            @Html.LabelFor(m => m.OtherRechargeQuantity)
+    </td>
+    <td>
+            @Html.TextBoxFor(m => m.OtherRechargeQuantity)
+            @Html.ValidationMessageFor(m => m.OtherRechargeQuantity)
+    </td>
+
+    <td>
+            @Html.LabelFor(m => m.CashRechargeAmount)
+    </td>
+    <td>
+            @Html.DecimalBoxFor(Model, m => m.CashRechargeAmount, "f2")
+            @Html.ValidationMessageFor(m => m.CashRechargeAmount)
+    </td>
+
+    <td>
+            @Html.LabelFor(m => m.BankRechargeAmount)
+    </td>
+    <td>
+            @Html.DecimalBoxFor(Model, m => m.BankRechargeAmount, "f2")
+            @Html.ValidationMessageFor(m => m.BankRechargeAmount)
+    </td>
+
+    <td>
+            @Html.LabelFor(m => m.OtherRechargeAmount)
+    </td>
+    <td>
+            @Html.DecimalBoxFor(Model, m => m.OtherRechargeAmount, "f2")
+            @Html.ValidationMessageFor(m => m.OtherRechargeAmount)
+    </td>
+</tr>                        
+</table>
+</fieldset>
+}

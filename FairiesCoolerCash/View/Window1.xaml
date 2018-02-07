@@ -1,0 +1,83 @@
+﻿<Window x:Class="FairiesCoolerCash.Business.Window1"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:local="clr-namespace:FairiesCoolerCash.Business"
+        xmlns:sys="clr-namespace:System;assembly=mscorlib"
+        Title="Window1" Height="402" Width="566">
+
+    <Window.Resources>
+        <ResourceDictionary>
+            <local:EducationGradeConverter x:Key="educConverter"/>
+        </ResourceDictionary>
+    </Window.Resources>
+
+    <Grid Margin="10">
+        <StackPanel>
+            <StackPanel Name="stackPanel1">
+                <TextBlock VerticalAlignment="Center" FontStyle="Italic" >ComboBox In Window:</TextBlock>
+                <TextBlock VerticalAlignment="Center" Foreground="#ff3300" >A dog's information</TextBlock>
+                <ComboBox VerticalAlignment="Center" HorizontalAlignment="Left" Width="120" Name="comboBoxInWnd" 
+                          SelectionChanged="comboBoxInWnd_SelectionChanged"
+                      DisplayMemberPath="Name"
+                      ItemsSource="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type local:Window1}}, Path=Dogs}">
+                </ComboBox>
+                <TextBlock VerticalAlignment="Center" Text="{Binding Path=Name}"></TextBlock>
+                <TextBlock VerticalAlignment="Center" Text="{Binding Path=Id}"></TextBlock>
+            </StackPanel>
+
+            <StackPanel>
+                <TextBlock VerticalAlignment="Center" FontStyle="Italic" >ComboBox In ListView:</TextBlock>
+                <TextBlock VerticalAlignment="Center" Foreground="#ff3300">Some people</TextBlock>
+                <ListView Name="listView1" MinHeight="200" >
+                    <ListView.View>
+                        <GridView>
+                            <GridViewColumn Header="Index" DisplayMemberBinding="{Binding Path=Index}"/>
+                            <GridViewColumn Header="Name" DisplayMemberBinding="{Binding Path=Name}"/>
+                            <GridViewColumn Header="Sex">
+                                <GridViewColumn.CellTemplate>
+                                    <DataTemplate>
+                                        <ComboBox Width="120" SelectedValue="{Binding Path=Sex, Mode=TwoWay}" SelectedIndex="0">
+                                            <ComboBox.Items>
+                                                <sys:String>Male</sys:String>
+                                                <sys:String>Female</sys:String>
+                                                <sys:String>Unknow</sys:String>
+                                            </ComboBox.Items>
+                                        </ComboBox>
+                                    </DataTemplate>
+                                </GridViewColumn.CellTemplate>
+                            </GridViewColumn>
+                            <GridViewColumn Header="Education Grade">
+                                <GridViewColumn.CellTemplate>
+                                    <DataTemplate>
+                                        <ComboBox Width="120" SelectedValue="{Binding Path=EducationGrade, Mode=TwoWay, Converter={StaticResource educConverter}}"
+                                              ItemsSource="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type local:Window1}}, Path=EducationTypes}">
+                                        </ComboBox>
+                                    </DataTemplate>
+                                </GridViewColumn.CellTemplate>
+                            </GridViewColumn>
+                            <GridViewColumn Header="My Dog">
+                                <GridViewColumn.CellTemplate>
+                                    <DataTemplate>
+                                        <ComboBox Width="120" Loaded="comboBoxInListView_Loaded"
+                                              SelectedValue="{Binding Path=MyDog, Mode=TwoWay}"
+                                              SelectedValuePath="Id" DisplayMemberPath="Name">
+                                        </ComboBox>
+                                    </DataTemplate>
+                                </GridViewColumn.CellTemplate>
+                            </GridViewColumn>
+                        </GridView>
+                    </ListView.View>
+                </ListView>
+            </StackPanel>
+            <StackPanel Orientation="Horizontal">
+                <Button Margin="5" Click="btnAdd_Click" VerticalAlignment="Center" HorizontalAlignment="Left" Width="120" Height="28">Add</Button>
+                <Button Margin="5" Click="btnDel_Click" VerticalAlignment="Center" HorizontalAlignment="Right" Width="120" Height="28">Delete</Button>
+                <Button Margin="5" Click="btnTest_Click" VerticalAlignment="Center" HorizontalAlignment="Right" Width="120" Height="28">test</Button>
+                <ComboBox Width="120" Loaded="comboBoxInListView_Loaded"
+                                              SelectedValuePath="Id" DisplayMemberPath="Name">
+                </ComboBox>
+                
+            </StackPanel>
+        </StackPanel>
+    </Grid>
+</Window>

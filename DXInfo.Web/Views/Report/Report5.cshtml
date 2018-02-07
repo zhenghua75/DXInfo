@@ -1,0 +1,197 @@
+﻿@using DXInfo.Web.Models
+@model DXInfo.Web.Models.Report5Model           
+<script type="text/javascript">
+    $(function () {
+        $("#BeginDate").datepicker();
+        $("#EndDate").datepicker();
+        $("#query").button();
+        $("#query").button().click(function () {
+            submitToDiv("Report");
+        });
+        $("#export").button();
+        $("th>a,td>a[id!='export']").click(function () { addToDiv(this); return false; });
+        var ctrls = [{ name: "IsDept", type: "checkbox" },
+                     { name: "DeptId", type: "select" },
+                     { name: "IsConsumeType", type: "checkbox" },
+                     { name: "ConsumeType", type: "select" },
+                     { name: "IsPayType", type: "checkbox" },
+                     { name: "PayType", type: "select" },
+                     { name: "IsCategory", type: "checkbox" },
+                     { name: "Category", type: "select" },
+                     { name: "IsInventory", type: "checkbox" },
+                     { name: "Inventory", type: "select" },
+                     { name: "IsCupType", type: "checkbox" },
+                     { name: "IsCard", type: "checkbox" },
+                     { name: "CupType", type: "select" },
+                     { name: "CardNo", type: "text" },
+                     { name: "MemberName", type: "text" },
+                     { name: "BeginDate", type: "date" },
+                     { name: "EndDate", type: "date" }, ];
+        InitCtrl(ctrls);
+    });
+	</script>
+<h2 class="ui-widget-header h2-center">@ViewBag.Title</h2>
+@using (Html.BeginReportForm("Report5", "Report", this.Model))
+{
+@Html.ValidationSummary(true, "参数错误。请更正错误并重试。", new { @class = "ui-state-error" })
+@Html.HiddenFor(m => m.InvType)
+@Html.HiddenFor(m => m.CategoryType)
+@Html.HiddenFor(m => m.DeptType)
+<fieldset class="ui-widget ui-widget-content ui-corner-all">
+<legend class="ui-widget-header ui-corner-all"></legend> 
+    <table>
+            <tr>
+                <td>@Html.CheckBoxFor(m => m.IsDept)</td>
+                <td>@Html.LabelFor(m => m.DeptId)</td>                
+                <td>@Html.DropDownListFor(m => m.DeptId, @Html.GetDept())
+                @Html.ValidationMessageFor(m => m.DeptId)
+                </td>
+                
+                <td>
+                    @Html.CheckBoxFor(m => m.IsConsumeType)                
+                </td>
+                <td>@Html.LabelFor(m => m.ConsumeType)</td>
+                <td>
+                @Html.DropDownListFor(m => m.ConsumeType, @Html.GetConsumeType())
+                @Html.ValidationMessageFor(m => m.ConsumeType)
+                </td>
+
+                <td>
+                     @Html.CheckBoxFor(m => m.IsPayType)
+                </td>
+                <td>@Html.LabelFor(m => m.PayType)</td>
+                <td>
+                @Html.DropDownListFor(m => m.PayType, @Html.GetPayType())
+                @Html.ValidationMessageFor(m => m.PayType)
+                </td>
+
+                <td>
+                    @Html.CheckBoxFor(m => m.IsCategory)
+                </td>
+                <td>@Html.LabelFor(m => m.Category)</td>
+                <td>
+                @Html.DropDownListFor(m => m.Category, @Html.GetCategory())
+                @Html.ValidationMessageFor(m => m.Category)
+                </td>
+
+                </tr>
+            <tr>
+                <td>
+                    @Html.CheckBoxFor(m => m.IsInventory)                
+                </td>
+                <td>@Html.LabelFor(m => m.Inventory)</td>
+                <td>
+                @Html.DropDownListFor(m => m.Inventory, @Html.GetInventory())
+                @Html.ValidationMessageFor(m => m.Inventory)
+                </td>
+                
+                <td></td>
+                <td>@Html.LabelFor(m => m.CardNo)</td>
+                <td>
+                @Html.TextBoxFor(m => m.CardNo)
+                @Html.ValidationMessageFor(m => m.CardNo)
+                </td>
+                
+                <td>
+                </td>
+                <td>@Html.LabelFor(m => m.MemberName)</td>
+                <td>
+                @Html.TextBoxFor(m => m.MemberName)
+                @Html.ValidationMessageFor(m => m.MemberName)
+                </td>
+
+                @if (Html.CupTypeColumnVisible())
+                {
+                <td>
+                    @Html.CheckBoxFor(m => m.IsCupType)                
+                </td>
+                    <td>@Html.LabelFor(m => m.CupType)</td>
+                <td>
+                @Html.DropDownListFor(m => m.CupType, @Html.GetCupType())
+                @Html.ValidationMessageFor(m => m.CupType)
+                </td>
+                }
+                else
+                { <td></td><td></td><td></td>}
+                </tr>
+
+            <tr>
+                <td></td>
+                <td>@Html.LabelFor(m => m.IsCard)</td>
+                <td>                
+                @Html.CheckBoxFor(m => m.IsCard)
+                @Html.ValidationMessageFor(m => m.IsCard)
+                </td>
+                
+                <td>
+                </td>
+                <td>@Html.LabelFor(m => m.BeginDate)</td>
+                <td>
+                @Html.TextBoxFor(m => m.BeginDate)
+                @Html.ValidationMessageFor(m => m.BeginDate)
+                </td>
+
+                <td>
+                </td>
+                <td>@Html.LabelFor(m => m.EndDate)</td>
+                <td>
+                @Html.TextBoxFor(m => m.EndDate)
+                @Html.ValidationMessageFor(m => m.EndDate)
+                </td>
+
+                <td colspan="3">
+                <input id="query" type="submit" value="查询" />
+                @Html.ActionLink("导出EXCEL", "Report5ExportToExcel", "Report", null, new { id = "export" })
+                </td>
+            </tr>
+        </table>
+</fieldset>
+
+<fieldset class="ui-widget ui-widget-content ui-corner-all">
+<legend class="ui-widget-header ui-corner-all"></legend>         
+    @{var grid = new MyWebGrid(source: Model.result, defaultSort: "Amount");
+      var gridColumns = new List<WebGridColumn>();
+      gridColumns.Add(grid.Column("DeptName", "门店"));
+      gridColumns.Add(grid.Column("CategoryName", "分类"));
+      gridColumns.Add(grid.Column("InventoryName", "商品"));
+      gridColumns.Add(grid.Column("ConsumeType", "消费方式"));
+      gridColumns.Add(grid.Column("PayType", "支付方式"));
+      gridColumns.Add(grid.Column("CardNo", "卡号"));
+      gridColumns.Add(grid.Column("MemberName", "会员名"));
+      if (Html.CupTypeColumnVisible())
+      {
+          gridColumns.Add(grid.Column("CupType", "杯型"));
+      }
+      if (Html.UnitOfMeasureColumnVisibility())
+      {
+          gridColumns.Add(grid.Column("UnitOfMeasureName", "单位"));
+      }
+      gridColumns.Add(grid.Column("Amount", "金额", format: (item) => string.Format("{0:f2}", item.Amount)));
+      gridColumns.Add(grid.Column("Quantity", "数量"));
+}
+
+	@grid.GetHtml(gridColumns)
+</fieldset>
+    
+<fieldset class="ui-widget ui-widget-content ui-corner-all">
+<legend class="ui-widget-header ui-corner-all">汇总信息</legend>     
+    <table>
+            <tr>
+                <td>
+                @Html.LabelFor(m => m.Amount)
+                </td>
+                <td>
+                @Html.TextBoxFor(m => m.Amount)
+                @Html.ValidationMessageFor(m => m.Amount)
+                </td>
+                <td>
+                @Html.LabelFor(m => m.Quantity)
+                </td>
+                <td>
+                @Html.TextBoxFor(m => m.Quantity)
+                @Html.ValidationMessageFor(m => m.Quantity)
+                </td>                
+            </tr>
+        </table>
+</fieldset>
+}

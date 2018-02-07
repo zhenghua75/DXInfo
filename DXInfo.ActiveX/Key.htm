@@ -1,0 +1,24 @@
+<HTML>
+<HEAD>
+<meta http-equiv="Content-Type" content="text/html; charset=gb2312"/>
+<TITLE>对象 Key 的 ATL 8.0 测试页</TITLE>
+</HEAD>
+<BODY>
+
+
+<OBJECT ID="Key" CLASSID="CLSID:01A8EC23-6702-476C-AF5F-E934C71D0FE6"></OBJECT>
+
+  <input type="button" value="Add" onclick="add();" />
+
+<script type="text/javascript">
+    function add() {
+        var calc = document.getElementById('Key');
+        alert("1");
+        if (calc.Verify())
+            alert("验证成功");
+        else
+            alert("验证失败");
+    }
+</script>
+</BODY>
+</HTML>

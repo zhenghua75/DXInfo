@@ -1,0 +1,63 @@
+﻿@using Trirand.Web.Mvc
+@using DXInfo.Web.Models
+@model DXInfo.Web.Models.ShelfLifeWarningGridModel
+@{
+    ViewBag.Title = "库存保质期预警";    
+}
+<script type="text/javascript">
+    $(function () {
+        $("#query").button();
+        $("#BeginDate").datepicker();
+        $("#EndDate").datepicker();
+        $("#query").button().click(function () {
+            query();
+        });
+        $("#export").button();
+        $("#export").button().click(function () {
+            excelExport();
+        });
+        var ctrls = [{ name: "InvType", type: "select" },
+                 { name: "BeginDate", type: "date" },
+                 { name: "EndDate", type: "date" },
+                 { name: "OutOfDays", type: "text" },
+                 { name: "BeginCloseToDays", type: "text" },
+                 { name: "EndCloseToDays", type: "text" },]
+        InitCtrl(ctrls);
+    });
+    function serializeGridData(postData){
+        var sdata = {
+            _search:true,
+            InvType:$("#InvType").val(),
+            BeginDate: $("#BeginDate").val(),
+            EndDate: $("#EndDate").val(),
+            OutOfDays:$("#OutOfDays").val(),
+            BeginCloseToDays:$("#BeginCloseToDays").val(),
+            EndCloseToDays:$("#EndCloseToDays").val(),
+        };
+        var newPostData = $.extend(postData, sdata);
+        return $.param(newPostData);
+    }
+    function query() {
+            $("#ShelfLifeWarningGrid").jqGrid('setGridParam', { datatype: 'json' }).trigger("reloadGrid", [{ page: 1}]);
+        }
+	</script>
+<h2 class="ui-widget-header h2-center">@ViewBag.Title</h2>
+<fieldset class="ui-widget ui-widget-content ui-corner-all">
+            <legend class="ui-widget-header ui-corner-all"></legend>
+<table>
+    <tr>
+        
+        <td><label>存货类别</label></td><td><select id="InvType">
+                                <option value="0">所有存货</option>
+                                <option value="1">过期存货</option>
+                                <option value="2">未过期存货</option>
+                                <option value="3">临近存货</option>
+                            </select></td>
+        <td><label>失效日期</label></td><td>@Html.TextBoxFor(m => m.BeginDate)-</td><td>@Html.TextBoxFor(m => m.EndDate)</td>
+        <td>@Html.LabelFor(m => m.OutOfDays)</td><td>@Html.TextBoxFor(m => m.OutOfDays)</td>
+        <td><label>临近天数</label></td><td>@Html.TextBoxFor(m => m.BeginCloseToDays)-</td><td>@Html.TextBoxFor(m => m.EndCloseToDays)</td>
+        <td><button id="query">查询</button></td><td><button id="export">导出EXCEL</button></td>
+    </tr>
+</table>
+</fieldset>
+@Html.Trirand().JQGrid(Model.ShelfLifeWarningGrid, "ShelfLifeWarningGrid")

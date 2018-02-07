@@ -1,0 +1,140 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+
+    <!--Brushes -->
+
+    <LinearGradientBrush x:Key="windowBrush" StartPoint="0,0" EndPoint="0,1">
+        <GradientStop Offset="0">
+            <GradientStop.Color>
+                <Color A="255" R="120" G="163" B="195"></Color>
+            </GradientStop.Color>
+        </GradientStop>
+        <GradientStop Offset="0.5" >
+            <GradientStop.Color>
+                <Color A="255" R="214" G="222" B="235"></Color>
+            </GradientStop.Color>
+        </GradientStop>
+        <GradientStop Offset="1">
+            <GradientStop.Color>
+                <Color A="255" R="120" G="163" B="195"></Color>
+            </GradientStop.Color>
+        </GradientStop>
+    </LinearGradientBrush>
+
+    <SolidColorBrush x:Key="selectBrush" Color="White"/>
+
+    <SolidColorBrush x:Key="sliderBrush">
+        <SolidColorBrush.Color>
+            <Color A="255" R="217" G="227" B="239"/>
+        </SolidColorBrush.Color>
+    </SolidColorBrush>
+
+    <LinearGradientBrush x:Key="fillBrush" StartPoint="0,0" EndPoint="0,1">
+        <GradientStop Offset="0" >
+            <GradientStop.Color>
+                <Color A="255" R="0" G="84" B="154"></Color>
+            </GradientStop.Color>
+        </GradientStop>
+        <GradientStop Offset="1" >
+            <GradientStop.Color>
+                <Color A="255" R="2" G="24" B="84"></Color>
+            </GradientStop.Color>
+        </GradientStop>
+    </LinearGradientBrush>
+
+    <!--For resized border-->
+    
+    <SolidColorBrush x:Key="ResizeBorderBrush">
+        <SolidColorBrush.Color>
+            <Color A="255" R="2" G="24" B="84"></Color>
+        </SolidColorBrush.Color>
+    </SolidColorBrush>
+    
+    <LinearGradientBrush x:Key="ResizeBorderBackgroundBrush" StartPoint="0,0" EndPoint="1,1">
+        <GradientStop Offset="0" Color="Transparent" >
+            <!--<GradientStop.Color>
+                <Color 
+            </GradientStop.Color>-->
+        </GradientStop>
+        <GradientStop Offset="1" >
+            <GradientStop.Color>
+                <Color A="255" R="2" G="24" B="84"></Color>
+            </GradientStop.Color>
+        </GradientStop>
+    </LinearGradientBrush>  
+
+    <LinearGradientBrush x:Key="menuBorderBrush" StartPoint="0,0" EndPoint="0,1" Opacity="0.5">
+        <GradientStop Offset="0" >
+            <GradientStop.Color>
+                <Color A="255" R="0" G="84" B="154"></Color>
+            </GradientStop.Color>
+        </GradientStop>
+        <GradientStop Offset="1" >
+            <GradientStop.Color>
+                <Color A="255" R="2" G="24" B="84"></Color>
+            </GradientStop.Color>
+        </GradientStop>
+    </LinearGradientBrush>
+    
+    <LinearGradientBrush x:Key="volumeSliderBrush" StartPoint="0,0" EndPoint="1,0">
+        <GradientStop Offset="0" >
+            <GradientStop.Color>
+                <Color A="0" R="255" G="255" B="255"/>
+            </GradientStop.Color>
+        </GradientStop>        
+        <GradientStop Offset="1" >
+            <GradientStop.Color>
+                <Color A="255" R="2" G="24" B="84"></Color>
+            </GradientStop.Color>
+        </GradientStop>        
+    </LinearGradientBrush>
+
+    <LinearGradientBrush x:Key="volumeThumbSliderBrush2" StartPoint="0,0" EndPoint="1,0">
+        <GradientStop Offset="0.4" >
+            <GradientStop.Color>
+                <Color A="255" R="156" G="172" B="182"></Color>
+            </GradientStop.Color>
+        </GradientStop>
+        <GradientStop Offset="1" >
+            <GradientStop.Color>
+                <Color A="255" R="2" G="24" B="84"></Color>
+            </GradientStop.Color>
+        </GradientStop>        
+    </LinearGradientBrush>
+
+    <RadialGradientBrush GradientOrigin="-0.52,0.496" x:Key="volumeThumbSliderBrush" >
+        <!--<RadialGradientBrush.RelativeTransform>
+            <TransformGroup>
+                <ScaleTransform CenterX="0.5" 
+          CenterY="0.5" ScaleX="1.5" ScaleY="1.5"/>
+                <TranslateTransform X="0.3" Y="0.02"/>
+            </TransformGroup>
+        </RadialGradientBrush.RelativeTransform>-->
+        <GradientStop Offset="0.6" >
+            <GradientStop.Color>
+                <Color A="255" R="156" G="172" B="182"></Color>
+            </GradientStop.Color>
+        </GradientStop>
+        <GradientStop Offset="1" >
+            <GradientStop.Color>
+                <Color A="255" R="2" G="24" B="84"></Color>
+            </GradientStop.Color>
+        </GradientStop>
+    </RadialGradientBrush>
+
+    <!--GlassToolBar Brushes-->    
+
+    <LinearGradientBrush x:Key="GlassToolBarSeparatorBrush" StartPoint="0,0" EndPoint="0,1" Opacity="0.6">
+        <GradientStop Offset="0" >
+            <GradientStop.Color>
+                <Color A="255" R="0" G="84" B="154"></Color>
+            </GradientStop.Color>
+        </GradientStop>
+        <GradientStop Offset="1" >
+            <GradientStop.Color>
+                <Color A="255" R="2" G="24" B="84"></Color>
+            </GradientStop.Color>
+        </GradientStop>
+    </LinearGradientBrush>    
+
+</ResourceDictionary>

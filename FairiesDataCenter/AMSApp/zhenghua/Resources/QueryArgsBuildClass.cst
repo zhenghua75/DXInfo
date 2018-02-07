@@ -1,0 +1,80 @@
+﻿<%@ CodeTemplate Language="C#" ResponseEncoding="UTF-8" TargetLanguage="C#" Description="Generates a EntityObject." %>
+<%@ Property Name="SourceTable" Type="SchemaExplorer.TableSchema" Category="Context"  Description="Table that the object is based on." %>
+<%@ Property Name="Author" Type="String" Default="郑华" Category="CopyRight" Description="作者" Optional="true"%>
+<%@ Property Name="ProjectName" Type="String"  Default="AMSApp" Category="Context" Description="项目名称" option = "true"%>
+<%@ Property Name="ClassDescription" Type = "String" Category ="Context" Description="功能描述" %> 
+<%@ Property Name="CopyRight" Type="System.String" Default="zhenghua"  Category="CopyRight" Optional="true"%>
+
+<%@ Assembly Name="SchemaExplorer" %>
+<%@ Assembly Name="System.Data" %>
+<%@ Import Namespace="SchemaExplorer" %>
+<%@ Import Namespace="System.Data" %>
+
+/******************************************************************** FR 1.20E *******
+* 项目名称：   <%= ProjectName %>
+* 文件名:    	<%= GetFileName()%>
+* 作者:	     <%= Author %>
+* 创建日期:    <%= DateTime.Now.ToShortDateString() %>
+* 功能描述:    <%= ClassDescription %>
+
+*                                                           Copyright(C) <%= DateTime.Now.Year%> <%=CopyRight%>
+*************************************************************************************/
+#region 引用
+using System;
+using AMSApp.zhenghua.Common;
+#endregion
+namespace AMSApp.zhenghua.QueryArgs
+{
+	/// <summary>
+	/// **功能名称：<%=ClassDescription %>查询参数类
+	/// </summary>
+	public class <%= GetClassName(SourceTable) %>
+	{
+		/// <summary>
+        /// 表名
+        /// </summary>
+        public string TableName = <%= GetTableName(SourceTable) %>;
+				
+		<% for (int i = 0; i < SourceTable.Columns.Count; i++) { %>
+		/// <summary>
+		/// <%= SourceTable.Columns[i].Description %>
+		/// </summary>
+		public QueryConditionField <%= GetFiledName(SourceTable.Columns[i]) %> = new QueryConditionField("<%= SourceTable.Columns[i].Name %>");
+		<% if (i < SourceTable.Columns.Count - 1) Response.Write("\r\n"); %>		
+		<% } %>
+	}	
+}
+<script runat="template">
+
+public string GetTableName(TableSchema table)
+{
+	string strTableName = "";
+	strTableName = "\"" + SourceTable.Name + "\"";	
+	return strTableName;
+}
+
+public string GetFiledName(ColumnSchema column)
+{
+	string propertyName = column.Name;
+	
+	if (propertyName == column.Table.Name + "Name") return "Name";
+	if (propertyName == column.Table.Name + "Description") return "Description";
+	
+	if (propertyName.EndsWith("TypeCode")) propertyName = propertyName.Substring(0,1 ).ToUpper()+ propertyName.Substring(1, propertyName.Length );
+	
+	return propertyName;
+}
+		
+public string GetClassName(TableSchema table)
+{
+	string strClassName = table.Name;
+	return strClassName.Substring(2,1 ).ToUpper()+ strClassName.Substring(3, strClassName.Length-3 ) + "Args";
+	
+}
+
+public override string GetFileName()
+{
+	return this.GetClassName(this.SourceTable) + ".cs";
+}
+
+</script>

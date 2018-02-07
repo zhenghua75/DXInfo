@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="gb2312" ?>
+<AutoUpdater>
+	<Description>CMSM autoUpdate</Description>
+	<Updater>
+		<Url>http://localhost/AutoUpdate/</Url>
+		<LastUpdateTime>2009-03-16</LastUpdateTime>
+	</Updater>
+	<Application applicationId = "MemberManage">
+		<EntryPoint>MemberManage.exe</EntryPoint>
+		<Location>.</Location>
+		<Version>1.0.0000.00000</Version>
+	</Application>
+	<Files>
+		<File Ver="1.0.0000.00000" Name= "NT77.dll" />
+	</Files>
+</AutoUpdater>

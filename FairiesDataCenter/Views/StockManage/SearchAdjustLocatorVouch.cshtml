@@ -1,0 +1,31 @@
+﻿@using Trirand.Web.Mvc
+@model ynhnTransportManage.Models.StockManage.AdjustLocatorVouchGridModel
+@{
+    ViewBag.Title = "搜索库存货位调整单";
+}
+@Html.Trirand().JQGrid(Model.AdjustLocatorVouchGrid, "AdjustLocatorVouchGrid")
+<script type="text/javascript">
+$(document).ready(function () {
+        $("#AdjustLocatorVouchGrid").closest("div.ui-jqgrid-view")
+                .children("div.ui-jqgrid-titlebar")
+                .css("text-align", "center")
+                .css("font-size", "large")
+                .children("span.ui-jqgrid-title")
+                .css("float", "none");
+    });
+    function FormatNumber(num) {
+        return parseFloat(num);
+    }
+    function UnFormatNumber(num) {
+        return num;
+    }
+    function DblClick(rowid) {
+        self.location = "@Url.Action("AdjustLocatorVouch", "StockManage")"+"?Id="+rowid;
+    }
+    function beforeRefresh() {
+        $("#MixVouchGrid").jqGrid("setGridParam", {search: true}).trigger("reloadGrid", [{ page: 1}]);
+    }
+    function serializeGridData(postData){
+        return postData;
+    }
+</script>

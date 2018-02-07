@@ -1,0 +1,85 @@
+﻿@using DXInfo.Web.Models
+@model DXInfo.Web.Models.WRReport18Model
+<script type="text/javascript">
+    $(function () {
+        $("#BeginDate").datepicker();
+        $("#EndDate").datepicker();
+        $("#query").button();
+        $("#export").button();
+        $("#compute").button();
+        $("#query").button().click(function () {
+            submitToDiv("Report");
+        });
+        $("#compute").button().click(function () {
+            submitToDiv("Report");
+        });
+        var ctrls = [{ name: "DeptId", type: "select" },
+                     { name: "BeginDate", type: "date" },
+                     { name: "EndDate", type: "date" }, ];
+        InitCtrl(ctrls);
+        $("th>a,td>a[id!='export']").click(function () { addToDiv(this); return false; });
+    });
+</script>
+<h2 class="ui-widget-header h2-center">@ViewBag.Title</h2>
+@using (Html.BeginForm("WRReport18", "Report", FormMethod.Post, new { id = "Report", @class = "form-overflow" }))
+{
+    @Html.ValidationSummary(true, "参数错误。请更正错误并重试。", new { @class = "ui-state-error" })
+<fieldset class="ui-widget ui-widget-content ui-corner-all">
+<legend class="ui-widget-header ui-corner-all"></legend>
+<table>
+    <tr>
+        <td>
+                @Html.LabelFor(m => m.DeptId)
+        </td>
+        <td>
+                @Html.DropDownListFor(m => m.DeptId, @Html.GetDept())
+                @Html.ValidationMessageFor(m => m.DeptId)
+        </td>
+        <td>
+                @Html.LabelFor(m => m.BeginDate)
+        </td>
+        <td>
+                @Html.TextBoxFor(m => m.BeginDate)
+                @Html.ValidationMessageFor(m => m.BeginDate)
+        </td>
+        <td>
+                @Html.LabelFor(m => m.EndDate)
+        </td>
+        <td>
+                @Html.TextBoxFor(m => m.EndDate)
+                @Html.ValidationMessageFor(m => m.EndDate)
+        </td>
+        <td>
+            <input id="query" type="submit" value="查询" onclick='this.form.action="@Url.Action("WRReport18")";'/>
+                                    
+        </td>
+        <td>
+            @Html.ActionLink("导出EXCEL", "WRReport18ExportToExcel", "Report", null, new { id = "export" })
+                                    
+        </td>                                
+        <td><input id="compute" type="submit" value="计算结算数据" onclick='this.form.action="@Url.Action("WRReport18ComputeBalance")";'/></td>
+        <td></td>
+    </tr>
+</table>
+</fieldset>
+
+    var grid = new MyWebGrid(rowsPerPage: 10000);
+    grid.Bind(Model.result, rowCount: Model.rowCount, autoSortAndPage: false);
+    var gridColumns = new List<WebGridColumn>();
+    gridColumns.Add(grid.Column("LocalDeptName", "发卡门店"));
+    gridColumns.Add(grid.Column("RemoteDeptName", "门店"));
+    gridColumns.Add(grid.Column("FillFee_Pay", "充值金额(支出)"));
+    gridColumns.Add(grid.Column("Fee_Pay", "消费金额(支出)"));
+    gridColumns.Add(grid.Column("sumFee_Pay", "小计(支出)"));
+    gridColumns.Add(grid.Column("FillFee_Income", "充值金额(收入)"));
+    gridColumns.Add(grid.Column("Fee_Income", "消费金额(收入)"));
+    gridColumns.Add(grid.Column("sumFee_Income", "小计(收入)"));
+    gridColumns.Add(grid.Column("FillFee_Dif", "充值金额(差额)"));
+    gridColumns.Add(grid.Column("Fee_Dif", "消费金额(差额)"));
+    gridColumns.Add(grid.Column("sumFee_Dif", "小计(差额)"));
+
+<fieldset class="ui-widget ui-widget-content ui-corner-all">
+<legend class="ui-widget-header ui-corner-all"></legend>
+                       @grid.GetHtml(gridColumns)
+</fieldset>
+}

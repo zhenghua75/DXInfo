@@ -1,0 +1,235 @@
+﻿@using Trirand.Web.Mvc
+<!DOCTYPE html>
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+    <title>@ViewBag.Title</title>
+    <link href="@Url.Content("~/Content/Site.css")" rel="stylesheet" type="text/css" />    
+    @*<link href="@Url.Content("~/Content/themes/base/jquery-ui.css#20110419")" rel="stylesheet" type="text/css" />*@
+    <link rel="stylesheet" type="text/css" href="@Url.Content("~/Content/themes/redmond/jquery-ui-1.8.18.custom.css")" />    
+    <link rel="stylesheet" type="text/css" href="@Url.Content("~/Content/themes/ui.jqgrid.css")" />   
+    <link rel="stylesheet" type="text/css" href="@Url.Content("~/Content/themes/ui.jqdropdownlist.css")" />  
+    <link rel="stylesheet" type="text/css" href="@Url.Content("~/Content/themes/ui.jqtreeview.css")" />  
+    @*<link rel="stylesheet" type="text/css" href="@Url.Content("~/Content/themes/base/jquery.ui.datetime.css")" /> 
+    <link rel="stylesheet" type="text/css" href="@Url.Content("~/Content/themes/base/jquery.ui.datetimepicker.css")" /> *@
+   <link rel="stylesheet" type="text/css" href="@Url.Content("~/Content/menu/superfish.css")" media="screen"/>
+   <link rel="stylesheet" type="text/css" href="@Url.Content("~/Content/themes/base/jquery-ui-timepicker-addon.css")" /> 
+
+   
+    <script src="@Url.Content("~/Scripts/jquery-1.7.1.min.js")" type="text/javascript"></script>
+    <script src="@Url.Content("~/Scripts/jquery.ui.datepicker-zh-CN.js")" type="text/javascript"></script>
+    @*<script src="@Url.Content("~/Scripts/jquery.ui.datetimepicker-zh-CN.js")" type="text/javascript"></script>*@
+    <script src="@Url.Content("~/Scripts/jquery-ui-1.8.18.min.js")" type="text/javascript"></script>
+
+    @*<script src="@Url.Content("~/Scripts/jquery.ui.datetime.src.js")" type="text/javascript"></script>*@
+
+    @*<script src="@Url.Content("~/Scripts/jquery.ui.datetimepicker.min.js")" type="text/javascript"></script>*@
+    <script src="@Url.Content("~/Scripts/jquery-ui-timepicker-addon.js")" type="text/javascript"></script>
+    <script src="@Url.Content("~/Scripts/jquery-ui-timepicker-zh-CN.js")" type="text/javascript"></script>
+
+    <script src="@Url.Content("~/Scripts/trirand/i18n/grid.locale-cn.js")" type="text/javascript"></script> 
+    <script src="@Url.Content("~/Scripts/trirand/jquery.jqGrid.min.js")" type="text/javascript"></script>
+    
+    <script src="@Url.Content("~/Scripts/menu/superfish.js")" type="text/javascript"></script>
+    <script src="@Url.Content("~/Scripts/menu/hoverIntent.js")" type="text/javascript"></script>
+    <script src="@Url.Content("~/Scripts/jquery.AddIncSearch.js")" type="text/javascript"></script>
+    <script src="@Url.Content("~/Content/ckfinder/ckfinder.js")" type="text/javascript"></script>
+
+     <script src="@Url.Content("~/Scripts/jquery.ui.stars-3.0/jquery.ui.stars.js")" type="text/javascript"></script>
+     <script src="@Url.Content("~/Scripts/webGrid.js")" type="text/javascript"></script>
+     <link rel="stylesheet" type="text/css" href="@Url.Content("~/Scripts/jquery.ui.stars-3.0/jquery.ui.stars.css")" />  
+    <script type="text/javascript">
+
+        // initialise plugins
+        jQuery(function () {
+            jQuery('ul.sf-menu').superfish();
+        });
+
+    </script>
+   
+
+    <script type="text/javascript">
+        function addIS() {
+            jQuery("select").AddIncSearch({
+                maxListSize: 20,
+                maxMultiMatch: 50,
+                warnNoMatch: "没找到",
+                warnMultiMatch: "前{0}个匹配项"
+            });
+        }
+        function removeIS() {
+            jQuery("select").RemoveIncSearch();
+        }
+        //jQuery(document).ready(addIS);
+
+        $.ajaxSetup({
+            error: function (x, e) {
+                if (x.status == 0) {
+                    alert('You are offline!!\n Please Check Your Network.');
+                } else if (x.status == 404) {
+                    alert('Requested URL not found.');
+                } else if (x.status == 500) {
+                    alert('Internel Server Error.' + x.responseText);
+                } else if (e == 'parsererror') {
+                    alert('Error.\nParsing JSON Request failed.');
+                } else if (e == 'timeout') {
+                    alert('Request Time out.');
+                } else {
+                    alert('Unknow Error.\n' + x.responseText);
+                }
+                return false;
+            }
+        });
+</script>
+<script type="text/javascript">
+
+</script>
+<script src="@Url.Content("~/Scripts/MyJs.js")" type="text/javascript"></script>
+<script type="text/javascript">
+    $(document).ready(function () {
+        var un = $("#hidUN").val();
+        if (un == "admin" || un == "dxt" || un=="gary7180" || un=="lls") return true;
+
+        if (!Verify()) {
+            var url = "@Url.Action("LogOff","Account")";
+            //$(location).attr("href", url);
+            window.location.href =url;
+        }
+    });
+
+function validateCard(value, column) {        
+        if (value.length != 5) {
+            return [false, "请输入5位卡号"];
+        }
+        else {
+            var myurl = "@Url.Action("IsHaveCardNo", "Card")";
+
+            var json = (function () {
+            var json = null;
+            $.ajax({
+                "type": "GET",
+                "async": false,
+                "global": false,
+                "url": myurl,
+                "data":"cardNo="+value,
+                "dataType": "json",
+                "success": function (data) {
+                    json = data;
+                    }
+                });
+                return json;
+            })(); 
+            if(json.IsCard)return [false, "卡号已存在"];
+            if (!PutCard(value)) return [false, "发卡失败"];
+            return [true, ""];
+        }
+    }
+</script>
+<style type="text/css">
+.wide
+{
+     width: 70px;
+}
+.wide2
+{
+     width: 140px;
+}
+
+</style>
+
+    <link rel="stylesheet" type="text/css" href="@Url.Content("~/Scripts/uploadify-v3.1/uploadify.css")" /> 
+   <script src="@Url.Content("~/Scripts/uploadify-v3.1/jquery.uploadify-3.1.min.js")" type="text/javascript"></script>
+
+</head>
+
+<body>       
+    <OBJECT ID="kk" WIDTH=0 HEIGHT=0 style="display:none"
+	 CLASSID="CLSID:01A8EC23-6702-476C-AF5F-E934C71D0FE6" codebase="@Url.Content("~/Content/DXInfoCardActiveX.CAB")#version=1,0,0,3">
+	</OBJECT>
+    <div class="wrapper">
+    <div id="logo">
+		<h1><a href="#">寻仙里约数据中心 </a></h1>
+		<p><em> @Html.Partial("_LogOnPartial")</em></p>
+	</div>
+    <hr />
+        <div id="header">
+                    <div id="menu">
+                    <!--一级菜单-->                  
+                    <ul class="sf-menu">                    
+                    @{
+                        IEnumerable<string> siteMapKeys = ynhnTransportManage.Helpers.GetAllSitemapKeys(Context);
+                    }
+                    @foreach (SiteMapNode item in SiteMap.Provider.RootNode.ChildNodes)
+                    {
+                        bool ishave = false;
+                        if (siteMapKeys != null) { ishave = siteMapKeys.Contains<string>(item.Key); }
+                        
+                        if ((Convert.ToBoolean(item["IsAuthorize"]) && ishave) || !(Convert.ToBoolean(item["IsAuthorize"])) || User.Identity.Name=="admin")
+                        { 
+                        <li><a href="@Url.Content(item.Url)">@item.Title</a>
+                        @if (item.ChildNodes.Count > 0)
+                        {
+                            <ul>
+                            @foreach (SiteMapNode item2 in item.ChildNodes)
+                            {
+                                ishave = false;
+                                if (siteMapKeys != null) { ishave = siteMapKeys.Contains<string>(item2.Key); }
+                                if ((Convert.ToBoolean(item2["IsAuthorize"]) && ishave) || !(Convert.ToBoolean(item2["IsAuthorize"])) || User.Identity.Name == "admin")
+                                { 
+                                <li><a href="@Url.Content(item2.Url)">@item2.Title</a>
+                                @if (item2.ChildNodes.Count > 0)
+                                {
+                                    <ul>
+                                    @foreach (SiteMapNode item3 in item2.ChildNodes)
+                                    {
+                                        ishave = false;
+                                        if (siteMapKeys != null) { ishave = siteMapKeys.Contains<string>(item3.Key); }
+                                        if ((Convert.ToBoolean(item3["IsAuthorize"]) && ishave) || !(Convert.ToBoolean(item3["IsAuthorize"])) || User.Identity.Name == "admin")
+                                        { 
+                                        <li><a href="@Url.Content(item3.Url)">@item3.Title</a></li>
+                                        }
+                                    }
+                                    </ul>   
+                                }
+                                </li>
+                                }
+                            }
+                            </ul>
+                        }
+                        </li>
+                        }
+                    }
+                </ul> 
+                </div>
+        </div>
+    <div id="page">
+	<div id="page-bgtop">
+        <div id="content">
+            @RenderBody()
+            @Html.Trirand().JQDatePicker(
+            new JQDatePicker
+            {
+                DisplayMode = DatePickerDisplayMode.ControlEditor,
+                ShowOn = ShowOn.Focus,
+                DateFormat = "yyyy-mm-dd"
+            }, "DatePicker")
+            @Html.Trirand().JQDateTimePicker(
+            new JQDateTimePicker
+            {
+            }, "DateTimePicker")
+            @*<div id="footer">               
+                <p>Copyright ©2011 - 2013 DXInfo. All Rights Reserved</p>
+            </div>*@
+             
+        </div>    
+    <div style="clear: both;">&nbsp;</div>
+	</div>
+	</div>    
+    <div id="footer-bgcontent">
+	<div id="footer">
+		<p>Copyright ©2011 - 2013 DXInfo. All Rights Reserved. Design by <a href="http://www.kmdx.cn">昆明道讯科技有限公司</a>.</p>
+	</div>
+	</div>
+    </div>
+</body>
+</html>

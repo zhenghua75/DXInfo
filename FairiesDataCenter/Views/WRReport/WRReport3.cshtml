@@ -1,0 +1,97 @@
+﻿@using ynhnTransportManage
+@using Trirand.Web.Mvc
+@model ynhnTransportManage.Models.WRReport3GridModel           
+<script type="text/javascript">
+    $(function () {
+        $("#query").button();
+        $("#query").button().click(function () {
+            setFilters();
+            query();
+        });
+        $("#export").button();
+        $("#export").button().click(function () {
+            setFilters();
+            excelExport();
+        });
+        var myDate = new Date();
+        $('#BeginDate').datetimepicker({ dateFormat: 'yy-mm-dd', timeFormat: 'hh:mm' });
+        $('#EndDate').datetimepicker({ dateFormat: 'yy-mm-dd', timeFormat: 'hh:mm' });
+                var beginDateStr = myDate.getFullYear() + "-" + (myDate.getMonth() + 1) + "-" + myDate.getDate() + " 00:00";
+                var endDateStr = myDate.getFullYear() + "-" + (myDate.getMonth() + 1) + "-" + myDate.getDate() + " 23:59";
+                $("#BeginDate").datetimepicker("setDate", beginDateStr);
+                $("#EndDate").datetimepicker("setDate", endDateStr);
+    });
+    function setFilters() {
+        var filtersStr = '{"groupOp":"AND","rules":[';
+        var filtersStr1 = "";
+        if ($("#LocalDeptId").val()) {
+            filtersStr1 += '{"field":"LocalDeptId","op":"eq","data":"' + $("#LocalDeptId").val() + '"},'
+        }
+        if ($("#DeptId").val()) {
+            filtersStr1 += '{"field":"DeptId","op":"eq","data":"' + $("#DeptId").val() + '"},'
+        }
+        if ($("#UserId").val()) {
+            filtersStr1 += '{"field":"UserId","op":"eq","data":"' + $("#UserId").val() + '"},'
+        }
+        if ($("#RechargeType").val()) {
+            filtersStr1 += '{"field":"RechargeType","op":"eq","data":"' + $("#RechargeType").val() + '"},'
+        }
+        if ($("#PayType").val()) {
+            filtersStr1 += '{"field":"PayType","op":"eq","data":"' + $("#PayType").val() + '"},'
+        }
+        if ($("#CardNo").val()) {
+            filtersStr1 += '{"field":"CardNo","op":"cn","data":"' + $("#CardNo").val() + '"},'
+        }
+        if ($("#MemberName").val()) {
+            filtersStr1 += '{"field":"MemberName","op":"cn","data":"' + $("#MemberName").val() + '"},'
+        }
+        if ($("#BeginDate").val()) {
+            filtersStr1 += '{"field":"CreateDate","op":"ge","data":"' + $("#BeginDate").val() + '"},'
+        }
+        //        else {
+        //            alert("请输入开始日期");
+        //            return;
+        //        }
+        if ($("#EndDate").val()) {
+            filtersStr1 += '{"field":"CreateDate","op":"le","data":"' + $("#EndDate").val() + '"},'
+        }
+        //        else {
+        //            alert("请输入结束日期");
+        //            return;
+        //        }
+        if (filtersStr1 == "") {
+            filtersStr = "";
+        }
+        else {
+            filtersStr += filtersStr1;
+            filtersStr += '{}]}';
+        }
+        var postData = $("#WRReportGrid").jqGrid("getGridParam", "postData");
+        $.extend(postData, { filters: filtersStr });
+    }
+    function query() {
+        $("#WRReportGrid").jqGrid("setGridParam", { search: true }).trigger("reloadGrid", [{ page: 1}]);
+    }
+	</script>
+   <h2 class="ui-jqgrid-titlebar ui-widget-header ui-corner-top ui-helper-clearfix" style="text-align:center">@ViewBag.Title</h2>
+    <div class="ui-state-default ui-jqgrid-toppager">
+<table>
+    <tr>        
+        <td>发卡门店：</td><td>@Html.DropDownList("LocalDeptId", @Helpers.GetDepts2())</td>
+        <td>门店：</td><td>@Html.DropDownList("DeptId", @Helpers.GetDepts2())</td>
+        <td>操作员：</td><td>@Html.DropDownList("UserId", @Helpers.GetUsers())</td>
+        <td>充值类型：</td><td>@Html.DropDownList("RechargeType", @Helpers.GetRechargeType())</td>
+        <td>支付方式：</td><td>@Html.DropDownList("PayType", @Helpers.GetPayType())</td>                               
+    </tr>
+    <tr>
+        <td>卡号：</td><td><input id="CardNo" type="text"/></td>
+        <td>会员名：</td><td><input id="MemberName" type="text"/></td>        
+        <td>开始日期：</td><td><input id="BeginDate" type="text"/></td>
+        <td>结束日期：</td><td><input id="EndDate" type="text"/></td>
+        <td>
+        <td><button id="query">查询</button>
+        <button id="export">导出EXCEL</button></td>
+    </tr>
+</table>
+</div>
+@Html.Trirand().JQGrid(Model.WRReportGrid, "WRReportGrid")

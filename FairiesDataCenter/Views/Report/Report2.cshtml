@@ -1,0 +1,101 @@
+﻿@using Trirand.Web.Mvc
+@using ynhnTransportManage
+@model ynhnTransportManage.Models.Report2GridModel    
+@Html.HiddenFor(m => m.InvType)       
+<script type="text/javascript">
+    $(function () {
+        $("#query").button();
+        $("#query").button().click(function () {
+            setFilters();
+            query();
+        });
+        $("#export").button();
+        $("#export").button().click(function () {
+            setFilters();
+            excelExport();
+        });
+        var myDate = new Date();
+        $('#BeginDate').datetimepicker({ dateFormat: 'yy-mm-dd', timeFormat: 'hh:mm' });
+        $('#EndDate').datetimepicker({ dateFormat: 'yy-mm-dd', timeFormat: 'hh:mm' });
+        var beginDateStr = myDate.getFullYear() + "-" + (myDate.getMonth() + 1) + "-" + myDate.getDate() + " 00:00";
+        var endDateStr = myDate.getFullYear() + "-" + (myDate.getMonth() + 1) + "-" + myDate.getDate() + " 23:59";
+        $("#BeginDate").datetimepicker("setDate", beginDateStr);
+        $("#EndDate").datetimepicker("setDate", endDateStr);
+    });
+    function setFilters() {
+        var filtersStr = '{"groupOp":"AND","rules":[';
+        filtersStr += '{"field":"InvType","op":"eq","data":' + $("#InvType").val() + '},';
+        if ($("#LocalDeptId").val()) {
+            filtersStr += '{"field":"LocalDeptId","op":"eq","data":"' + $("#LocalDeptId").val() + '"},'
+        }
+        if ($("#DeptId").val()) {
+            filtersStr += '{"field":"DeptId","op":"eq","data":"' + $("#DeptId").val() + '"},'
+        }
+        if ($("#UserId").val()) {
+            filtersStr += '{"field":"UserId","op":"eq","data":"' + $("#UserId").val() + '"},'
+        }
+        if ($("#ConsumeType").val()) {
+            filtersStr += '{"field":"ConsumeType","op":"eq","data":"' + $("#ConsumeType").val() + '"},'
+        }
+        if ($("#PayType").val()) {
+            filtersStr += '{"field":"PayType","op":"eq","data":"' + $("#PayType").val() + '"},'
+        }
+        if ($("#CardNo").val()) {
+            filtersStr += '{"field":"CardNo","op":"cn","data":"' + $("#CardNo").val() + '"},'
+        }
+        if ($("#MemberName").val()) {
+            filtersStr += '{"field":"MemberName","op":"cn","data":"' + $("#MemberName").val() + '"},'
+        }
+        if ($("#BeginDate").val()) {
+            filtersStr += '{"field":"CreateDate","op":"ge","data":"' + $("#BeginDate").val() + '"},'
+        }
+        else {
+            alert("请输入开始日期");
+            return;
+        }
+        if ($("#EndDate").val()) {
+            filtersStr += '{"field":"CreateDate","op":"le","data":"' + $("#EndDate").val() + '"}'
+        }
+        else {
+            alert("请输入结束日期");
+            return;
+        }
+        filtersStr += ']}';
+        var postData = $("#Report2Grid").jqGrid("getGridParam", "postData");
+        $.extend(postData, { filters: filtersStr });
+    }
+    function query() {
+        $("#Report2Grid").jqGrid("setGridParam", { search: true }).trigger("reloadGrid", [{ page: 1}]);
+    }
+	</script>
+<table style="width:100%;">
+<tr>
+<td>
+    <h2 class="ui-jqgrid-titlebar ui-widget-header ui-corner-top ui-helper-clearfix" style="text-align:center">@ViewBag.Title</h2>
+</td>
+</tr>
+    <tr>
+        <td>
+        <div class="ui-state-default ui-jqgrid-toppager">
+<table>
+    <tr>        
+        <td>发卡门店：</td><td>@Html.DropDownList("LocalDeptId", @Helpers.GetDepts2())</td>
+        <td>门店：</td><td>@Html.DropDownList("DeptId", @Helpers.GetDepts002())</td>
+        <td>操作员：</td><td>@Html.DropDownList("UserId", @Helpers.GetUsers002())</td>
+        <td>消费类型：</td><td>@Html.DropDownList("ConsumeType", @Helpers.GetConsumeType())</td>
+        <td>支付方式：</td><td>@Html.DropDownList("PayType", @Helpers.GetPayType())</td>                
+    </tr>
+    <tr>
+        <td>卡号：</td><td><input id="CardNo" type="text"/></td>
+        <td>会员名：</td><td><input id="MemberName" type="text"/></td>
+        <td>开始日期：</td><td><input id="BeginDate" type="text"/></td>
+        <td>结束日期：</td><td><input id="EndDate" type="text"/></td>
+        <td><button id="query">查询</button></td>
+        <td><button id="export">导出EXCEL</button></td>
+    </tr>
+</table>
+</div>
+</td>
+</tr>
+</table>
+@Html.Trirand().JQGrid(Model.Report2Grid, "Report2Grid")

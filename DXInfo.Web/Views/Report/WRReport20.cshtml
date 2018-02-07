@@ -1,0 +1,84 @@
+﻿@using Trirand.Web.Mvc
+@using DXInfo.Web.Models
+@model DXInfo.Web.Models.WRReport20GridModel    
+<script type="text/javascript">
+    $(function () {
+        $("#query").button();
+        $("#query").button().click(function () {
+            $("#WRReportGrid").jqGrid('setGridParam', { datatype: 'json' }).trigger("reloadGrid", [{ page: 1}]);
+        });
+        $("#export").button();
+        $("#export").button().click(function () {
+            excelExport();
+        });
+        var myDate = new Date();
+        $('#BeginDate').datetimepicker();
+        $('#EndDate').datetimepicker();
+        var beginDateStr = myDate.getFullYear() + "-" + (myDate.getMonth() + 1) + "-" + myDate.getDate() + " 00:00";
+        var endDateStr = myDate.getFullYear() + "-" + (myDate.getMonth() + 1) + "-" + myDate.getDate() + " 23:59";
+        $("#BeginDate").datetimepicker("setDate", beginDateStr);
+        $("#EndDate").datetimepicker("setDate", endDateStr);
+        var ctrls = [
+                     { name: "DeptId", type: "select" },
+                     { name: "SectionType", type: "select" },
+                     { name: "Category", type: "select" },
+                     { name: "WaitMinutes", type: "text" },
+                     { name: "BeginDate", type: "text" },
+                     { name: "EndDate", type: "text" }, ];
+        InitCtrl(ctrls);
+    });
+    function serializeGridData(postData) {
+        var filtersStr = '{"groupOp":"AND","rules":[';
+        var filtersStr1 = "";
+        if ($("#DeptId").val()) {
+            filtersStr1 += '{"field":"DeptId","op":"eq","data":"' + $("#DeptId").val() + '"},'
+        }
+        if ($("#SectionType").val()) {
+            filtersStr1 += '{"field":"SectionType","op":"eq","data":"' + $("#SectionType").val() + '"},'
+        }
+        if ($("#Category").val()) {
+            filtersStr1 += '{"field":"Category","op":"eq","data":"' + $("#Category").val() + '"},'
+        }
+        if ($("#WaitMinutes").val()) {
+            filtersStr1 += '{"field":"WaitMinute","op":"ge","data":"' + $("#WaitMinutes").val() + '"},'
+        }
+        if ($("#BeginDate").val()) {
+            filtersStr1 += '{"field":"CreateDate","op":"ge","data":"' + $("#BeginDate").val() + '"},'
+        }
+        if ($("#EndDate").val()) {
+            filtersStr1 += '{"field":"CreateDate","op":"le","data":"' + $("#EndDate").val() + '"},'
+        }
+        if (filtersStr1 == "") {
+            filtersStr = "";
+        }
+        else {
+            filtersStr += filtersStr1;
+            filtersStr += '{}]}';
+        }
+        var sdata = {
+            _search: "true",
+            filters: filtersStr
+        };
+        var newPostData = $.extend(postData, sdata);
+        return newPostData;
+    }
+	</script>
+    <h2 class="ui-widget-header h2-center">@ViewBag.Title</h2>
+<fieldset class="ui-widget ui-widget-content ui-corner-all">
+<legend class="ui-widget-header ui-corner-all"></legend>  
+<table>
+    <tr>                    
+        <td><label for="DeptId">门店：</label></td><td>@Html.DropDownList("DeptId", @Html.GetDept())</td>        
+        <td><label for="SectionType">位置：</label></td><td>@Html.DropDownList("SectionType", @Html.GetSectionType())</td> 
+        <td><label for="Category">分类：</label></td><td>@Html.DropDownList("Category", @Html.GetCategory())</td>         
+        <td><button id="query">查询</button></td>      
+    </tr>
+    <tr>
+        <td><label for="WaitMinutes">等待时间：</label></td><td><input id="WaitMinutes" type="text"/></td>       
+        <td><label for="BeginDate">开始日期：</label></td><td><input id="BeginDate" type="text"/></td>
+        <td><label for="EndDate">结束日期：</label></td><td><input id="EndDate" type="text"/></td>
+        <td><button id="export">导出EXCEL</button></td>
+    </tr>
+</table>
+</fieldset>
+@Html.Trirand().JQGrid(Model.WRReportGrid, "WRReportGrid")

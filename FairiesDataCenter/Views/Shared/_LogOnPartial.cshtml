@@ -1,0 +1,9 @@
+﻿@if(Request.IsAuthenticated) {    
+    DXInfo.Profile.CustomProfile profile = ProfileCommon.GetUserProfile();
+    <input id="hidUN" type="hidden" value="@profile.UserName" />
+    <text>欢迎使用<b>@profile.FullName</b>(@profile.DeptName)!
+    [ @Html.ActionLink("注销", "LogOff", "Account") ]</text>
+}
+else {
+    @:[ @Html.ActionLink("登录", "LogOn", "Account") ]
+}

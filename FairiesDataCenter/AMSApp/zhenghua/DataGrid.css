@@ -1,0 +1,96 @@
+body 
+{
+	background-color:#feeff8;
+}  
+.title
+{
+	COLOR: #330033; FONT-SIZE: 15pt; FONT-WEIGHT: bold;	
+ text-decoration:underline;
+}
+.lable
+{
+font-family: Verdana, Arial, Helvetica, sans-serif;
+ font-size: 10pt;
+}
+
+.textbox
+{
+border:1px solid #7b9ebd;	
+width:100px;
+star : expression(
+onmouseover=function(){this.style.borderColor="#060"},
+onmouseout=function(){this.style.borderColor="#7b9ebd"})
+} 
+.button
+{
+ width:80px;
+}
+/*---------------------------Datagrid--------------------------------*/
+.datagrid
+{
+font-family: Verdana, Arial, Helvetica, sans-serif;
+width :100%;
+word-break:break-all;word-wrap:break-word;
+}
+.dg_header
+{
+ font-size: 10pt;
+ font-weight: bold;
+ color: White;
+ background-color: #880028;
+ text-align: center; 
+}
+.dg_alter
+{
+ background-color :#E7E7FF;
+ font-family: "宋体", sans-serif;
+ font-size: 9pt;
+ font-weight: normal;
+ color:Black;
+ text-align: center;
+ background-color:#E6E6E6;
+}
+.dg_item
+{
+ font-family: "宋体", sans-serif;
+ font-size: 9pt;
+ font-weight: normal;
+ color: Black;
+ background-color: White;
+ text-align: center;
+}
+.dg_selected
+{
+	color:#663399;
+    background-color:#FFCC66;
+}
+.dg_page
+{
+ text-align: center;
+ font-family: "宋体", sans-serif;
+ font-size: 9pt;
+ font-weight: normal;
+}
+.dg_footer
+{
+ font-family: "宋体", sans-serif;
+ font-size: 9pt;
+ font-weight: normal;
+ color: Black;
+ background-color: White;
+ text-align: center;
+}
+.file
+{
+	width:160px;
+}
+.image
+{
+	height:200px;
+	 width:250px;
+}
+
+.nodispaly
+{
+	display:none;
+}

@@ -1,0 +1,16 @@
+﻿@if (Request.IsAuthenticated)
+{
+    if (Request.QueryString["AddInventory"] != null)
+    {
+        Layout = "~/Views/Shared/_Layout3.cshtml";
+    }
+    else
+    {
+        Layout = "~/Views/Shared/_Layout.cshtml";
+    }
+}
+else
+{
+
+    Layout = "~/Views/Shared/_Layout2.cshtml";
+}

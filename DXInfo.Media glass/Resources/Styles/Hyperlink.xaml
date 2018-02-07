@@ -1,0 +1,46 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+
+    <!--<LinearGradientBrush x:Key="SelectedLinkBrush" StartPoint="0,0" EndPoint="0,1">
+        <GradientStop Offset="0" >
+            <GradientStop.Color>
+                <Color A="255" R="0" G="84" B="154"></Color>
+            </GradientStop.Color>
+        </GradientStop>
+        <GradientStop Offset="0.5" >
+            <GradientStop.Color>
+                <Color A="255" R="2" G="24" B="84"></Color>
+            </GradientStop.Color>
+        </GradientStop>
+    </LinearGradientBrush>-->
+    
+    <SolidColorBrush x:Key="SelectedLinkBrush">
+        <SolidColorBrush.Color>
+            <!--<Color A="255" R="62" G="96" B="151"/>-->
+            <!--<Color A="255" R="39" G="89" B="173"/>-->            
+            <!--<Color A="255" R="18" G="84" B="194"/>-->
+            <!--<Color A="255" R="54" G="101" B="180"/>-->
+            <!--<Color A="255" R="20" G="77" B="171"/>-->
+            <!--<Color A="255" R="36" G="81" B="155"/>-->
+            <Color A="255" R="2" G="56" B="146"/>
+            <!--<Color A="255" R="18" G="84" B="194"/>-->
+            <!--<Color A="255" R="0" G="84" B="154"></Color>-->
+        </SolidColorBrush.Color>
+    </SolidColorBrush>
+
+
+    <!--http://social.msdn.microsoft.com/forums/en-US/wpf/thread/ea7f8fec-bc68-4300-bea0-60c7ee787318/-->
+    <Style x:Key="GlassHyperlink" TargetType="{x:Type Hyperlink}">
+        <Style.Triggers>
+            <Trigger Property="IsMouseOver" Value="True">
+                <!--<Setter Property="Foreground" Value="{StaticResource SelectedLinkBrush}" />-->                
+                <!--<Setter Property="TextBlock.TextDecorations" Value="Underline" />-->             
+            </Trigger>
+        </Style.Triggers>
+        <Setter Property="Foreground" Value="{StaticResource fillBrush}" />
+        <!--<Setter Property="FontSize" Value="16" />-->
+        <!--<Setter Property="FontWeight" Value="Bold" />-->
+        <!--<Setter Property="TextBlock.TextDecorations" Value="{x:Null}" />-->
+    </Style>
+
+</ResourceDictionary>

@@ -1,0 +1,58 @@
+﻿@using Trirand.Web.Mvc
+@using DXInfo.Web.Models
+@model DXInfo.Web.Models.RdSummaryByWhGridModel
+<script type="text/javascript">
+    $(function () {
+        $("#query").button();
+        $("#BeginDate").datepicker();
+        $("#EndDate").datepicker();
+        $("#query").button().click(function () {
+            query();
+        });
+        $("#export").button();
+        $("#export").button().click(function () {
+            excelExport();
+        });
+        var ctrls = [{ name: "BeginDate", type: "date" },
+                 { name: "EndDate", type: "date" },
+                 { name: "WhId", type: "select" },
+                 { name: "InventoryCategoryCode", type: "text" },
+                 { name: "InventoryCategoryName", type: "text" }, ]
+        InitCtrl(ctrls);
+    });
+    function serializeGridData(postData){
+        var sdata = {
+            _search: true,
+            BeginDate: $("#BeginDate").val(),
+            EndDate: $("#EndDate").val(),
+            WhId: $("#WhId").val(),
+            InventoryCategoryCode: $("#InventoryCategoryCode").val(),
+            InventoryCategoryName: $("#InventoryCategoryName").val()
+        };
+        var newPostData = $.extend(postData, sdata);
+        return $.param(newPostData);
+    }
+    function query() {
+        if ($("#BeginDate").val() && $("#EndDate").val()) {
+            $("#RdSummaryByWhGrid").jqGrid('setGridParam', { datatype: 'json' }).trigger("reloadGrid", [{ page: 1}]);
+        }
+        else {
+            alert("请选择日期");
+        }
+    }
+	</script>
+<h2 class="ui-widget-header h2-center">@ViewBag.Title</h2>
+<fieldset class="ui-widget ui-widget-content ui-corner-all">
+            <legend class="ui-widget-header ui-corner-all"></legend>
+<table>
+    <tr>
+        <td>@Html.LabelFor(m => m.BeginDate)</td><td>@Html.TextBoxFor(m => m.BeginDate)</td>
+        <td>@Html.LabelFor(m => m.EndDate)</td><td>@Html.TextBoxFor(m => m.EndDate)</td>
+        <td>@Html.LabelFor(m => m.WhId)</td><td>@Html.DropDownListFor(m => m.WhId, @Html.GetWarehouse())</td>
+        <td>@Html.LabelFor(m => m.InventoryCategoryCode)</td><td>@Html.TextBoxFor(m => m.InventoryCategoryCode)</td>
+        <td>@Html.LabelFor(m => m.InventoryCategoryName)</td><td>@Html.TextBoxFor(m => m.InventoryCategoryName)</td>
+        <td><button id="query">查询</button></td><td><button id="export">导出EXCEL</button></td>
+    </tr>
+</table>
+</fieldset>
+@Html.Trirand().JQGrid(Model.RdSummaryByWhGrid, "RdSummaryByWhGrid")

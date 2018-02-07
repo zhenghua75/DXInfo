@@ -1,0 +1,19 @@
+﻿@using Trirand.Web.Mvc
+@model ynhnTransportManage.Models.StockManage.StockLocatorGridModel
+@Html.Trirand().JQGrid(Model.StockLocatorGrid, "StockLocatorGrid")
+<script type="text/javascript">
+    $(document).ready(function () {
+        $("#StockLocatorGrid").closest("div.ui-jqgrid-view")
+                .children("div.ui-jqgrid-titlebar")
+                .css("text-align", "center")
+                .css("font-size", "large")
+                .children("span.ui-jqgrid-title")
+                .css("float", "none");
+    });
+    function FormatNumber(num) {
+        return parseFloat(num);
+    }
+    function UnFormatNumber(num) {
+        return num;
+    }
+</script>

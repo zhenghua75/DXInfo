@@ -1,0 +1,22 @@
+﻿@using Trirand.Web.Mvc
+@model DXInfo.Web.Models.BatchWarehouseInventoryGridModel
+<script type="text/javascript">
+    var lastSelection;
+    function editRow(id) {
+        if (id && id !== lastSelection) {
+            var grid = $("#BatchWarehouseInventoryGrid");
+            var ret = grid.jqGrid("getRowData", lastSelection);
+            grid.saveRow(lastSelection, null, null, { WhId: $("#InWhId").val(), InvId: ret.InvId, Specs: ret.Specs, STUnitName: ret.STUnitName });
+            grid.editRow(id, true);
+            lastSelection = id;
+        }
+    }
+    function serializeGridData(postData) {
+        var sdata = {
+            WhId: $("#InWhId").val()
+        };
+        var newPostData = $.extend(postData, sdata);
+        return $.param(newPostData);
+    }
+</script>
+@Html.Trirand().JQGrid(Model.BatchWarehouseInventoryGrid, "BatchWarehouseInventoryGrid")

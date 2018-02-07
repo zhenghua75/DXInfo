@@ -1,0 +1,60 @@
+﻿@using Trirand.Web.Mvc
+@using DXInfo.Web.Models
+@model DXInfo.Web.Models.WRReport19GridModel
+<script type="text/javascript">
+    $(function () {
+        $("#query").button();
+        $("#query").button().click(function () {
+            if ($("#CardNo").val()) {
+                $("#WRReport19Grid").jqGrid('setGridParam', { datatype: 'json' }).trigger('reloadGrid', [{ page: 1}]);
+            }
+            else {
+                $("#WRReport19Grid").jqGrid('setGridParam', { datatype: 'local' }).trigger('reloadGrid', [{ page: 1}]);
+                alert("请输入卡号");
+            }
+        });
+        $("#export").button();
+        $("#export").button().click(function () {
+            if ($("#CardNo").val()) {
+                excelExport();
+            }
+            else {
+                $("#WRReport19Grid").jqGrid('setGridParam', { datatype: 'local' }).trigger('reloadGrid', [{ page: 1}]);
+                alert("请输入卡号");
+            }
+        });
+        var ctrls = [{ name: "CardNo", type: "text" }, ];
+        InitCtrl(ctrls);
+    });
+    function serializeGridData(postData) {
+        var sdata = {
+            _search: true,
+            CardNo: $("#CardNo").val()
+        };
+        var newPostData = $.extend(postData, sdata);
+        return newPostData;
+    }
+</script>
+<h2 class="ui-widget-header h2-center">@ViewBag.Title</h2>
+<fieldset class="ui-widget ui-widget-content ui-corner-all">
+<legend class="ui-widget-header ui-corner-all"></legend>
+    <table>
+        <tr>
+            <td>
+                <label for="CardNo">卡号：</label>
+            </td>
+            <td>
+                <input id="CardNo" type="text" />
+            </td>
+            <td>
+                <button id="query">
+                    查询</button>
+            </td>
+            <td>
+                <button id="export">
+                    导出EXCEL</button>
+            </td>
+        </tr>
+    </table>
+</fieldset>
+@Html.Trirand().JQGrid(Model.WRReport19Grid, "WRReport19Grid")

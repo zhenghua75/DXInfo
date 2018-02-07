@@ -1,0 +1,99 @@
+﻿@using Trirand.Web.Mvc
+@using DXInfo.Web.Models
+@model DXInfo.Web.Models.ConsKindQueryGridModel
+<script type="text/javascript">
+    $(function () {
+        $("#query").button();
+        var myDate = new Date();
+        $("#BeginDate").datetimepicker();
+        $("#EndDate").datetimepicker();
+        var beginDateStr = myDate.getFullYear() + "-" + (myDate.getMonth() + 1) + "-" + myDate.getDate() + " 00:00";
+        var endDateStr = myDate.getFullYear() + "-" + (myDate.getMonth() + 1) + "-" + myDate.getDate() + " 23:59";
+        $("#BeginDate").datetimepicker("setDate", beginDateStr);
+        $("#EndDate").datetimepicker("setDate", endDateStr);
+
+        $("#query").button().click(function () {
+            query();
+        });
+        $("#export").button();
+        $("#export").button().click(function () {
+            excelExport();
+        });
+        var ctrls = [{ name: "BeginDate", type: "datetime" },
+                 { name: "EndDate", type: "datetime" },
+
+                 { name: "vcAssType", type: "select" },
+                 { name: "vcDeptID", type: "select" },
+                 { name: "vcGoodsType", type: "select" },
+
+                 { name: "vcGoodsName", type: "text" },
+                 { name: "IsAssType", type : "checkbox"},
+                 { name: "IsDeptId", type : "checkbox"},
+                 { name: "IsGoodsType", type : "checkbox"},
+                 { name: "IsGoodsName", type : "checkbox"},
+                 ];
+        InitCtrl(ctrls);
+    });
+    function serializeGridData(postData){
+        var filtersStr = '{"groupOp":"AND","rules":[';
+        var filtersStr1 = "";
+        if ($("#vcGoodsName").val() && $("#IsGoodsName").prop("checked")==true) {
+            filtersStr1 += '{"field":"vcGoodsName","op":"cn","data":"' + $("#vcGoodsName").val() + '"},'
+        }
+
+
+        if ($("#vcAssType").val() && $("#IsAssType").prop("checked")==true) {
+            filtersStr1 += '{"field":"vcAssType","op":"eq","data":"' + $("#vcAssType").val() + '"},'
+        }
+        if ($("#vcDeptID").val() && $("#IsDeptId").prop("checked")==true) {
+            filtersStr1 += '{"field":"vcDeptID","op":"eq","data":"' + $("#vcDeptID").val() + '"},'
+        }
+        if ($("#vcGoodsType").val() && $("#IsGoodsType").prop("checked")==true) {
+            filtersStr1 += '{"field":"vcGoodsType","op":"eq","data":"' + $("#vcGoodsType").val() + '"},'
+        }        
+                
+        if (filtersStr1 == "") {
+            filtersStr = "";
+        }
+        else {
+            filtersStr += filtersStr1;
+            filtersStr += '{}]}';
+        }
+        var sdata = {
+            _search: true,
+            filters: filtersStr,
+            IsAssType:$("#IsAssType").prop("checked"),
+            IsDeptId:$("#IsDeptId").prop("checked"),
+            IsGoodsType:$("#IsGoodsType").prop("checked"),
+            IsGoodsName:$("#IsGoodsName").prop("checked"),
+            BeginDate:$("#BeginDate").val(),
+            EndDate:$("#EndDate").val(),
+        };
+        var newPostData = $.extend(postData, sdata);
+        return $.param(newPostData);
+    }
+    function query() {
+            $("#ConsKindQueryGrid").jqGrid('setGridParam', { datatype: 'json' }).trigger('reloadGrid', [{ page: 1}]); 
+    }
+	</script>
+<h2 class="ui-widget-header h2-center">@ViewBag.Title</h2>
+<fieldset class="ui-widget ui-widget-content ui-corner-all">
+            <legend class="ui-widget-header ui-corner-all"></legend>
+<table>
+    <tr>
+        <td>开始时间</td><td>@Html.TextBox("BeginDate")</td>
+        
+        <td>@Html.CheckBox("IsAssType",true)</td><td>会员类型</td><td>@Html.DropDownList("vcAssType", @Html.GetAssType())</td>
+        <td>@Html.CheckBox("IsDeptId", true)</td><td>门店</td><td>@Html.DropDownList("vcDeptID", @Html.GetMD())</td>
+        <td><button id="query">查询</button></td>
+        </tr><tr>
+
+        <td>结束时间</td><td>@Html.TextBox("EndDate")</td>        
+        <td>@Html.CheckBox("IsGoodsType", true)</td><td>商品类型</td><td>@Html.DropDownList("vcGoodsType", @Html.GetGoodsType())</td>        
+        <td>@Html.CheckBox("IsGoodsName", true)</td><td>产品名称</td><td>@Html.TextBox("vcGoodsName")</td>
+        <td><button id="export">导出EXCEL</button></td>
+        </tr><tr>
+    </tr>
+</table>
+</fieldset>
+@Html.Trirand().JQGrid(Model.ConsKindQueryGrid, "ConsKindQueryGrid")

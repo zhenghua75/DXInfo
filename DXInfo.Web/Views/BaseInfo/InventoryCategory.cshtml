@@ -1,0 +1,26 @@
+﻿@using Trirand.Web.Mvc
+@model DXInfo.Web.Models.InventoryCategoryGridModel
+<script type="text/javascript">
+    function serializeGridData(postData) {
+        var sdata = {
+            _search: "true",
+            DeptType: $("#DeptType").val(),
+            CategoryType: $("#CategoryType").val()
+        };
+        var newPostData = $.extend(postData, sdata);
+        //return newPostData;
+        console.log(postData);
+        return $.param(newPostData);
+    }
+    function beforeSubmit(postdata, formid) {
+        var sdata = {
+            DeptType: $("#DeptType").val(),
+            CategoryType: $("#CategoryType").val()
+        };
+        $.extend(postdata, sdata);
+        return [true, ''];
+    }
+</script>
+@Html.Trirand().JQGrid(Model.InventoryCategoryGrid, "InventoryCategoryGrid")
+@Html.HiddenFor(m => m.CategoryType)
+@Html.HiddenFor(m => m.DeptType)

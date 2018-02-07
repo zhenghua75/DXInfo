@@ -1,0 +1,19 @@
+﻿@using Trirand.Web.Mvc
+@model ynhnTransportManage.Models.StockManage.WarehouseInventoryGridModel
+<script src="@Url.Content("~/Scripts/chosen/chosen.jquery.min.js")" type="text/javascript"></script>
+<link href="@Url.Content("~/Scripts/chosen/chosen.css")" rel="stylesheet" type="text/css" />
+@Html.Trirand().JQGrid(Model.WarehouseInventoryGrid, "WarehouseInventoryGrid")
+<script type="text/javascript">
+    $(document).ready(function () {
+        $("#WarehouseInventoryGrid").closest("div.ui-jqgrid-view")
+                .children("div.ui-jqgrid-titlebar")
+                .css("text-align", "center")
+                .css("font-size", "large")
+                .children("span.ui-jqgrid-title")
+                .css("float", "none");
+    });
+    function populate() {
+        //$("#Warehouse").chosen({ allow_single_deselect: true, no_results_text: "没有找到", search_contains: true });  
+        $("#Inventory").chosen({ allow_single_deselect: true, no_results_text: "没有找到", search_contains: true });  
+    }
+</script>

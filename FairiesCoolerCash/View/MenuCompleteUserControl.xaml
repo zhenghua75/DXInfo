@@ -1,0 +1,79 @@
+﻿<UserControl x:Class="FairiesCoolerCash.Business.MenuCompleteUserControl"
+      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+      xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+      mc:Ignorable="d" 
+      d:DesignHeight="300" d:DesignWidth="300"
+      Background="{DynamicResource WindowBackgroundBrush}" 
+      xmlns:local="clr-namespace:FairiesCoolerCash.Business"  
+      FontSize="20">
+
+    <!--<UserControl.Resources>
+        <local:MenuInfoTickerComplete x:Key="ticker" />
+    </UserControl.Resources>-->
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="30"></RowDefinition>
+            <RowDefinition></RowDefinition>
+        </Grid.RowDefinitions>
+        <Label HorizontalAlignment="Center" FontSize="26" Grid.Row="0" FontWeight="Bold">已出菜品</Label>
+
+        <DataGrid Name="GridMenuComplete" AutoGenerateColumns="False" Grid.Row="1"
+                   CanUserDeleteRows="False" Background="{DynamicResource WindowBackgroundBrush}"
+                      BorderThickness="5" BorderBrush="AliceBlue" Margin="5"
+                  CanUserAddRows="False"  HorizontalAlignment="Center"
+                  ItemsSource="{Binding Source={StaticResource ticker},Path=menuInfos}"
+                  
+                  >
+            <DataGrid.Columns>
+                <DataGridTextColumn Header="出菜时间" Binding="{Binding WaitMinutes}" CanUserSort="True"></DataGridTextColumn>
+                <DataGridTemplateColumn Header="桌号" CanUserSort="False">
+                    <DataGridTemplateColumn.CellTemplate>
+                        <DataTemplate>
+                            <ListBox ItemsSource="{Binding deskes}"
+                                     SelectedItem="{Binding SelectedDesk,UpdateSourceTrigger=PropertyChanged}"
+                                     >
+                                <ListBox.ItemTemplate>
+                                    <DataTemplate>
+                                        <TextBlock FontSize="32" Text="{Binding DeskCode}">
+                                        </TextBlock>
+                                    </DataTemplate>
+                                </ListBox.ItemTemplate>
+                            </ListBox>
+
+                        </DataTemplate>
+                    </DataGridTemplateColumn.CellTemplate>
+                </DataGridTemplateColumn>
+                <DataGridTextColumn Header="状态" CanUserSort="False" Binding="{Binding Status}"></DataGridTextColumn>
+                <DataGridTemplateColumn Header="出菜" CanUserSort="False">
+                    <DataGridTemplateColumn.CellTemplate>
+                        <DataTemplate>
+                            <Button Click="Button_Click">
+                                <Button.Content>
+                                    <TextBlock Text="{Binding MenuButtonTitle}"></TextBlock>
+                                </Button.Content>
+                            </Button>
+                        </DataTemplate>
+                    </DataGridTemplateColumn.CellTemplate>
+                </DataGridTemplateColumn>
+                <DataGridTextColumn Header="名称" CanUserSort="True" Binding="{Binding InvName}"></DataGridTextColumn>
+                <DataGridTextColumn Header="备注" CanUserSort="False" Binding="{Binding Comment}"></DataGridTextColumn>
+                <DataGridTextColumn Header="份数" CanUserSort="False" Binding="{Binding Quantity}"></DataGridTextColumn>
+                <DataGridTextColumn Header="服务员" CanUserSort="False" Binding="{Binding FullName}"></DataGridTextColumn>
+                
+                <DataGridTemplateColumn Header="缺菜" CanUserSort="False">
+                    <DataGridTemplateColumn.CellTemplate>
+                        <DataTemplate>
+                            <Button Click="Button_Click_2">
+                                <Button.Content>
+                                    <TextBlock Text="{Binding MissButtonTitle}"></TextBlock>
+                                </Button.Content>
+                            </Button>
+                        </DataTemplate>
+                    </DataGridTemplateColumn.CellTemplate>
+                </DataGridTemplateColumn>
+            </DataGrid.Columns>
+        </DataGrid>
+    </Grid>
+</UserControl>

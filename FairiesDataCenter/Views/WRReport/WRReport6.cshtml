@@ -1,0 +1,164 @@
+﻿@using ynhnTransportManage
+@model ynhnTransportManage.Models.WRReport6Model           
+<script type="text/javascript">
+    $(function () {
+        $('#BeginDate').datetimepicker({ dateFormat: 'yy-mm-dd', timeFormat: 'hh:mm' });
+        $('#EndDate').datetimepicker({ dateFormat: 'yy-mm-dd', timeFormat: 'hh:mm' });
+        $("#query").button();
+        $("#export").button();
+    });
+	</script>
+ 
+@using (Html.BeginForm("WRReport6", "WRReport"))
+{
+@Html.ValidationSummary(true, "参数错误。请更正错误并重试。")
+<table style="width:100%;">
+<tr>
+<td>
+    <h2 class="ui-jqgrid-titlebar ui-widget-header ui-corner-top ui-helper-clearfix" style="text-align:center">@ViewBag.Title</h2>
+</td>
+</tr>
+    <tr>
+        <td>        
+    <div class="ui-state-default ui-jqgrid-toppager">
+        <table>
+            <tr>
+                <td>
+                <div class="editor-label">
+                @Html.LabelFor(m => m.DeptId)
+            </div>
+            </td>
+                <td>
+                <div class="editor-field">
+                @Html.DropDownListFor(m => m.DeptId, @Helpers.GetDepts2(), new { @class = "wide2" })
+                @Html.ValidationMessageFor(m => m.DeptId)
+            </div>
+                </td>
+                <td>
+                    <div class="editor-label">
+                @Html.LabelFor(m => m.BeginDate)
+            </div>
+                </td>
+                <td>
+                    <div class="editor-field">
+                @Html.TextBoxFor(m => m.BeginDate, new { @class = "wide2" })
+                @Html.ValidationMessageFor(m => m.BeginDate)
+            </div>
+                </td>
+                <td>
+                    <div class="editor-label">
+                @Html.LabelFor(m => m.EndDate)
+            </div>
+                </td>
+                <td>
+                    <div class="editor-field">
+                @Html.TextBoxFor(m => m.EndDate, new { @class = "wide2" })
+                @Html.ValidationMessageFor(m => m.EndDate)
+            </div>
+                </td>
+                <td>
+                <input id="query" type="submit" value="查询" />
+                </td><td>
+                @Html.ActionLink("导出EXCEL", "WRReport6ExportToExcel", "WRReport", null, new { id = "export" })
+                </td>
+            </tr>
+        </table>
+    </div>
+    </td>
+    </tr>
+    <tr>
+   <td>
+    
+	<div class="ui-jqgrid ui-widget ui-widget-content ui-corner-all">
+     @{var gridRecharge = new WebGrid(source: Model.result.Recharge,
+        defaultSort: "PayType",        
+    canPage: false,
+    canSort: true);
+
+    var gridMemberConsume = new WebGrid(source: Model.result.MemberConsume,
+        defaultSort: "PayType",
+    canPage: false,
+    canSort: true);
+
+    var gridNoMemberConsume = new WebGrid(source: Model.result.NoMemberConsume,
+        defaultSort: "PayType",
+    canPage: false,
+    canSort: true);
+
+    var gridCard = new WebGrid(source: Model.result.Card,
+        defaultSort: "Status",
+    canPage: false,
+    canSort: true);}
+    <table class="ui-jqgrid-view ui-jqgrid-bdiv ui-jqgrid-btable">
+    
+    <tr class="ui-widget-content jqgrow ui-row-ltr">
+    <td>充值</td>
+    <td>@gridRecharge.GetHtml(
+            columns: gridRecharge.Columns(
+                    gridRecharge.Column("PayType", "支付方式"),
+                    gridRecharge.Column("Amount", "充值金额", format: (item) => string.Format("{0:f2}", item.Amount)),
+                        gridRecharge.Column("Donate", "充值赠送", format: (item) => string.Format("{0:f2}", item.Donate)),
+                    gridRecharge.Column("Count", "充值次数")
+        ),
+            tableStyle: "ui-jqgrid-view ui-jqgrid-bdiv ui-jqgrid-btable",
+                                rowStyle: "ui-widget-content jqgrow ui-row-ltr",
+                                    alternatingRowStyle: "ui-widget-content jqgrow ui-row-ltr",
+                            headerStyle: "ui-state-default ui-jqgrid-hdiv",
+                                    footerStyle: "ui-state-default ui-jqgrid-pager ui-corner-bottom ui-pager-control ui-pg-table"
+        )</td>
+    </tr>
+    <tr class="ui-widget-content jqgrow ui-row-ltr">
+        <td>会员消费</td>
+        <td>@gridMemberConsume.GetHtml(
+     columns:gridMemberConsume.Columns(
+             gridMemberConsume.Column("PayType", "支付方式"),
+             gridMemberConsume.Column("Amount", "消费金额", format: (item) => string.Format("{0:f2}", item.Amount)),
+         gridMemberConsume.Column("Quantity", "商品数量"),
+         gridMemberConsume.Column("Count", "消费次数")
+     ),
+         tableStyle: "ui-jqgrid-view ui-jqgrid-bdiv ui-jqgrid-btable",
+                                rowStyle: "ui-widget-content jqgrow ui-row-ltr",
+                                    alternatingRowStyle: "ui-widget-content jqgrow ui-row-ltr",
+                            headerStyle: "ui-state-default ui-jqgrid-hdiv",
+                                    footerStyle: "ui-state-default ui-jqgrid-pager ui-corner-bottom ui-pager-control ui-pg-table"
+                 )</td>
+    </tr>
+    <tr class="ui-widget-content jqgrow ui-row-ltr">
+    <td>非会员消费</td>
+        <td>@gridNoMemberConsume.GetHtml(
+columns: gridNoMemberConsume.Columns(
+        gridNoMemberConsume.Column("PayType", "支付方式"),
+gridNoMemberConsume.Column("Amount", "消费金额", format: (item) => string.Format("{0:f2}", item.Amount)),
+    gridNoMemberConsume.Column("Quantity", "商品数量"),
+    gridNoMemberConsume.Column("Count", "消费次数")
+     ),
+tableStyle: "ui-jqgrid-view ui-jqgrid-bdiv ui-jqgrid-btable",
+                       rowStyle: "ui-widget-content jqgrow ui-row-ltr",
+                           alternatingRowStyle: "ui-widget-content jqgrow ui-row-ltr",
+                   headerStyle: "ui-state-default ui-jqgrid-hdiv",
+                           footerStyle: "ui-state-default ui-jqgrid-pager ui-corner-bottom ui-pager-control ui-pg-table"
+        )</td>
+    </tr>
+    <tr class="ui-widget-content jqgrow ui-row-ltr">
+        <td>会员卡</td>
+        <td>@gridCard.GetHtml(
+columns: gridCard.Columns(
+gridCard.Column("Status", "卡状态"),
+gridCard.Column("Balance", "余额", format: (item) => string.Format("{0:f2}", item.Balance)),
+gridCard.Column("Point", "积分", format: (item) => string.Format("{0:f2}", item.Point)),
+gridCard.Column("Fee", "补卡费", format: (item) => string.Format("{0:f2}", item.Fee)),
+gridCard.Column("Count", "数量")
+     ),
+tableStyle: "ui-jqgrid-view ui-jqgrid-bdiv ui-jqgrid-btable",
+                       rowStyle: "ui-widget-content jqgrow ui-row-ltr",
+                           alternatingRowStyle: "ui-widget-content jqgrow ui-row-ltr",
+                   headerStyle: "ui-state-default ui-jqgrid-hdiv",
+                           footerStyle: "ui-state-default ui-jqgrid-pager ui-corner-bottom ui-pager-control ui-pg-table"
+        )</td>
+    </tr>
+             </table>
+	</div>
+</td>
+    </tr>
+</table>
+}

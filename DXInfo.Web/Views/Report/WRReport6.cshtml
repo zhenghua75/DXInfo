@@ -1,0 +1,109 @@
+﻿@using DXInfo.Web.Models
+@model DXInfo.Web.Models.WRReport6Model           
+<script type="text/javascript">
+    $(function () {
+        $('#BeginDate').datetimepicker();
+        $('#EndDate').datetimepicker();
+        $("#query").button();
+        $("#export").button();
+        $("#query").button().click(function () {
+            submitToDiv("Report");
+        });
+        var ctrls = [{ name: "DeptId", type: "select" },                    
+                     { name: "BeginDate", type: "text" },
+                     { name: "EndDate", type: "text" }, ];
+        InitCtrl(ctrls);
+        $("th>a,td>a[id!='export']").click(function () { addToDiv(this); return false; });
+    });
+	</script>
+ <h2 class="ui-widget-header h2-center">@ViewBag.Title</h2>
+@using (Html.BeginForm("WRReport6", "Report", FormMethod.Post, new { id = "Report", @class = "form-overflow" }))
+{
+@Html.ValidationSummary(true, "参数错误。请更正错误并重试。", new { @class = "ui-state-error" })
+<fieldset class="ui-widget ui-widget-content ui-corner-all">
+<legend class="ui-widget-header ui-corner-all"></legend>  
+<table>
+    <tr>
+        <td>
+        @Html.LabelFor(m => m.DeptId)
+    </td>
+        <td>
+        @Html.DropDownListFor(m => m.DeptId, @Html.GetDept(), new { @class = "wide2" })
+        @Html.ValidationMessageFor(m => m.DeptId)
+        </td>
+
+        <td>
+        @Html.LabelFor(m => m.BeginDate)
+        </td>
+        <td>
+        @Html.TextBoxFor(m => m.BeginDate, new { @class = "wide2" })
+        @Html.ValidationMessageFor(m => m.BeginDate)
+        </td>
+
+        <td>
+        @Html.LabelFor(m => m.EndDate)
+        </td>
+        <td>
+        @Html.TextBoxFor(m => m.EndDate, new { @class = "wide2" })
+        @Html.ValidationMessageFor(m => m.EndDate)
+        </td>
+
+        <td>
+        <input id="query" type="submit" value="查询"/>
+        </td>
+        <td>
+        @Html.ActionLink("导出EXCEL", "WRReport6ExportToExcel", "Report", null, new { id = "export" })
+        </td>
+    </tr>
+</table>
+</fieldset>
+    
+var gridRecharge = new MyWebGrid(source: Model.result.Recharge,defaultSort: "PayType",canPage: false);
+var gridMemberConsume = new MyWebGrid(source: Model.result.MemberConsume,defaultSort: "PayType",canPage: false);
+var gridNoMemberConsume = new MyWebGrid(source: Model.result.NoMemberConsume,defaultSort: "PayType",canPage: false);
+var gridCard = new MyWebGrid(source: Model.result.Card,defaultSort: "Status",canPage: false);
+
+var gridRechargeColumns = new List<WebGridColumn>();
+gridRechargeColumns.Add(gridRecharge.Column("PayType", "支付方式"));
+gridRechargeColumns.Add(gridRecharge.Column("Amount", "充值金额", format: (item) => string.Format("{0:f2}", item.Amount)));
+gridRechargeColumns.Add(gridRecharge.Column("Donate", "充值赠送", format: (item) => string.Format("{0:f2}", item.Donate)));
+gridRechargeColumns.Add(gridRecharge.Column("Count", "充值次数"));
+
+var gridMemberConsumeColumns = new List<WebGridColumn>();
+gridMemberConsumeColumns.Add(gridMemberConsume.Column("PayType", "支付方式"));
+gridMemberConsumeColumns.Add(gridMemberConsume.Column("Amount", "消费金额", format: (item) => string.Format("{0:f2}", item.Amount)));
+gridMemberConsumeColumns.Add(gridMemberConsume.Column("Quantity", "商品数量"));
+gridMemberConsumeColumns.Add(gridMemberConsume.Column("Count", "消费次数"));
+
+var gridNoMemberConsumeColumns = new List<WebGridColumn>();
+gridNoMemberConsumeColumns.Add(gridNoMemberConsume.Column("PayType", "支付方式"));
+gridNoMemberConsumeColumns.Add(gridNoMemberConsume.Column("Amount", "消费金额", format: (item) => string.Format("{0:f2}", item.Amount)));
+gridNoMemberConsumeColumns.Add(gridNoMemberConsume.Column("Quantity", "商品数量"));
+gridNoMemberConsumeColumns.Add(gridNoMemberConsume.Column("Count", "消费次数"));
+
+var gridCardColumns = new List<WebGridColumn>();
+gridCardColumns.Add(gridCard.Column("Status", "卡状态"));
+gridCardColumns.Add(gridCard.Column("Balance", "余额", format: (item) => string.Format("{0:f2}", item.Balance)));
+gridCardColumns.Add(gridCard.Column("Point", "积分", format: (item) => string.Format("{0:f2}", item.Point)));
+gridCardColumns.Add(gridCard.Column("Fee", "补卡费", format: (item) => string.Format("{0:f2}", item.Fee)));
+gridCardColumns.Add(gridCard.Column("Count", "数量"));
+<fieldset class="ui-widget ui-widget-content ui-corner-all">
+<legend class="ui-widget-header ui-corner-all">充值</legend>  
+@gridRecharge.GetHtml(gridRechargeColumns)
+</fieldset>
+
+<fieldset class="ui-widget ui-widget-content ui-corner-all">
+<legend class="ui-widget-header ui-corner-all">会员消费</legend>          
+@gridMemberConsume.GetHtml(gridMemberConsumeColumns)
+</fieldset>
+    
+<fieldset class="ui-widget ui-widget-content ui-corner-all">
+<legend class="ui-widget-header ui-corner-all">非会员消费</legend>      
+@gridNoMemberConsume.GetHtml(gridNoMemberConsumeColumns)
+</fieldset>
+    
+<fieldset class="ui-widget ui-widget-content ui-corner-all">
+<legend class="ui-widget-header ui-corner-all">会员卡</legend>      
+@gridCard.GetHtml(gridCardColumns)
+</fieldset>
+}

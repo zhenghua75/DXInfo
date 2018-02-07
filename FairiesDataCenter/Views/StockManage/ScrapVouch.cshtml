@@ -1,0 +1,93 @@
+﻿@using Trirand.Web.Mvc
+@using ynhnTransportManage
+@model ynhnTransportManage.Models.StockManage.ScrapVouchModel
+<style>
+	#toolbar {
+		padding: 10px 4px;
+	}
+	#scrapVouch_Memo{width: 590px;}
+	</style>
+<script src="@Url.Content("~/Scripts/chosen/chosen.jquery.min.js")" type="text/javascript"></script>
+<link href="@Url.Content("~/Scripts/chosen/chosen.css")" rel="stylesheet" type="text/css" />
+<script src="@Url.Content("~/Scripts/jquery.blockUI.js")" type="text/javascript"></script>
+<script src="@Url.Content("~/Scripts/jquery.dateFormat-1.0.js")" type="text/javascript"></script>
+<script src="@Url.Content("~/Scripts/RdRecord/resetForm.js")" type="text/javascript"></script>
+<script src="@Url.Content("~/Scripts/RdRecord/resetValidation.js")" type="text/javascript"></script>
+<script src="@Url.Content("~/Scripts/RdRecord/setButton.js")" type="text/javascript"></script>
+<script src="@Url.Content("~/Scripts/RdRecord/setButtonState.js")" type="text/javascript"></script>
+<script src="@Url.Content("~/Scripts/RdRecord/resetGrid.js")" type="text/javascript"></script>
+@*<script src="@Url.Content("~/Scripts/RdRecord/initForm.js")" type="text/javascript"></script>*@
+<script type="text/javascript">
+    $(function () {
+        prefix = "#scrapVouch_";
+        mainId = "SVId";
+        gridId = "#ScrapVouchsGrid";
+        gridId2 = "ScrapVouchsGrid";
+        formId = "#ScrapVouchForm";
+        initForm();
+        resetGrid();
+        DisabledDiv();
+        setButton();
+        setButtonState("0");
+        invId = "#InvId";
+    });
+
+</script>
+<div id="addurl" data-url="@Url.Action("GetScrapVouch", "StockManage")"></div>
+<div id="saveaddurl" data-url="@Url.Action("AddScrapVouch", "StockManage")"></div>
+<div id="savemodifyurl" data-url="@Url.Action("ModifyScrapVouch", "StockManage")"></div>
+<div id="verifyurl" data-url="@Url.Action("VerifyScrapVouch", "StockManage")"></div>
+<div id="unverifyurl" data-url="@Url.Action("UnVerifyScrapVouch", "StockManage")"></div>
+<div id="deleteurl" data-url="@Url.Action("DeleteScrapVouch", "StockManage")"></div>
+<div id="cururl" data-url="@Url.Action("CurScrapVouch", "StockManage")"></div>
+<div id="starturl" data-url="@Url.Action("StartScrapVouch", "StockManage")"></div>
+<div id="prevurl" data-url="@Url.Action("PrevScrapVouch", "StockManage")"></div>
+<div id="nexturl" data-url="@Url.Action("NextScrapVouch", "StockManage")"></div>
+<div id="endurl" data-url="@Url.Action("EndScrapVouch", "StockManage")"></div>
+<div id="getExtRate" data-url="@Url.Action("GetExtRate", "StockManage")"></div>
+<div id="getLocatorByWh" data-url="@Url.Action("GetLocatorByWh", "StockManage")"></div>
+<div id="getInvInfo" data-url="@Url.Action("GetInvInfo", "StockManage")"></div>
+<div id="getUnitJsonByInv" data-url="@Url.Action("GetUnitJsonByInv", "StockManage")"></div>
+<div id="printurl" data-url="../../Print/PurchaseInStock.aspx"></div>
+<div id="searchurl" data-url="@Url.Action("SearchScrapVouch", "StockManage")"></div>
+<div id="getBatchUrl" data-url="@Url.Action("GetBatch2", "StockManage")"></div>
+<div id="getLocatorByWhBatchUrl" data-url="@Url.Action("getLocatorByWhBatch2", "StockManage")"></div>
+<div id="getAvaNumUrl" data-url="@Url.Action("getAvaNum", "StockManage")"></div>
+<div id="GetInvByWh" data-url="@Url.Action("GetInvByWh", "StockManage")"></div>
+
+<div style="margin:0px auto;width:1024px;height:600px;background-color:#dfeffc;padding:30px;">
+            @Html.Partial("_ToolbarPartial");            
+            <h1  style="text-align:center">@ViewBag.Title</h1>
+            <div id="divForm">
+            @using (Html.BeginForm("ScrapVouch", "StockManage", FormMethod.Post, new { id = "ScrapVouchForm", name = "ScrapVouchForm" }))
+            {
+                
+                @Html.ValidationSummary()
+                <table>
+                <tr>
+                    <td>@Html.LabelFor(m => m.scrapVouch.Code)</td><td>@Html.TextBoxFor(m => m.scrapVouch.Code)@Html.ValidationMessageFor(m => m.scrapVouch.Code, "*")</td>
+                    <td>@Html.LabelFor(m => m.scrapVouch.SVDate)</td><td>@Html.TextBoxFor(m => m.scrapVouch.SVDate)@Html.ValidationMessageFor(m => m.scrapVouch.SVDate, "*")</td>
+                    <td>@Html.LabelFor(m => m.scrapVouch.WhId)</td><td>@Html.DropDownListFor(m => m.scrapVouch.WhId, @Helpers.GetWhsByOperDept())@Html.ValidationMessageFor(m => m.scrapVouch.WhId, "*")</td>                                                                                            
+                    <td>@Html.LabelFor(m => m.scrapVouch.Salesman)</td><td>@Html.DropDownListFor(m => m.scrapVouch.Salesman, @Helpers.GetUsers())@Html.ValidationMessageFor(m => m.scrapVouch.Salesman, "*")</td>                  
+                </tr>
+                <tr>
+                    <td>@Html.LabelFor(m => m.scrapVouch.VerifyDate)</td><td>@Html.TextBoxFor(m => m.scrapVouch.VerifyDate)@Html.ValidationMessageFor(m => m.scrapVouch.VerifyDate, "*")</td>
+                    <td>@Html.LabelFor(m => m.scrapVouch.Memo)</td><td colspan="5">@Html.TextBoxFor(m => m.scrapVouch.Memo)
+                    @Html.HiddenFor(m => m.scrapVouch.IsVerify)
+                    @Html.HiddenFor(m => m.scrapVouch.IsModify)
+                    @Html.HiddenFor(m => m.scrapVouch.Id)
+                    @Html.HiddenFor(m => m.scrapVouch.MakeTime)
+                    @Html.HiddenFor(m => m.vouchType.Code)
+                    @Html.HiddenFor(m=>m.IsBatch)
+                    @Html.HiddenFor(m=>m.IsLocator)
+                    @Html.HiddenFor(m=>m.IsShelfLife)
+                    </td>
+                </tr>
+            </table>
+            }
+            </div>
+            <div id="divGrid">
+            @Html.Trirand().JQGrid(Model.scrapVouchs.ScrapVouchsGrid, "ScrapVouchsGrid")
+            </div>
+            <script src="@Url.Content("~/Scripts/RdRecord/afterGrid.js")" type="text/javascript"></script>
+</div>

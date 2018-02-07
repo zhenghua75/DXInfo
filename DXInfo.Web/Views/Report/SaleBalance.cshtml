@@ -1,0 +1,55 @@
+﻿@using Trirand.Web.Mvc
+@using DXInfo.Web.Models
+@model DXInfo.Web.Models.SaleBalanceGridModel
+<script type="text/javascript">
+    $(function () {
+        $("#query").button();
+        var myDate = new Date();
+        $("#BalanceDate").datepicker();
+        var balanceDate = myDate.getFullYear() + "-" + (myDate.getMonth() + 1) + "-" + myDate.getDate();
+        $("#BalanceDate").datetimepicker("setDate", balanceDate);
+
+        $("#query").button().click(function () {
+            query();
+        });
+        $("#export").button();
+        $("#export").button().click(function () {
+            excelExport();
+        });
+        var ctrls = [{ name: "BalanceDate", type: "datetime" },
+                     { name: "vcDeptId", type: "select" },
+                     { name: "vcGoodsType", type: "select" }
+                 ];
+        InitCtrl(ctrls);
+    });
+    function serializeGridData(postData){
+        
+        var sdata = {
+            _search: true,
+            BalanceDate: $("#BalanceDate").val(),
+            vcDeptId:$("#vcDeptId").val(),
+            IsBalance: $("#IsBalance").val(),
+            vcGoodsType: $("#vcGoodsType").val(),
+        };
+        var newPostData = $.extend(postData, sdata);
+        return $.param(newPostData);
+    }
+    function query() {
+            $("#SaleBalanceGrid").jqGrid('setGridParam', { datatype: 'json' }).trigger('reloadGrid', [{ page: 1}]); 
+    }
+	</script>
+<h2 class="ui-widget-header h2-center">@ViewBag.Title</h2>
+<fieldset class="ui-widget ui-widget-content ui-corner-all">
+            <legend class="ui-widget-header ui-corner-all"></legend>
+<table>
+    <tr>
+        <td>开始时间</td><td>@Html.TextBox("BalanceDate")</td>
+        <td>是否平衡</td><td>@Html.DropDownList("IsBalance", @Html.GetIsBalance())</td>
+        <td>商品类型</td><td>@Html.DropDownList("vcGoodsType", @Html.GetGoodsType())</td>
+        <td>门店</td><td>@Html.DropDownList("vcDeptId", @Html.GetMD())</td>
+        <td><button id="query">查询</button></td>
+        <td><button id="export">导出EXCEL</button></td>
+    </tr>
+</table>
+</fieldset>
+@Html.Trirand().JQGrid(Model.SaleBalanceGrid, "SaleBalanceGrid")

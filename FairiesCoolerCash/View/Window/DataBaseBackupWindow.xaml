@@ -1,0 +1,16 @@
+﻿<Window x:Class="FairiesCoolerCash.Business.DataBaseBackupWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="备份数据库" Height="100" Width="800"  Background="{DynamicResource WindowBackgroundBrush}" ResizeMode="NoResize">
+    <Grid>
+        <StackPanel Orientation="Horizontal" Height="30">
+            <Label x:Name="lblPath">备份路径</Label>
+            <TextBox x:Name="txtPath" Width="400"></TextBox>
+            <Button x:Name="btnDirectory" Click="Button_Click" Width="100">选择路径...</Button>
+            <Button x:Name="btnFileName" Click="Button_Click_4" Width="100">选择文件...</Button>
+            <Button x:Name="btnBackup" Click="Button_Click_1" Width="100">备份</Button>
+            <Button x:Name="btnRestore" Click="Button_Click_3" Width="100">恢复</Button>
+            <Button Click="Button_Click_2" Width="100">关闭</Button>
+        </StackPanel>
+    </Grid>
+</Window>

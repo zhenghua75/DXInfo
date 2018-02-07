@@ -1,0 +1,44 @@
+﻿@using Trirand.Web.Mvc
+@using DXInfo.Web.Models
+@model DXInfo.Web.Models.VouchsGridModel
+
+<script type="text/javascript">
+var grid = $("#VouchsGrid");
+var frm = $("#StockManageForm");
+</script>
+@Styles.Render("~/Content/StockManage")
+@Scripts.Render("~/bundles/StockManage")
+<h2 class="ui-widget-header h2-center">@ViewBag.Title</h2>
+@Html.Partial("_ToolbarPartial") 
+@using (Html.BeginForm("PurchaseInStock", "StockManage", FormMethod.Post, new { id = "StockManageForm" }))
+{                  
+    @Html.HiddenFor(m => m.Id)
+    @Html.HiddenFor(m => m.IsVerify)
+    @Html.HiddenFor(m => m.IsModify)
+    @Html.HiddenFor(m => m.PTCode)
+    @Html.HiddenFor(m => m.STCode)
+    @Html.HiddenFor(m => m.VouchType)
+    @Html.HiddenFor(m => m.IsBatch)
+    @Html.HiddenFor(m => m.IsLocator)
+    @Html.HiddenFor(m => m.IsShelfLife)
+    @Html.HiddenFor(m => m.RdFlag)
+    @Html.HiddenFor(m => m.RdCode)
+    @Html.HiddenFor(m => m.MakeTime)
+    @Html.HiddenFor(m => m.InvInit)
+    @Html.HiddenFor(m => m.InvType)
+    @RenderBody()
+}
+@Html.Trirand().JQGrid(Model.VouchsGrid, "VouchsGrid")
+<script type="text/javascript">
+    $(function () {
+        InitCtrl(ctrls);
+        DisabledCtrls(ctrls);
+        setButton(urls, frm, grid, $("#VouchType").val(), ctrls);
+        setButtonState(0, ctrls);
+        jQuery.validator.unobtrusive.parse(frm);
+        if ($("#Id").val().length > 0) {
+            var url = urls.cururl;// +"?VouchType=" + $("#VouchType").val() + "&Id=" + $("#Id").val();
+            MyAjax(frm, url, ctrls);
+        }
+    });
+</script>

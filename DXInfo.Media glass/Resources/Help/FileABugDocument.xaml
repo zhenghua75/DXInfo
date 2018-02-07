@@ -1,0 +1,39 @@
+﻿<FlowDocument xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    ColumnWidth="400" FontSize="16" FontFamily="Georgia">
+    
+    <Paragraph FontSize="22" FontWeight="Bold">
+        File a Bug
+    </Paragraph>
+    
+    <Paragraph>
+        Found a bug ? Please report it! My e-mail :
+        <Hyperlink Name="webLink1" FontFamily="Georgia" FontSize="16" NavigateUri="mailto:denyakimenko@yandex.ru">denyakimenko@yandex.ru</Hyperlink>
+    </Paragraph>
+
+    <Paragraph>
+        Please include the following information :
+    </Paragraph>
+
+    <Paragraph>
+        1.  Desktop Operating System version
+    </Paragraph>
+
+    <Paragraph>
+        2.  Problem statement :
+    </Paragraph>
+
+    <List MarkerStyle="Square">
+        <ListItem>
+            <Paragraph>Description of the problem you are reporting</Paragraph>
+        </ListItem>
+        <ListItem>
+            <Paragraph>Description of the behavior you expect</Paragraph>
+        </ListItem>
+        <ListItem>
+            <Paragraph>Description of the actual behavior</Paragraph>
+        </ListItem>
+        <ListItem>
+            <Paragraph>Steps to reproduce the problem</Paragraph>
+        </ListItem>
+    </List>
+</FlowDocument>

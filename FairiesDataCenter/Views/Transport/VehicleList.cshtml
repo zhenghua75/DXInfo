@@ -1,0 +1,39 @@
+﻿@using Trirand.Web.Mvc
+@model ynhnTransportManage.Models.VehicleListGridModel
+@{
+    ViewBag.Title = "车辆清单";
+}
+
+@Html.Trirand().JQGrid(Model.VehicleListGrid, "VehicleListGrid")
+@using (Html.BeginForm("ExportToExcel", "Transport", FormMethod.Post, new { id = "ExcelForm" })){}     
+ <script type="text/javascript">
+
+     function customButtonClicked() {
+         //导出EXEL
+         $(ExcelForm).submit();
+     }       
+    
+    </script>
+<script type="text/javascript">
+    function ShowBalanceTypeName(cellvalue, options, rowObject) {
+        return rowObject[9];
+    }
+    function UnShowBalanceTypeName(cellvalue, options, rowObject) {
+        return "";
+    }
+
+    function ShowCheckUserName(cellvalue, options, rowObject) {
+        return rowObject[31];
+    }
+    function UnShowCheckUserName(cellvalue, options, rowObject) {
+        return "";
+    }
+
+    function ShowLinesName(cellvalue, options, rowObject) {
+        return rowObject[17];
+    }
+    function UnShowLinesName(cellvalue, options, rowObject) {
+        return "";
+    }
+</script>
+

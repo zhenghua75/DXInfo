@@ -1,0 +1,910 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">x86</Platform>
+    <ProductVersion>8.0.30703</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{2B869677-41BC-4513-92EB-8C7F8F9316F3}</ProjectGuid>
+    <OutputType>WinExe</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>FairiesCoolerCash</RootNamespace>
+    <AssemblyName>FairiesCoolerCash</AssemblyName>
+    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
+    <TargetFrameworkProfile>
+    </TargetFrameworkProfile>
+    <FileAlignment>512</FileAlignment>
+    <ProjectTypeGuids>{60dc8134-eba5-43b8-bcc9-bb4bc16c2548};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
+    <WarningLevel>4</WarningLevel>
+    <IsWebBootstrapper>false</IsWebBootstrapper>
+    <PublishUrl>C:\Users\Administrator\Desktop\玉溪安装\</PublishUrl>
+    <Install>true</Install>
+    <InstallFrom>Disk</InstallFrom>
+    <UpdateEnabled>false</UpdateEnabled>
+    <UpdateMode>Foreground</UpdateMode>
+    <UpdateInterval>7</UpdateInterval>
+    <UpdateIntervalUnits>Days</UpdateIntervalUnits>
+    <UpdatePeriodically>false</UpdatePeriodically>
+    <UpdateRequired>false</UpdateRequired>
+    <MapFileExtensions>true</MapFileExtensions>
+    <ApplicationRevision>0</ApplicationRevision>
+    <ApplicationVersion>2.0.0.%2a</ApplicationVersion>
+    <UseApplicationTrust>false</UseApplicationTrust>
+    <PublishWizardCompleted>true</PublishWizardCompleted>
+    <BootstrapperEnabled>true</BootstrapperEnabled>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|x86' ">
+    <PlatformTarget>x86</PlatformTarget>
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|x86' ">
+    <PlatformTarget>x86</PlatformTarget>
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|AnyCPU'">
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <OutputPath>bin\Debug\</OutputPath>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|AnyCPU'">
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <OutputPath>bin\Release\</OutputPath>
+  </PropertyGroup>
+  <PropertyGroup>
+    <ApplicationIcon>images\ApplicatoionIco.ico</ApplicationIcon>
+  </PropertyGroup>
+  <PropertyGroup>
+    <StartupObject />
+  </PropertyGroup>
+  <PropertyGroup />
+  <PropertyGroup>
+    <ApplicationManifest>app.manifest</ApplicationManifest>
+  </PropertyGroup>
+  <PropertyGroup>
+    <ManifestCertificateThumbprint>5408A2CD25BA6733CF33FF266042AC0D64A244FC</ManifestCertificateThumbprint>
+  </PropertyGroup>
+  <PropertyGroup>
+    <ManifestKeyFile>FairiesCoolerCash_TemporaryKey.pfx</ManifestKeyFile>
+  </PropertyGroup>
+  <PropertyGroup>
+    <GenerateManifests>false</GenerateManifests>
+  </PropertyGroup>
+  <PropertyGroup>
+    <SignManifests>false</SignManifests>
+  </PropertyGroup>
+  <PropertyGroup>
+    <TargetZone>LocalIntranet</TargetZone>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="AutoMapper, Version=3.1.0.0, Culture=neutral, PublicKeyToken=be96cd2c38ef1005, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\AutoMapper.3.1.0\lib\net40\AutoMapper.dll</HintPath>
+    </Reference>
+    <Reference Include="AutoMapper.Net4, Version=3.1.0.0, Culture=neutral, PublicKeyToken=be96cd2c38ef1005, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\AutoMapper.3.1.0\lib\net40\AutoMapper.Net4.dll</HintPath>
+    </Reference>
+    <Reference Include="DataGridThemes">
+      <HintPath>..\packages\DataGridThemes.1.0.0\lib\net40\DataGridThemes.dll</HintPath>
+    </Reference>
+    <Reference Include="EntityFramework, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
+      <HintPath>..\packages\EntityFramework.6.0.2\lib\net40\EntityFramework.dll</HintPath>
+    </Reference>
+    <Reference Include="EntityFramework.SqlServer, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
+      <HintPath>..\packages\EntityFramework.6.0.2\lib\net40\EntityFramework.SqlServer.dll</HintPath>
+    </Reference>
+    <Reference Include="GalaSoft.MvvmLight.Extras.WPF4, Version=4.2.30.23173, Culture=neutral, PublicKeyToken=1673db7d5906b0ad, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\MvvmLightLibs.4.2.30.0\lib\net40\GalaSoft.MvvmLight.Extras.WPF4.dll</HintPath>
+    </Reference>
+    <Reference Include="GalaSoft.MvvmLight.WPF4, Version=4.2.30.23173, Culture=neutral, PublicKeyToken=63eb5c012e0b3c1c, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\MvvmLightLibs.4.2.30.0\lib\net40\GalaSoft.MvvmLight.WPF4.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Office.Interop.Excel, Version=14.0.0.0, Culture=neutral, PublicKeyToken=71e9bce111e9429c, processorArchitecture=MSIL">
+      <EmbedInteropTypes>True</EmbedInteropTypes>
+    </Reference>
+    <Reference Include="Microsoft.Practices.EnterpriseLibrary.Common, Version=5.0.505.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\EnterpriseLibrary.Common.5.0.505.0\lib\NET35\Microsoft.Practices.EnterpriseLibrary.Common.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Practices.EnterpriseLibrary.Data, Version=5.0.505.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\EnterpriseLibrary.Data.5.0.505.0\lib\NET35\Microsoft.Practices.EnterpriseLibrary.Data.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Practices.EnterpriseLibrary.ExceptionHandling, Version=5.0.505.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\EnterpriseLibrary.ExceptionHandling.5.0.505.0\lib\NET35\Microsoft.Practices.EnterpriseLibrary.ExceptionHandling.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Practices.EnterpriseLibrary.ExceptionHandling.Logging, Version=5.0.505.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\EnterpriseLibrary.ExceptionHandling.Logging.5.0.505.0\lib\NET35\Microsoft.Practices.EnterpriseLibrary.ExceptionHandling.Logging.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Practices.EnterpriseLibrary.Logging, Version=5.0.505.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\EnterpriseLibrary.Logging.5.0.505.1\lib\NET35\Microsoft.Practices.EnterpriseLibrary.Logging.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Practices.EnterpriseLibrary.Security, Version=5.0.505.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\EnterpriseLibrary.Security.5.0.505.0\lib\NET35\Microsoft.Practices.EnterpriseLibrary.Security.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Practices.EnterpriseLibrary.Security.Cryptography, Version=5.0.505.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\EnterpriseLibrary.Security.Cryptography.5.0.505.0\lib\NET35\Microsoft.Practices.EnterpriseLibrary.Security.Cryptography.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Practices.ServiceLocation, Version=1.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\CommonServiceLocator.1.0\lib\NET35\Microsoft.Practices.ServiceLocation.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Practices.Unity, Version=2.1.505.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\Unity.2.1.505.2\lib\NET35\Microsoft.Practices.Unity.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Practices.Unity.Configuration, Version=2.1.505.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\Unity.2.1.505.2\lib\NET35\Microsoft.Practices.Unity.Configuration.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Practices.Unity.Interception, Version=2.1.505.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\Unity.Interception.2.1.505.2\lib\NET35\Microsoft.Practices.Unity.Interception.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Practices.Unity.Interception.Configuration, Version=2.1.505.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\Unity.Interception.2.1.505.2\lib\NET35\Microsoft.Practices.Unity.Interception.Configuration.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.ReportViewer.WinForms, Version=10.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL" />
+    <Reference Include="Microsoft.Synchronization, Version=2.1.0.0, Culture=neutral, PublicKeyToken=89845dcd8080cc91, processorArchitecture=MSIL" />
+    <Reference Include="Microsoft.Synchronization.Data, Version=3.1.0.0, Culture=neutral, PublicKeyToken=89845dcd8080cc91, processorArchitecture=MSIL" />
+    <Reference Include="Microsoft.Synchronization.Data.SqlServer, Version=3.1.0.0, Culture=neutral, PublicKeyToken=89845dcd8080cc91, processorArchitecture=MSIL" />
+    <Reference Include="Microsoft.VisualBasic" />
+    <Reference Include="Microsoft.Windows.Shell, Version=3.5.41019.1, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\Microsoft Ribbon for WPF\V3.5\Microsoft.Windows.Shell.dll</HintPath>
+    </Reference>
+    <Reference Include="Ninject">
+      <HintPath>..\packages\Ninject.3.0.1.10\lib\net40\Ninject.dll</HintPath>
+    </Reference>
+    <Reference Include="ReachFramework" />
+    <Reference Include="RibbonControlsLibrary, Version=4.0.0.11019, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\Microsoft Ribbon for WPF\V4.0\RibbonControlsLibrary.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.ComponentModel.DataAnnotations" />
+    <Reference Include="System.configuration" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Printing" />
+    <Reference Include="System.Runtime.Serialization" />
+    <Reference Include="System.Transactions" />
+    <Reference Include="System.Web" />
+    <Reference Include="System.Web.ApplicationServices" />
+    <Reference Include="System.Web.Extensions" />
+    <Reference Include="System.Web.Services" />
+    <Reference Include="System.Windows.Forms" />
+    <Reference Include="System.Windows.Interactivity, Version=4.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\MvvmLightLibs.4.2.30.0\lib\net40\System.Windows.Interactivity.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Xml" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="System.Xaml">
+      <RequiredTargetFramework>4.0</RequiredTargetFramework>
+    </Reference>
+    <Reference Include="UIAutomationProvider" />
+    <Reference Include="UIAutomationTypes" />
+    <Reference Include="WindowsBase" />
+    <Reference Include="PresentationCore" />
+    <Reference Include="PresentationFramework" />
+    <Reference Include="WPF.Themes">
+      <HintPath>..\packages\wpfthemes.0.0.1\lib\WPF.Themes.dll</HintPath>
+    </Reference>
+    <Reference Include="Xceed.Wpf.AvalonDock">
+      <HintPath>..\packages\Extended.Wpf.Toolkit.2.0.0\lib\net40\Xceed.Wpf.AvalonDock.dll</HintPath>
+    </Reference>
+    <Reference Include="Xceed.Wpf.AvalonDock.Themes.Aero">
+      <HintPath>..\packages\Extended.Wpf.Toolkit.2.0.0\lib\net40\Xceed.Wpf.AvalonDock.Themes.Aero.dll</HintPath>
+    </Reference>
+    <Reference Include="Xceed.Wpf.AvalonDock.Themes.Metro">
+      <HintPath>..\packages\Extended.Wpf.Toolkit.2.0.0\lib\net40\Xceed.Wpf.AvalonDock.Themes.Metro.dll</HintPath>
+    </Reference>
+    <Reference Include="Xceed.Wpf.AvalonDock.Themes.VS2010">
+      <HintPath>..\packages\Extended.Wpf.Toolkit.2.0.0\lib\net40\Xceed.Wpf.AvalonDock.Themes.VS2010.dll</HintPath>
+    </Reference>
+    <Reference Include="Xceed.Wpf.DataGrid, Version=2.0.0.0, Culture=neutral, PublicKeyToken=3e4669d2f30244f4, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\Extended.Wpf.Toolkit.2.0.0\lib\net40\Xceed.Wpf.DataGrid.dll</HintPath>
+    </Reference>
+    <Reference Include="Xceed.Wpf.Toolkit, Version=2.0.0.0, Culture=neutral, PublicKeyToken=3e4669d2f30244f4, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\Extended.Wpf.Toolkit.2.0.0\lib\net40\Xceed.Wpf.Toolkit.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+  <ItemGroup>
+    <ApplicationDefinition Include="App.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </ApplicationDefinition>
+    <Compile Include="Business\Common.cs" />
+    <Compile Include="Business\CueBannerService.cs" />
+    <Compile Include="Business\DataGridExcelTools.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Business\DialogCloser.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Business\GridViewWithRowDetails.cs" />
+    <Compile Include="Business\IValidationExceptionHandler.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Business\MessageTokenes.cs" />
+    <Compile Include="Business\MyBusiness.cs" />
+    <Compile Include="Business\MyExtensions.cs" />
+    <Compile Include="Business\MyPrint.cs" />
+    <Compile Include="Business\PaggingControl.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Business\PasswordHelper.cs" />
+    <Compile Include="Business\PrintRDLC.cs" />
+    <Compile Include="Business\ReportResult.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Business\VirtualKeyboard.cs" />
+    <Compile Include="Login.xaml.cs">
+      <DependentUpon>Login.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="SplashScreenWindow.xaml.cs">
+      <DependentUpon>SplashScreenWindow.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="ViewModel\AddMemberViewModel.cs" />
+    <Compile Include="ViewModel\BarMenuViewModel.cs" />
+    <Compile Include="ViewModel\BillRepeatViewModel.cs" />
+    <Compile Include="ViewModel\BusinessViewModelBase.cs" />
+    <Compile Include="ViewModel\CardAddViewModel.cs" />
+    <Compile Include="ViewModel\CardConsumeSetViewModel.cs" />
+    <Compile Include="ViewModel\CardConsumeViewModel.cs" />
+    <Compile Include="ViewModel\CardDonateInventoryViewModel.cs" />
+    <Compile Include="ViewModel\CardFoundViewModel.cs" />
+    <Compile Include="ViewModel\CardInMoneyViewModel.cs" />
+    <Compile Include="ViewModel\CardLossViewModel.cs" />
+    <Compile Include="ViewModel\ConsumeViewModelBase.cs" />
+    <Compile Include="ViewModel\DeskManageViewModel.cs" />
+    <Compile Include="ViewModel\DownLoadViewModel.cs" />
+    <Compile Include="ViewModel\InvDynamicPriceViewModel.cs" />
+    <Compile Include="ViewModel\KitchenMenuViewModel.cs" />
+    <Compile Include="ViewModel\LackMenuListViewModel.cs" />
+    <Compile Include="ViewModel\LoginViewModel.cs" />
+    <Compile Include="ViewModel\MainViewModel.cs" />
+    <Compile Include="ViewModel\MemberQueryViewModel.cs" />
+    <Compile Include="Business\MyConverters.cs" />
+    <Compile Include="ViewModel\ModifyMemberViewModel.cs" />
+    <Compile Include="ViewModel\MyViewModelBase.cs" />
+    <Compile Include="ViewModel\NoMemberCashViewModel.cs" />
+    <Compile Include="ViewModel\OrderBookListViewModel.cs" />
+    <Compile Include="ViewModel\OrderMenuListViewModel.cs" />
+    <Compile Include="ViewModel\PayTypeViewModel.cs" />
+    <Compile Include="ViewModel\PointsExchangeViewModel.cs" />
+    <Compile Include="ViewModel\PutCardInMoneyViewModel.cs" />
+    <Compile Include="ViewModel\ReportViewModel.cs" />
+    <Compile Include="ViewModel\ReportViewModelBase.cs" />
+    <Compile Include="ViewModel\SyncViewModel.cs" />
+    <Compile Include="ViewModel\ViewModelLocator.cs" />
+    <Compile Include="ViewModel\ReceiptViewModel.cs" />
+    <Compile Include="View\Report\QueryCurrentStockUserControl.xaml.cs">
+      <DependentUpon>QueryCurrentStockUserControl.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\UserControl\AddMemberUserControl.xaml.cs">
+      <DependentUpon>AddMemberUserControl.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\UserControl\BillRepeatUserControl.xaml.cs">
+      <DependentUpon>BillRepeatUserControl.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\UserControl\CardAddUserControl.xaml.cs">
+      <DependentUpon>CardAddUserControl.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\UserControl\CardConsumeUserControl.xaml.cs">
+      <DependentUpon>CardConsumeUserControl.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\UserControl\Houchu2UserControl.xaml.cs">
+      <DependentUpon>Houchu2UserControl.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\UserControl\ImgDownloadUserControl.xaml.cs">
+      <DependentUpon>ImgDownloadUserControl.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\UserControl\LackMenuListUserControl.xaml.cs">
+      <DependentUpon>LackMenuListUserControl.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\UserControl\Mp3DownLoadUserControl.xaml.cs">
+      <DependentUpon>Mp3DownLoadUserControl.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\UserControl\PutCardInMondeyUserControl.xaml.cs">
+      <DependentUpon>PutCardInMondeyUserControl.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\UserControl\Receipt\ReceiptUserControl.xaml.cs">
+      <DependentUpon>ReceiptUserControl.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\UserControl\Receipt\ReceiptQueryUserControl.xaml.cs">
+      <DependentUpon>ReceiptQueryUserControl.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\Window\CardConsumeSetWindow.xaml.cs">
+      <DependentUpon>CardConsumeSetWindow.xaml</DependentUpon>
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="View\Window\CardDonateInventoryWindow.xaml.cs">
+      <DependentUpon>CardDonateInventoryWindow.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\UserControl\CardFoundPage.xaml.cs">
+      <DependentUpon>CardFoundPage.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\UserControl\CardInMondeyUserControl.xaml.cs">
+      <DependentUpon>CardInMondeyUserControl.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\UserControl\CardLossUserControl.xaml.cs">
+      <DependentUpon>CardLossUserControl.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Business\CardRef.cs" />
+    <Compile Include="View\Window\DataBaseBackupWindow.xaml.cs">
+      <DependentUpon>DataBaseBackupWindow.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\Window\DeskExchangeWindow.xaml.cs">
+      <DependentUpon>DeskExchangeWindow.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\Window\DeskQuantityWindow.xaml.cs">
+      <DependentUpon>DeskQuantityWindow.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\Window\DownLoadWindows.xaml.cs">
+      <DependentUpon>DownLoadWindows.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Business\EkeyRef.cs" />
+    <Compile Include="Business\ExportManager.cs" />
+    <Compile Include="View\Window\InvDynamicPriceWindow.xaml.cs">
+      <DependentUpon>InvDynamicPriceWindow.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\Window\LocalDeptWindow.xaml.cs">
+      <DependentUpon>LocalDeptWindow.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\UserControl\MemberQueryUserControl.xaml.cs">
+      <DependentUpon>MemberQueryUserControl.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\UserControl\MenuNoCtUserControl.xaml.cs">
+      <DependentUpon>MenuNoCtUserControl.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\UserControl\ModifyMemberUserControl.xaml.cs">
+      <DependentUpon>ModifyMemberUserControl.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\Window\MemberQueryWindow.xaml.cs">
+      <DependentUpon>MemberQueryWindow.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\Window\NoMemberCashWindow.xaml.cs">
+      <DependentUpon>NoMemberCashWindow.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\UserControl\OrderBookListUserControl.xaml.cs">
+      <DependentUpon>OrderBookListUserControl.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\UserControl\OrderMenuListUserControl.xaml.cs">
+      <DependentUpon>OrderMenuListUserControl.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\Window\PackageOptionalWindow.xaml.cs">
+      <DependentUpon>PackageOptionalWindow.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\UserControl\PointsExchangeUserControl.xaml.cs">
+      <DependentUpon>PointsExchangeUserControl.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\Window\PayTypeWindow.xaml.cs">
+      <DependentUpon>PayTypeWindow.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\Window\PointsExchangeWindow.xaml.cs">
+      <DependentUpon>PointsExchangeWindow.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\Report\Report2UserControl.xaml.cs">
+      <DependentUpon>Report2UserControl.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\Report\Report3UserControl.xaml.cs">
+      <DependentUpon>Report3UserControl.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\Report\Report4UserControl.xaml.cs">
+      <DependentUpon>Report4UserControl.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\Report\Report5UserControl.xaml.cs">
+      <DependentUpon>Report5UserControl.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\Report\Report7UserControl.xaml.cs">
+      <DependentUpon>Report7UserControl.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\Window\SyncWindow.xaml.cs">
+      <DependentUpon>SyncWindow.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Business\TextBoxMaskBehavior.cs" />
+    <Compile Include="View\Window\DownLoadImagesWindows.xaml.cs">
+      <DependentUpon>DownLoadImagesWindows.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\UserControl\DeskManageUserControl.xaml.cs">
+      <DependentUpon>DeskManageUserControl.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\Window\DeskBookWindow.xaml.cs">
+      <DependentUpon>DeskBookWindow.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\Window\ThreePrintWindow.xaml.cs">
+      <DependentUpon>ThreePrintWindow.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\Window\InvPriceSetWindow.xaml.cs">
+      <DependentUpon>InvPriceSetWindow.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\WRReport\WRReport10UserControl.xaml.cs">
+      <DependentUpon>WRReport10UserControl.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\WRReport\WRReport11UserControl.xaml.cs">
+      <DependentUpon>WRReport11UserControl.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\WRReport\WRReport2UserControl.xaml.cs">
+      <DependentUpon>WRReport2UserControl.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\WRReport\WRReport3UserControl.xaml.cs">
+      <DependentUpon>WRReport3UserControl.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\WRReport\WRReport4UserControl.xaml.cs">
+      <DependentUpon>WRReport4UserControl.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\WRReport\WRReport5UserControl.xaml.cs">
+      <DependentUpon>WRReport5UserControl.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\WRReport\WRReport7UserControl.xaml.cs">
+      <DependentUpon>WRReport7UserControl.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\UserControl\BarMenuUserControl.xaml.cs">
+      <DependentUpon>BarMenuUserControl.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\WRReport\WRReport8UserControl.xaml.cs">
+      <DependentUpon>WRReport8UserControl.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\WRReport\WRReport9UserControl.xaml.cs">
+      <DependentUpon>WRReport9UserControl.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="CollectionExtensions.cs" />
+    <Compile Include="RibbonMainWindow.xaml.cs">
+      <DependentUpon>RibbonMainWindow.xaml</DependentUpon>
+    </Compile>
+    <Page Include="Login.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="MyStyle.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="SplashScreenWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="View\Report\QueryCurrentStockUserControl.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="View\UserControl\AddMemberUserControl.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="View\UserControl\BillRepeatUserControl.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="View\UserControl\CardAddUserControl.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="View\UserControl\CardConsumeUserControl.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="View\UserControl\Houchu2UserControl.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="View\UserControl\ImgDownloadUserControl.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="View\UserControl\LackMenuListUserControl.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="View\UserControl\Mp3DownLoadUserControl.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="View\UserControl\PutCardInMondeyUserControl.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="View\UserControl\Receipt\ReceiptUserControl.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="View\UserControl\Receipt\ReceiptQueryUserControl.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="View\Window\CardConsumeSetWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="View\Window\CardDonateInventoryWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="View\UserControl\CardFoundPage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="View\UserControl\CardInMondeyUserControl.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="View\UserControl\CardLossUserControl.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="View\Window\DataBaseBackupWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="View\Window\DeskExchangeWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="View\Window\DeskQuantityWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="View\Window\DownLoadWindows.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="View\Window\InvDynamicPriceWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="View\Window\LocalDeptWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="View\UserControl\MemberQueryUserControl.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="View\UserControl\MenuNoCtUserControl.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="View\UserControl\ModifyMemberUserControl.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="View\Window\MemberQueryWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="View\Window\NoMemberCashWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="View\UserControl\OrderBookListUserControl.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="View\UserControl\OrderMenuListUserControl.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="View\Window\PackageOptionalWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="View\UserControl\PointsExchangeUserControl.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="View\Window\PayTypeWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="View\Window\PointsExchangeWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="View\Report\Report2UserControl.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="View\Report\Report3UserControl.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="View\Report\Report4UserControl.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="View\Report\Report5UserControl.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="View\Report\Report7UserControl.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="View\Window\SyncWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="View\Window\DownLoadImagesWindows.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="View\UserControl\DeskManageUserControl.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="View\Window\DeskBookWindow.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="View\Window\ThreePrintWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="View\Window\InvPriceSetWindow.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="View\WRReport\WRReport11UserControl.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="View\WRReport\WRReport2UserControl.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="View\WRReport\WRReport3UserControl.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="View\WRReport\WRReport4UserControl.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="View\WRReport\WRReport5UserControl.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="View\WRReport\WRReport7UserControl.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="View\UserControl\BarMenuUserControl.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="View\WRReport\WRReport8UserControl.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="LogOn.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Compile Include="App.xaml.cs">
+      <DependentUpon>App.xaml</DependentUpon>
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="LogOn.xaml.cs">
+      <DependentUpon>LogOn.xaml</DependentUpon>
+    </Compile>
+    <Page Include="RibbonMainWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Properties\AssemblyInfo.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Properties\Resources.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Resources.resx</DependentUpon>
+    </Compile>
+    <Compile Include="Properties\Settings.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Settings.settings</DependentUpon>
+      <DesignTimeSharedInput>True</DesignTimeSharedInput>
+    </Compile>
+    <None Include="Report7.rdlc">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Report6.rdlc">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Report5.rdlc">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Report4.rdlc">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Report2.rdlc">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Report3.rdlc">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Properties\DataSources\FairiesCoolerCash.Business.NoMemberThreePrintObject.datasource" />
+    <None Include="Report1.rdlc">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <EmbeddedResource Include="Properties\Resources.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <None Include="app.config">
+      <SubType>Designer</SubType>
+    </None>
+    <Page Include="View\WRReport\WRReport9UserControl.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="View\WRReport\WRReport10UserControl.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <None Include="app.manifest" />
+    <None Include="packages.config" />
+    <None Include="Properties\Settings.settings">
+      <Generator>SettingsSingleFileGenerator</Generator>
+      <LastGenOutput>Settings.Designer.cs</LastGenOutput>
+    </None>
+    <AppDesigner Include="Properties\" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\DXInfo.AutoUpdate\DXInfo.AutoUpdate.csproj">
+      <Project>{300DF611-E6A4-447F-86CB-FD409C50CE8A}</Project>
+      <Name>DXInfo.AutoUpdate</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\DXInfo.Business\DXInfo.Business.csproj">
+      <Project>{70278951-C5CD-4D40-9DAB-3028AF9110E2}</Project>
+      <Name>DXInfo.Business</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\DXInfo.Data.Contracts\DXInfo.Data.Contracts.csproj">
+      <Project>{17D20D66-1646-4DDC-9261-BFB28AB43640}</Project>
+      <Name>DXInfo.Data.Contracts</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\DXInfo.Data\DXInfo.Data.csproj">
+      <Project>{1B360754-1837-49C4-9721-9307FDDBACF3}</Project>
+      <Name>DXInfo.Data</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\DXInfo.DbAuthorizationRuleProvider\DXInfo.DbAuthorizationRuleProvider.csproj">
+      <Project>{4466B80B-2A75-42C6-A45E-807849492755}</Project>
+      <Name>DXInfo.DbAuthorizationRuleProvider</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\DXInfo.Download\DXInfo.Download.csproj">
+      <Project>{C731C429-CF52-4951-8824-4CCA8C00E69A}</Project>
+      <Name>DXInfo.Download</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\DXInfo.EFConventions\DXInfo.EFConventions.csproj">
+      <Project>{71A68946-91CB-49F4-A787-872A84F90901}</Project>
+      <Name>DXInfo.EFConventions</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\DXInfo.Media glass\DXInfo.Media Glass.csproj">
+      <Project>{DC2B1003-4320-4486-8925-6F40A5EA4206}</Project>
+      <Name>DXInfo.Media Glass</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\DXInfo.Models\DXInfo.Models.csproj">
+      <Project>{5CCDEF4A-ED6F-4899-8F9C-419ED1E32D5F}</Project>
+      <Name>DXInfo.Models</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\DXInfo.Principal\DXInfo.Principal.csproj">
+      <Project>{22ECB9EA-A035-4D20-A662-65B97B4EB59B}</Project>
+      <Name>DXInfo.Principal</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\DXInfo.Print\DXInfo.Print.csproj">
+      <Project>{A2F2FCD3-64AB-4B6A-AA2D-DD11EF4BFE22}</Project>
+      <Name>DXInfo.Print</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\DXInfo.Restaurant\DXInfo.Restaurant.csproj">
+      <Project>{95D8453F-2C92-4907-9AEB-776C43ADFCD7}</Project>
+      <Name>DXInfo.Restaurant</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\DXInfo.Sync\DXInfo.Sync.csproj">
+      <Project>{897F27CC-3672-44BF-8479-DB0DC7F91D9C}</Project>
+      <Name>DXInfo.Sync</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\WpfKb\WpfKb.csproj">
+      <Project>{0784CDC9-0F52-4B8B-9488-6589C11E94E2}</Project>
+      <Name>WpfKb</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <BootstrapperPackage Include=".NETFramework,Version=v4.0,Profile=Client">
+      <Visible>False</Visible>
+      <ProductName>Microsoft .NET Framework 4 Client Profile %28x86 和 x64%29</ProductName>
+      <Install>true</Install>
+    </BootstrapperPackage>
+    <BootstrapperPackage Include="Microsoft.Net.Client.3.5">
+      <Visible>False</Visible>
+      <ProductName>.NET Framework 3.5 SP1 Client Profile</ProductName>
+      <Install>false</Install>
+    </BootstrapperPackage>
+    <BootstrapperPackage Include="Microsoft.Net.Framework.3.5.SP1">
+      <Visible>False</Visible>
+      <ProductName>.NET Framework 3.5 SP1</ProductName>
+      <Install>false</Install>
+    </BootstrapperPackage>
+    <BootstrapperPackage Include="Microsoft.Windows.Installer.3.1">
+      <Visible>False</Visible>
+      <ProductName>Windows Installer 3.1</ProductName>
+      <Install>true</Install>
+    </BootstrapperPackage>
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="images\desk-green.png" />
+    <Resource Include="images\desk-red.png" />
+    <Resource Include="images\desk-white.png" />
+    <Resource Include="images\desk-yellow.png" />
+    <Resource Include="images\SplashScreen1.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="images\1306992086_buy.gif" />
+    <Resource Include="images\1306992360_print_printer.png" />
+    <Resource Include="images\1306992444_report.png" />
+    <Resource Include="images\1306992529_ark2.png" />
+    <Resource Include="images\1306992604_audio-mp3.png" />
+    <Resource Include="images\1306992686_interact.png" />
+    <Resource Include="images\1306992752_recycle_bin.png" />
+    <Resource Include="images\1306992845_exit.png" />
+    <Resource Include="images\1307180404_logout.png" />
+    <Resource Include="images\1320650055_table.png" />
+    <Resource Include="images\1324727226_Pink_Backup_B.png" />
+    <Resource Include="images\1372966432_Add-Male-User.png" />
+    <Resource Include="images\1372966512_Edit-Male-User.png" />
+    <Resource Include="images\1372967149_Accept-Male-User.png" />
+    <Resource Include="images\1372967867_Male-User-Warning.png" />
+    <Resource Include="images\1372969272_user_cook.png" />
+    <Resource Include="images\1372969429_Bartender_Male_Light.png" />
+    <Resource Include="images\1372969717_table.png" />
+    <Resource Include="images\1372970007_order.png" />
+    <Resource Include="images\1372970851_appointment.png" />
+    <Resource Include="images\1372972161_cup_delete.png" />
+    <Resource Include="images\1372972668_piggy_bank.png" />
+    <Resource Include="images\1372972829_doc_convert.png" />
+    <Resource Include="images\ApplicatoionIco.ico" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="images\background.jpg" />
+    <Resource Include="images\logon.png" />
+    <Resource Include="images\Login.gif" />
+    <Resource Include="images\Logout.gif" />
+    <Resource Include="images\Pass.gif" />
+    <Resource Include="images\User.gif" />
+    <Resource Include="images\validate.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="WRReport\" />
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

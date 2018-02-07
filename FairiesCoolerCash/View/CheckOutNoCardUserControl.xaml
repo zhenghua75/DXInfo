@@ -1,0 +1,67 @@
+﻿<UserControl x:Class="FairiesCoolerCash.Business.CheckOutNoCardUserControl"
+      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+      xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+      mc:Ignorable="d" 
+      d:DesignHeight="300" d:DesignWidth="300"
+      xmlns:local="clr-namespace:FairiesCoolerCash.Business"
+      xmlns:xctk="http://schemas.xceed.com/wpf/xaml/toolkit"
+      Background="{DynamicResource WindowBackgroundBrush}"
+      >
+
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"></RowDefinition>
+            <RowDefinition Height="Auto"></RowDefinition>
+            <RowDefinition Height="Auto"></RowDefinition>
+            <RowDefinition Height="*"></RowDefinition>
+            <RowDefinition Height="Auto"></RowDefinition>
+        </Grid.RowDefinitions>
+        <StackPanel Name="card" Orientation="Horizontal">
+            <Label Content="卡号："></Label>
+            <TextBox Name="CardNo" Width="100"></TextBox>
+            <TextBlock Text="{Binding Balance}"></TextBlock>
+            <TextBlock Text="{Binding Discount}"></TextBlock>
+            <TextBlock Text="{Binding MemberName}"></TextBlock>
+            <Button Click="Button_Click" Width="200">查询卡信息</Button>
+        </StackPanel>
+        <StackPanel Grid.Row="1" Orientation="Horizontal">
+            <Label Content="桌台号"></Label>
+            <TextBox Name="DeskNo" Width="100"></TextBox>
+            <Label Content="开始日期"/>        
+            <DatePicker x:Name="BeginDate"  />
+            <xctk:TimePicker Name="BeginTime" ></xctk:TimePicker>
+            <Label Content="结束日期"/>
+            <DatePicker x:Name="EndDate" />
+            <xctk:TimePicker Name="EndTime" ></xctk:TimePicker>
+            <Button Click="Button_Click_1" Width="200">查询订单</Button>
+        </StackPanel>
+        <StackPanel Grid.Row="2" Orientation="Horizontal">
+            <Label Content="订单序号"/>
+            <ComboBox Name="OrderDishes" DisplayMemberPath="OrderNo" Width="200"></ComboBox>
+            <Button Click="Button_Click_2" Width="200">查看消费</Button>
+            <Label Content="0正常  1退菜 2下单 3缺菜 4 催菜 5 制作 6出菜 7 出菜后退菜 8 结账"></Label>
+            <Button Width="200" Click="Button_Click_3">结账</Button>
+        </StackPanel>
+        <DataGrid Name="MemberList" AutoGenerateColumns="False" IsReadOnly="True"
+                   AlternatingRowBackground="Yellow" Grid.Row="3" >
+            <DataGrid.Columns>
+                <DataGridTextColumn Header="Id" Visibility="Hidden" Binding="{Binding Path=Id}" local:DataGridExcelTools.IsExported="False"></DataGridTextColumn>
+                <DataGridTextColumn Header="菜品" Binding="{Binding Path=Name}" SortDirection="Ascending"></DataGridTextColumn>
+                <DataGridTextColumn Header="单价" Binding="{Binding Path=Price,StringFormat={}{0:N2}}"></DataGridTextColumn>
+                <DataGridTextColumn Header="数量" Binding="{Binding Path=Quantity,StringFormat={}{0:N0}}"></DataGridTextColumn>
+                <DataGridTextColumn Header="金额" Binding="{Binding Path=Amount,StringFormat={}{0:N2}}"></DataGridTextColumn>
+                <DataGridTextColumn Header="状态" Binding="{Binding Path=Status}"></DataGridTextColumn>
+                <DataGridTextColumn Header="操作员" Binding="{Binding Path=FullName}"></DataGridTextColumn>
+                <DataGridTextColumn Header="消费时间"  Binding="{Binding Path=CreateDate,StringFormat={}{0:yyyy-MM-dd HH:mm}}"></DataGridTextColumn>
+
+            </DataGrid.Columns>
+        </DataGrid>
+        <StackPanel Grid.Row="4" Orientation="Horizontal">
+            <Label Content="合计"></Label>
+            <TextBlock Name="Amount"></TextBlock>
+        </StackPanel>
+        
+    </Grid>
+</UserControl>

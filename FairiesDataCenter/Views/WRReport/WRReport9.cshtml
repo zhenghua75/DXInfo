@@ -1,0 +1,61 @@
+﻿@model ynhnTransportManage.Models.WRReport9Model
+@using ynhnTransportManage
+@{
+    var para = "year=" + Model.year + "&" + "month=" + Model.month;
+}
+<script type="text/javascript">
+    $(function () {
+        $("#query").button();
+    });
+	</script>
+<table style="width:100%;">
+<tr>
+<td>
+    <h2 class="ui-jqgrid-titlebar ui-widget-header ui-corner-top ui-helper-clearfix" style="text-align:center">@ViewBag.Title</h2>
+</td>
+</tr>
+    <tr>
+        <td>
+        
+@using (Html.BeginForm()) 
+{    
+    @Html.ValidationSummary(true, "请更正错误并重试。")
+    <div class="ui-state-default ui-jqgrid-toppager">
+    <table>        
+        <tr>
+        <td>
+            <div class="editor-label">
+                @Html.LabelFor(m => m.year)
+            </div>
+            </td>
+            <td>
+            <div class="editor-field">
+                @Html.DropDownListFor(m => m.year, @Helpers.GetYears(), new { @class = "wide2" })
+                @Html.ValidationMessageFor(m => m.year)
+            </div>
+            </td>
+        <td>
+            <div class="editor-label">
+                @Html.LabelFor(m => m.month)
+            </div>
+            </td>
+            <td>
+            <div class="editor-field">
+                @Html.DropDownListFor(m => m.month, @Helpers.GetMonths(), new { @class = "wide2" })
+                @Html.ValidationMessageFor(m => m.month)
+            </div>
+            </td>
+        <td>
+                <input id="query" type="submit" value="查询" />
+            </td></tr>
+        
+    </table></div>
+}
+</td>
+</tr>
+<tr>
+<td>
+<img src="/WRReport/MyChart.aspx?@para" />
+</td>
+    </tr>
+</table>

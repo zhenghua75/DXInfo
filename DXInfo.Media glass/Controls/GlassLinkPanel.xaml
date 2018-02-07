@@ -1,0 +1,20 @@
+﻿<UserControl x:Class="Media_glass.Controls.GlassLinkPanel"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    Background="Transparent" BorderThickness="1" BorderBrush="{StaticResource fillBrush}" Focusable="False">
+    <Grid>
+        <StackPanel Width="250" HorizontalAlignment="Center" VerticalAlignment="Center">
+            <Label Foreground="White" HorizontalAlignment="Center" VerticalAlignment="Center" HorizontalContentAlignment="Center" VerticalContentAlignment="Center">播放列表无文件。</Label>
+            
+            <TextBlock Focusable="False" HorizontalAlignment="Center" VerticalAlignment="Center" TextWrapping="Wrap" Padding="0,2,0,5" >            
+                <Hyperlink Focusable="False" Style="{StaticResource GlassHyperlink}" FontFamily="Tahoma" FontSize="16" Click="Hyperlink_Click">
+                     点击
+                </Hyperlink>                
+            </TextBlock>
+
+            <Label Foreground="White" HorizontalAlignment="Center" VerticalAlignment="Center" HorizontalContentAlignment="Center" VerticalContentAlignment="Center">或者拖动文件到这里</Label>
+            <Label Foreground="White" HorizontalAlignment="Center" VerticalAlignment="Center" HorizontalContentAlignment="Center" VerticalContentAlignment="Center">创建播放列表.</Label>
+
+        </StackPanel>
+    </Grid>
+</UserControl>

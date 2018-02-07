@@ -1,0 +1,18 @@
+﻿<Window x:Class="FairiesCoolerCash.Business.DeskExchangeWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="选择桌台" Height="137" Width="232" WindowStartupLocation="CenterScreen">
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition></RowDefinition>
+            <RowDefinition></RowDefinition>
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition></ColumnDefinition>
+            <ColumnDefinition></ColumnDefinition>
+        </Grid.ColumnDefinitions>
+        <TextBlock>桌台号：</TextBlock>
+        <TextBox Grid.Column="1" Name="txtDeskNo"></TextBox>
+        <Button Grid.Row="1" Grid.ColumnSpan="2" Click="Button_Click" >确定</Button>
+    </Grid>
+</Window>

@@ -1,0 +1,15 @@
+﻿@using Trirand.Web.Mvc
+@model DXInfo.Web.Models.LoginOperGridModel
+<script type="text/javascript">
+
+    function disableFields() {
+        $("#vcLoginID").attr("disabled", "disabled");
+    }
+
+    function enableFields() {
+        $("#vcLoginID").removeAttr("disabled")
+        //$("#vcLoginID").attr("disabled", "false");
+    }
+
+</script>
+@Html.Trirand().JQGrid(Model.LoginOperGrid, "LoginOperGrid")

@@ -1,0 +1,64 @@
+﻿<FlowDocument xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    ColumnWidth="400" FontSize="16" FontFamily="Georgia">
+    <Paragraph FontSize="22" FontWeight="Bold">
+        播放
+    </Paragraph>
+
+    <Paragraph>
+        1. 打开播放列表：
+    </Paragraph>
+
+    <List MarkerStyle="Circle">
+        <ListItem>
+            <Paragraph>Ctrl + P ( Playlist - P )</Paragraph>
+        </ListItem>
+        <ListItem>
+            <Paragraph>点击播放列表</Paragraph>
+        </ListItem>
+        <ListItem>
+            <Paragraph>右键菜单播放列表</Paragraph>
+        </ListItem>
+    </List>
+
+    <Paragraph>
+        2. 增加文件到播放列表 :
+    </Paragraph>
+
+    <List MarkerStyle="Circle">
+        <ListItem>
+            <Paragraph> Ctrl+O ( Open - O )</Paragraph>
+        </ListItem>
+        <ListItem>
+            <Paragraph>拖动文件到播放列表</Paragraph>
+        </ListItem>
+        <ListItem>
+            <Paragraph>右键菜单添加文件</Paragraph>
+        </ListItem>
+    </List>
+
+    <Paragraph>
+        3. 排序文件 :
+    </Paragraph>
+
+    <List MarkerStyle="Circle">
+        <ListItem>
+            <Paragraph>上移 - Ctrl+U ( Up - U )</Paragraph>
+        </ListItem>
+        <ListItem>
+            <Paragraph>下移 - Ctrl+D ( Down - D )</Paragraph>
+        </ListItem>        
+    </List>
+
+    <Paragraph>
+        4. 播放 :
+    </Paragraph>
+
+    <List MarkerStyle="Circle">
+        <ListItem>
+            <Paragraph>回车</Paragraph>
+        </ListItem>
+        <ListItem>
+            <Paragraph>双击</Paragraph>
+        </ListItem>
+    </List>
+</FlowDocument>

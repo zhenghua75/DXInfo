@@ -1,0 +1,184 @@
+﻿<UserControl x:Class="FairiesCoolerCash.Business.PointsExchangeUserControl"
+      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+      xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+      xmlns:local="clr-namespace:FairiesCoolerCash.Business"
+       xmlns:WpfKb="clr-namespace:WpfKb.Controls;assembly=WpfKb"      
+      xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
+      xmlns:MvvmLight="clr-namespace:GalaSoft.MvvmLight.Command;assembly=GalaSoft.MvvmLight.Extras.WPF4"
+      mc:Ignorable="d" 
+      d:DesignHeight="300" d:DesignWidth="300"
+      Background="{DynamicResource WindowBackgroundBrush}" 
+             DataContext="{Binding PointsExchangeViewModel, Source={StaticResource Locator}}">
+    <UserControl.Resources>
+        <CollectionViewSource Source="{Binding OCInventory}" x:Key="CVS_OCInventory">
+        </CollectionViewSource>
+    </UserControl.Resources>
+    <Grid Margin="30,0,30,0">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="50"></RowDefinition>
+            <RowDefinition Height="Auto"></RowDefinition>
+            <RowDefinition Height="*"></RowDefinition>
+        </Grid.RowDefinitions>
+        <Label HorizontalAlignment="Center" FontSize="26"  FontWeight="Bold">会员积分兑换</Label>
+        <Border Grid.Row="1" BorderThickness="5" BorderBrush="AliceBlue" Margin="5" >
+            <TextBlock TextWrapping="Wrap">
+                    <Run Text="{Binding Card.CardNo,StringFormat={}卡号：{0}|}"/>
+                    <Run Text="{Binding Member.MemberName,StringFormat={}会员名：{0}|}"/>
+                    <Run Text="{Binding Member.IdCard,StringFormat={}证件号码：{0}|}"/>
+                    <Run Text="{Binding CardType.Name,StringFormat={}卡类型：{0}|}"/>
+                    <Run Text="{Binding CardLevel.Name,StringFormat={}卡级别：{0}|}"/>
+                    <Run Text="{Binding CardLevel.Discount,StringFormat={}折扣：{0}|}"/>
+                    <Run Text="{Binding CardDept.DeptName,StringFormat={}发卡门店：{0}|}"/>
+                    <Run Text="{Binding CardBalance,TargetNullValue={x:Null},StringFormat={}余额：{0}|}"/>
+                    <Run Text="{Binding Points,TargetNullValue={x:Null},StringFormat={}积分：{0}}"/>
+            </TextBlock>
+        </Border>
+        <Grid Grid.Row="2">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="0.5*"></ColumnDefinition>
+                <ColumnDefinition Width="0.5*"></ColumnDefinition>
+            </Grid.ColumnDefinitions>
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="0.5*"></RowDefinition>
+                    <RowDefinition Height="0.5*"></RowDefinition>
+                </Grid.RowDefinitions>
+                <ListBox x:Name="lvCategory" 
+                         ScrollViewer.HorizontalScrollBarVisibility="Disabled" 
+                         ScrollViewer.VerticalScrollBarVisibility="Auto"
+                         ScrollViewer.CanContentScroll="True"
+                         VirtualizingStackPanel.IsVirtualizing="True"
+                         VirtualizingStackPanel.VirtualizationMode="Recycling"
+                         Background="{DynamicResource WindowBackgroundBrush}"
+                         BorderThickness="5" 
+                         BorderBrush="AliceBlue" 
+                         Margin="5" 
+                         AllowDrop="False"
+                         Style="{x:Null}"
+                         ItemsSource="{Binding OCInventoryCategory}"
+                         SelectedItem="{Binding SelectedInventoryCategory}"
+                         >
+                    <ListBox.ItemsPanel>
+                        <ItemsPanelTemplate>
+                            <WrapPanel Width="{Binding ElementName=lvCategory, Path=Width}"/>
+                        </ItemsPanelTemplate>
+                    </ListBox.ItemsPanel>
+                    <ListBox.ItemTemplate>
+                        <DataTemplate>
+                            <TextBlock TextWrapping="Wrap" Text="{Binding Path=Name}" Height="40" Width="50" ></TextBlock>
+                        </DataTemplate>
+                    </ListBox.ItemTemplate>
+                </ListBox>
+                <ListBox Grid.Row="1" x:Name="lvInv" 
+                         ScrollViewer.HorizontalScrollBarVisibility="Disabled" 
+                         ScrollViewer.VerticalScrollBarVisibility="Auto"
+                         ScrollViewer.CanContentScroll="True"
+                         VirtualizingStackPanel.IsVirtualizing="True"
+                         VirtualizingStackPanel.VirtualizationMode="Recycling"
+                         AllowDrop="False"
+                          Background="{DynamicResource WindowBackgroundBrush}"
+                      BorderThickness="5" BorderBrush="AliceBlue" Margin="5" Style="{x:Null}"
+                         ItemsSource="{Binding Source={StaticResource CVS_OCInventory}}"
+                         SelectedItem="{Binding SelectedInventory}"
+                         PreviewMouseDown="lvInv_PreviewMouseDown"
+                         IsSynchronizedWithCurrentItem="False" SelectionMode="Single"
+                         >
+                    <ListBox.ItemsPanel>
+                        <ItemsPanelTemplate>
+                            <WrapPanel Width="{Binding ElementName=lvInv, Path=Width}"/>
+                        </ItemsPanelTemplate>
+                    </ListBox.ItemsPanel>
+                    <ListBox.ItemTemplate>
+                        <DataTemplate>
+                            <StackPanel Height="60" Width="50">
+                                <TextBlock TextWrapping="Wrap"  Text="{Binding Path=Name}"/>
+                                <TextBlock Text="默认积分："></TextBlock>
+                                <TextBlock Text="{Binding Path=SalePoint}"/>
+                            </StackPanel>
+                        </DataTemplate>
+                    </ListBox.ItemTemplate>
+                </ListBox>
+
+            </Grid>
+            <Grid Grid.Column="1" >
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"></RowDefinition>
+                    <!--<RowDefinition Height="Auto"></RowDefinition>-->
+                    <RowDefinition Height="*"></RowDefinition>
+                </Grid.RowDefinitions>
+
+                <WrapPanel >
+                    <Button Command="{Binding SwipingCard}" Width="100" Height="50" Margin="10">刷卡</Button>
+                    <Button Command="{Binding CheckOut}"  Width="100" Height="50" Margin="10">结账</Button>
+                </WrapPanel>
+                
+                <!--<Border Grid.Row="1" BorderThickness="5" BorderBrush="AliceBlue" Margin="5" >
+                    <Grid Name="lbSelected" Margin="10">
+
+                        <Grid.RowDefinitions>
+                            <RowDefinition></RowDefinition>
+                            <RowDefinition></RowDefinition>
+                            <RowDefinition></RowDefinition>
+                        </Grid.RowDefinitions>
+                        <ListBox ItemsSource="{Binding lCupType}" Grid.Row="1"
+                  Name="lbCupType" DisplayMemberPath="Name"
+                  SelectedItem="{Binding SelectedCupType}" Style="{x:Null}">
+                            <ListBox.ItemsPanel>
+                                <ItemsPanelTemplate>
+                                    <WrapPanel Width="{Binding ElementName=lbCupType, Path=Width}"/>
+                                </ItemsPanelTemplate>
+                            </ListBox.ItemsPanel>
+                        </ListBox>
+                        
+                        <ListBox Name="lbTast" ItemsSource="{Binding lTasteEx}"  Style="{x:Null}">
+                            <ListBox.ItemsPanel>
+                                <ItemsPanelTemplate>
+                                    <WrapPanel Width="{Binding ElementName=lbTast, Path=Width}"/>
+                                </ItemsPanelTemplate>
+                            </ListBox.ItemsPanel>
+                            <ListBox.ItemTemplate>
+                                <DataTemplate>
+                                    <CheckBox Content="{Binding Name}" IsChecked="{Binding IsSelected}"/>
+                                </DataTemplate>
+                            </ListBox.ItemTemplate>
+                        </ListBox>
+                        
+                    </Grid>
+                </Border>-->
+                <DataGrid Name="MyDataGrid" Grid.Row="1" AutoGenerateColumns="False" 
+                          ItemsSource="{Binding OCInventoryEx}"
+                  CanUserDeleteRows="True"
+                  CanUserAddRows="False"  ColumnHeaderHeight="50" MinColumnWidth="80" MinRowHeight="50"
+                      HeadersVisibility="None" SelectedValue="{Binding SelectedInventoryEx}"
+                      Background="{DynamicResource WindowBackgroundBrush}"
+                      BorderThickness="5" BorderBrush="AliceBlue" Margin="5">
+                    <DataGrid.Columns>
+                        <DataGridTextColumn Header="名称" Binding="{Binding Path=Name}" IsReadOnly="True"></DataGridTextColumn>
+
+
+                        <DataGridTextColumn Header="积分" Binding="{Binding Path=CurrentSalePoint}"></DataGridTextColumn>
+                        <DataGridTemplateColumn Header="数量">
+                            <DataGridTemplateColumn.CellTemplate>
+                                <DataTemplate>
+                                    <TextBox Text="{Binding Quantity,UpdateSourceTrigger=PropertyChanged}" 
+                                             local:VirtualKeyboard.FloatingTouchScreenKeyboard="{Binding Path=DataContext.IsOpen,RelativeSource={RelativeSource AncestorType={x:Type DataGrid}}}"
+                                      ></TextBox>
+                                </DataTemplate>
+                            </DataGridTemplateColumn.CellTemplate>
+                        </DataGridTemplateColumn>
+                        <DataGridTextColumn Header="总额" Binding="{Binding Path=CurrentPoint}"></DataGridTextColumn>
+                        <DataGridTemplateColumn Header="撤销">
+                            <DataGridTemplateColumn.CellTemplate>
+                                <DataTemplate>
+                                    <Button Command="{Binding Path=DataContext.DeleteInventoryEx,RelativeSource={RelativeSource AncestorType={x:Type DataGrid}}}">撤销</Button>
+                                </DataTemplate>
+                            </DataGridTemplateColumn.CellTemplate>
+                        </DataGridTemplateColumn>
+                    </DataGrid.Columns>
+                </DataGrid>
+            </Grid>
+        </Grid>
+    </Grid>
+</UserControl>

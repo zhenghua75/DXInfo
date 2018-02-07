@@ -1,0 +1,63 @@
+html
+{
+	height:100%;
+	margin:0;
+	padding:0;
+}
+body
+{
+    margin:0;
+    padding:0;
+    height:100%;
+}
+
+#divcontent
+{
+	position:absolute;
+	height:80%;
+	top:20%;
+	left:28%;
+}
+#divloginpanal
+{
+	height:436px;
+	width:623px;
+	float:left;
+	background-image:url(../images/loginpanal.png);
+}
+#divc2
+{
+	height:180px;
+	width:300px;
+	float:left;
+	text-align:left;
+	margin-top:100px;
+	float:left;
+	position:absolute;
+	left:260px;
+}
+#divc3
+{
+	float:left;
+}
+#divc2_t1
+{
+	height:25%;
+}
+#divc2_t2
+{
+	height:25%;
+}
+#divc2_t3
+{
+	height:25%;
+}
+#divc2_t4
+{
+	height:25%;
+}
+#divmaintable1 {
+	font-family: "»ªÎÄÐÐ¿¬";
+	font-size: 14px;
+	font-weight: normal;
+}

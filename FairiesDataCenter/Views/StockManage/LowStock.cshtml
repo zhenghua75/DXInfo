@@ -1,0 +1,54 @@
+﻿@using Trirand.Web.Mvc
+@using ynhnTransportManage
+@model ynhnTransportManage.Models.StockManage.LowStockGridModel
+<script type="text/javascript">
+    $(function () {
+        $("#query").button();
+        $("#query").button().click(function () {
+            query();
+        });
+        $("#export").button();
+        $("#export").button().click(function () {
+            ExportToExcel();
+        });
+    });
+    function query() {
+        var postData = $("#LowStockGrid").jqGrid("getGridParam", "postData");
+        var sdata = {
+            QueryType: $("#QueryType").val()
+        };
+        var newPostData = $.extend(postData, sdata);
+        $("#LowStockGrid").jqGrid().trigger("reloadGrid", [{ page: 1}]);
+    }
+	</script>
+<h2 class="ui-jqgrid-titlebar ui-widget-header ui-corner-top ui-helper-clearfix" style="text-align:center">@ViewBag.Title</h2>
+<div class="ui-state-default ui-jqgrid-toppager">
+<table>
+    <tr>
+        
+        <td>查询类别</td><td><select id="QueryType">
+                                <option value="0">所有存货</option>
+                                <option value="1" selected>短缺存货</option>
+                            </select></td>
+        <td><button id="query">查询</button></td><td><button id="export">导出EXCEL</button></td>
+    </tr>
+</table>
+</div>
+@Html.Trirand().JQGrid(Model.LowStockGrid, "LowStockGrid")
+@using (Html.BeginForm("LowStock_RequestData", "StockManage", FormMethod.Post, new { id = "ExportToExcel" })) { } 
+
+<script type="text/javascript">
+    function ExportToExcel() {
+        var input1 = $("<input>").attr("type", "hidden").attr("name", "oper").val("excel");
+        var input2 = $("<input>").attr("type", "hidden").attr("name", "QueryType").val($("#QueryType").val());
+        $("#ExportToExcel").append($(input1));
+        $("#ExportToExcel").append($(input2));
+        $("#ExportToExcel").submit();
+    }
+    function FormatNumber(num) {
+        return parseFloat(num);
+    }
+    function UnFormatNumber(num) {
+        return num;
+    }
+</script>

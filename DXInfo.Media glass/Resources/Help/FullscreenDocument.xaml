@@ -1,0 +1,22 @@
+﻿<FlowDocument xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    ColumnWidth="400" FontSize="16" FontFamily="Georgia">
+    <Paragraph FontSize="22" FontWeight="Bold">
+        Go to full-screen mode
+    </Paragraph>
+    
+    <Paragraph>
+        Enter to full-screen mode :
+    </Paragraph>
+
+    <List MarkerStyle="Circle">
+        <ListItem>
+            <Paragraph>Double click to enter and double click to leave</Paragraph>
+        </ListItem>
+        <ListItem>
+            <Paragraph>Use main window context menu</Paragraph>
+        </ListItem>
+        <ListItem>
+            <Paragraph>Press Ctrl + F ( Full-screen - F )</Paragraph>
+        </ListItem>
+    </List>
+</FlowDocument>

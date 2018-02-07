@@ -1,0 +1,177 @@
+﻿@using DXInfo.Web.Models
+@model DXInfo.Web.Models.DailyCashQueryModel         
+<script type="text/javascript">
+    $(function () {
+        $('#BeginDate').datetimepicker();
+        $('#EndDate').datetimepicker();        
+
+        $("#query").button();
+        $("#query").button().click(function () {
+            submitToDiv("Report");
+        });
+        var ctrls = [{ name: "vcDeptId", type: "select" },
+                     { name: "vcOperName", type: "select" },
+                     { name: "BeginDate", type: "date" },
+                     { name: "EndDate", type: "date" }, ];
+        InitCtrl(ctrls);
+    });
+</script>
+ <h2 class="ui-widget-header h2-center">@ViewBag.Title</h2>
+@using (Html.BeginForm("DailyCashQuery", "Report", FormMethod.Post, new { id = "Report" })) 
+{
+    @Html.ValidationSummary(true, "参数错误。请更正错误并重试。", new { @class = "ui-state-error" })
+<fieldset class="ui-widget ui-widget-content ui-corner-all">
+<legend class="ui-widget-header ui-corner-all"></legend>
+<table>
+    <tr>
+        <td>@Html.LabelFor(m => m.vcDeptId)</td>
+        <td>
+                @Html.DropDownListFor(m => m.vcDeptId, @Html.GetMD())
+                @Html.ValidationMessageFor(m => m.vcDeptId)
+        </td>
+
+        <td>
+                @Html.LabelFor(m => m.BeginDate)
+        </td>
+        <td>
+                @Html.TextBoxFor(m => m.BeginDate)
+                @Html.ValidationMessageFor(m => m.BeginDate)
+        </td>
+
+        <td>
+            <input id="query" type="submit" value="查询" />
+        </td>
+
+        </tr><tr>
+        <td>@Html.LabelFor(m => m.vcOperName)</td>
+        <td>
+                @Html.DropDownListFor(m => m.vcOperName, @Html.GetOperName())
+                @Html.ValidationMessageFor(m => m.vcOperName)
+        </td>
+
+        <td>
+                @Html.LabelFor(m => m.EndDate)
+        </td>
+        <td>
+                @Html.TextBoxFor(m => m.EndDate)
+                @Html.ValidationMessageFor(m => m.EndDate)
+        </td>
+
+        <td></td>
+    </tr>
+</table>
+</fieldset>
+                    
+<fieldset class="ui-widget ui-widget-content ui-corner-all">
+<legend class="ui-widget-header ui-corner-all"></legend>    
+@{
+    
+    }
+    <table class="ui-jqgrid ui-jqgrid-view ui-jqgrid-bdiv ui-jqgrid-btable">
+        <tr class="ui-state-default ui-jqgrid-hdiv">
+            <th>统计项</th>
+            @foreach (var item in Model.lOperName)
+            {
+                <th>@item</th>
+            }
+        </tr>
+        @foreach (var item in Model.lConsType)
+        {
+            <tr class="ui-widget-content jqgrow ui-row-ltr">                
+                    @switch (item)
+                    {
+                        case "PT001":
+                            <td>消费次数</td>
+                            break;
+                            case "PT003":
+                            <td>积分兑换次数</td>
+                            break;
+                            case "PT004":
+                            <td>赠送次数</td>
+                            break;
+                            case "PT005":
+                            <td>门店报损次数</td>
+                            break;
+                            case "PT006":
+                            <td>门店品尝次数</td>
+                            break;
+                            case "PT007":
+                            <td>门店退货次数</td>
+                            break;
+                            case "Fill":
+                            <td>现金充值次数</td>
+                            break;
+                            case "FillBank":
+                            <td>银行卡充值次数</td>
+                            break;
+                            case "CradRoll":
+                            <td>回收卡数</td>
+                            break;
+                    }    
+                    @foreach (var item1 in Model.lOperName)
+                    {
+                        foreach (var item2 in Model.CountResult)
+                        {
+                            if (item2.vcConsType == item && item2.vcOperName == item1)
+                            {
+                                <td>@item2.ConsCount</td>
+                            }
+                        }
+                    }            
+            </tr>
+            <tr class="ui-widget-content jqgrow ui-row-ltr ui-priority-secondary">                
+                    @switch (item)
+                    {
+                        case "PT001":
+                            <td>会员消费金额</td>
+                            break;
+                        case "PT002":
+                            <td>现金零售金额</td>
+                            break;
+                        case "PT003":
+                            <td>积分兑换</td>
+                            break;
+                        case "PT004":
+                            <td>赠送金额</td>
+                            break;
+                        case "PT005":
+                            <td>门店报损金额</td>
+                            break;
+                        case "PT006":
+                            <td>门店品尝金额</td>
+                            break;
+                        case "PT007":
+                            <td>门店退货金额</td>
+                            break;
+                        case "PT008":
+                            <td>银行卡零售金额</td>
+                            break;
+                        case "Fill":
+                            <td>现金充值金额</td>
+                            break;
+                        case "FillBank":
+                            <td>银行卡充值金额</td>
+                            break;
+                        case "CradRoll":
+                            <td>回收退款金额</td>
+                            break;
+                        case "Cash":
+                            <td>现金总额</td>
+                            break;
+                    }   
+                    @foreach (var item1 in Model.lOperName)
+                    {
+                        foreach (var item2 in Model.FeeResult)
+                        {
+                            if (item2.vcConsType == item && item2.vcOperName == item1)
+                            {
+                                <td>@item2.ConsFee</td>
+                            }
+                        }
+                    }            
+            </tr>
+        }
+    </table>
+</fieldset>
+
+}

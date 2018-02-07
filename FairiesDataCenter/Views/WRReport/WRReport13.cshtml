@@ -1,0 +1,131 @@
+﻿@model ynhnTransportManage.Models.WRReport13Model
+@using ynhnTransportManage
+@{
+    var para = "deptId=" + Model.deptId + "&" + "userId=" + Model.userId+"&category="+Model.category
+        + "&inventory=" + Model.inventory + "&beginDate=" + Model.beginDate + "&endDate=" + Model.endDate;
+}
+<script type="text/javascript">
+    $(function () {
+
+        $('#beginDate').datetimepicker({ dateFormat: 'yy-mm-dd', timeFormat: 'hh:mm' });
+        $('#endDate').datetimepicker({ dateFormat: 'yy-mm-dd', timeFormat: 'hh:mm' });
+
+        $("#category").change(function () {
+            var selvalue = $("#category").val();
+            var url = "@Url.Action("GetCatOfInvs","Report")";
+            $("#inventory>option").remove();
+            $.getJSON(url,{category:selvalue}, function (data) {
+                $.each(data, function (i, itemvalue) {
+                    $("#inventory").append($("<option></option>").val(itemvalue.Value).text(itemvalue.Text));
+                });
+            });
+        });  
+        $("#query").button();
+    });
+
+             
+	</script>
+
+<table style="width:100%;">
+<tr>
+<td>
+    <h2 class="ui-jqgrid-titlebar ui-widget-header ui-corner-top ui-helper-clearfix" style="text-align:center">@ViewBag.Title</h2>
+</td>
+</tr>
+    <tr>
+        <td>
+        
+@using (Html.BeginForm()) 
+{    
+    @Html.ValidationSummary(true, "请更正错误并重试。")
+    <div class="ui-state-default ui-jqgrid-toppager">
+    <table>
+        
+        <tr>
+        <td>
+            <div class="editor-label">
+                @Html.LabelFor(m => m.deptId)
+            </div>
+            </td>
+           <td>
+            <div class="editor-field">
+                @Html.DropDownListFor(m => m.deptId, @Helpers.GetDepts2(), new { @class = "wide2" })
+                @Html.ValidationMessageFor(m => m.deptId)
+            </div>
+            </td>
+            
+        <td>
+            <div class="editor-label">
+                @Html.LabelFor(m => m.userId)
+            </div>
+            </td>
+            <td>
+            <div class="editor-field">
+                @Html.DropDownListFor(m => m.userId, @Helpers.GetUsers(), new { @class = "wide2" })
+                @Html.ValidationMessageFor(m => m.userId)
+            </div>
+            </td>
+            
+            <td>
+                    <div class="editor-label">
+                @Html.LabelFor(m => m.category)
+            </div>
+                </td>
+            <td>
+                    <div class="editor-field">
+                @Html.DropDownListFor(m => m.category, @Helpers.GetCategory(), new { @class = "wide2" })
+                @Html.ValidationMessageFor(m => m.category)
+            </div>
+                </td>
+                
+                    <td>
+                    <div class="editor-label">
+                @Html.LabelFor(m => m.inventory)
+            </div>
+                </td>
+                <td>
+                    <div class="editor-field">
+                @Html.DropDownListFor(m => m.inventory, @Helpers.GetInventory(), new { @class = "wide2" })
+                @Html.ValidationMessageFor(m => m.inventory)
+            </div>
+                </td>
+               
+                <td>
+                    <div class="editor-label">
+                @Html.LabelFor(m => m.beginDate)
+            </div>
+                </td>
+                <td>
+                    <div class="editor-field">
+                @Html.TextBoxFor(m => m.beginDate, new { @class = "wide2" })
+                @Html.ValidationMessageFor(m => m.beginDate)
+            </div>
+                </td>
+            
+                <td>
+                    <div class="editor-label">
+                @Html.LabelFor(m => m.endDate)
+            </div>
+                </td>
+                <td>
+                    <div class="editor-field">
+                @Html.TextBoxFor(m => m.endDate, new { @class = "wide2" })
+                @Html.ValidationMessageFor(m => m.endDate)
+            </div>
+                </td>
+            
+        <td>
+                <input id="query" type="submit" value="查询" />
+            </td>
+            </tr>
+        
+    </table></div>
+}
+</td>
+</tr>
+<tr>
+<td valign="top">
+<img src="/WRReport/MyChart13.aspx?@para" />
+</td>
+    </tr>
+</table>

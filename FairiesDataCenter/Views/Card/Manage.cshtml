@@ -1,0 +1,16 @@
+﻿@using Trirand.Web.Mvc
+@model ynhnTransportManage.Models.ManageCardsGridModel
+@{
+    ViewBag.Title = "IC卡清单";
+}
+
+@Html.Trirand().JQGrid(Model.CardsGrid, "CardsGrid")
+@using (Html.BeginForm("ExportToExcel", "Card", FormMethod.Post, new { id = "ExcelForm" })){}     
+ <script type="text/javascript">
+
+     function customButtonClicked() {
+         //导出EXEL
+         $(ExcelForm).submit();
+     }       
+    
+    </script>

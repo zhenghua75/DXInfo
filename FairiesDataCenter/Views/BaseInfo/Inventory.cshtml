@@ -1,0 +1,631 @@
+﻿@using Trirand.Web.Mvc
+@model ynhnTransportManage.Models.InventoryModels
+<script src="@Url.Content("~/Scripts/jquery.ui.stars-3.0/jquery.ui.stars.js")" type="text/javascript"></script>
+<link rel="stylesheet" type="text/css" href="@Url.Content("~/Scripts/jquery.ui.stars-3.0/jquery.ui.stars.css")" />
+@Html.Trirand().JQGrid(Model.InventoryGrid, "InventoryGrid")
+@Html.HiddenFor(m => m.InvType)
+<div class="ui-jqdialog-content ui-widget-content" id="editcntInventoryGrid" style="display: none;"
+    title="编辑记录">
+    <span>
+        <form name="FormPost" id="FrmGrid_InventoryGrid" class="FormGrid" onsubmit="return false;"
+        style="width: 100%; overflow: auto; position: relative; height: auto;">
+        <div id="tabs">
+            <ul>
+                <li><a href="#tabs-1">基本信息</a></li>
+                <li><a href="#tabs-2">库存信息</a></li>
+                <li><a href="#tabs-3">零售信息</a></li>
+                <li><a href="#tabs-4">珠宝信息</a></li>
+            </ul>
+            <div id="tabs-1">
+                <table class="EditTable" cellspacing="0" cellpadding="0" border="0">
+                    <tbody>
+                        <tr id="FormError" style="display: none">
+                            <td class="ui-state-error" colspan="2">
+                            </td>
+                        </tr>
+                        <tr style="display: none" class="tinfo">
+                            <td class="topinfo" colspan="2">
+                            </td>
+                        </tr>
+                        <tr class="FormData" id="tr_Code">
+                            <td class="CaptionTD">
+                                编码
+                            </td>
+                            <td class="DataTD">
+                                &nbsp;<input type="text" id="Code" name="Code" role="textbox" class="FormElement ui-widget-content ui-corner-all">*
+                            </td>
+                        </tr>
+                        <tr class="FormData" id="tr_Name">
+                            <td class="CaptionTD">
+                                名称
+                            </td>
+                            <td class="DataTD">
+                                &nbsp;<input type="text" id="Name" name="Name" role="textbox" class="FormElement ui-widget-content ui-corner-all">*
+                            </td>
+                        </tr>
+                        <tr class="FormData" id="tr_Category">
+                            <td class="CaptionTD">
+                                存货分类
+                            </td>
+                            <td class="DataTD">
+                                &nbsp;<select role="select" id="Category" name="Category" size="1" class="FormElement"><option
+                                    role="option" value=""></option>
+                                    <option role="option" value="0a087476-253d-e311-ae67-005056c00008">其它</option>
+                                    <option role="option" value="7c741348-174a-e311-9c4d-8c89a575e3f5">001</option>
+                                    <option role="option" value="5c6dc45a-174a-e311-9c4d-8c89a575e3f5">001</option>
+                                    <option role="option" value="3e74aeea-473d-e311-ae67-005056c00008">戒指</option>
+                                    <option role="option" value="8babffdf-4b3d-e311-ae67-005056c00008">套链</option>
+                                    <option role="option" value="ed478837-4e3d-e311-ae67-005056c00008">小套链</option>
+                                    <option role="option" value="76cdb644-4e3d-e311-ae67-005056c00008">大套链</option>
+                                    <option role="option" value="5831a350-4e3d-e311-ae67-005056c00008">坠子</option>
+                                    <option role="option" value="82f186e6-194a-e311-9c4d-8c89a575e3f5">007</option>
+                                </select>*
+                            </td>
+                        </tr>
+                        <tr class="FormData" id="tr_MeasurementUnitGroup">
+                            <td class="CaptionTD">
+                                计量单位组
+                            </td>
+                            <td class="DataTD">
+                                &nbsp;<select role="select" id="MeasurementUnitGroup" name="MeasurementUnitGroup"
+                                    size="1" class="FormElement"><option role="option" value=""></option>
+                                    <option role="option" value="31d86c4b-253d-e311-ae67-005056c00008">计量单位组</option>
+                                    <option role="option" value="28bc1f9e-4c3d-e311-ae67-005056c00008">耳环对个换算</option>
+                                    <option role="option" value="73ab55b5-4d3d-e311-ae67-005056c00008">小套链换算</option>
+                                </select>(必填)
+                            </td>
+                        </tr>
+                        <tr class="FormData" id="tr_MainUnit">
+                            <td class="CaptionTD">
+                                主计量单位
+                            </td>
+                            <td class="DataTD">
+                                &nbsp;<select role="select" id="MainUnit" name="MainUnit" size="1" class="FormElement"><option
+                                    value="3d118c62-253d-e311-ae67-005056c00008">个</option>
+                                    <option value="0357f180-473d-e311-ae67-005056c00008">对</option>
+                                    <option value="b5ca355a-4c3d-e311-ae67-005056c00008">条</option>
+                                    <option value="0741f014-df46-e311-830f-8c89a575e3f5">011</option>
+                                    <option value="e90cbd60-df46-e311-830f-8c89a575e3f5">012</option>
+                                    <option value="278f10e5-e046-e311-830f-8c89a575e3f5">013</option>
+                                    <option value="3bd1ba90-b846-e311-8421-8c89a575e3f5">008</option>
+                                    <option value="6dbf457f-bd46-e311-8421-8c89a575e3f5">009</option>
+                                    <option value="c56c2708-be46-e311-8421-8c89a575e3f5">010</option>
+                                </select>*
+                            </td>
+                        </tr>
+                        <tr class="FormData" id="tr_StockUnit">
+                            <td class="CaptionTD">
+                                库存单位
+                            </td>
+                            <td class="DataTD">
+                                &nbsp;<select role="select" id="StockUnit" name="StockUnit" size="1" class="FormElement"
+                                    disabled="disabled"></select>
+                            </td>
+                        </tr>
+                        <tr class="FormData" id="tr_Specs">
+                            <td class="CaptionTD">
+                                规格型号
+                            </td>
+                            <td class="DataTD">
+                                &nbsp;<input type="text" id="Specs" name="Specs" role="textbox" class="FormElement ui-widget-content ui-corner-all">
+                            </td>
+                        </tr>
+                        <tr class="FormData" id="tr_IsInvalid">
+                            <td class="CaptionTD">
+                                是否失效
+                            </td>
+                            <td class="DataTD">
+                                &nbsp;<input type="checkbox" checked="" value="true" offval="false" id="IsInvalid"
+                                    name="IsInvalid" role="checkbox" class="FormElement">
+                            </td>
+                        </tr>
+                        <tr class="FormData" id="tr_Comment">
+                            <td class="CaptionTD">
+                                描述
+                            </td>
+                            <td class="DataTD">
+                                &nbsp;<input type="text" id="Comment" name="Comment" role="textbox" class="FormElement ui-widget-content ui-corner-all">
+                            </td>
+                        </tr>
+                        <tr class="FormData" id="tr_IsSale">
+                            <td class="CaptionTD">
+                                是否零售
+                            </td>
+                            <td class="DataTD">
+                                &nbsp;<input type="checkbox" checked="" value="true" offval="false" id="IsSale" name="IsSale"
+                                    role="checkbox" class="FormElement">
+                            </td>
+                        </tr>
+                        <tr class="FormData" id="tr_ImageFileName">
+                            <td class="CaptionTD">
+                                图片文件名
+                            </td>
+                            <td class="DataTD">
+                                &nbsp;<input type="text" id="ImageFileName" name="ImageFileName" role="textbox" class="FormElement ui-widget-content ui-corner-all">
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            <div id="tabs-2">
+                <table class="EditTable" cellspacing="0" cellpadding="0" border="0">
+                    <tbody>
+                        <tr style="display: none">
+                            <td class="ui-state-error" colspan="10">
+                            </td>
+                        </tr>
+                        <tr style="display: none" class="tinfo">
+                            <td class="topinfo" colspan="10">
+                            </td>
+                        </tr>
+                        <tr class="FormData" id="tr_HighStock">
+                            <td class="CaptionTD">
+                                最高库存
+                            </td>
+                            <td class="DataTD">
+                                &nbsp;<input type="text" id="HighStock" name="HighStock" role="textbox" class="FormElement ui-widget-content ui-corner-all">
+                            </td>
+                        </tr>
+                        <tr class="FormData" id="tr_LowStock">
+                            <td class="CaptionTD">
+                                最低库存
+                            </td>
+                            <td class="DataTD">
+                                &nbsp;<input type="text" id="LowStock" name="LowStock" role="textbox" class="FormElement ui-widget-content ui-corner-all">
+                            </td>
+                        </tr>
+                        <tr class="FormData" id="tr_SecurityStock">
+                            <td class="CaptionTD">
+                                安全库存
+                            </td>
+                            <td class="DataTD">
+                                &nbsp;<input type="text" id="SecurityStock" name="SecurityStock" role="textbox" class="FormElement ui-widget-content ui-corner-all">
+                            </td>
+                        </tr>
+                        <tr class="FormData" id="tr_LastCheckDate">
+                            <td class="CaptionTD">
+                                上次盘点日期
+                            </td>
+                            <td class="DataTD">
+                                &nbsp;<input type="text" id="LastCheckDate" name="LastCheckDate" role="textbox" class="FormElement ui-widget-content ui-corner-all hasDatepicker">
+                            </td>
+                        </tr>
+                        <tr class="FormData" id="tr_CheckCycle">
+                            <td class="CaptionTD">
+                                盘点周期单位
+                            </td>
+                            <td class="DataTD">
+                                &nbsp;<select role="select" id="CheckCycle" name="CheckCycle" size="1" class="FormElement"><option
+                                    role="option" value=""></option>
+                                    <option role="option" value="0">天</option>
+                                    <option role="option" value="1">周</option>
+                                    <option role="option" value="2">月</option>
+                                </select>
+                            </td>
+                        </tr>
+                        <tr class="FormData" id="tr_SomeDay">
+                            <td class="CaptionTD">
+                                每天/周/月第（）天
+                            </td>
+                            <td class="DataTD">
+                                &nbsp;<input type="text" id="SomeDay" name="SomeDay" role="textbox" class="FormElement ui-widget-content ui-corner-all">
+                            </td>
+                        </tr>
+                        <tr class="FormData" id="tr_EarlyWarningDay">
+                            <td class="CaptionTD">
+                                预警天数
+                            </td>
+                            <td class="DataTD">
+                                &nbsp;<input type="text" id="EarlyWarningDay" name="EarlyWarningDay" role="textbox"
+                                    class="FormElement ui-widget-content ui-corner-all">
+                            </td>
+                        </tr>
+                        <tr class="FormData" id="tr_ShelfLife">
+                            <td class="CaptionTD">
+                                保质期
+                            </td>
+                            <td class="DataTD">
+                                &nbsp;<input type="text" id="ShelfLife" name="ShelfLife" role="textbox" class="FormElement ui-widget-content ui-corner-all">
+                            </td>
+                        </tr>
+                        <tr class="FormData" id="tr_ShelfLifeType">
+                            <td class="CaptionTD">
+                                保质期单位
+                            </td>
+                            <td class="DataTD">
+                                &nbsp;<select role="select" id="ShelfLifeType" name="ShelfLifeType" size="1" class="FormElement"><option
+                                    role="option" value=""></option>
+                                    <option role="option" value="0">天</option>
+                                    <option role="option" value="1">周</option>
+                                    <option role="option" value="2">月</option>
+                                    <option role="option" value="3">年</option>
+                                </select>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            <div id="tabs-3">
+                <table class="EditTable" cellspacing="0" cellpadding="0" border="0">
+                    <tbody>
+                        <tr style="display: none">
+                            <td class="ui-state-error" colspan="10">
+                            </td>
+                        </tr>
+                        <tr style="display: none" class="tinfo">
+                            <td class="topinfo" colspan="10">
+                            </td>
+                        </tr>
+                        <tr class="FormData" id="tr_UnitOfMeasure">
+                            <td class="CaptionTD">
+                                销售单位
+                            </td>
+                            <td class="DataTD">
+                                &nbsp;<select role="select" id="UnitOfMeasure" name="UnitOfMeasure" size="1" class="FormElement"
+                                    disabled="disabled"></select>
+                            </td>
+                        </tr>
+                        <tr class="FormData" id="tr_SalePrice">
+                            <td class="CaptionTD">
+                                零售单价
+                            </td>
+                            <td class="DataTD">
+                                &nbsp;<input type="text" id="SalePrice" name="SalePrice" role="textbox" class="FormElement ui-widget-content ui-corner-all">*
+                            </td>
+                        </tr>
+                        <tr class="FormData" id="tr_SalePoint">
+                            <td class="CaptionTD">
+                                零售积分
+                            </td>
+                            <td class="DataTD">
+                                &nbsp;<input type="text" id="SalePoint" name="SalePoint" role="textbox" class="FormElement ui-widget-content ui-corner-all">*
+                            </td>
+                        </tr>
+                        <tr class="FormData" id="tr_Printer">
+                            <td class="CaptionTD">
+                                打印机
+                            </td>
+                            <td class="DataTD">
+                                &nbsp;<input type="text" id="Printer" name="Printer" role="textbox" class="FormElement ui-widget-content ui-corner-all">
+                            </td>
+                        </tr>
+                        <tr class="FormData" id="tr_IsDonate">
+                            <td class="CaptionTD">
+                                是否赠送商品
+                            </td>
+                            <td class="DataTD">
+                                &nbsp;<input type="checkbox" checked="" value="true" offval="false" id="IsDonate"
+                                    name="IsDonate" role="checkbox" class="FormElement">
+                            </td>
+                        </tr>
+                        <tr class="FormData" id="tr_IsPackage">
+                            <td class="CaptionTD">
+                                是否套餐
+                            </td>
+                            <td class="DataTD">
+                                &nbsp;<input type="checkbox" checked="" value="true" offval="false" id="IsPackage"
+                                    name="IsPackage" role="checkbox" class="FormElement">
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            <div id="tabs-4">
+                <table class="EditTable" cellspacing="0" cellpadding="0" border="0">
+                    <tbody>
+                        <tr style="display: none">
+                            <td class="ui-state-error" colspan="10">
+                            </td>
+                        </tr>
+                        <tr style="display: none" class="tinfo">
+                            <td class="topinfo" colspan="10">
+                            </td>
+                        </tr>
+                        <tr class="FormData" id="tr_Karat">
+                            <td class="CaptionTD">
+                                含量
+                            </td>
+                            <td class="DataTD">
+                                &nbsp;<input type="text" id="Karat" name="Karat" role="textbox" class="FormElement ui-widget-content ui-corner-all">
+                            </td>
+                        </tr>
+                        <tr class="FormData" id="tr_MetalWeight">
+                            <td class="CaptionTD">
+                                金属重量
+                            </td>
+                            <td class="DataTD">
+                                &nbsp;<input type="text" id="MetalWeight" name="MetalWeight" role="textbox" class="FormElement ui-widget-content ui-corner-all">
+                            </td>
+                        </tr>
+                        <tr class="FormData" id="tr_Jewelweight">
+                            <td class="CaptionTD">
+                                宝石重量
+                            </td>
+                            <td class="DataTD">
+                                &nbsp;<input type="text" id="Jewelweight" name="Jewelweight" role="textbox" class="FormElement ui-widget-content ui-corner-all">
+                            </td>
+                        </tr>
+                        <tr class="FormData" id="tr_TotalWeight">
+                            <td class="CaptionTD">
+                                总重量
+                            </td>
+                            <td class="DataTD">
+                                &nbsp;<input type="text" id="TotalWeight" name="TotalWeight" role="textbox" class="FormElement ui-widget-content ui-corner-all">
+                            </td>
+                        </tr>
+                        <tr class="FormData" id="tr_QTY">
+                            <td class="CaptionTD">
+                                数量
+                            </td>
+                            <td class="DataTD">
+                                &nbsp;<input type="text" id="QTY" name="QTY" role="textbox" class="FormElement ui-widget-content ui-corner-all">
+                            </td>
+                        </tr>
+                        <tr class="FormData" id="tr_OrderNo">
+                            <td class="CaptionTD">
+                                订货号
+                            </td>
+                            <td class="DataTD">
+                                &nbsp;<input type="text" id="OrderNo" name="OrderNo" role="textbox" class="FormElement ui-widget-content ui-corner-all">
+                            </td>
+                        </tr>
+                        <tr class="FormData" id="tr_VendorSpec">
+                            <td class="CaptionTD">
+                                供应商型号
+                            </td>
+                            <td class="DataTD">
+                                &nbsp;<input type="text" id="VendorSpec" name="VendorSpec" role="textbox" class="FormElement ui-widget-content ui-corner-all">
+                            </td>
+                        </tr>
+                        <tr class="FormData" id="tr_Length">
+                            <td class="CaptionTD">
+                                长度
+                            </td>
+                            <td class="DataTD">
+                                &nbsp;<input type="text" id="Length" name="Length" role="textbox" class="FormElement ui-widget-content ui-corner-all">
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        </form>
+    </span>
+</div>
+<script type="text/javascript">
+    function serializeGridData(postData) {
+        var sdata = {
+            _search: "true",
+            InvType: $("#InvType").val()
+        };
+        var newPostData = $.extend(postData, sdata);
+        return newPostData;
+    }
+    function beforeSubmit(postdata, formid) {
+        var sdata = { InvType: $("#InvType").val()
+        };
+        $.extend(postdata, sdata);
+        return [true, ''];
+    }
+    function populateUnit() {
+        updateUnitCallBack($("#MeasurementUnitGroup").val());
+        $("#MeasurementUnitGroup").bind("change", function (e) { updateUnitCallBack($("#MeasurementUnitGroup").val()); });
+    }
+    function populateEditUnit() {
+        var rowid = $("#InventoryGrid").jqGrid("getGridParam", "selrow");
+        if (rowid) {
+            var ret = $("#InventoryGrid").jqGrid("getRowData", rowid);
+            if(ret.MeasurementUnitGroup&&ret.MeasurementUnitGroup!='00000000-0000-0000-0000-000000000000'){
+               updateUnitCallBack(ret.MeasurementUnitGroup, ret.MainUnit, ret.PurchaseUnit, ret.UnitOfMeasure, ret.StockUnit);
+            }
+            $("#MeasurementUnitGroup").bind("change", function (e) {
+                updateUnitCallBack($("#MeasurementUnitGroup").val());
+            }); 
+        }
+    }
+    function updateUnitCallBack(group, MainUnit, PurchaseUnit, UnitOfMeasure, StockUnit) {
+        $("#MainUnit").html("<option value=''>装载计量单位...</option>").attr("disabled", "disabled");
+        //$("#PurchaseUnit").html("<option value=''>装载计量单位...</option>").attr("disabled", "disabled");
+        $("#UnitOfMeasure").html("<option value=''>装载计量单位...</option>").attr("disabled", "disabled");
+        $("#StockUnit").html("<option value=''>装载计量单位...</option>").attr("disabled", "disabled");
+        $.ajax({
+            url: '@Url.Action("GetUnitJson", "BaseInfo")' + "?group=" + group,
+            type: "GET",
+            success: function (unitJson) {
+                var units = eval(unitJson);
+                var unitHtml = "";
+                var mainHtml = "";
+                $(units).each(function (i, option) {
+                    if (option.IsMain) {
+                        mainHtml += '<option value="' + option.Id + '">' + option.Name + '</option>';
+                    }
+                    else{
+                    unitHtml += '<option value="' + option.Id + '">' + option.Name + '</option>';
+                    }
+                });
+                $("#MainUnit").html(mainHtml);
+                //$("#PurchaseUnit").removeAttr("disabled").html(unitHtml);
+                $("#UnitOfMeasure").removeAttr("disabled").html(unitHtml);
+                $("#StockUnit").removeAttr("disabled").html(unitHtml);
+
+                if (typeof (MainUnit) != "undefined") {
+                    $("#MainUnit").val(MainUnit);
+                }
+                //                if (typeof (PurchaseUnit) != "undefined") {
+                //                    $("#PurchaseUnit").val(PurchaseUnit);
+                //                }
+                if (typeof (UnitOfMeasure) != "undefined") {
+                    $("#UnitOfMeasure").val(UnitOfMeasure);
+                }
+                if (typeof (StockUnit) != "undefined") {
+                    $("#StockUnit").val(StockUnit);
+                }
+            }
+        });
+
+        $.ajax({
+            url: '@Url.Action("GetUnitGroupJson", "BaseInfo")' + "?group=" + group,
+            type: "GET",
+            success: function (groupJson) {
+                if (groupJson == 0) {
+                    $("#MainUnit").removeAttr("disabled");
+                    //$("#PurchaseUnit").attr("disabled", "disabled");
+                    $("#UnitOfMeasure").attr("disabled", "disabled");
+                    $("#StockUnit").attr("disabled", "disabled");
+                }
+            }
+        });
+    }       
+    function normalInv() {
+        var filtersStr = '{"groupOp":"AND","rules":[{"field":"IsInvalid","op":"eq","data":"false"}]}';
+        var postData = $("#InventoryGrid").jqGrid("getGridParam", "postData");
+        $.extend(postData, { filters: filtersStr });
+        $("#InventoryGrid").jqGrid("setGridParam", { search: true }).trigger("reloadGrid", [{ page: 1}]);
+    }
+    function invalidInv() {
+        var filtersStr = '{"groupOp":"AND","rules":[{"field":"IsInvalid","op":"eq","data":"true"}]}';
+        var postData = $("#InventoryGrid").jqGrid("getGridParam", "postData");
+        $.extend(postData, { filters: filtersStr });
+        $("#InventoryGrid").jqGrid("setGridParam", { search: true }).trigger("reloadGrid", [{ page: 1}]);
+    }
+    function formatImage(cellValue, options, rowObject) {
+         var imageHtml = "<img style='width:100px;' src='@Url.Content("~/ckfinder/userfiles/images/")" + cellValue + "' originalValue='" + cellValue + "' />";
+         return imageHtml;
+     }
+    function unformatImage(cellValue, options, cellObject) {
+         return $(cellObject.html()).attr("originalValue");
+     }  
+    function FormatRanking(cellValue, options, rowObject) {
+         var rowID = options.rowId;
+         var div = '<div id="' + rowID + '">'
+					+ '<input type="radio" name="Stars" id="vote1" value="1" ' + (cellValue == 1 ? 'checked="checked"' : '') + '/>'
+					+ '<input type="radio" name="Stars" id="vote2" value="2" ' + (cellValue == 2 ? 'checked="checked"' : '') + '/>'
+					+ '<input type="radio" name="Stars" id="vote3" value="3" ' + (cellValue == 3 ? 'checked="checked"' : '') + '/>'
+					+ '<input type="radio" name="Stars" id="vote4" value="4" ' + (cellValue == 4 ? 'checked="checked"' : '') + '/>'
+					+ '<input type="radio" name="Stars" id="vote5" value="5" ' + (cellValue == 5 ? 'checked="checked"' : '') + '/>'
+				+ '</div>';
+         var elem = $(div);
+         elem.children().not(":input").hide();
+         elem.stars({ cancelShow: false });
+         return elem.html();
+     }
+    function UnFormatRanking(cellValue, options, cellObject) {
+         var ret = $(cellObject).find("input").val();
+         return ret;
+     }     
+    function createStarsEditElement(value, editOptions) {
+            var rowID = editOptions.id;
+            var div = '<div>'
+					+ '<input type="radio" name="' + rowID + '" id="vote1" value="1" ' + (value == 1 ? 'checked="checked"' : '') + '/>'
+					+ '<input type="radio" name="' + rowID + '" id="vote2" value="2" ' + (value == 2 ? 'checked="checked"' : '') + '/>'
+					+ '<input type="radio" name="' + rowID + '" id="vote3" value="3" ' + (value == 3 ? 'checked="checked"' : '') + '/>'
+					+ '<input type="radio" name="' + rowID + '" id="vote4" value="4" ' + (value == 4 ? 'checked="checked"' : '') + '/>'
+					+ '<input type="radio" name="' + rowID + '" id="vote5" value="5" ' + (value == 5 ? 'checked="checked"' : '') + '/>'
+				+ '</div>';
+            var elem = $(div);
+            elem.children().not(":input").hide();
+            elem.stars({});
+            return elem;
+        }
+    function getStarsElementValue(elem, two, value) {
+            if (two == "get") {
+                var ret = $(elem).find("input").val();
+                return ret;
+            }
+            else if (two == "set") {
+            $('#Stars').stars('select', value);
+            }
+        }    
+    function deleteImg() {
+        var url = '@Url.Action("DeleteImg", "BaseInfo")';
+        $.ajax({
+            url: url,
+            type: "GET",
+            success: function (result) {
+                if (result) {
+                    if (result.toLowerCase() == "true") {
+                        alert("删除成功");
+                    }
+                }
+            }
+        });
+    }
+    function invGridToForm(){
+        var gsr = jQuery("#InventoryGrid").jqGrid('getGridParam','selrow');
+        if(gsr){
+            jQuery("#InventoryGrid").jqGrid('GridToForm',gsr,"#FrmGrid_InventoryGrid");
+            $("#ImageFileName").val($($("#ImageFileName").val()).attr("originalValue"));
+        } else {
+            alert("请选择记录");
+        }
+        $("#tabs").tabs();
+        $("#FrmGrid_InventoryGrid").validate({
+            rules: {
+               Code: "required",
+               Name: "required",
+               Category: "required",
+               MeasurementUnitGroup: "required",
+               MainUnit: "required",
+               HighStock: {
+                number: true
+               },
+               LowStock: {
+                number: true
+               },
+               SecurityStock: {
+                number: true
+               },
+               LastCheckDate: {
+                date: true
+               },
+               SomeDay: {
+                number: true
+               },
+               EarlyWarningDay: {
+                number: true
+               },
+               ShelfLife: {
+                number: true
+               },
+               ShelfLifeType: {
+                number: true
+               },
+               SalePrice: {
+                required:true,
+                number: true
+               },
+               SalePoint: {
+                required:true,
+                number: true
+               },
+               Sort: {
+                number: true
+               }
+             },
+     });
+        $("#editcntInventoryGrid").dialog({
+                        width:400,
+                        modal:true,
+                        buttons:{
+                            '关闭': function(){
+                                $(this).dialog('close');
+                            },
+                            '确定': function(){
+                                var rowKey = jQuery("#InventoryGrid").getGridParam('selrow');
+                                if(rowKey) {
+                                    var validator = $( "#FrmGrid_InventoryGrid" ).validate();
+                                    alert(validator);
+                                    if(!validator.validate()) return;
+                                    var postData = $('#FrmGrid_InventoryGrid').serializeArray();
+                                    postData[postData.length] = { name: "Id", value: rowKey };
+                                    postData[postData.length] = { name: "oper", value: "edit" };
+                                    var url = '@Url.Action("Inventory_EditData", "BaseInfo")';
+                                    $.post(url+"?jqGridID=InventoryGrid&editMode=1", postData);                                    
+                                    jQuery("#InventoryGrid").jqGrid('FormToGrid',rowKey,"#FrmGrid_InventoryGrid");
+                                    $(this).dialog('close');
+                                }
+                            }
+                        }
+                    });
+    }
+</script>

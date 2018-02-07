@@ -1,0 +1,13 @@
+﻿@using Trirand.Web.Mvc
+@model DXInfo.Web.Models.AuthorizationGridModel
+<script type="text/javascript">
+    function showAuthsSubGrid(subgrid_id, row_id) {
+        showSubGrid_AuthorizationGrid(subgrid_id, row_id);
+    }   
+    </script>
+@Html.Trirand().JQGrid(Model.RolesGrid, "RolesGrid")
+@Html.Trirand().JQGrid(Model.AuthorizationGrid, "AuthorizationGrid")
+
+
+
+

@@ -1,0 +1,100 @@
+﻿@using Trirand.Web.Mvc
+@using ynhnTransportManage
+@model ynhnTransportManage.Models.WRReport2GridModel 
+@Html.HiddenFor(m => m.InvType)
+@Html.HiddenFor(m => m.CategoryType)          
+<script type="text/javascript">
+    $(function () {
+        $("#query").button();
+        $("#query").button().click(function () {
+            setFilters();
+            query();
+        });
+        $("#export").button();
+        $("#export").button().click(function () {
+            setFilters();
+            excelExport();
+        });
+        var myDate = new Date();
+        $('#BeginDate').datetimepicker({ dateFormat: 'yy-mm-dd', timeFormat: 'hh:mm' });
+        $('#EndDate').datetimepicker({ dateFormat: 'yy-mm-dd', timeFormat: 'hh:mm' });
+        var beginDateStr = myDate.getFullYear() + "-" + (myDate.getMonth() + 1) + "-" + myDate.getDate() + " 03:00";
+        var endDate = new Date();
+        endDate.setDate(myDate.getDate() + 1);
+        var endDateStr = endDate.getFullYear() + "-" + (endDate.getMonth() + 1) + "-" + endDate.getDate() + " 03:00";
+        $("#BeginDate").datetimepicker("setDate", beginDateStr);
+        $("#EndDate").datetimepicker("setDate", endDateStr);
+    });
+    function setFilters() {
+        var filtersStr = '{"groupOp":"AND","rules":[';
+        filtersStr += '{"field":"InvType","op":"eq","data":' + $("#InvType").val() + '},';
+        filtersStr += '{"field":"CategoryType","op":"eq","data":' + $("#CategoryType").val() + '},';
+        if ($("#DeptId").val()) {
+            filtersStr += '{"field":"DeptId","op":"eq","data":"' + $("#DeptId").val() + '"},'
+        }
+        if ($("#SectionId").val()) {
+            filtersStr += '{"field":"SectionId","op":"eq","data":"' + $("#SectionId").val() + '"},'
+        }
+        if ($("#UserId").val()) {
+            filtersStr += '{"field":"UserId","op":"eq","data":"' + $("#UserId").val() + '"},'
+        }
+        if ($("#ConsumeType").val()) {
+            filtersStr += '{"field":"ConsumeType","op":"eq","data":"' + $("#ConsumeType").val() + '"},'
+        }
+        if ($("#PayType").val()) {
+            filtersStr += '{"field":"PayType","op":"eq","data":"' + $("#PayType").val() + '"},'
+        }
+        if ($("#CardNo").val()) {
+            filtersStr += '{"field":"CardNo","op":"cn","data":"' + $("#CardNo").val() + '"},'
+        }
+        if ($("#MemberName").val()) {
+            filtersStr += '{"field":"MemberName","op":"cn","data":"' + $("#MemberName").val() + '"},'
+        }
+        if ($("#IsPackage").val() && $("#IsPackage").val().length>0) {
+            filtersStr += '{"field":"IsPackage","op":"eq","data":"' + $("#IsPackage").val() + '"},'
+        }
+        if ($("#BeginDate").val()) {
+            filtersStr += '{"field":"CreateDate","op":"ge","data":"' + $("#BeginDate").val() + '"},'
+        }
+        else {
+            alert("请输入开始日期");
+            return;
+        }
+        if ($("#EndDate").val()) {
+            filtersStr += '{"field":"CreateDate","op":"le","data":"' + $("#EndDate").val() + '"}'
+        }
+        else {
+            alert("请输入结束日期");
+            return;
+        }
+        
+        filtersStr += ']}';
+        var postData = $("#WRReport2Grid").jqGrid("getGridParam", "postData");
+        $.extend(postData, { filters: filtersStr });
+    }
+    function query() {
+        $("#WRReport2Grid").jqGrid("setGridParam", { search: true }).trigger("reloadGrid", [{ page: 1}]);
+    }
+	</script>
+<h2 class="ui-jqgrid-titlebar ui-widget-header ui-corner-top ui-helper-clearfix" style="text-align:center">@ViewBag.Title</h2>
+<div class="ui-state-default ui-jqgrid-toppager">
+<table>
+    <tr>        
+        <td>门店：</td><td>@Html.DropDownList("DeptId", @Helpers.GetDepts001())</td>
+        <td>部门：</td><td>@Html.DropDownList("SectionId", @Helpers.GetSection())</td>
+        <td>操作员：</td><td>@Html.DropDownList("UserId", @Helpers.GetUsers001())</td>
+        <td>消费类型：</td><td>@Html.DropDownList("ConsumeType", @Helpers.GetConsumeType())</td>
+        <td>支付方式：</td><td>@Html.DropDownList("PayType", @Helpers.GetPayType())</td>       
+        <td><button id="query">查询</button></td>         
+    </tr>
+    <tr>
+        <td>卡号：</td><td><input id="CardNo" type="text"/></td>
+        <td>会员名：</td><td><input id="MemberName" type="text"/></td>
+        <td>开始日期：</td><td><input id="BeginDate" type="text"/></td>
+        <td>结束日期：</td><td><input id="EndDate" type="text"/></td>
+        <td>是否套餐：</td><td>@Html.DropDownList("IsPackage", @Helpers.GetBoolDesc())</td>   
+        <td><button id="export">导出EXCEL</button></td>
+    </tr>
+</table>
+</div>
+@Html.Trirand().JQGrid(Model.WRReport2Grid, "WRReport2Grid")

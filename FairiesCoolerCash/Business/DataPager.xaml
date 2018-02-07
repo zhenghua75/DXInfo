@@ -1,0 +1,48 @@
+﻿<UserControl x:Class="FairiesCoolerCash.Business.DataPager"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             >
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="*"/>
+            
+            <ColumnDefinition Width="Auto"/>
+            <ColumnDefinition Width="Auto"/>
+            <ColumnDefinition Width="Auto"/>
+            <ColumnDefinition Width="Auto"/>
+            <ColumnDefinition Width="Auto"/>
+            <ColumnDefinition Width="Auto"/>
+            
+            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="*"/>
+
+            <ColumnDefinition Width="Auto"/>
+            
+            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="*"/>
+        </Grid.ColumnDefinitions>
+
+        <Button Content="&lt;&lt;" ToolTip="首页" x:Name="FirstPage" Click="FirstPage_Click" Grid.Column="0"/>
+        <Button Content="&lt;" ToolTip="上页" x:Name="PreviousPage" Click="PreviousPage_Click" Grid.Column="1"/>
+
+
+        <TextBlock Text="【共" Grid.Column="2"/>
+        <TextBlock Name="TotalTB" Grid.Column="3"  Foreground="Red"  Text="{Binding TotalPages,RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type UserControl}}}" />
+        <TextBlock Text="页】" Grid.Column="4"/>
+        <TextBlock Text="【当前第" Grid.Column="5"/>
+        <TextBlock Name="CurrentTB" Grid.Column="6" Foreground="Red" Text="{Binding CurrentPageNumber,RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type UserControl}}}"/>
+        <TextBlock Text="页】" Grid.Column="7"/>
+
+        <Button Grid.Column="8" Content="【跳转至第" x:Name="GoPage" Click="GoPage_Click"/>
+        <TextBox Grid.Column="9" ToolTip="页码" x:Name="page" BorderBrush="Black" Text="{Binding CurrentPageNumber,RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type UserControl}}}"/>
+
+        <TextBlock Grid.Column="10" Text="页】"/>
+
+
+        <Button Content="&gt;" ToolTip="下页" x:Name="NextPage" Click="NextPage_Click" Grid.Column="11"/>
+        <Button Content="&gt;&gt;" ToolTip="末页" x:Name="LastPage" Click="LastPage_Click" Grid.Column="12"/>
+    </Grid>    
+</UserControl>

@@ -1,0 +1,47 @@
+﻿<Window x:Class="FairiesCoolerCash.Business.DeskNoMemberCashWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="收您" Height="200" Width="200" ResizeMode="NoResize" FontSize="20"
+         xmlns:WpfKb="clr-namespace:WpfKb.Controls;assembly=WpfKb"
+        SizeToContent="WidthAndHeight"
+        WindowStartupLocation="CenterScreen"
+        Background="{DynamicResource WindowBackgroundBrush}" Closing="Window_Closing" >
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition></RowDefinition>
+            <RowDefinition></RowDefinition>
+            <RowDefinition></RowDefinition>
+            <RowDefinition></RowDefinition>
+            <RowDefinition></RowDefinition>
+            <RowDefinition></RowDefinition>
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="Auto"></ColumnDefinition>
+            <ColumnDefinition></ColumnDefinition>
+            <!--<ColumnDefinition Width="Auto"></ColumnDefinition>
+            <ColumnDefinition></ColumnDefinition>-->
+        </Grid.ColumnDefinitions>
+
+        <Label Content="应收："></Label>
+        <TextBlock Name="txtCash2" Grid.Column="1" ></TextBlock>
+        <Label Content="找零："  Grid.Row="1"></Label>
+        <TextBlock Name="txtChange" Grid.Row="1" Grid.Column="1"></TextBlock>
+        <Label Content="实收:" Grid.Row="2"></Label>
+        <TextBox Name="txtCash" Grid.Row="2" Grid.Column="1"  Width="200" TextChanged="txtCash_TextChanged"/>
+        
+        <!--<Label Content="号牌：" Grid.Row="1" Grid.Column="2"></Label>
+        <TextBox Name="txtDeskNo" Grid.Row="1" Grid.Column="3"  Width="200"/>-->
+
+        <WpfKb:OnScreenKeypad Grid.Row="3" Grid.Column="0" Grid.ColumnSpan="2"
+            x:Name="Keyboard2" MouseDown="Keyboard2_MouseDown" TouchDown="Keyboard2_TouchDown"
+            />
+        
+        <!--<WpfKb:OnScreenKeypad Grid.Row="2" Grid.Column="2" Grid.ColumnSpan="2"
+            x:Name="Keyboard" MouseDown="Keyboard_MouseDown" TouchDown="Keyboard_TouchDown"
+            />-->
+        
+        <Button Grid.Row="4" Grid.ColumnSpan="2" Click="Button_Click" Height="50">确定</Button>
+        
+        
+    </Grid>
+</Window>

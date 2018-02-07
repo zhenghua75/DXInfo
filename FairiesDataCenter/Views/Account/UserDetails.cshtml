@@ -1,0 +1,25 @@
+﻿@model ynhnTransportManage.Models.DetailsUserModel
+
+@{
+    ViewBag.Title = "用户详细信息";
+}
+
+<h2>Details</h2>
+
+<fieldset>
+    <legend>用户详细信息</legend>
+
+    <div class="display-label">用户名</div>
+    <div class="display-field">@Model.User.UserName</div>
+
+    <div class="display-label">姓名</div>
+    <div class="display-field">@Model.Profle.FullName</div>
+
+    <div class="display-label">部门</div>
+    <div class="display-field">@Model.Dept.DeptName</div>
+</fieldset>
+<p>
+    @Html.ActionLink("编辑", "EditUser", new {  id=Model.User.ProviderUserKey }) |
+    @Html.ActionLink("返回", "Users")
+</p>
+

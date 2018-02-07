@@ -1,0 +1,179 @@
+﻿@using DXInfo.Web.Models
+@model DXInfo.Web.Models.WRReport12Model          
+<script type="text/javascript">
+    $(function () {
+        $('#BeginDate').datetimepicker();
+        $('#EndDate').datetimepicker();
+        $("#query").button();
+        $("#export").button();
+        $("#modify").button();
+        $("#delete").button();
+
+        $("#query").button().click(function () {
+            $("#button").val("查询");
+            submitToDiv("Report");
+        });
+        $("#modify").button().click(function () {
+            if (pcommit()) {
+                $("#button").val("修改");
+                submitToDiv("Report");
+            }
+        });
+        $("#delete").button().click(function () {
+            if (pcommit()) {
+                $("#button").val("删除");
+                submitToDiv("Report");
+            }
+        });
+
+        $("th>a,td>a[id!='export']").click(function () { addToDiv(this); return false; });
+        var ctrls = [{ name: "DeptId", type: "select" },
+                     { name: "UserId", type: "select" }, 
+                     { name: "BeginDate", type: "date" },
+                     { name: "EndDate", type: "date" }, ];
+        InitCtrl(ctrls);
+    });
+    function pcommit() {
+
+        return confirm("长款金额：" + $("#curResult_More").val() + "\n短款金额" + $("#curResult_Less").val() + "\n情况说明" + $("#curResult_Comment").val());
+    }
+</script>
+<h2 class="ui-widget-header h2-center">@ViewBag.Title</h2>
+@using (Html.BeginForm("WRReport12", "Report", FormMethod.Post, new { id = "Report", @class = "form-overflow" }))
+{
+    @Html.ValidationSummary(true, "参数错误。请更正错误并重试。", new { @class="ui-state-error"})
+    <input id="button" name="button" type="hidden" />
+<fieldset class="ui-widget ui-widget-content ui-corner-all">
+<legend class="ui-widget-header ui-corner-all"></legend> 
+<table>            
+            <tr>
+                <td>
+                @Html.LabelFor(m => m.DeptId)
+            </td>
+                <td>
+                @Html.DropDownListFor(m => m.DeptId, @Html.GetDept())
+                @Html.ValidationMessageFor(m => m.DeptId)
+                </td>
+            
+                <td>
+                @Html.LabelFor(m => m.UserId)
+            </td>
+                <td>
+                @Html.DropDownListFor(m => m.UserId, @Html.GetOper())
+                @Html.ValidationMessageFor(m => m.UserId)
+                </td>
+               
+                <td>
+                @Html.LabelFor(m => m.BeginDate)
+                </td>
+                <td>
+                @Html.TextBoxFor(m => m.BeginDate)
+                @Html.ValidationMessageFor(m => m.BeginDate)
+                </td>    
+               
+                <td>
+                @Html.LabelFor(m => m.EndDate)
+                </td>
+                <td>
+                @Html.TextBoxFor(m => m.EndDate)
+                @Html.ValidationMessageFor(m => m.EndDate)
+                </td>    
+                 
+                <td>
+                <input id="query" type="submit" name="button" value="查询" />
+                </td>
+            </tr>
+        </table>
+</fieldset>
+if (Model.result != null)
+{
+    var grid = new MyWebGrid(source: Model.result, defaultSort: "Amount");
+    var gridColumns = new List<WebGridColumn>();
+    gridColumns.Add(grid.Column(format: @<text><a href='@item.GetSelectUrl()' onclick='addToDiv(this);return false;'>编辑</a></text>));
+    gridColumns.Add(grid.Column("DifDate", "日期", format: (item) => string.Format("{0:yyyy-MM-dd}", item.DifDate)));
+    gridColumns.Add(grid.Column("DeptName", "店名"));
+    gridColumns.Add(grid.Column("FullName", "收银员"));
+    gridColumns.Add(grid.Column("Amount", "应收款", format: (item) => string.Format("{0:f2}", item.Amount)));
+    gridColumns.Add(grid.Column("More", "长款金额", format: (item) => string.Format("{0:f2}", item.More)));
+    gridColumns.Add(grid.Column("Less", "短款金额", format: (item) => string.Format("{0:f2}", item.Less)));
+    gridColumns.Add(grid.Column("Comment", "情况说明"));    
+<fieldset class="ui-widget ui-widget-content ui-corner-all">
+<legend class="ui-widget-header ui-corner-all"></legend>             
+    @grid.GetHtml(gridColumns)
+</fieldset>
+if (grid.HasSelection)
+{
+Model.curResult = grid.SelectedRow.Value;
+@Html.HiddenFor(m => m.curResult.DeptId)
+@Html.HiddenFor(m => m.curResult.UserId)
+@Html.HiddenFor(m => m.curResult.IsIn)
+@Html.HiddenFor(m => m.curResult.Id)
+
+<fieldset class="ui-widget ui-widget-content ui-corner-all">
+<legend class="ui-widget-header ui-corner-all">长短款设置</legend>
+        <table>
+            <tr>
+                <td>
+                        @Html.LabelFor(m => m.curResult.DifDate)
+                </td>
+                <td>
+                        @Html.TextBox("curResult.DifDate", Model.curResult.DifDate.ToString("yyyy-MM-dd"), new Dictionary<string, object>() { { "readonly", "readonly" } })
+                        @Html.ValidationMessageFor(m => m.curResult.DifDate)
+                </td>
+                <td>
+                        @Html.LabelFor(m => m.curResult.DeptName)
+                </td>
+                <td>
+                        @Html.TextBoxFor(m => m.curResult.DeptName, new Dictionary<string, object>() { { "readonly", "readonly" } })
+                        @Html.ValidationMessageFor(m => m.curResult.DeptName)
+                </td>
+                <td>
+                        @Html.LabelFor(m => m.curResult.FullName)
+                </td>
+                <td>
+                        @Html.TextBoxFor(m => m.curResult.FullName, new Dictionary<string, object>() { { "readonly", "readonly" } })
+                        @Html.ValidationMessageFor(m => m.curResult.FullName)
+                </td>
+                <td>
+                        @Html.LabelFor(m => m.curResult.Amount)
+                </td>
+                <td>
+                        @Html.TextBoxFor(m => m.curResult.Amount, new Dictionary<string, object>() { { "readonly", "readonly" } })
+                        @Html.ValidationMessageFor(m => m.curResult.Amount)
+                </td>
+            </tr>
+            <tr>
+                <td>
+                        @Html.LabelFor(m => m.curResult.More)
+                </td>
+                <td>
+                        @Html.TextBoxFor(m => m.curResult.More)
+                        @Html.ValidationMessageFor(m => m.curResult.More)
+                </td>
+                <td>
+                        @Html.LabelFor(m => m.curResult.Less)
+                </td>
+                <td>
+                        @Html.TextBoxFor(m => m.curResult.Less)
+                        @Html.ValidationMessageFor(m => m.curResult.Less)
+                </td>
+                <td>
+                        @Html.LabelFor(m => m.curResult.Comment)
+                </td>
+                <td>
+                        @Html.TextBoxFor(m => m.curResult.Comment)
+                        @Html.ValidationMessageFor(m => m.curResult.Comment)
+                </td>
+                <td colspan="2">
+                    <p>
+                        <input id="modify" type="submit" name="button" value="修改" />
+                        <input id="delete" type="submit" name="button" value="删除" />
+                    </p>
+                </td>
+            </tr>
+        </table>
+    </fieldset>
+}
+}
+}
+

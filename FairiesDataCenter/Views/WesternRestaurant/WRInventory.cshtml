@@ -1,0 +1,99 @@
+﻿@using Trirand.Web.Mvc
+@model ynhnTransportManage.Models.WRInventoryGridModel
+<script src="@Url.Content("~/Scripts/jquery.ui.stars-3.0/jquery.ui.stars.js")" type="text/javascript"></script>
+    <link rel="stylesheet" type="text/css" href="@Url.Content("~/Scripts/jquery.ui.stars-3.0/jquery.ui.stars.css")" />
+@Html.Trirand().JQGrid(Model.WRInventoryGrid, "WRInventoryGrid")
+
+ <script type="text/javascript">
+     $(document).ready(function () {
+         $("#WRInventoryGrid").closest("div.ui-jqgrid-view")
+                .children("div.ui-jqgrid-titlebar")
+                .css("text-align", "center")
+                .css("font-size", "large")
+                .children("span.ui-jqgrid-title")
+                .css("float", "none");
+     });
+
+     function formatImage(cellValue, options, rowObject) {
+         var imageHtml = "<img src='@Url.Content("~/ckfinder/userfiles/images/")" + cellValue + "' originalValue='" + cellValue + "' />";
+         return imageHtml;
+     }
+
+     function unformatImage(cellValue, options, cellObject) {
+         return $(cellObject.html()).attr("originalValue");
+     }     
+
+
+     function FormatRanking(cellValue, options, rowObject) {
+         var rowID = options.rowId;
+         var div = '<div id="' + rowID + '">'
+					+ '<input type="radio" name="Stars" id="vote1" value="1" ' + (cellValue == 1 ? 'checked="checked"' : '') + '/>'
+					+ '<input type="radio" name="Stars" id="vote2" value="2" ' + (cellValue == 2 ? 'checked="checked"' : '') + '/>'
+					+ '<input type="radio" name="Stars" id="vote3" value="3" ' + (cellValue == 3 ? 'checked="checked"' : '') + '/>'
+					+ '<input type="radio" name="Stars" id="vote4" value="4" ' + (cellValue == 4 ? 'checked="checked"' : '') + '/>'
+					+ '<input type="radio" name="Stars" id="vote5" value="5" ' + (cellValue == 5 ? 'checked="checked"' : '') + '/>'
+				+ '</div>';
+         var elem = $(div);
+         elem.children().not(":input").hide();
+         elem.stars({ cancelShow: false });
+         return elem.html();
+     }
+
+     function UnFormatRanking(cellValue, options, cellObject) {
+         var ret = $(cellObject).find("input").val();
+         return ret;
+     }     
+
+
+        function createStarsEditElement(value, editOptions) {
+            var rowID = editOptions.id;
+            var div = '<div>'
+					+ '<input type="radio" name="' + rowID + '" id="vote1" value="1" ' + (value == 1 ? 'checked="checked"' : '') + '/>'
+					+ '<input type="radio" name="' + rowID + '" id="vote2" value="2" ' + (value == 2 ? 'checked="checked"' : '') + '/>'
+					+ '<input type="radio" name="' + rowID + '" id="vote3" value="3" ' + (value == 3 ? 'checked="checked"' : '') + '/>'
+					+ '<input type="radio" name="' + rowID + '" id="vote4" value="4" ' + (value == 4 ? 'checked="checked"' : '') + '/>'
+					+ '<input type="radio" name="' + rowID + '" id="vote5" value="5" ' + (value == 5 ? 'checked="checked"' : '') + '/>'
+				+ '</div>';
+            var elem = $(div);
+            elem.children().not(":input").hide();
+            elem.stars({});
+            return elem;
+        }
+
+        function getStarsElementValue(elem, two, value) {
+            if (two == "get") {
+                var ret = $(elem).find("input").val();
+                return ret;
+            }
+            else if (two == "set") {
+            $('#Stars').stars('select', value);
+            }
+        }
+    
+    function normalInv() {
+        var filtersStr = '{"groupOp":"AND","rules":[{"field":"IsInvalid","op":"eq","data":"false"}]}';
+        var postData = $("#WRInventoryGrid").jqGrid("getGridParam", "postData");
+        $.extend(postData, { filters: filtersStr });
+        $("#WRInventoryGrid").jqGrid("setGridParam", {search: true}).trigger("reloadGrid", [{ page: 1}]); 
+    }
+    function invalidInv() {
+        var filtersStr = '{"groupOp":"AND","rules":[{"field":"IsInvalid","op":"eq","data":"true"}]}';
+        var postData = $("#WRInventoryGrid").jqGrid("getGridParam", "postData");
+        $.extend(postData, { filters: filtersStr });
+        $("#WRInventoryGrid").jqGrid("setGridParam", { search: true }).trigger("reloadGrid", [{ page: 1}]);
+    }
+    function deleteImg() {
+        var url = '@Url.Action("DeleteImg","WesternRestaurant")';
+        $.ajax({
+            url: url,
+            type: "GET",
+            success: function (result) {
+                if (result) {
+                    if (result.toLowerCase() == "true") {
+                        alert("删除成功");
+                    }
+                }
+            }
+        });
+    }
+</script>

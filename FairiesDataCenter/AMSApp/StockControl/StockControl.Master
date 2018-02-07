@@ -1,0 +1,44 @@
+﻿<%@ Master Language="C#" AutoEventWireup="true" CodeBehind="StockControl.master.cs" Inherits="AMSApp.StockControl.StockControl" %>
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head runat="server">
+    <title></title>
+    <link rel="stylesheet" type="text/css" href="scripts/jquery-easyui/themes/Cupertino/easyui.css"/>
+    <link rel="stylesheet" type="text/css" href="scripts/jquery-easyui/themes/icon.css"/>
+    <script type="text/javascript" src="scripts/jquery-easyui/jquery-1.7.1.min.js"></script>
+    <script type="text/javascript" src="scripts/jquery-easyui/jquery.easyui.min.js"></script>
+    <script src="scripts/jquery-easyui/plugins/jquery.validatebox.js" type="text/javascript"></script>
+    <script src="scripts/validator.js" type="text/javascript"></script>
+    <script src="scripts/jquery-easyui/locale/easyui-lang-zh_CN.js" type="text/javascript"></script>
+    <script src="Scripts/DateExtend.js" type="text/javascript"></script>
+    <script src="scripts/formatter.js" type="text/javascript"></script>
+    <script src="Scripts/move.js" type="text/javascript"></script>
+    <script src="Scripts/JQueryExtend.js" type="text/javascript"></script>
+    <script src="Scripts/jquery.printElement.js" type="text/javascript"></script>
+    <link href="css/label.css" rel="stylesheet" type="text/css"/>
+    <link href="css/div.css" rel="stylesheet" type="text/css" />
+    <script type="text/javascript">
+        $(function () {
+            $.ajaxSetup({
+                //cache: false,
+                complete: function (XHR, TS) {
+                    var resText = XHR.responseText;                   
+                    var json = eval('(' + resText + ')');
+                    if (json.msg == "loginOvertime") {
+                        var rootPath = '<%=Request.ApplicationPath %>';
+                        window.top.location.href = rootPath + '/default.aspx';
+                    }
+                }
+            });
+        });
+    </script>
+    <asp:ContentPlaceHolder ID="head" runat="server">
+    </asp:ContentPlaceHolder>
+</head>
+<body>
+    <asp:ContentPlaceHolder ID="ContentPlaceHolder1" runat="server">
+        </asp:ContentPlaceHolder>
+</body>
+</html>

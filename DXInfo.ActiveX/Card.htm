@@ -1,0 +1,23 @@
+<HTML>
+<HEAD>
+<meta http-equiv="Content-Type" content="text/html; charset=gb2312"/>
+<TITLE>对象 Card 的 ATL 8.0 测试页</TITLE>
+</HEAD>
+<BODY>
+
+
+<OBJECT ID="Card" CLASSID="CLSID:195FD03D-EC38-4F72-B3BA-E5F243E404F5"></OBJECT>
+    <input type="button" value="Add" onclick="add();" />
+
+<script type="text/javascript">
+    function add() {
+        var calc = document.getElementById('Card');
+        alert("1");
+        var result = calc.ReadCard();
+        alert(result);
+        
+    }
+</script>
+
+</BODY>
+</HTML>

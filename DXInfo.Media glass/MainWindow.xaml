@@ -1,0 +1,75 @@
+﻿<Window x:Class="Media_glass.MainWindow"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    Title="Window1"  AllowsTransparency="True" WindowStyle="None" Background="Transparent"
+        Height="272" Width="373"  MouseLeftButtonDown="Window_MouseLeftButtonDown" Closing="Window_Closing" Loaded="Window_Loaded" KeyDown="Window_KeyDown"
+        AllowDrop="True" Drop="Window_Drop" StateChanged="Window_StateChanged">    
+    <Window.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="Resources\Styles\ToolTip.xaml" />              
+            </ResourceDictionary.MergedDictionaries>
+        </ResourceDictionary>
+    </Window.Resources>
+    <Grid Height="172" Width="319" x:Name="windowGrid">
+        <Grid.ContextMenu>
+            <ContextMenu Name="contextMenu" Opened="contextMenu_Opened" >
+                <MenuItem Header="打开文件..." Click="openButton_Click"/>
+                <MenuItem Header="添加文件..." InputGestureText="Ctrl+O" Click="MenuItem_Add_files_Click"/>
+                <MenuItem Header="打开目录" Click="MenuItem_Open_Directory_Click"/>                                
+                <MenuItem Header="关闭文件" Click="MenuItem_Close_Click"/>                
+                <Separator/>
+                <MenuItem Header="播放列表" InputGestureText="Ctrl+P" IsCheckable="True" x:Name="playListMenuItem" Click="MenuItem_PlayList_Click"/>                
+                <Separator/>
+                <MenuItem Header="单曲播放" IsCheckable="True" IsChecked="True" Click="MenuItem_RepeatOff_Click" x:Name="repeatOffMenuItem"/>
+                <MenuItem Header="单曲循环" IsCheckable="True" IsChecked="False" Click="MenuItem_RepeatOne_Click" x:Name="repeatOneMenuItem"/>
+                <MenuItem Header="循环播放" IsCheckable="True" IsChecked="False" Click="MenuItem_RepeatAll_Click" x:Name="repeatAllMenuItem"/>
+                <MenuItem Header="随机播放" IsCheckable="True" IsChecked="False" Click="MenuItem_Random_Click" x:Name="randomMenuItem"/>
+                <Separator/>
+                <MenuItem Header="文件关联" Click="MenuItem_Types_Click"/>
+                <Separator/>                
+                <MenuItem Header="帮助" Click="MenuItem_Help_Click" x:Name="helpMenuItem"/>
+                <MenuItem Header="关于" Click="MenuItem_About_Click"/>
+                <Separator/>
+                <MenuItem Header="最近文件" x:Name="recentFilesMenuItem" />                    
+                <Separator/>
+                <MenuItem Header="退出" Click="MenuItem_Exit_Click"/>
+            </ContextMenu>
+        </Grid.ContextMenu>
+        
+        <!--WINDOW RECT-->
+        
+        <Rectangle Name="windowRect" RadiusX="16" RadiusY="16" Margin="2" Fill="{StaticResource windowBrush}" Opacity="0.8" StrokeThickness="0" Stroke="{StaticResource sliderBrush}">
+            <Rectangle.BitmapEffect>
+                <DropShadowBitmapEffect></DropShadowBitmapEffect>
+            </Rectangle.BitmapEffect>
+        </Rectangle>
+        
+        <!--WINDOW HEADER-->
+        
+        <Label Height="25" Margin="11,0,118,0" Name="headerLabel" VerticalAlignment="Top" FontSize="11" Foreground="{StaticResource sliderBrush}" FontWeight="Normal">Media glass 1.0 public beta 2</Label>
+        <Button Style="{StaticResource minimizeButton}" Height="11" Margin="0,5,41,0" Name="minimizeButton" VerticalAlignment="Top" Click="minimizeButton_Click" ToolTip="最小化" HorizontalAlignment="Right" Width="11" />
+        <Button Style="{StaticResource closeButton}" Height="11" HorizontalAlignment="Right" Margin="0,5,16,0" Name="closeButton" VerticalAlignment="Top" Width="11" Click="closeButton_Click" ToolTip="退出">Button</Button>
+        
+        <!--MAIN BUTTONS-->
+        
+        <Button Style="{StaticResource smartButton}" Content="{StaticResource playSign}" Height="30" HorizontalAlignment="Right" Margin="0,0,50,16" Name="playButton" VerticalAlignment="Bottom" Width="30" ToolTip="播放" Click="playButton_Click" />
+        <Button Style="{StaticResource smartButton}" Content="{StaticResource stopSign}" Height="30" Margin="0,0,84,16" Name="stopButton" VerticalAlignment="Bottom" HorizontalAlignment="Right" Width="30" Click="stopButton_Click" ToolTip="停止" />
+        <Button Style="{StaticResource smartButton}" Content="{StaticResource openSign}" Height="30" Margin="50,0,0,16" Name="openButton" VerticalAlignment="Bottom" HorizontalAlignment="Left" Width="30" Click="openButton_Click" ToolTip="打开文件" />
+        <Button Style="{StaticResource smartButton}" Content="{StaticResource previousSign}" Height="30" Margin="0,0,118,16" Name="previousButton" VerticalAlignment="Bottom" HorizontalAlignment="Right" Width="30" ToolTip="上一首" Click="previousButton_Click" />
+        <Button Style="{StaticResource smartButton}" Content="{StaticResource nextSign}" Height="30" HorizontalAlignment="Right" Margin="0,0,16,16" Name="nextButton" VerticalAlignment="Bottom" Width="30" ToolTip="下一首" Click="nextButton_Click" />
+        <Button Style="{StaticResource smartButton}" Content="{StaticResource pauseSign}" Margin="0,0,50,16" Name="pauseButton" Click="pauseButton_Click" Visibility="Hidden" Height="30" VerticalAlignment="Bottom" HorizontalAlignment="Right" Width="30" ToolTip="暂停" />
+        
+        <!--CHECKBOXES-->
+        
+        <CheckBox Style="{StaticResource checkBoxStyle}" HorizontalAlignment="Right" Margin="0,21,52,0" Name="playListCheckBox" Width="42" Click="playListCheckBox_Click" Height="22" VerticalAlignment="Top" ToolTip="显示播放列表窗口">播放列表</CheckBox>        
+
+        <!--LABELS-->
+        
+        <Label Margin="11,55,11,0" Name="runLabel" FontSize="16" Foreground="White" Height="29" VerticalAlignment="Top">Pussy Cat Dolls. avi</Label>
+        <Label Margin="147,0,12,42" Name="timeLabel" FontSize="16" Foreground="White" HorizontalContentAlignment="Right" Height="30" VerticalAlignment="Bottom">00:00:00 / 00:00:00</Label>
+
+        <Slider Name="positionSlider" Template="{StaticResource TrackSlider}" Margin="17,0,17,75" ValueChanged="positionSlider_ValueChanged" Maximum="3" Height="7" VerticalAlignment="Bottom" GotMouseCapture="positionSlider_GotMouseCapture" LostMouseCapture="positionSlider_LostMouseCapture_1" IsMoveToPointEnabled="True" Focusable="False" />
+        <Slider Height="15" Margin="18,0,0,49" Name="volumeSlider" VerticalAlignment="Bottom" Template="{StaticResource VolumeSlider}" HorizontalAlignment="Left" Width="61" ValueChanged="volumeSlider_ValueChanged" Value="0.5" ToolTip="Volume" Maximum="1" IsMoveToPointEnabled="True" Focusable="False" />
+    </Grid>
+</Window>

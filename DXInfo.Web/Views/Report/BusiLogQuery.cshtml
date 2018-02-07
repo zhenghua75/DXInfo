@@ -1,0 +1,85 @@
+﻿@using Trirand.Web.Mvc
+@using DXInfo.Web.Models
+@model DXInfo.Web.Models.BusiLogQueryGridModel
+<script type="text/javascript">
+    $(function () {
+        $("#query").button();
+        var myDate = new Date();
+        $("#BeginDate").datetimepicker();
+        $("#EndDate").datetimepicker();
+        var beginDateStr = myDate.getFullYear() + "-" + (myDate.getMonth() + 1) + "-" + myDate.getDate() + " 00:00";
+        var endDateStr = myDate.getFullYear() + "-" + (myDate.getMonth() + 1) + "-" + myDate.getDate() + " 23:59";
+        $("#BeginDate").datetimepicker("setDate", beginDateStr);
+        $("#EndDate").datetimepicker("setDate", endDateStr);
+
+        $("#query").button().click(function () {
+            query();
+        });
+        $("#export").button();
+        $("#export").button().click(function () {
+            excelExport();
+        });
+        var ctrls = [{ name: "BeginDate", type: "datetime" },
+                 { name: "EndDate", type: "datetime" },
+
+                 { name: "vcDeptID", type: "select" },
+                 { name: "vcOperName", type: "select" },
+
+                 { name: "vcCardID", type: "text" },
+                 ];
+        InitCtrl(ctrls);
+    });
+    function serializeGridData(postData){
+        var filtersStr = '{"groupOp":"AND","rules":[';
+        var filtersStr1 = "";
+        if ($("#vcCardID").val()) {
+            filtersStr1 += '{"field":"vcCardID","op":"cn","data":"' + $("#vcCardID").val() + '"},'
+        }
+        
+        if ($("#vcDeptID").val()) {
+            filtersStr1 += '{"field":"vcDeptID","op":"eq","data":"' + $("#vcDeptID").val() + '"},'
+        }        
+        if ($("#vcOperName").val()) {
+            filtersStr1 += '{"field":"vcOperName","op":"eq","data":"' + $("#vcOperName").val() + '"},'
+        }
+        
+        if ($("#BeginDate").val()) {
+            filtersStr1 += '{"field":"dtOperDate","op":"ge","data":"' + $("#BeginDate").val() + '"},'
+        }
+        if ($("#EndDate").val()) {
+            filtersStr1 += '{"field":"dtOperDate","op":"le","data":"' + $("#EndDate").val() + '"},'
+        }
+        if (filtersStr1 == "") {
+            filtersStr = "";
+        }
+        else {
+            filtersStr += filtersStr1;
+            filtersStr += '{}]}';
+        }
+        var sdata = {
+            _search: true,
+            filters: filtersStr,
+        };
+        var newPostData = $.extend(postData, sdata);
+        return $.param(newPostData);
+    }
+    function query() {
+            $("#BusiLogQueryGrid").jqGrid('setGridParam', { datatype: 'json' }).trigger('reloadGrid', [{ page: 1}]); 
+    }
+	</script>
+<h2 class="ui-widget-header h2-center">@ViewBag.Title</h2>
+<fieldset class="ui-widget ui-widget-content ui-corner-all">
+            <legend class="ui-widget-header ui-corner-all"></legend>
+<table>
+    <tr>        
+        <td>会员卡号</td><td>@Html.TextBox("vcCardID")</td>
+        <td>开始时间</td><td>@Html.TextBox("BeginDate")</td>    
+        <td>结束时间</td><td>@Html.TextBox("EndDate")</td>            
+        </tr><tr>
+        <td>门店</td><td>@Html.DropDownList("vcDeptID", @Html.GetMD())</td>
+        <td>操作员</td><td>@Html.DropDownList("vcOperName", @Html.GetOperName())</td>
+        <td><button id="query">查询</button></td><td><button id="export">导出EXCEL</button></td>
+    </tr>
+</table>
+</fieldset>
+@Html.Trirand().JQGrid(Model.BusiLogQueryGrid, "BusiLogQueryGrid")

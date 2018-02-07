@@ -1,0 +1,54 @@
+﻿@using DXInfo.Web.Models
+@model DXInfo.Web.Models.VouchsGridModel
+@{
+    Layout = "~/Views/Shared/_StockManageBase.cshtml";
+}
+<fieldset class="ui-widget ui-widget-content ui-corner-all">
+    <legend class="ui-widget-header ui-corner-all"></legend>
+    <table>
+        <tr>
+            <td>@Html.LabelFor(m => m.Code)
+            </td>
+            <td>@Html.TextBoxFor(m => m.Code)@Html.MyValidationMessageFor(m => m.Code)
+            </td>
+            <td>@Html.LabelFor(m => m.RdDate)
+            </td>
+            <td>@Html.TextBoxFor(m => m.RdDate)@Html.MyValidationMessageFor(m => m.RdDate)
+            </td>
+            <td>@Html.LabelFor(m => m.WhId)
+            </td>
+            <td>@Html.DropDownListFor(m => m.WhId, @Html.GetWarehouse())@Html.MyValidationMessageFor(m => m.WhId)
+            </td>
+            <td>
+                <label for="BusType">
+                    入库类别</label>
+            </td>
+            <td>@Html.DropDownListFor(m => m.BusType, @Html.GetBusType("003"))@Html.MyValidationMessageFor(m => m.BusType)
+            </td>
+        </tr>
+        <tr>
+            <td>@Html.LabelFor(m => m.ARVCode)
+            </td>
+            <td>@Html.TextBoxFor(m => m.ARVCode)
+            </td>
+            <td>@Html.LabelFor(m => m.ARVDate)
+            </td>
+            <td>@Html.TextBoxFor(m => m.ARVDate)
+            </td>
+            <td>@Html.LabelFor(m => m.Salesman)
+            </td>
+            <td>@Html.DropDownListFor(m => m.Salesman, @Html.GetOper())
+            </td>
+            <td>@Html.LabelFor(m => m.VerifyDate)
+            </td>
+            <td>@Html.TextBoxFor(m => m.VerifyDate)
+            </td>
+        </tr>
+        <tr>
+            <td>@Html.LabelFor(m => m.Memo)
+            </td>
+            <td colspan="7">@Html.TextBoxFor(m => m.Memo, new { style = "width:100%" })
+            </td>
+        </tr>
+    </table>
+</fieldset>

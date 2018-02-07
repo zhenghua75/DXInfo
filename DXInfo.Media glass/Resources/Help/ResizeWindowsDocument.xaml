@@ -1,0 +1,19 @@
+﻿<FlowDocument xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    ColumnWidth="400" FontSize="16" FontFamily="Georgia">
+    <Paragraph FontSize="22" FontWeight="Bold">
+        Resize main windows
+    </Paragraph>
+
+    <Paragraph>
+        1. Resize Playlist and Library window by drugging right bottom corner.
+    </Paragraph>
+
+    <BlockUIContainer>
+        <Image Source="ResizeWindows.png" Stretch="None"/>
+    </BlockUIContainer>  
+    
+    <Paragraph>
+        2. Resize window with video by mouse wheel.
+    </Paragraph>
+    
+</FlowDocument>

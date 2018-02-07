@@ -1,0 +1,14 @@
+﻿@using Trirand.Web.Mvc
+@model ynhnTransportManage.Models.VehicleGridModel
+@{
+    ViewBag.Title = "车辆信息";
+}
+@Html.Trirand().JQGrid(Model.VehicleGrid, "VehicleGrid")
+<script type="text/javascript">
+    function ShowName(cellvalue, options, rowObject) {
+        return rowObject[5];
+    }
+    function UnShowName(cellvalue, options, rowObject) {
+        return "";
+    }
+</script>

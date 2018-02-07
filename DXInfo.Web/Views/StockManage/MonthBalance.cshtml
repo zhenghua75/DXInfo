@@ -1,0 +1,25 @@
+﻿@using Trirand.Web.Mvc
+@model DXInfo.Web.Models.MonthBalanceGridModel
+@Html.Trirand().JQGrid(Model.MonthBalanceGrid, "MonthBalanceGrid")
+<script type="text/javascript">
+    function customButtonClicked() {
+        var grid = $("#MonthBalanceGrid");
+        var rowid = grid.jqGrid('getGridParam', 'selrow');
+        if(rowid){
+            var url = "@Url.Action("MonthBalance_Verify","StockManage")";
+            $.getJSON(url, { MonthBalanceId: rowid,time:new Date().getTime() },
+            function (json) {if(json.Error!="") alert(json.Error); });
+            grid.jqGrid().trigger("reloadGrid", [{ page: 1}]);
+        }
+    }
+    function customButtonClicked2() {
+        var grid = $("#MonthBalanceGrid");
+        var rowid = grid.jqGrid('getGridParam', 'selrow');
+        if(rowid){
+            var url = "@Url.Action("MonthBalance_UnVerify","StockManage")";
+            $.getJSON(url, { MonthBalanceId: rowid,time:new Date().getTime() },
+            function (json) {if(json.Error!="") alert(json.Error); });
+            grid.jqGrid().trigger("reloadGrid", [{ page: 1}]);
+        }
+    }
+</script>

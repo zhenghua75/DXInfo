@@ -1,0 +1,28 @@
+﻿@using Trirand.Web.Mvc
+@model DXInfo.Web.Models.VendorGridModel
+@Html.HiddenFor(m => m.VendorType)
+<script type="text/javascript">
+    function serializeGridData(postData) {
+        var sdata = {
+            _search:true,
+            VendorType: $("#VendorType").val()
+        };
+        var newPostData = $.extend(postData, sdata);
+        return newPostData;
+    }
+    function serializeRowData(postData) {
+        var sdata = {
+            VendorType: $("#VendorType").val()
+        };
+        var newPostData = $.extend(postData, sdata);
+        return newPostData;
+    }
+    function beforeSubmit(postdata, formid) {
+        var sdata = { 
+            VendorType: $("#VendorType").val()
+        };
+        $.extend(postdata, sdata);
+        return [true, ''];
+    }
+</script>
+@Html.Trirand().JQGrid(Model.VendorGrid, "VendorGrid")

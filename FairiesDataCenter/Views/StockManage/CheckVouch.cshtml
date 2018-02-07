@@ -1,0 +1,91 @@
+﻿@using Trirand.Web.Mvc
+@using ynhnTransportManage
+@model ynhnTransportManage.Models.StockManage.CheckVouchModel
+<style>
+	#toolbar {
+		padding: 10px 4px;
+	}
+	</style>
+<script src="@Url.Content("~/Scripts/chosen/chosen.jquery.min.js")" type="text/javascript"></script>
+<link href="@Url.Content("~/Scripts/chosen/chosen.css")" rel="stylesheet" type="text/css" />
+<script src="@Url.Content("~/Scripts/jquery.blockUI.js")" type="text/javascript"></script>
+<script src="@Url.Content("~/Scripts/jquery.dateFormat-1.0.js")" type="text/javascript"></script>
+<script src="@Url.Content("~/Scripts/RdRecord/resetForm.js")" type="text/javascript"></script>
+<script src="@Url.Content("~/Scripts/RdRecord/resetValidation.js")" type="text/javascript"></script>
+<script src="@Url.Content("~/Scripts/RdRecord/setButton.js")" type="text/javascript"></script>
+<script src="@Url.Content("~/Scripts/RdRecord/setButtonState.js")" type="text/javascript"></script>
+<script src="@Url.Content("~/Scripts/RdRecord/resetGrid.js")" type="text/javascript"></script>
+@*<script src="@Url.Content("~/Scripts/RdRecord/initForm.js")" type="text/javascript"></script>*@
+<script type="text/javascript">
+    $(function () {
+        prefix = "#checkVouch_";
+        mainId = "CVId";
+        gridId = "#CheckVouchsGrid";
+        gridId2 = "CheckVouchsGrid";
+        formId = "#CheckVouchForm";
+        initForm();
+        resetGrid();
+        DisabledDiv();
+        setButton();
+        setButtonState("0");
+        invId = "#InvId";
+    });
+
+</script>
+<div id="addurl" data-url="@Url.Action("GetCheckVouch", "StockManage")"></div>
+<div id="saveaddurl" data-url="@Url.Action("AddCheckVouch", "StockManage")"></div>
+<div id="savemodifyurl" data-url="@Url.Action("ModifyCheckVouch", "StockManage")"></div>
+<div id="verifyurl" data-url="@Url.Action("VerifyCheckVouch", "StockManage")"></div>
+<div id="unverifyurl" data-url="@Url.Action("UnVerifyCheckVouch", "StockManage")"></div>
+<div id="deleteurl" data-url="@Url.Action("DeleteCheckVouch", "StockManage")"></div>
+<div id="cururl" data-url="@Url.Action("CurCheckVouch", "StockManage")"></div>
+<div id="starturl" data-url="@Url.Action("StartCheckVouch", "StockManage")"></div>
+<div id="prevurl" data-url="@Url.Action("PrevCheckVouch", "StockManage")"></div>
+<div id="nexturl" data-url="@Url.Action("NextCheckVouch", "StockManage")"></div>
+<div id="endurl" data-url="@Url.Action("EndCheckVouch", "StockManage")"></div>
+<div id="getExtRate" data-url="@Url.Action("GetExtRate", "StockManage")"></div>
+<div id="getLocatorByWh" data-url="@Url.Action("GetLocatorByWh", "StockManage")"></div>
+<div id="getInvInfo" data-url="@Url.Action("GetInvInfo", "StockManage")"></div>
+<div id="getUnitJsonByInv" data-url="@Url.Action("GetUnitJsonByInv", "StockManage")"></div>
+<div id="printurl" data-url="../../Print/PurchaseInStock.aspx"></div>
+<div id="searchurl" data-url="@Url.Action("SearchCheckVouch", "StockManage")"></div>
+<div id="GetInvByWh" data-url="@Url.Action("GetInvByWh", "StockManage")"></div>
+
+<div style="margin:0px auto;width:1024px;height:600px;background-color:#dfeffc;padding:30px;">
+            @Html.Partial("_ToolbarPartial");            
+            <h1  style="text-align:center">@ViewBag.Title</h1>
+            <div id="divForm">
+            @using (Html.BeginForm("CheckVouch", "StockManage", FormMethod.Post, new { id = "CheckVouchForm", name = "CheckVouchForm" }))
+            {
+                
+                @Html.ValidationSummary()
+                <table>
+                <tr>
+                    <td>@Html.LabelFor(m => m.checkVouch.Code)</td><td>@Html.TextBoxFor(m => m.checkVouch.Code)@Html.ValidationMessageFor(m => m.checkVouch.Code, "*")</td>
+                    <td>@Html.LabelFor(m => m.checkVouch.CVDate)</td><td>@Html.TextBoxFor(m => m.checkVouch.CVDate)@Html.ValidationMessageFor(m => m.checkVouch.CVDate, "*")</td>                    
+                    <td>@Html.LabelFor(m => m.checkVouch.WhId)</td><td>@Html.DropDownListFor(m => m.checkVouch.WhId, @Helpers.GetWhsByOperDept())@Html.ValidationMessageFor(m => m.checkVouch.WhId, "*")</td>                                        
+                    <td>@Html.LabelFor(m => m.checkVouch.Salesman)</td><td>@Html.DropDownListFor(m => m.checkVouch.Salesman, @Helpers.GetUsers())@Html.ValidationMessageFor(m => m.checkVouch.Salesman, "*")</td>   
+                </tr>
+                <tr>                
+                    <td>@Html.LabelFor(m => m.checkVouch.VerifyDate)</td><td>@Html.TextBoxFor(m => m.checkVouch.VerifyDate)@Html.ValidationMessageFor(m => m.checkVouch.VerifyDate, "*")</td>                  
+                    <td>@Html.LabelFor(m => m.checkVouch.Memo)</td><td>@Html.TextBoxFor(m => m.checkVouch.Memo)
+                    @Html.HiddenFor(m => m.checkVouch.IsVerify)
+                    @Html.HiddenFor(m => m.checkVouch.IsModify)
+                    @Html.HiddenFor(m => m.checkVouch.Id)
+                    @Html.HiddenFor(m => m.checkVouch.MakeTime)
+                    @Html.HiddenFor(m => m.vouchType.Code)
+                    @Html.HiddenFor(m=>m.IsBatch)
+                    @Html.HiddenFor(m=>m.IsLocator)
+                    @Html.HiddenFor(m=>m.IsShelfLife)
+                    </td>
+                    <td></td><td></td>
+                    <td></td><td></td>
+                </tr>
+            </table>
+            }
+            </div>
+            <div id="divGrid">
+            @Html.Trirand().JQGrid(Model.checkVouchs.CheckVouchsGrid, "CheckVouchsGrid")
+            </div>
+            <script src="@Url.Content("~/Scripts/RdRecord/afterGrid.js")" type="text/javascript"></script>
+</div>

@@ -1,0 +1,73 @@
+﻿@using Trirand.Web.Mvc
+@using ynhnTransportManage
+@model ynhnTransportManage.Models.StockManage.SecurityStockGridModel
+<script type="text/javascript">
+    $(function () {
+        $("#query").button();
+        $("#BeginDate").datepicker();
+        $("#EndDate").datepicker();
+        $("#query").button().click(function () {
+            query();
+        });
+        $("#export").button();
+        $("#export").button().click(function () {
+            ExportToExcel();
+        });
+    });
+    function query() {
+        var postData = $("#SecurityStockGrid").jqGrid("getGridParam", "postData");
+            var sdata = {
+                QueryType: $("#QueryType").val()
+            };
+            var newPostData = $.extend(postData, sdata);
+            $("#SecurityStockGrid").jqGrid().trigger("reloadGrid", [{ page: 1}]);
+        }
+	</script>
+<h2 class="ui-jqgrid-titlebar ui-widget-header ui-corner-top ui-helper-clearfix" style="text-align:center">@ViewBag.Title</h2>
+<div class="ui-state-default ui-jqgrid-toppager">
+@*<table>
+    <tr>
+        
+        <td>存货类别</td><td><select id="InvType">
+                                <option value="0">所有存货</option>
+                                <option value="1">过期存货</option>
+                                <option value="2">未过期存货</option>
+                                <option value="3">临近存货</option>
+                            </select></td>
+        <td>失效日期</td><td>@Html.TextBoxFor(m => m.BeginDate)-</td><td>@Html.TextBoxFor(m => m.EndDate)</td>
+        <td>@Html.LabelFor(m => m.OutOfDays)</td><td>@Html.TextBoxFor(m => m.OutOfDays)</td>
+        <td>临近天数</td><td>@Html.TextBoxFor(m => m.BeginCloseToDays)-</td><td>@Html.TextBoxFor(m => m.EndCloseToDays)</td>
+        <td><button id="query">查询</button></td><td><button id="export">导出EXCEL</button></td>
+    </tr>
+</table>*@
+
+<table>
+    <tr>
+        
+        <td>查询类别</td><td><select id="QueryType">
+                                <option value="0">所有存货</option>
+                                <option value="1">高于安全库存量的存货</option>
+                                <option value="2">不高于安全库存量的存货</option>
+                            </select></td>
+        <td><button id="query">查询</button></td><td><button id="export">导出EXCEL</button></td>
+    </tr>
+</table>
+</div>
+@Html.Trirand().JQGrid(Model.SecurityStockGrid, "SecurityStockGrid")
+@using (Html.BeginForm("SecurityStock_RequestData", "StockManage", FormMethod.Post, new { id = "ExportToExcel" })) { } 
+
+<script type="text/javascript">
+    function ExportToExcel() {
+        var input1 = $("<input>").attr("type", "hidden").attr("name", "oper").val("excel");
+        var input2 = $("<input>").attr("type", "hidden").attr("name", "QueryType").val($("#QueryType").val());
+        $("#ExportToExcel").append($(input1));
+        $("#ExportToExcel").append($(input2));
+        $("#ExportToExcel").submit();
+    }
+    function FormatNumber(num) {
+        return parseFloat(num);
+    }
+    function UnFormatNumber(num) {
+        return num;
+    }
+</script>

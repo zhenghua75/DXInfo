@@ -1,0 +1,11 @@
+﻿@{
+    ViewBag.Title = "创建新帐户";
+}
+<script type="text/javascript">
+    $(function () {
+        $("#btnReturn").button();
+    });
+</script>
+<h2 class="ui-widget-header h2-center"">创建新帐户</h2>
+<p class="ui-state-highlight">创建新帐户成功</p>
+@Html.ActionLink("返回", "Register", "Account", new { onclick = "addToDiv(this);return false;",id="btnReturn" })

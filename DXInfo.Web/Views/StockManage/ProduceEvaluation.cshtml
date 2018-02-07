@@ -1,0 +1,46 @@
+﻿@using Trirand.Web.Mvc
+@using DXInfo.Web.Models
+@model DXInfo.Web.Models.ProduceEvaluationGridModel
+<script type="text/javascript">
+    $(function () {
+        $("#query").button();
+        $("#BeginDate").datepicker();
+        $("#EndDate").datepicker();
+        $("#query").button().click(function () {
+            query();
+        });
+        $("#export").button();
+        $("#export").button().click(function () {
+            excelExport();
+        });
+    });
+    function serializeGridData(postData) {
+        var sdata = {
+            _search: true,
+            DeptId: $("#DeptId").val(),
+            BeginDate: $("#BeginDate").val(),
+            EndDate: $("#EndDate").val()
+        };
+        var newPostData = $.extend(postData, sdata);
+        return $.param(newPostData);
+    }
+    function query() {
+        if ($("#DeptId").val()) {
+            $("#ProduceEvaluationGrid").jqGrid('setGridParam', { datatype: 'json' }).trigger("reloadGrid", [{ page: 1}]);
+        } else {
+            alert("请选择门店");
+        }
+    }
+	</script>
+<h2 class="ui-widget-header h2-center">@ViewBag.Title</h2>
+<div class="ui-state-default ui-jqgrid-toppager">
+<table>
+    <tr>
+        
+        <td>@Html.LabelFor(m => m.DeptId)</td><td>@Html.DropDownListFor(m => m.DeptId, @Html.GetDept())@Html.ValidationMessageFor(m => m.DeptId, "*")</td>
+        <td><label>查询日期</label></td><td>@Html.TextBoxFor(m => m.BeginDate)-</td><td>@Html.TextBoxFor(m => m.EndDate)</td>        
+        <td><button id="query">查询</button></td><td><button id="export">导出EXCEL</button></td>
+    </tr>
+</table>
+</div>
+@Html.Trirand().JQGrid(Model.ProduceEvaluationGrid, "ProduceEvaluationGrid")

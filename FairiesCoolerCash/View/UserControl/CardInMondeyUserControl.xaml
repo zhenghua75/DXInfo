@@ -1,0 +1,85 @@
+﻿<UserControl x:Class="FairiesCoolerCash.Business.CardInMondeyUserControl"
+      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+      xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+      xmlns:WpfKb="clr-namespace:WpfKb.Controls;assembly=WpfKb"  
+      xmlns:local="clr-namespace:FairiesCoolerCash.Business"
+      mc:Ignorable="d" 
+      Background="{DynamicResource WindowBackgroundBrush}" 
+        FontSize="20" DataContext="{Binding CardInMoneyViewModel, Source={StaticResource Locator}}">
+
+    <Grid HorizontalAlignment="Center" VerticalAlignment="Center">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"></RowDefinition>
+            <RowDefinition Height="*"></RowDefinition>
+            <RowDefinition Height="50"></RowDefinition>
+        </Grid.RowDefinitions>
+        <Label HorizontalAlignment="Center" FontSize="26"  FontWeight="Bold" Content="会员卡充值"></Label>
+    <Border Grid.Row="1" BorderThickness="5" BorderBrush="AliceBlue" Margin="5" >
+        <Grid Name="GridInMoney">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto"></ColumnDefinition>
+                <ColumnDefinition Width="*"></ColumnDefinition>
+            </Grid.ColumnDefinitions>
+            <Grid.RowDefinitions>
+                    <RowDefinition></RowDefinition>
+                    <RowDefinition></RowDefinition>
+                    <RowDefinition></RowDefinition>
+                    <RowDefinition></RowDefinition>
+                    <RowDefinition></RowDefinition>
+                    <RowDefinition></RowDefinition>
+                    <RowDefinition></RowDefinition>
+                    <RowDefinition></RowDefinition>
+                    <RowDefinition></RowDefinition>
+                    <RowDefinition></RowDefinition>
+                    <RowDefinition></RowDefinition>
+                    <RowDefinition></RowDefinition>
+            </Grid.RowDefinitions>
+           
+            <Label Grid.Row="0">卡号</Label>
+            <TextBox Grid.Column="1" Grid.Row="0" Text="{Binding Card.CardNo}" IsEnabled="False"></TextBox>
+
+                <Button Grid.Column="1" Grid.Row="1" Command="{Binding SwipingCard}">读卡</Button>
+
+            <Label Grid.Row="2">会员名</Label>
+            <TextBox Grid.Column="1" Grid.Row="2" Text="{Binding Member.MemberName}" IsEnabled="False"></TextBox>
+
+            <Label Grid.Row="3">证件号码</Label>
+            <TextBox Grid.Column="1" Grid.Row="3" Text="{Binding Member.IdCard}" IsEnabled="False"></TextBox>
+
+            <Label Grid.Row="4">卡类型</Label>
+            <TextBox Grid.Column="1" Grid.Row="4"  Text="{Binding CardType.Name}" IsEnabled="False"></TextBox>
+
+            <Label Grid.Row="5">卡级别</Label>
+            <TextBox Grid.Column="1" Grid.Row="5"  Text="{Binding CardLevel.Name}" IsEnabled="False"></TextBox>
+
+            <Label Grid.Row="6">发卡门店</Label>
+            <TextBox Grid.Column="1" Grid.Row="6"  Text="{Binding CardDept.DeptName}" IsEnabled="False"></TextBox>
+
+            <Label Grid.Row="7">余额</Label>
+            <TextBox Grid.Column="1" Grid.Row="7" Text="{Binding CardBalance,Mode=OneWay,StringFormat={}{0:c}}" IsEnabled="False"></TextBox>
+
+            <Label Grid.Row="8">积分</Label>
+            <TextBox Grid.Column="1" Grid.Row="8"  Text="{Binding Points}" IsEnabled="False"></TextBox>
+
+            <Label Grid.Row="9">充值金额</Label>
+                <TextBox Text="{Binding Amount, ValidatesOnDataErrors=True, UpdateSourceTrigger=PropertyChanged}" Grid.Column="1" Grid.Row="9" local:VirtualKeyboard.FloatingTouchScreenKeyboard="{Binding IsOpen}" local:TextBoxMaskBehavior.Mask="Decimal"></TextBox>
+
+            <Label Grid.Row="10">赠送金额</Label>
+            <TextBox Text="{Binding Donate}" Grid.Column="1" Grid.Row="10" IsEnabled="False"></TextBox>
+
+            <Label Grid.Row="11">支付方式</Label>
+                <ComboBox ItemsSource="{Binding lPayTypeOfPutCard}" SelectedItem="{Binding SelectedPayType, ValidatesOnDataErrors=True, UpdateSourceTrigger=PropertyChanged}" DisplayMemberPath="Name"  Grid.Row="11" Grid.Column="1">
+
+            </ComboBox>
+            
+
+        </Grid>
+    </Border>
+        <StackPanel Grid.Row="2"  Orientation="Horizontal" HorizontalAlignment="Center">
+    <Button Command="{Binding CardInMoney}" Width="150" Margin="0,0,50,0">确定</Button>
+            <Button Command="{Binding CloseUserControl}" Width="150" Margin="0,0,0,0">取消</Button>
+        </StackPanel>
+    </Grid>
+</UserControl>

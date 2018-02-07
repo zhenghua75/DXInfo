@@ -1,0 +1,218 @@
+﻿@using ynhnTransportManage
+@model ynhnTransportManage.Models.InFactoryModels
+
+@{
+    ViewBag.Title = "进厂";
+}
+<script src="@Url.Content("~/Scripts/jquery.validate.min.js")" type="text/javascript"></script>
+<script src="@Url.Content("~/Scripts/jquery.validate.unobtrusive.min.js")" type="text/javascript"></script>
+<script type="text/javascript">
+    $(document).ready(function () {
+        $("#Lines").change(function()
+        {
+            var sel = $("#Lines").val();
+            var url = "@Url.Action("GetMileage","Transport")";
+            $.getJSON(url,{MileageId:sel},function(json)
+            {
+                $("#Mileage").val(json.Mileage);
+            });            
+        });
+
+    });   
+    function FlushCard() {
+        var cardno = ReadCard();
+        if (cardno == "") {
+            alert("刷卡失败");
+            return false;
+        }
+        var url = "@Url.Action("InFactory","Transport")";
+        $.getJSON(url, { CardNo: cardno,time:new Date().getTime() },
+    function (json) {
+        if (json.Error != "") {
+            alert(json.Error);
+            return;
+        }
+        $("#CardNo").val(json.CardNo);
+        $("#Card").val(json.Card);
+        $("#Vehicle").val(json.Vehicle);
+        $("#PlateNo").val(json.PlateNo);
+        $("#BrandModel").val(json.Vehicle);
+        $("#MotorNo").val(json.MotorNo);
+        $("#OwnerName").val(json.OwnerName);
+        $("#BrandModel").val(json.BrandModel);
+        $("#Comment").val(json.Comment);
+    });
+
+        $('.field-validation-error')
+            .removeClass('field-validation-error')
+            .addClass('field-validation-valid');
+
+        $('.input-validation-error')
+            .removeClass('input-validation-error')
+            .addClass('valid');
+    }
+</script>
+@using (Html.BeginForm())
+{
+    @Html.ValidationSummary(true)
+    <fieldset>
+        <legend>进厂</legend>
+        <table>
+        <tr>
+            <td valign="top">
+        <div class="editor-label">
+            @Html.LabelFor(model => model.CardNo)
+        </div>
+        <div class="editor-field">
+            @Html.TextBox("CardNo", "", new Dictionary<string, object>() { { "readonly", "readonly" } })
+            @Html.ValidationMessageFor(model => model.CardNo)            
+            <input type="button" name="btnCard" value="刷卡" class="button_99 cancel" title="刷卡" onclick="FlushCard()"/>
+        </div>
+
+        <div class="editor-label" style="display:none">
+            @Html.LabelFor(model => model.Card)
+        </div>
+        <div class="editor-field" style="display:none">
+            @Html.EditorFor(model => model.Card)
+            @Html.ValidationMessageFor(model => model.Card)
+        </div>
+
+        <div class="editor-label" style="display:none">
+            @Html.LabelFor(model => model.Vehicle)
+        </div>
+        <div class="editor-field" style="display:none">
+            @Html.EditorFor(model => model.Vehicle)
+            @*@Html.DropDownListFor(m => m.Vehicle, @Helpers.GetVehicle())*@
+            @Html.ValidationMessageFor(model => model.Vehicle)
+        </div>
+
+        <div class="editor-label">
+            @Html.LabelFor(model => model.PlateNo)
+        </div>
+        <div class="editor-field">
+            @Html.TextBox("PlateNo", "", new Dictionary<string, object>() { { "readonly", "readonly" } })
+            @Html.ValidationMessageFor(model => model.PlateNo)
+        </div>
+
+        <div class="editor-label">
+            @Html.LabelFor(model => model.BrandModel)
+        </div>
+        <div class="editor-field">
+            @Html.TextBox("BrandModel", "", new Dictionary<string, object>() { { "readonly", "readonly" } })
+            @Html.ValidationMessageFor(model => model.BrandModel)
+        </div>
+
+        <div class="editor-label">
+            @Html.LabelFor(model => model.MotorNo)
+        </div>
+        <div class="editor-field">
+            @Html.TextBox("MotorNo", "", new Dictionary<string, object>() { { "readonly", "readonly" } })
+            @Html.ValidationMessageFor(model => model.MotorNo)
+        </div>
+        </td>
+        <td valign="top">
+        <div class="editor-label">
+            @Html.LabelFor(model => model.OwnerName)
+        </div>
+        <div class="editor-field">
+            @Html.TextBox("OwnerName", "", new Dictionary<string, object>() { { "readonly", "readonly" } })
+            @Html.ValidationMessageFor(model => model.OwnerName)
+        </div>
+        
+        <div class="editor-label">
+            @Html.LabelFor(model => model.Driver)
+        </div>
+        <div class="editor-field">
+            @Html.DropDownListFor(m => m.Driver, @Helpers.GetDrivers())
+            @Html.ValidationMessageFor(model => model.Driver)
+        </div>
+
+        <div class="editor-label">
+            @Html.LabelFor(model => model.BalanceType)
+        </div>
+        <div class="editor-field">
+            @*@Html.EditorFor(model => model.BalanceType)*@
+            @Html.DropDownListFor(m => m.BalanceType, @Helpers.GetBalanceType())
+            @Html.ValidationMessageFor(model => model.BalanceType)
+        </div>
+
+        <div class="editor-label">
+            @Html.LabelFor(model => model.AgreeFreightPrice)
+        </div>
+        <div class="editor-field">
+            @Html.EditorFor(model => model.AgreeFreightPrice)
+            @Html.ValidationMessageFor(model => model.AgreeFreightPrice)
+        </div>
+        </td><td valign="top">
+        <div class="editor-label">
+            @Html.LabelFor(model => model.FreightPrice)
+        </div>
+        <div class="editor-field">
+            @Html.EditorFor(model => model.FreightPrice)
+            @Html.ValidationMessageFor(model => model.FreightPrice)
+        </div>
+
+         <div class="editor-label">
+            @Html.LabelFor(model => model.Shipper)
+        </div>
+        <div class="editor-field">
+            @Html.EditorFor(model => model.Shipper)
+            @Html.ValidationMessageFor(model => model.Shipper)
+        </div>
+        
+        <div class="editor-label">
+            @Html.LabelFor(model => model.Shipper_Telephone)
+        </div>
+        <div class="editor-field">
+            @Html.EditorFor(model => model.Shipper_Telephone)
+            @Html.ValidationMessageFor(model => model.Shipper_Telephone)
+        </div>
+
+        <div class="editor-label">
+            @Html.LabelFor(model => model.Carrier)
+        </div>
+        <div class="editor-field">
+            @Html.EditorFor(model => model.Carrier)
+            @Html.ValidationMessageFor(model => model.Carrier)
+        </div>
+        </td>
+        <td valign="top">
+        <div class="editor-label">
+            @Html.LabelFor(model => model.Carrier_Telephone)
+        </div>
+        <div class="editor-field">
+            @Html.EditorFor(model => model.Carrier_Telephone)
+            @Html.ValidationMessageFor(model => model.Carrier_Telephone)
+        </div>
+
+        <div class="editor-label">
+            @Html.LabelFor(model => model.Lines)
+        </div>
+        <div class="editor-field">
+            @*@Html.EditorFor(model => model.BalanceType)*@
+            @Html.DropDownListFor(m => m.Lines, @Helpers.GetLines())
+            @Html.ValidationMessageFor(model => model.Lines)
+        </div>
+
+        <div class="editor-label">
+            @Html.LabelFor(model => model.Mileage)
+        </div>
+        <div class="editor-field">
+            @Html.EditorFor(model => model.Mileage)
+            @Html.ValidationMessageFor(model => model.Mileage)
+        </div>
+
+        <div class="editor-label">
+            @Html.LabelFor(model => model.Comment)
+        </div>
+        <div class="editor-field">
+            @Html.EditorFor(model => model.Comment)
+            @Html.ValidationMessageFor(model => model.Comment)
+        </div>
+        </td></tr>
+        <tr><td colspan="4" align=center>
+        
+            <input type="submit" value="进厂" /></td></tr>
+        </table>
+    </fieldset>
+}

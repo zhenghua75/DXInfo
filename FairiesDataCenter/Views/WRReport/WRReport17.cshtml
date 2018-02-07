@@ -1,0 +1,253 @@
+﻿@using ynhnTransportManage
+@model ynhnTransportManage.Models.WRReport17Model
+<script type="text/javascript">
+    $(function () {
+        $('#BeginDate').datetimepicker({ dateFormat: 'yy-mm-dd', timeFormat: 'hh:mm' });
+        $('#EndDate').datetimepicker({ dateFormat: 'yy-mm-dd', timeFormat: 'hh:mm' });
+        $("#query").button();
+        $("#export").button();
+    });
+</script>
+
+@using (Html.BeginForm("WRReport17", "WRReport"))
+{
+    @Html.ValidationSummary(true, "参数错误。请更正错误并重试。")
+    <table style="width:100%;">
+    <tr>
+<td>
+    <h2 class="ui-jqgrid-titlebar ui-widget-header ui-corner-top ui-helper-clearfix" style="text-align:center">@ViewBag.Title</h2>
+</td>
+</tr>
+        <tr>
+            <td>
+                <div class="ui-state-default ui-jqgrid-toppager">
+                        <table>
+                            <tr>
+                                <td>
+                                    <div class="editor-label">
+                                        @Html.LabelFor(m => m.DeptId)
+                                    </div>
+                                </td>
+                                <td>
+                                    <div class="editor-field">
+                                        @Html.DropDownListFor(m => m.DeptId, @Helpers.GetDepts2(), new { @class = "wide2" })
+                                        @Html.ValidationMessageFor(m => m.DeptId)
+                                    </div>
+                                </td>
+                                <td>
+                                    <div class="editor-label">
+                                        @Html.LabelFor(m => m.UserId)
+                                    </div>
+                                </td>
+                                <td>
+                                    <div class="editor-field">
+                                        @Html.DropDownListFor(m => m.UserId, @Helpers.GetUsers(), new { @class = "wide2" })
+                                        @Html.ValidationMessageFor(m => m.UserId)
+                                    </div>
+                                </td>
+                                <td>
+                                    <div class="editor-label">
+                                        @Html.LabelFor(m => m.BeginDate)
+                                    </div>
+                                </td>
+                                <td>
+                                    <div class="editor-field">
+                                        @Html.TextBoxFor(m => m.BeginDate, new { @class = "wide2" })
+                                        @Html.ValidationMessageFor(m => m.BeginDate)
+                                    </div>
+                                </td>
+                                <td>
+                                    <div class="editor-label">
+                                        @Html.LabelFor(m => m.EndDate)
+                                    </div>
+                                </td>
+                                <td>
+                                    <div class="editor-field">
+                                        @Html.TextBoxFor(m => m.EndDate, new { @class = "wide2" })
+                                        @Html.ValidationMessageFor(m => m.EndDate)
+                                    </div>
+                                </td>
+                                <td>
+                                    <input id="query" type="submit" value="查询" />
+                                </td>
+                                <td>
+                                    @Html.ActionLink("导出EXCEL", "WRReport17ExportToExcel", "WRReport", null, new { id = "export" })
+                                </td>
+                            </tr>
+                        </table>
+                </div>
+            </td>
+            </tr>
+            <tr>
+            <td>
+                    @{ 
+                        var grid = new WebGrid(        
+                        canPage: true,
+                        canSort: true,
+                        rowsPerPage: 20
+                        );
+                       grid.Bind(Model.result2, rowCount: Model.rowCount, autoSortAndPage:false);
+                       var gridColumns = new List<WebGridColumn>();
+                       gridColumns.Add(grid.Column(columnName: "CreateDate", header: "日期",format: (item) => string.Format("{0:yyyy-MM-dd}", item.CreateDate)));
+                       gridColumns.Add(grid.Column("DeptName", "店名"));
+                       gridColumns.Add(grid.Column("FullName", "收银员"));
+                       if (Html.OperatorsOnDuty())
+                       {
+                           gridColumns.Add(grid.Column("OperatorsOnDuty", "当班操作员"));
+                       }
+                       gridColumns.Add(grid.Column("PayTypeName", "支付方式"));
+                       gridColumns.Add(grid.Column("SumAmount", "资金总收入", format: (item) => string.Format("{0:f2}", item.SumAmount)));
+                       gridColumns.Add(grid.Column("SumConsume", "销售收入", format: (item) => string.Format("{0:f2}", item.SumConsume)));
+                       gridColumns.Add(grid.Column("CardCount", "办卡（张）"));
+                       gridColumns.Add(grid.Column("CardRecharge", "办卡（元）", format: (item) => string.Format("{0:f2}", item.CardRecharge)));
+                       gridColumns.Add(grid.Column("RechargeCount", "充值（张）"));
+                       gridColumns.Add(grid.Column("RechargeSum", "充值（元）", format: (item) => string.Format("{0:f2}", item.RechargeSum)));
+                       gridColumns.Add(grid.Column("AddCardCount", "补卡（张）"));
+                       gridColumns.Add(grid.Column("AddCardSum", "补卡（元）", format: (item) => string.Format("{0:f2}", item.AddCardSum)));
+
+                       }
+                <div class="ui-jqgrid ui-widget ui-widget-content ui-corner-all">
+                       @grid.GetHtml(        
+  mode:WebGridPagerModes.All,
+  previousText:"上页",
+  nextText:"下页",
+  firstText:"首页",
+  lastText:"末页",
+  numericLinksCount:50,
+columns: gridColumns,
+tableStyle: "ui-jqgrid-view ui-jqgrid-bdiv ui-jqgrid-btable",
+rowStyle: "ui-widget-content jqgrow ui-row-ltr",
+alternatingRowStyle: "ui-widget-content jqgrow ui-row-ltr",
+headerStyle: "ui-state-default ui-jqgrid-hdiv",
+footerStyle: "ui-state-default ui-jqgrid-pager ui-corner-bottom ui-pager-control ui-pg-table"
+       )
+                </div>
+               <div  class="ui-state-default ui-jqgrid-pager ui-corner-bottom">
+                        <table>
+                            <tr>
+                                <td colspan="10" align="center">
+                                    <legend>汇总信息</legend>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <div class="editor-label">
+                                        @Html.LabelFor(m => m.SumAmount)
+                                    </div>
+                                </td>
+                                <td>
+                                    <div class="editor-field">
+                                        @Html.DecimalBoxFor(Model, m => m.SumAmount, "f2", new { @class = "wide" })
+                                        @Html.ValidationMessageFor(m => m.SumAmount)
+                                    </div>
+                                </td>
+                                <td>
+                                    <div class="editor-label">
+                                        @Html.LabelFor(m => m.SumConsume)
+                                    </div>
+                                </td>
+                                <td>
+                                    <div class="editor-field">
+                                        @Html.DecimalBoxFor(Model,m => m.SumConsume,"f2", new { @class = "wide" })
+                                        @Html.ValidationMessageFor(m => m.SumConsume)
+                                    </div>
+                                </td>
+
+                                <td>
+                                    <div class="editor-label">
+                                        @Html.LabelFor(m => m.SumCup)
+                                    </div>
+                                </td>
+                                <td>
+                                    <div class="editor-field">
+                                        @Html.DecimalBoxFor(Model,m => m.SumCup,"f2", new { @class = "wide" })
+                                        @Html.ValidationMessageFor(m => m.SumCup)
+                                    </div>
+                                </td>
+                                <td>
+                                    <div class="editor-label">
+                                        @Html.LabelFor(m => m.AvgPrice)
+                                    </div>
+                                </td>
+                                <td>
+                                    <div class="editor-field">
+                                        @Html.DecimalBoxFor(Model,m => m.AvgPrice,"f2", new { @class = "wide" })
+                                        @Html.ValidationMessageFor(m => m.AvgPrice)
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <div class="editor-label">
+                                        @Html.LabelFor(m => m.CardCount)
+                                    </div>
+                                </td>
+                                <td>
+                                    <div class="editor-field">
+                                        @Html.TextBoxFor(m => m.CardCount, new { @class = "wide" })
+                                        @Html.ValidationMessageFor(m => m.CardCount)
+                                    </div>
+                                </td>
+                                <td>
+                                    <div class="editor-label">
+                                        @Html.LabelFor(m => m.CardRecharge)
+                                    </div>
+                                </td>
+                                <td>
+                                    <div class="editor-field">
+                                        @Html.DecimalBoxFor(Model,m => m.CardRecharge,"f2", new { @class = "wide" })
+                                        @Html.ValidationMessageFor(m => m.CardRecharge)
+                                    </div>
+                                </td>
+                                <td>
+                                    <div class="editor-label">
+                                        @Html.LabelFor(m => m.RechargeCount)
+                                    </div>
+                                </td>
+                                <td>
+                                    <div class="editor-field">
+                                        @Html.TextBoxFor(m => m.RechargeCount, new { @class = "wide" })
+                                        @Html.ValidationMessageFor(m => m.RechargeCount)
+                                    </div>
+                                </td>
+                                <td>
+                                    <div class="editor-label">
+                                        @Html.LabelFor(m => m.RechargeSum)
+                                    </div>
+                                </td>
+                                <td>
+                                    <div class="editor-field">
+                                        @Html.DecimalBoxFor(Model,m => m.RechargeSum,"f2", new { @class = "wide" })
+                                        @Html.ValidationMessageFor(m => m.RechargeSum)
+                                    </div>
+                                </td>
+                                <td>
+                                    <div class="editor-label">
+                                        @Html.LabelFor(m => m.AddCardCount)
+                                    </div>
+                                </td>
+                                <td>
+                                    <div class="editor-field">
+                                        @Html.TextBoxFor(m => m.AddCardCount, new { @class = "wide" })
+                                        @Html.ValidationMessageFor(m => m.AddCardCount)
+                                    </div>
+                                </td>
+                                <td>
+                                    <div class="editor-label">
+                                        @Html.LabelFor(m => m.AddCardSum)
+                                    </div>
+                                </td>
+                                <td>
+                                    <div class="editor-field">
+                                        @Html.DecimalBoxFor(Model,m => m.AddCardSum,"f2", new { @class = "wide" })
+                                        @Html.ValidationMessageFor(m => m.AddCardSum)
+                                    </div>
+                                </td>
+                            </tr>
+                        </table>
+                </div>
+                
+            </td>
+        </tr>
+    </table>
+}

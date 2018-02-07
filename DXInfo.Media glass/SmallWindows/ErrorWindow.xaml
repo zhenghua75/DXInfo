@@ -1,0 +1,19 @@
+﻿<Window x:Class="Media_glass.SmallWindows.ErrorWindow"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    Title="Unhandled exception" Height="505" Width="441" WindowStartupLocation="CenterScreen" MouseLeftButtonDown="Window_MouseLeftButtonDown" SizeToContent="WidthAndHeight" KeyDown="Window_KeyDown">
+    <Grid Width="400">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="auto" MinHeight="43" />
+            <RowDefinition Height="400"/>
+        </Grid.RowDefinitions>
+        <Button Height="23" Margin="0,0,93,11" Name="continueButton" VerticalAlignment="Bottom" HorizontalAlignment="Right" Width="75" Grid.Row="1" Click="continueButton_Click">Continue</Button>
+        <Button Height="23" HorizontalAlignment="Right" Margin="0,0,11,11" Name="quitButton" VerticalAlignment="Bottom" Width="75" Grid.Row="1" Click="quitButton_Click">Quit</Button>
+        <ListBox Margin="11,24,11,56" Name="detailsListBox" Grid.Row="1" SelectionMode="Single" />
+        <Button Height="23" HorizontalAlignment="Left" Margin="11,0,0,11" Name="copyButton" VerticalAlignment="Bottom" Width="111" Grid.Row="1" Click="copyButton_Click">Copy to clipboard</Button>
+        <Separator Height="1" Margin="4,0,4,45" Name="separator1" VerticalAlignment="Bottom" Grid.Row="1" />
+        <Label HorizontalAlignment="Left" Margin="6,3,0,0" Name="label1" Width="120" Grid.Row="1" Height="28.893" VerticalAlignment="Top">Details:</Label>
+        <Image Margin="11,10,0,0" Name="image" Stretch="None" HorizontalAlignment="Left" Source="pack://application:,,,/Resources/Images/Error.png" Width="31.996" VerticalAlignment="Top" />
+        <TextBlock Margin="54,8,11,0" Name="messageTextBlock" Text="Error info !" TextWrapping="Wrap" FontWeight="Bold" FontFamily="Tahoma" FontSize="11" />        
+    </Grid>
+</Window>

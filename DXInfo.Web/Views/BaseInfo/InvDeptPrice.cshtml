@@ -1,0 +1,44 @@
+﻿@using Trirand.Web.Mvc
+@model DXInfo.Web.Models.InvDeptPriceGridModel
+<script type="text/javascript">
+    function showInvSubGrid(subgrid_id, row_id) {
+        showSubGrid_InvGrid(subgrid_id, row_id);
+    }
+    function serializeGridData(postData) {
+        var sdata = {
+            _search:true,
+            InvType: $("#InvType").val()
+        };
+        var newPostData = $.extend(postData, sdata);
+        return newPostData;
+    }
+    function serializeGridData2(postData) {
+        var sdata = {
+            _search: true,
+            DeptType: $("#DeptType").val()
+        };
+        var newPostData = $.extend(postData, sdata);
+        return newPostData;
+    }
+    function serializeRowData(postData) {
+        var sdata = {
+            InvType: $("#InvType").val(),
+            DeptType: $("#DeptType").val()
+        };
+        var newPostData = $.extend(postData, sdata);
+        return newPostData;
+    }
+    function beforeSubmit(postdata, formid) {
+        var sdata = { 
+            InvType: $("#InvType").val(),
+            DeptType: $("#DeptType").val()
+        };
+        $.extend(postdata, sdata);
+        return [true, ''];
+    }
+    </script>
+@Html.Trirand().JQGrid(Model.InvGrid, "InvGrid")
+@Html.Trirand().JQGrid(Model.DeptGrid, "DeptGrid")
+@Html.HiddenFor(m => m.InvType)
+@Html.HiddenFor(m => m.DeptType)
+

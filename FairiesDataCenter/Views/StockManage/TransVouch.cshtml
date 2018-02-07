@@ -1,0 +1,90 @@
+﻿@using Trirand.Web.Mvc
+@using ynhnTransportManage
+@model ynhnTransportManage.Models.StockManage.TransVouchModel
+<style>
+	#toolbar {
+		padding: 10px 4px;
+	}
+	#transVouch_Memo{width: 390px;}
+	</style>
+<script src="@Url.Content("~/Scripts/chosen/chosen.jquery.min.js")" type="text/javascript"></script>
+<link href="@Url.Content("~/Scripts/chosen/chosen.css")" rel="stylesheet" type="text/css" />
+<script src="@Url.Content("~/Scripts/jquery.blockUI.js")" type="text/javascript"></script>
+<script src="@Url.Content("~/Scripts/jquery.dateFormat-1.0.js")" type="text/javascript"></script>
+<script src="@Url.Content("~/Scripts/RdRecord/resetForm.js")" type="text/javascript"></script>
+<script src="@Url.Content("~/Scripts/RdRecord/resetValidation.js")" type="text/javascript"></script>
+<script src="@Url.Content("~/Scripts/RdRecord/setButton.js")" type="text/javascript"></script>
+<script src="@Url.Content("~/Scripts/RdRecord/setButtonState.js")" type="text/javascript"></script>
+<script src="@Url.Content("~/Scripts/RdRecord/resetGrid.js")" type="text/javascript"></script>
+@*<script src="@Url.Content("~/Scripts/RdRecord/initForm.js")" type="text/javascript"></script>*@
+<script type="text/javascript">
+    $(function () {
+        prefix = "#transVouch_";
+        mainId = "TVId";
+        gridId = "#TransVouchsGrid";
+        gridId2 = "TransVouchsGrid";
+        formId = "#TransVouchForm";
+        initForm();
+        resetGrid();
+        DisabledDiv();
+        setButton();
+        setButtonState("0");
+        invId = "#InvId";
+    });
+
+</script>
+<div id="addurl" data-url="@Url.Action("GetTransVouch", "StockManage")"></div>
+<div id="saveaddurl" data-url="@Url.Action("AddTransVouch", "StockManage")"></div>
+<div id="savemodifyurl" data-url="@Url.Action("ModifyTransVouch", "StockManage")"></div>
+<div id="verifyurl" data-url="@Url.Action("VerifyTransVouch", "StockManage")"></div>
+<div id="unverifyurl" data-url="@Url.Action("UnVerifyTransVouch", "StockManage")"></div>
+<div id="deleteurl" data-url="@Url.Action("DeleteTransVouch", "StockManage")"></div>
+<div id="cururl" data-url="@Url.Action("CurTransVouch", "StockManage")"></div>
+<div id="starturl" data-url="@Url.Action("StartTransVouch", "StockManage")"></div>
+<div id="prevurl" data-url="@Url.Action("PrevTransVouch", "StockManage")"></div>
+<div id="nexturl" data-url="@Url.Action("NextTransVouch", "StockManage")"></div>
+<div id="endurl" data-url="@Url.Action("EndTransVouch", "StockManage")"></div>
+<div id="getExtRate" data-url="@Url.Action("GetExtRate", "StockManage")"></div>
+<div id="getLocatorByWh" data-url="@Url.Action("GetLocatorByWh", "StockManage")"></div>
+<div id="getInvInfo" data-url="@Url.Action("GetInvInfo", "StockManage")"></div>
+<div id="getUnitJsonByInv" data-url="@Url.Action("GetUnitJsonByInv", "StockManage")"></div>
+<div id="printurl" data-url="../../Print/PurchaseInStock.aspx"></div>
+<div id="searchurl" data-url="@Url.Action("SearchTransVouch", "StockManage")"></div>
+<div id="getBatchUrl" data-url="@Url.Action("GetBatch", "StockManage")"></div>
+<div id="getLocatorByWhBatchUrl" data-url="@Url.Action("getLocatorByWhBatch", "StockManage")"></div>
+<div id="getAvaNumUrl" data-url="@Url.Action("getAvaNum", "StockManage")"></div>
+<div id="GetInvByWh" data-url="@Url.Action("GetInvByWh", "StockManage")"></div>
+<div style="margin:0px auto;width:1024px;height:600px;background-color:#dfeffc;padding:30px;">
+            @Html.Partial("_ToolbarPartial");            
+            <h1  style="text-align:center">@ViewBag.Title</h1>
+            <div id="divForm">
+            @using (Html.BeginForm("TransVouch", "StockManage", FormMethod.Post, new { id = "TransVouchForm", name = "TransVouchForm" }))
+            {
+                
+                @Html.ValidationSummary()
+                <table>
+                <tr>
+                    <td>@Html.LabelFor(m => m.transVouch.Code)</td><td>@Html.TextBoxFor(m => m.transVouch.Code)@Html.ValidationMessageFor(m => m.transVouch.Code, "*")</td>
+                    <td>@Html.LabelFor(m => m.transVouch.TVDate)</td><td>@Html.TextBoxFor(m => m.transVouch.TVDate)@Html.ValidationMessageFor(m => m.transVouch.TVDate, "*")</td>                                    
+                    <td>@Html.LabelFor(m => m.transVouch.OutWhId)</td><td>@Html.DropDownListFor(m => m.transVouch.OutWhId, @Helpers.GetWhsByOperDept())@Html.ValidationMessageFor(m => m.transVouch.OutWhId, "*")</td>
+                    <td>@Html.LabelFor(m => m.transVouch.InWhId)</td><td>@Html.DropDownListFor(m => m.transVouch.InWhId, @Helpers.GetWhs())@Html.ValidationMessageFor(m => m.transVouch.InWhId, "*")</td>                                                       
+                </tr>
+                <tr>                     
+                    <td>@Html.LabelFor(m => m.transVouch.Salesman)</td><td>@Html.DropDownListFor(m => m.transVouch.Salesman, @Helpers.GetUsers())@Html.ValidationMessageFor(m => m.transVouch.Salesman, "*")</td>                  
+                    <td>@Html.LabelFor(m => m.transVouch.VerifyDate)</td><td>@Html.TextBoxFor(m => m.transVouch.VerifyDate)@Html.ValidationMessageFor(m => m.transVouch.VerifyDate, "*")</td>
+                    <td>@Html.LabelFor(m => m.transVouch.Memo)</td><td colspan="3">@Html.TextBoxFor(m => m.transVouch.Memo)
+                    @Html.HiddenFor(m => m.transVouch.IsVerify)
+                    @Html.HiddenFor(m => m.transVouch.IsModify)
+                    @Html.HiddenFor(m => m.transVouch.Id)
+                    @Html.HiddenFor(m => m.transVouch.MakeTime)
+                    @Html.HiddenFor(m => m.vouchType.Code)
+                    </td>
+                </tr>
+            </table>
+            }
+            </div>
+            <div id="divGrid">
+            @Html.Trirand().JQGrid(Model.transVouchs.TransVouchsGrid, "TransVouchsGrid")
+            </div>
+            <script src="@Url.Content("~/Scripts/RdRecord/afterGrid.js")" type="text/javascript"></script>
+</div>

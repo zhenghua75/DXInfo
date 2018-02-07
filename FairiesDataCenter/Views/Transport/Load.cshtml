@@ -1,0 +1,189 @@
+﻿@using ynhnTransportManage
+@model ynhnTransportManage.Models.LoadModels
+
+@{
+    ViewBag.Title = "装车";
+}
+<script src="@Url.Content("~/Scripts/jquery.validate.min.js")" type="text/javascript"></script>
+<script src="@Url.Content("~/Scripts/jquery.validate.unobtrusive.min.js")" type="text/javascript"></script>
+<script type="text/javascript">
+    $(document).ready(function () {
+
+        $("#Load_Inventory").change(function()
+        {
+            var sel = $("#Load_Inventory").val();
+            var url = "@Url.Action("GetInv","Transport")";
+            $.getJSON(url,{InvId:sel},function(json)
+            {
+                $("#UnitName").val(json.UnitName);
+                $("#Specs").val(json.Specs);
+            });
+            
+        });
+    });
+
+    function FlushCard() {
+        var validator = $("Form").validate();
+        validator.resetForm();
+        var cardno = ReadCard();
+        if (cardno == "") {
+            alert("刷卡失败");
+            return false;
+        }
+        var url = "@Url.Action("Load", "Transport")";
+        
+
+        $.getJSON(url, { CardNo: cardno,time:new Date().getTime() },
+    function (json) {
+        if (json.Error != "") {
+            alert(json.Error);
+            return;
+        }
+
+        $("#CardNo").val(json.CardNo);
+        $("#Id").val(json.Id);
+        $("#Card").val(json.Card);
+        $("#Vehicle").val(json.Vehicle);
+        $("#PlateNo").val(json.PlateNo);
+        $("#BrandModel").val(json.Vehicle);
+        $("#MotorNo").val(json.MotorNo);
+        $("#OwnerName").val(json.OwnerName);
+        $("#BrandModel").val(json.BrandModel);
+        $("#InFactory_Date").val(json.InFactory_Date);
+        $("#Comment").val(json.Comment);
+    });
+    $('.field-validation-error')
+            .removeClass('field-validation-error')
+            .addClass('field-validation-valid');
+
+        $('.input-validation-error')
+            .removeClass('input-validation-error')
+            .addClass('valid');
+    }
+</script>
+
+@using (Html.BeginForm())
+{
+    @Html.ValidationSummary(true)
+    <fieldset>
+        <legend>装车</legend>
+        <table><tr><td valign="top">
+        <div class="editor-label" style="display:none">
+            @Html.LabelFor(model => model.Id)
+        </div>
+        <div class="editor-field" style="display:none">
+            @Html.EditorFor(model => model.Id)
+            @Html.ValidationMessageFor(model => model.Id)
+        </div>
+        <div class="editor-label">
+            @Html.LabelFor(model => model.CardNo)
+        </div>
+        <div class="editor-field">
+            
+            @Html.TextBox("CardNo", "", new Dictionary<string, object>() { { "readonly", "readonly" } })
+            @Html.ValidationMessageFor(model => model.CardNo)
+            <input type="button" name="btnCard"  value="刷卡" class="cancel" title="刷卡" onclick="FlushCard()"/>
+        </div>
+
+        <div class="editor-label" style="display:none">
+            @Html.LabelFor(model => model.Card)
+        </div>
+        <div class="editor-field" style="display:none">
+            @Html.EditorFor(model => model.Card)
+            @Html.ValidationMessageFor(model => model.Card)
+        </div>
+
+        <div class="editor-label" style="display:none">
+            @Html.LabelFor(model => model.Vehicle)
+        </div>
+        <div class="editor-field" style="display:none">
+            @Html.EditorFor(model => model.Vehicle)
+            @Html.ValidationMessageFor(model => model.Vehicle)
+        </div>
+
+        <div class="editor-label">
+            @Html.LabelFor(model => model.PlateNo)
+        </div>
+        <div class="editor-field">
+            @Html.TextBox("PlateNo", "", new Dictionary<string, object>() { { "readonly", "readonly" } })            
+            @Html.ValidationMessageFor(model => model.PlateNo)
+        </div>
+
+        <div class="editor-label">
+            @Html.LabelFor(model => model.BrandModel)
+        </div>
+        <div class="editor-field">
+            @Html.TextBox("BrandModel", "", new Dictionary<string, object>() { { "readonly", "readonly" } })
+            @Html.ValidationMessageFor(model => model.BrandModel)
+        </div>
+
+        <div class="editor-label">
+            @Html.LabelFor(model => model.MotorNo)
+        </div>
+        <div class="editor-field">
+            @Html.TextBox("MotorNo", "", new Dictionary<string, object>() { { "readonly", "readonly" } })
+            @Html.ValidationMessageFor(model => model.MotorNo)
+        </div>
+        </td><td valign="top">
+        <div class="editor-label">
+            @Html.LabelFor(model => model.OwnerName)
+        </div>
+        <div class="editor-field">
+            @Html.TextBox("OwnerName", "", new Dictionary<string, object>() { { "readonly", "readonly" } })
+            @Html.ValidationMessageFor(model => model.OwnerName)
+        </div>
+        
+        <div class="editor-label">
+            @Html.LabelFor(model => model.InFactory_Date)
+        </div>
+        <div class="editor-field">
+            @Html.TextBox("InFactory_Date", "", new Dictionary<string, object>() { { "readonly", "readonly" } })
+            @Html.ValidationMessageFor(model => model.InFactory_Date)
+        </div>
+
+        <div class="editor-label">
+            @Html.LabelFor(model => model.Load_Inventory)
+        </div>
+        <div class="editor-field">
+            @Html.DropDownListFor(m => m.Load_Inventory, @Helpers.GetInv())
+            @Html.ValidationMessageFor(model => model.Load_Inventory)            
+        </div>
+
+
+        <div class="editor-label">
+            @Html.LabelFor(model => model.UnitName)
+        </div>
+        <div class="editor-field">
+            @Html.EditorFor(model => model.UnitName)
+            @Html.ValidationMessageFor(model => model.UnitName)
+        </div>
+        </td><td valign="top">
+        <div class="editor-label">
+            @Html.LabelFor(model => model.Specs)
+        </div>
+        <div class="editor-field">
+            @Html.EditorFor(model => model.Specs)
+            @Html.ValidationMessageFor(model => model.Specs)
+        </div>
+
+        <div class="editor-label">
+            @Html.LabelFor(model => model.Load_Quantity)
+        </div>
+        <div class="editor-field">
+            @Html.EditorFor(model => model.Load_Quantity)
+            @Html.ValidationMessageFor(model => model.Load_Quantity)
+        </div>
+
+        <div class="editor-label">
+            @Html.LabelFor(model => model.Comment)
+        </div>
+        <div class="editor-field">
+            @Html.EditorFor(model => model.Comment)
+            @Html.ValidationMessageFor(model => model.Comment)
+        </div>
+        </td></tr>
+        <tr><td colspan="3" align="center">
+            <input type="submit" value="装车" /></td></tr></table>
+    </fieldset>
+}
+

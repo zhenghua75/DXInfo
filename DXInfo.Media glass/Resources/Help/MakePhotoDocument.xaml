@@ -1,0 +1,38 @@
+﻿<FlowDocument xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    ColumnWidth="400" FontSize="16" FontFamily="Georgia">
+    <Paragraph FontSize="22" FontWeight="Bold">
+        Make and view photo
+    </Paragraph>
+
+    <Paragraph>
+        1. Make a photo :
+    </Paragraph>
+
+    <List MarkerStyle="Circle">
+        <ListItem>
+            <Paragraph>Press P ( Photo - p)</Paragraph>
+        </ListItem>
+        <ListItem>
+            <Paragraph>Click on camera button on main window</Paragraph>
+        </ListItem>
+    </List>
+
+    <Paragraph>
+        2. View photo :
+    </Paragraph>
+
+    <List MarkerStyle="Circle">
+        <ListItem>
+            <Paragraph>Open Photo window using context menu</Paragraph>
+        </ListItem>
+    </List>
+
+    <BlockUIContainer>
+        <Image Source="MakePhoto.png" Stretch="None"/>
+    </BlockUIContainer>
+    
+    <Paragraph>
+        3. Change video frame captured size ( original or what you see ) through context menu.
+    </Paragraph>
+    
+</FlowDocument>

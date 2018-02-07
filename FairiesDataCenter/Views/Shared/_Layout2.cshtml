@@ -1,0 +1,24 @@
+﻿@using Trirand.Web.Mvc
+@using ynhnTransportManage
+<!DOCTYPE html>
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>@Html.DataCenterTitle()@ViewBag.Title</title>
+    <script src="@Url.Content("~/Scripts/jquery-1.8.1.min.js")" type="text/javascript"></script>
+    <script src="@Url.Content("~/Scripts/jquery-ui-1.8.23.min.js")" type="text/javascript"></script>
+     @*<link rel="stylesheet" type="text/css" href="@Url.Content("~/Content/themes/redmond/jquery-ui-1.8.21.custom.css")" />*@    
+     <link href="@Url.Content("~/Content/SiteLogon.css")" rel="stylesheet" type="text/css" />
+    <link href="@Url.Content("~/Content/themes/base/images/" + @Html.LogonCss())" rel="stylesheet" type="text/css" />    
+</head>
+<body>
+@if (!Html.bAMSApp())
+{
+    <OBJECT ID="kk" WIDTH=0 HEIGHT=0 style="display:none"
+	 CLASSID="CLSID:01A8EC23-6702-476C-AF5F-E934C71D0FE6" codebase="@Url.Content("~/Content/DXInfoCardActiveX.CAB")#version=1,0,0,3">
+    </object>
+}
+
+    @RenderBody()
+</body>
+</html>

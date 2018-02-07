@@ -1,0 +1,252 @@
+﻿@using Trirand.Web.Mvc
+@using DXInfo.Web.Models
+@model DXInfo.Web.Models.InventoryModels
+
+<script type="text/javascript">
+    function serializeGridData(postData) {
+        var sdata = {
+            _search: "true",
+            InvType: $("#InvType").val()
+        };
+        var newPostData = $.extend(postData, sdata);
+        return newPostData;
+    }
+    function beforeSubmit(postdata, formid) {
+        var sdata = { InvType: $("#InvType").val()
+        };
+        $.extend(postdata, sdata);
+        return [true, ''];
+    }
+    function populateUnit() {
+        updateUnitCallBack($("#MeasurementUnitGroup").val());
+        $("#MeasurementUnitGroup").bind("change", function (e) { updateUnitCallBack($("#MeasurementUnitGroup").val()); });
+    }
+    function populateEditUnit() {
+        var rowid = $("#InventoryGrid").jqGrid("getGridParam", "selrow");
+        if (rowid) {
+            var ret = $("#InventoryGrid").jqGrid("getRowData", rowid);
+            if(ret.MeasurementUnitGroup&&ret.MeasurementUnitGroup!='00000000-0000-0000-0000-000000000000'){
+               updateUnitCallBack(ret.MeasurementUnitGroup, ret.MainUnit, ret.PurchaseUnit, ret.UnitOfMeasure, ret.StockUnit);
+            }
+            $("#MeasurementUnitGroup").bind("change", function (e) {
+                updateUnitCallBack($("#MeasurementUnitGroup").val());
+            }); 
+        }
+//        $("#Stars").rateit({ 
+//            max: 5, 
+//            step: 1}); 
+    }
+    function updateUnitCallBack(group, MainUnit, PurchaseUnit, UnitOfMeasure, StockUnit) {
+        $("#MainUnit").html("<option value=''>装载计量单位...</option>").attr("disabled", "disabled");
+        //$("#PurchaseUnit").html("<option value=''>装载计量单位...</option>").attr("disabled", "disabled");
+        $("#UnitOfMeasure").html("<option value=''>装载计量单位...</option>").attr("disabled", "disabled");
+        $("#StockUnit").html("<option value=''>装载计量单位...</option>").attr("disabled", "disabled");
+        $.ajax({
+            url: '@Url.Action("GetUnitJson", "BaseInfo")' + "?group=" + group,
+            type: "GET",
+            success: function (unitJson) {
+                var units = eval(unitJson);
+                var unitHtml = "";
+                var mainHtml = "";
+                $(units).each(function (i, option) {
+                    if (option.IsMain) {
+                        mainHtml += '<option value="' + option.Id + '">' + option.Name + '</option>';
+                    }
+                    else{
+                    unitHtml += '<option value="' + option.Id + '">' + option.Name + '</option>';
+                    }
+                });
+                $("#MainUnit").html(mainHtml);
+                //$("#PurchaseUnit").removeAttr("disabled").html(unitHtml);
+                $("#UnitOfMeasure").removeAttr("disabled").html(unitHtml);
+                $("#StockUnit").removeAttr("disabled").html(unitHtml);
+
+                if (typeof (MainUnit) != "undefined") {
+                    $("#MainUnit").val(MainUnit);
+                }
+                //                if (typeof (PurchaseUnit) != "undefined") {
+                //                    $("#PurchaseUnit").val(PurchaseUnit);
+                //                }
+                if (typeof (UnitOfMeasure) != "undefined") {
+                    $("#UnitOfMeasure").val(UnitOfMeasure);
+                }
+                if (typeof (StockUnit) != "undefined") {
+                    $("#StockUnit").val(StockUnit);
+                }
+            }
+        });
+
+        $.ajax({
+            url: '@Url.Action("GetUnitGroupJson", "BaseInfo")' + "?group=" + group,
+            type: "GET",
+            success: function (groupJson) {
+                if (groupJson == 0) {
+                    $("#MainUnit").removeAttr("disabled");
+                    //$("#PurchaseUnit").attr("disabled", "disabled");
+                    $("#UnitOfMeasure").attr("disabled", "disabled");
+                    $("#StockUnit").attr("disabled", "disabled");
+                }
+            }
+        });
+    }       
+    function normalInv() {
+        var filtersStr = '{"groupOp":"AND","rules":[{"field":"IsInvalid","op":"eq","data":"false"}]}';
+        var postData = $("#InventoryGrid").jqGrid("getGridParam", "postData");
+        $.extend(postData, { filters: filtersStr });
+        $("#InventoryGrid").jqGrid("setGridParam", { search: true }).trigger("reloadGrid", [{ page: 1}]);
+    }
+    function invalidInv() {
+        var filtersStr = '{"groupOp":"AND","rules":[{"field":"IsInvalid","op":"eq","data":"true"}]}';
+        var postData = $("#InventoryGrid").jqGrid("getGridParam", "postData");
+        $.extend(postData, { filters: filtersStr });
+        $("#InventoryGrid").jqGrid("setGridParam", { search: true }).trigger("reloadGrid", [{ page: 1}]);
+    }
+     
+     
+    function deleteImg() {
+        var url = '@Url.Action("DeleteImg", "BaseInfo")';
+        $.ajax({
+            url: url,
+            type: "GET",
+            success: function (result) {
+                if (result) {
+                    if (result.toLowerCase() == "true") {
+                        alert("删除成功");
+                    }
+                }
+            }
+        });
+    }
+    function invGridToForm(){
+        var gsr = jQuery("#InventoryGrid").jqGrid('getGridParam','selrow');
+        if(gsr){
+            jQuery("#InventoryGrid").jqGrid('GridToForm',gsr,"#FrmGrid_InventoryGrid");
+            $("#ImageFileName").val($($("#ImageFileName").val()).attr("originalValue"));
+        } else {
+            alert("请选择记录");
+        }
+        $("#tabs").tabs();
+        $("#FrmGrid_InventoryGrid").validate({
+            rules: {
+               Code: "required",
+               Name: "required",
+               Category: "required",
+               MeasurementUnitGroup: "required",
+               MainUnit: "required",
+               HighStock: {
+                number: true
+               },
+               LowStock: {
+                number: true
+               },
+               SecurityStock: {
+                number: true
+               },
+               LastCheckDate: {
+                date: true
+               },
+               SomeDay: {
+                number: true
+               },
+               EarlyWarningDay: {
+                number: true
+               },
+               ShelfLife: {
+                number: true
+               },
+               ShelfLifeType: {
+                number: true
+               },
+               SalePrice: {
+                required:true,
+                number: true
+               },
+               SalePoint: {
+                required:true,
+                number: true
+               },
+               Sort: {
+                number: true
+               }
+             },
+     });
+        $("#edit-dialog").dialog({
+                        width:700,
+                        modal:true,
+                        buttons:{
+                            '关闭': function(){
+                                $(this).dialog('close');
+                            },
+                            '确定': function(){
+                                var rowKey = jQuery("#InventoryGrid").getGridParam('selrow');
+                                if(rowKey) {
+                                    var validator = $( "#FrmGrid_InventoryGrid" ).validate();
+                                    alert(validator);
+                                    if(!validator.validate()) return;
+                                    var postData = $('#FrmGrid_InventoryGrid').serializeArray();
+                                    postData[postData.length] = { name: "Id", value: rowKey };
+                                    postData[postData.length] = { name: "oper", value: "edit" };
+                                    var url = '@Url.Action("Inventory_EditData", "BaseInfo")';
+                                    $.post(url+"?jqGridID=InventoryGrid&editMode=1", postData);                                    
+                                    jQuery("#InventoryGrid").jqGrid('FormToGrid',rowKey,"#FrmGrid_InventoryGrid");
+                                    $(this).dialog('close');
+                                }
+                            }
+                        }
+                    });
+    }
+    function ConvertGridRowToRateIt (data) {
+        for(var i=0;i<data.rows.length;i++){        
+//            $('#rateit-'+data.rows[i].id).rateit({ 
+//            max: 5, 
+//            step: 1,
+//            resetable:false,
+//            readonly:true,
+//             backingfld: '#backing-'+data.rows[i].id }); 
+            $('#rateit-'+data.rows[i].id).raty({
+              score: function() {
+                return $(this).attr('data-score');
+              },
+              readOnly: true,
+            });
+        }
+}
+function LoadExcel() {
+        var url = urls.Receiver;
+        $("#LoadExcel").dialog({ 
+                    title:"导入EXCEL",
+                    modal: false,
+                    width:400,
+                    height:200,
+                    buttons:{
+                    '关闭': function(){$(this).dialog('close');}},
+                    });  
+              
+        return false;                                        
+    }
+    $(function () {
+        $('#file_upload').uploadify({
+            'swf': '@Url.Content("~/Content/uploadify/uploadify.swf")',
+            'uploader': '@Url.Action("LoadExcel", "BaseInfo")',
+            'buttonText' : '浏览...',
+            'fileTypeDesc' : 'excel文件',
+            'fileTypeExts' : '*.xls; *.xlsx',
+            'onUploadError' : function(file, errorCode, errorMsg, errorString) {
+                alert(file.name + ' 上传失败: ' + errorString);
+            },
+            'onUploadSuccess' : function(file, data, response) {
+                if(data && data!="1"){
+                    alert(file.name + ' 上传失败 :' + data);
+                }else{
+                    alert("导入成功");
+                    $("#InventoryGrid").trigger("reloadGrid", [{ page: 1}]);
+                }
+            },
+        });
+    });
+</script>
+@Html.Trirand().JQGrid(Model.InventoryGrid, "InventoryGrid")
+@Html.HiddenFor(m => m.InvType)
+<div id="LoadExcel" style="display:none">
+    <input type="file" name="file_upload" id="file_upload" />
+</div>

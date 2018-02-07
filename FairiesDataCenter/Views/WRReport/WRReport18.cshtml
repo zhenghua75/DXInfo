@@ -1,0 +1,121 @@
+﻿@using ynhnTransportManage
+@model ynhnTransportManage.Models.WRReport18Model
+<script type="text/javascript">
+    $(function () {
+        $("#BeginDate").datepicker();
+        $("#EndDate").datepicker();
+        $("#query").button();
+        $("#export").button();
+        $("#compute").button();
+    });
+</script>
+
+@using (Html.BeginForm("WRReport18", "WRReport"))
+{
+    @Html.ValidationSummary(true, "参数错误。请更正错误并重试。")
+    <table style="width:100%;">
+    <tr>
+<td>
+    <h2 class="ui-jqgrid-titlebar ui-widget-header ui-corner-top ui-helper-clearfix" style="text-align:center">@ViewBag.Title</h2>
+</td>
+</tr>
+        <tr>
+            <td>
+                <div class="ui-state-default ui-jqgrid-toppager">
+                        <table>
+                            <tr>
+                                <td>
+                                    <div class="editor-label">
+                                        @Html.LabelFor(m => m.DeptId)
+                                    </div>
+                                </td>
+                                <td>
+                                    <div class="editor-field">
+                                        @Html.DropDownListFor(m => m.DeptId, @Helpers.GetDepts2(), new { @class = "wide2" })
+                                        @Html.ValidationMessageFor(m => m.DeptId)
+                                    </div>
+                                </td>
+                                <td>
+                                    <div class="editor-label">
+                                        @Html.LabelFor(m => m.BeginDate)
+                                    </div>
+                                </td>
+                                <td>
+                                    <div class="editor-field">
+                                        @Html.TextBoxFor(m => m.BeginDate, new { @class = "wide2" })
+                                        @Html.ValidationMessageFor(m => m.BeginDate)
+                                    </div>
+                                </td>
+                                <td>
+                                    <div class="editor-label">
+                                        @Html.LabelFor(m => m.EndDate)
+                                    </div>
+                                </td>
+                                <td>
+                                    <div class="editor-field">
+                                        @Html.TextBoxFor(m => m.EndDate, new { @class = "wide2" })
+                                        @Html.ValidationMessageFor(m => m.EndDate)
+                                    </div>
+                                </td>
+                                <td>
+                                    <input id="query" type="submit" value="查询" onclick='this.form.action="@Url.Action("WRReport18")";'/>
+                                    
+                                </td>
+                                <td>
+                                    @Html.ActionLink("导出EXCEL", "WRReport18ExportToExcel", "WRReport", null, new { id = "export" })
+                                    
+                                </td>                                
+                                <td><input id="compute" type="submit" value="计算结算数据" onclick='this.form.action="@Url.Action("WRReport18ComputeBalance")";'/></td>
+                                <td></td>
+                            </tr>
+                        </table>
+                </div>
+            </td>
+            </tr>
+            <tr>
+            <td>
+                    @{ //source: Model.result,defaultSort: "CreateDate",
+                        var grid = new WebGrid(        
+                        canPage: true,
+                        canSort: true,
+                        rowsPerPage: 10000
+                        );
+                       grid.Bind(Model.result, rowCount: Model.rowCount, autoSortAndPage:false);
+                       //grid.Pager(WebGridPagerModes.All, firstText: "首页", previousText: "上页", nextText: "下页", lastText: "末页", numericLinksCount: 10);
+                       }
+                <div class="ui-jqgrid ui-widget ui-widget-content ui-corner-all">
+                       @grid.GetHtml(         
+  mode:WebGridPagerModes.All,
+  previousText:"上页",
+  nextText:"下页",
+  firstText:"首页",
+  lastText:"末页",
+  numericLinksCount:50,
+       columns: grid.Columns(
+grid.Column("LocalDeptName", "发卡门店"),
+grid.Column("RemoteDeptName", "门店"),
+grid.Column("FillFee_Pay", "充值金额(支出)"),
+//grid.Column("nFillProm_Pay", "充值赠送金额(支出)"),
+grid.Column("Fee_Pay", "消费金额(支出)"),
+grid.Column("sumFee_Pay", "小计(支出)"),
+grid.Column("FillFee_Income", "充值金额(收入)"),
+//grid.Column("nFillProm_Income", "充值赠送金额(收入)"),
+grid.Column("Fee_Income", "消费金额(收入)"),
+grid.Column("sumFee_Income", "小计(收入)"),
+grid.Column("FillFee_Dif", "充值金额(差额)"),
+//grid.Column("nFillProm_Dif", "充值赠送金额(差额)"),
+grid.Column("Fee_Dif", "消费金额(差额)"),
+grid.Column("sumFee_Dif", "小计(差额)")
+       ),
+tableStyle: "ui-jqgrid-view ui-jqgrid-bdiv ui-jqgrid-btable",
+              rowStyle: "ui-widget-content jqgrow ui-row-ltr",
+                  alternatingRowStyle: "ui-widget-content jqgrow ui-row-ltr",
+          headerStyle: "ui-state-default ui-jqgrid-hdiv",
+                  footerStyle: "ui-state-default ui-jqgrid-pager ui-corner-bottom ui-pager-control ui-pg-table"
+       )
+                </div>
+
+            </td>
+        </tr>
+    </table>
+}

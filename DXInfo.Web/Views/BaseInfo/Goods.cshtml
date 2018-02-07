@@ -1,0 +1,16 @@
+﻿@using Trirand.Web.Mvc
+@model DXInfo.Web.Models.GoodsGridModel
+<script type="text/javascript">
+
+    function disableFields() {
+        $("#vcGoodsType").attr("disabled", "disabled");
+    }
+
+    function enableFields() {
+        $("#vcGoodsType").removeAttr("disabled")
+    }
+    function beforeInlineEdit(rowid) {
+        $("#"+rowid+"_vcGoodsType").attr("disabled", "disabled");
+    }
+    </script>
+@Html.Trirand().JQGrid(Model.GoodsGrid, "GoodsGrid")

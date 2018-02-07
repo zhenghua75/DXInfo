@@ -1,0 +1,20 @@
+﻿@using Trirand.Web.Mvc
+@model ynhnTransportManage.Models.AuthorizationGridModel
+@Html.Trirand().JQGrid(Model.RolesGrid, "RolesGrid")
+@Html.Trirand().JQGrid(Model.AuthorizationGrid, "AuthorizationGrid")
+<script type="text/javascript">
+    $(document).ready(function () {
+        $("#RolesGrid").closest("div.ui-jqgrid-view")
+                .children("div.ui-jqgrid-titlebar")
+                .css("text-align", "center")
+                .css("font-size", "large")
+                .children("span.ui-jqgrid-title")
+                .css("float", "none");
+    });
+    function showAuthsSubGrid(subgrid_id, row_id) {               
+        showSubGrid_AuthorizationGrid(subgrid_id, row_id);
+    }   
+    </script>
+
+
+

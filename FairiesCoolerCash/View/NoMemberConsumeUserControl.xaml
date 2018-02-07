@@ -1,0 +1,223 @@
+﻿<UserControl x:Class="FairiesCoolerCash.Business.NoMemberConsumeUserControl"
+      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+      xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+      mc:Ignorable="d" 
+      Background="{DynamicResource WindowBackgroundBrush}" 
+      xmlns:WpfKb="clr-namespace:WpfKb.Controls;assembly=WpfKb"
+      xmlns:local="clr-namespace:FairiesCoolerCash.Business"
+      d:DesignHeight="300" d:DesignWidth="300"
+	FontSize="20">
+    <UserControl.Resources>
+        <Style x:Key="VerticalRadioButtonList" TargetType="{x:Type ListBox}">
+            <Setter Property="Background" Value="Transparent"/>
+            <Setter Property="ItemsPanel">
+                <Setter.Value>
+                    <ItemsPanelTemplate>
+                        <VirtualizingStackPanel Background="Transparent" Orientation="Horizontal"/>
+                    </ItemsPanelTemplate>
+                </Setter.Value>
+            </Setter>
+            <Setter Property="ItemContainerStyle">
+                <Setter.Value>
+                    <Style TargetType="{x:Type ListBoxItem}" >
+                        <Setter Property="Margin" Value="5" />
+                        <Setter Property="Template">
+                            <Setter.Value>
+                                <ControlTemplate TargetType="{x:Type ListBoxItem}">
+                                    <Border BorderThickness="0" Background="Transparent">
+                                        <RadioButton Focusable="False"
+                                                    IsHitTestVisible="False"
+                                                    IsChecked="{TemplateBinding IsSelected}">
+                                            <ContentPresenter />
+                                        </RadioButton>
+                                    </Border>
+                                </ControlTemplate>
+                            </Setter.Value>
+                        </Setter>
+                    </Style>
+                </Setter.Value>
+            </Setter>
+            <Setter Property="Control.Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="{x:Type ListBox}">
+                        <Border BorderThickness="0" Padding="0" BorderBrush="Transparent" Background="Transparent" Name="Bd" SnapsToDevicePixels="True">
+                            <ItemsPresenter SnapsToDevicePixels="{TemplateBinding UIElement.SnapsToDevicePixels}" />
+                        </Border>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+        <Style x:Key="VerticalCheckboxList" TargetType="{x:Type ListBox}">
+            <Setter Property="Background" Value="Transparent"/>
+            <Setter Property="ItemsPanel">
+                <Setter.Value>
+                    <ItemsPanelTemplate>
+                        <VirtualizingStackPanel Background="Transparent" Orientation="Horizontal"/>
+                    </ItemsPanelTemplate>
+                </Setter.Value>
+            </Setter>
+            <Setter Property="ItemContainerStyle">
+                <Setter.Value>
+                    <Style TargetType="{x:Type ListBoxItem}" >
+                        <Setter Property="Margin" Value="5" />                        
+                    </Style>
+                </Setter.Value>
+            </Setter>
+            <Setter Property="Control.Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="{x:Type ListBox}">
+                        <Border BorderThickness="0" Padding="0" BorderBrush="Transparent" Background="Transparent" Name="Bd" SnapsToDevicePixels="True">
+                            <ItemsPresenter SnapsToDevicePixels="{TemplateBinding UIElement.SnapsToDevicePixels}" />
+                        </Border>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+        <DataTemplate x:Key="centralTile">
+            <Border BorderThickness="1" BorderBrush="AliceBlue">
+                <StackPanel Height="100" Width="90" VerticalAlignment="Center" HorizontalAlignment="Center">
+                    <TextBlock FontSize="20" HorizontalAlignment="Center" VerticalAlignment="Center" TextWrapping="Wrap"  Text="{Binding Path=Name}"/>
+                    <Label FontSize="13" HorizontalAlignment="Center" Margin="0,0,0,1" >
+                        <StackPanel Orientation="Horizontal">
+                            <TextBlock Text="默认价："></TextBlock>
+                            <TextBlock Text="{Binding Path=SalePrice}"/>
+                        </StackPanel>
+                    </Label>
+                </StackPanel>
+            </Border>
+        </DataTemplate>
+        <DataTemplate x:Key="centralTileCategory">
+            <StackPanel Height="100" Width="90" >
+                <Border BorderThickness="1" BorderBrush="AliceBlue">
+                    <Label 
+                      
+                MinHeight="90" MaxHeight="90" MinWidth="80" MaxWidth="80"
+                     HorizontalAlignment="Center" Margin="1,1,1,1" >
+                        <TextBlock TextWrapping="Wrap" Text="{Binding Path=Name}"  FontSize="20" ></TextBlock>
+                    </Label>
+                </Border>
+            </StackPanel>
+        </DataTemplate>
+        <local:PlainView x:Key="tileView" 
+                   ItemTemplate="{StaticResource centralTile}" 
+                   ItemWidth="100"/>
+        <local:PlainView x:Key="tileViewCategory" 
+                   ItemTemplate="{StaticResource centralTileCategory}" 
+                   ItemWidth="100"/>
+        <!--<ObjectDataProvider x:Key="cupTypeODP" ObjectType="{x:Type local:CupTypeHelper}" MethodName="GetCupType"></ObjectDataProvider>-->
+    </UserControl.Resources>
+    <Grid Margin="30,0,30,0">
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition></ColumnDefinition>
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="50"></RowDefinition>
+            <RowDefinition Height="*"></RowDefinition>
+            <RowDefinition Height="*"></RowDefinition>
+        </Grid.RowDefinitions>
+        <Label HorizontalAlignment="Center" FontSize="26"  FontWeight="Bold">非会员消费</Label>
+        
+        <Grid Grid.Row="1" >
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition></ColumnDefinition>
+                <ColumnDefinition></ColumnDefinition>
+            </Grid.ColumnDefinitions>
+           
+            <ListView Name="lvCategory" SelectionChanged="lvCategory_SelectionChanged"  Background="{DynamicResource WindowBackgroundBrush}"
+                       BorderThickness="5" BorderBrush="AliceBlue" Margin="5">
+            </ListView>
+            <Border Grid.Column="1" BorderThickness="5" BorderBrush="AliceBlue" Margin="5" >
+            <Grid Name="lbSelected" Margin="10">
+                
+                <Grid.RowDefinitions>
+                    <RowDefinition></RowDefinition>
+                    <RowDefinition></RowDefinition>
+                    <RowDefinition></RowDefinition>
+                    <RowDefinition></RowDefinition>
+                </Grid.RowDefinitions>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition></ColumnDefinition>
+                    <ColumnDefinition></ColumnDefinition>
+                </Grid.ColumnDefinitions>
+                <ListBox Loaded="lbCupType_Loaded" Grid.ColumnSpan="2"
+                  Name="lbCupType"
+                  Style="{StaticResource VerticalRadioButtonList}"
+                  SelectedValue="{Binding Path=CupType}" 
+                    DisplayMemberPath="Name" SelectionChanged="lbCupType_SelectionChanged"
+                  SelectedValuePath="Id">
+                </ListBox>
+                <ListBox Name="lbTast" Grid.Row="1" ItemsSource="{Binding Path=lTaste}"  Grid.ColumnSpan="2"
+                         Style="{StaticResource VerticalCheckboxList}" 
+                         >
+                    <ListBox.ItemTemplate>
+                        <HierarchicalDataTemplate>
+                            <Border BorderThickness="0" Background="Transparent">
+                                <CheckBox Content="{Binding Title}" IsChecked="{Binding IsSelected}"/>
+                            </Border>
+                        </HierarchicalDataTemplate>
+                    </ListBox.ItemTemplate>
+                </ListBox>
+                <StackPanel  Grid.Row="2" Orientation="Horizontal" VerticalAlignment="Center">
+                    <Label Content="支付方式" FontSize="20" ></Label>
+                <ComboBox Name="cmbPayType" Height="40" Width="150"  Loaded="cmbPayType_Loaded" DisplayMemberPath="Name" SelectedValuePath="Id"></ComboBox>
+                </StackPanel>
+                <StackPanel Grid.Row="2" Grid.Column="1" Orientation="Horizontal"  VerticalAlignment="Center">
+                <Label Content="代金券" FontSize="20" ></Label>
+                <TextBox Name="txtVoucher" Width="150" Height="40"  GotFocus="Text_GotFocus" LostFocus="Text_LostFocus"></TextBox>
+                </StackPanel>
+                <Button Grid.Row="3" Click="Button_Click_2">结账</Button>
+                <WpfKb:FloatingTouchScreenKeypad Grid.Row="3" Grid.Column="1"
+            x:Name="Keyboard"
+            Width="300"
+            Height="200"
+            Placement="Center"
+            AreAnimationsEnabled="True"
+            />
+            </Grid>
+            </Border>
+        </Grid>
+        <Grid Grid.Row="2">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="0.5*"></ColumnDefinition>
+                <ColumnDefinition Width="0.5*"></ColumnDefinition>
+            </Grid.ColumnDefinitions>
+            <ListView Name="lvInv" SelectionChanged="lvInv_SelectionChanged"  Background="{DynamicResource WindowBackgroundBrush}"
+                      BorderThickness="5" BorderBrush="AliceBlue" Margin="5"/>
+            <DataGrid Name="GridSelected" Grid.Column="1" AutoGenerateColumns="False" 
+                  CanUserDeleteRows="True"
+                  CanUserAddRows="False"  ColumnHeaderHeight="50" MinColumnWidth="80" MinRowHeight="50"
+                      HeadersVisibility="None" SelectionChanged="GridSelected_SelectionChanged"
+                      Background="{DynamicResource WindowBackgroundBrush}"
+                      BorderThickness="5" BorderBrush="AliceBlue" Margin="5">
+                
+                <DataGrid.Columns>
+                    <DataGridTextColumn Header="名称" Binding="{Binding Path=Name}" IsReadOnly="True"></DataGridTextColumn>
+
+                    
+                    <DataGridTextColumn Header="价格" Binding="{Binding Path=SalePrice}"></DataGridTextColumn>
+                    <DataGridTemplateColumn Header="数量">
+                        <DataGridTemplateColumn.CellTemplate>
+                            <DataTemplate>
+                                <TextBox Text="{Binding Quantity,UpdateSourceTrigger=LostFocus}" GotFocus="TextBox_GotFocus" LostFocus="TextBox_LostFocus"
+                                      ></TextBox>
+                            </DataTemplate>
+                        </DataGridTemplateColumn.CellTemplate>
+                    </DataGridTemplateColumn>
+                    <DataGridTextColumn Header="金额" Binding="{Binding Path=Amount}"></DataGridTextColumn>
+                    <DataGridTemplateColumn>
+                        <DataGridTemplateColumn.CellTemplate>
+                            <DataTemplate>
+                                <Button Click="Button_Click_1">撤销</Button>
+                            </DataTemplate>
+                        </DataGridTemplateColumn.CellTemplate>
+                    </DataGridTemplateColumn>
+                </DataGrid.Columns>
+            </DataGrid>
+
+        </Grid>
+
+
+    </Grid>
+</UserControl>

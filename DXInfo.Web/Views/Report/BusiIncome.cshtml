@@ -1,0 +1,71 @@
+﻿@using Trirand.Web.Mvc
+@using DXInfo.Web.Models
+@model DXInfo.Web.Models.BusiIncomeGridModel
+<script type="text/javascript">
+    $(function () {
+        $("#query").button();
+        var myDate = new Date();
+        $("#BeginDate").datepicker();
+        $("#EndDate").datepicker();
+        var beginDateStr = myDate.getFullYear() + "-" + (myDate.getMonth() + 1) + "-" + myDate.getDate();
+        var endDateStr = myDate.getFullYear() + "-" + (myDate.getMonth() + 1) + "-" + myDate.getDate();
+        $("#BeginDate").datetimepicker("setDate", beginDateStr);
+        $("#EndDate").datetimepicker("setDate", endDateStr);
+
+        $("#query").button().click(function () {
+            query();
+        });
+        $("#export").button();
+        $("#export").button().click(function () {
+            excelExport();
+        });
+        var ctrls = [{ name: "BeginDate", type: "datetime" },
+                 { name: "EndDate", type: "datetime" },
+                 { name: "vcDeptID", type: "select" },
+                 ];
+        InitCtrl(ctrls);
+    });
+    function serializeGridData(postData){        
+        var sdata = {
+            _search: true,
+            vcDeptID:$("#vcDeptID").val(),
+            BeginDate:$("#BeginDate").val(),
+            EndDate:$("#EndDate").val(),
+        };
+        var newPostData = $.extend(postData, sdata);
+        return $.param(newPostData);
+    }
+    function query() {
+            $("#BusiIncomeGrid").jqGrid('setGridParam', { datatype: 'json' }).trigger('reloadGrid', [{ page: 1}]); 
+    }
+function MyFormatNumber(num) {
+    if (num!= undefined && num.length > 0) {
+        var num1 = parseFloat(num);
+        if(num1==0){
+            return "......";
+        }
+        return num;
+    } 
+    return '';
+}
+function MyUnFormatNumber(num) {
+    console.log(num);
+    return num;
+}
+
+	</script>
+<h2 class="ui-widget-header h2-center">@ViewBag.Title</h2>
+<fieldset class="ui-widget ui-widget-content ui-corner-all">
+            <legend class="ui-widget-header ui-corner-all"></legend>
+<table>
+    <tr>        
+        <td>开始时间</td><td>@Html.TextBox("BeginDate")</td>    
+        <td>结束时间</td><td>@Html.TextBox("EndDate")</td>            
+        </tr><tr>
+        <td>门店</td><td>@Html.DropDownList("vcDeptID", @Html.GetMD())</td>
+        <td><button id="query">查询</button></td>        
+        <td><button id="export">导出EXCEL</button></td>
+    </tr>
+</table>
+</fieldset>
+@Html.Trirand().JQGrid(Model.BusiIncomeGrid, "BusiIncomeGrid")

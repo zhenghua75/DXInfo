@@ -1,0 +1,11 @@
+﻿@using Trirand.Web.Mvc
+@model DXInfo.Web.Models.RoleAssignGridModel
+<script type="text/javascript">
+    function showUsersSubGrid(subgrid_id, row_id) {
+        showSubGrid_UsersGrid(subgrid_id, row_id);
+    }   
+    </script>
+@Html.Trirand().JQGrid(Model.RolesGrid, "RolesGrid")
+@Html.Trirand().JQGrid(Model.UsersGrid, "UsersGrid")
+
+

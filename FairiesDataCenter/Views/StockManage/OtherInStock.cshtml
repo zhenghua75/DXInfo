@@ -1,0 +1,46 @@
+﻿@using Trirand.Web.Mvc
+@using ynhnTransportManage
+@model ynhnTransportManage.Models.StockManage.RdRecordModel
+<style type="text/css">
+    #rdRecord_Memo{width: 850px;}
+</style>
+@Html.Partial("_RdRecordPartial");
+<div style="margin:0px auto;width:1024px;height:600px;background-color:#dfeffc;padding:30px;">
+            @Html.Partial("_ToolbarPartial");            
+            <h1  style="text-align:center">@ViewBag.Title</h1>
+            <div id="divForm">
+            @using (Html.BeginForm("PurchaseInStock", "StockManage", FormMethod.Post, new { id = "rdRecordForm", name = "rdRecordForm" }))
+            {
+                
+                @Html.ValidationSummary()
+                <table>
+                <tr>
+                    <td>@Html.LabelFor(m => m.rdRecord.Code)</td><td>@Html.TextBoxFor(m => m.rdRecord.Code)@Html.ValidationMessageFor(m => m.rdRecord.Code, "*")</td>
+                    <td>@Html.LabelFor(m => m.rdRecord.RdDate)</td><td>@Html.TextBoxFor(m => m.rdRecord.RdDate)@Html.ValidationMessageFor(m => m.rdRecord.RdDate, "*")</td>
+                    <td>@Html.LabelFor(m => m.rdRecord.WhId)</td><td>@Html.DropDownListFor(m => m.rdRecord.WhId, @Helpers.GetWhsByOperDept())@Html.ValidationMessageFor(m => m.rdRecord.WhId, "*")</td>                                    
+                    <td><label for="busType_Code">入库类别</label></td><td>@Html.DropDownListFor(m => m.rdRecord.BusType, @Helpers.GetBusType("003"), new Dictionary<string, object> { { "data-placeholder", "选择业务类型" }, { "class", "wide3" } })@Html.ValidationMessageFor(m => m.rdRecord.BusType, "*")</td>
+                </tr>
+                <tr>
+                    <td>@Html.LabelFor(m => m.rdRecord.ARVCode)</td><td>@Html.TextBoxFor(m => m.rdRecord.ARVCode)@Html.ValidationMessageFor(m => m.rdRecord.ARVCode, "*")</td>
+                    <td>@Html.LabelFor(m => m.rdRecord.ARVDate)</td><td>@Html.TextBoxFor(m => m.rdRecord.ARVDate)@Html.ValidationMessageFor(m => m.rdRecord.ARVDate, "*")</td>                
+                    <td>@Html.LabelFor(m => m.rdRecord.Salesman)</td><td>@Html.DropDownListFor(m => m.rdRecord.Salesman, @Helpers.GetUsers())@Html.ValidationMessageFor(m => m.rdRecord.Salesman, "*")</td>
+                    <td>@Html.LabelFor(m => m.rdRecord.VerifyDate)</td><td>@Html.TextBoxFor(m => m.rdRecord.VerifyDate)@Html.ValidationMessageFor(m => m.rdRecord.VerifyDate, "*")</td>
+                  </tr>
+                  <tr>  
+                    <td>@Html.LabelFor(m => m.rdRecord.Memo)</td><td colspan="7">@Html.TextBoxFor(m => m.rdRecord.Memo)
+                    @Html.HiddenFor(m => m.rdRecord.IsVerify)
+                    @Html.HiddenFor(m => m.rdRecord.IsModify)
+                    @Html.HiddenFor(m => m.rdRecord.Id)
+                    @Html.HiddenFor(m => m.rdRecord.MakeTime)
+                    
+                    @Html.HiddenFor(m => m.vouchType.Code)
+                    </td>
+                </tr>
+            </table>
+            }
+            </div>
+            <div id="divGrid">
+            @Html.Trirand().JQGrid(Model.rdRecordsGridModel.RdRecordsGrid, "RdRecordsGrid")
+            </div>
+            <script src="@Url.Content("~/Scripts/RdRecord/afterGrid.js")" type="text/javascript"></script>
+</div>

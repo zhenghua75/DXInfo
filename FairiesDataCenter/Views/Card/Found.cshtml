@@ -1,0 +1,7 @@
+﻿@using Trirand.Web.Mvc
+@model ynhnTransportManage.Models.FoundCardsGridModel
+@{
+    ViewBag.Title = "解挂";
+}
+@Html.Trirand().JQGrid(Model.CardsGrid, "CardsGrid")
+

@@ -1,0 +1,33 @@
+﻿@model IEnumerable<DXInfo.Models.aspnet_Roles>
+
+@{
+    ViewBag.Title = "角色列表";
+}
+
+<h2>角色列表</h2>
+
+@{
+    var grid = new WebGrid(Model, canPage: true, rowsPerPage:20,canSort:true);
+    
+    }
+    @grid.GetHtml(
+        tableStyle: "webgrid-table",
+        headerStyle: "webgrid-header",
+        footerStyle: "paging-number",
+        alternatingRowStyle: "webgrid-AlternatingItemStyle",
+        selectedRowStyle: "webgrid-SelectedItemStyle",
+        mode: WebGridPagerModes.All,
+        firstText: "首页",
+        previousText: "上页",
+        nextText: "下页",
+        lastText: "最后页",
+        numericLinksCount: 50,        
+        rowStyle: "webgrid-RowStyle",
+        columns: grid.Columns(
+        grid.Column(format: (item) => Html.CheckBox("funcs", false)),                             
+        grid.Column(columnName: "RoleName", header: "角色名"),
+        grid.Column(columnName: "Description", header: "描述")
+        )
+)
+
+

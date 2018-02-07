@@ -1,0 +1,99 @@
+<html>
+	<head>
+		<script type="text/javascript" src="WdatePicker.js"></script>
+	</head>
+	<body>
+		<input id="d11" type="text" onClick="WdatePicker()"/>
+		
+		<input id="d12" type="text"/>
+<img onclick="WdatePicker({el:$dp.$('d12')})" src="../skin/datePicker.gif" width="16" height="22" align="absmiddle">
+
+
+<input id="d121" type="text" onfocus="WdatePicker({isShowWeek:true})"/>
+
+
+<input class="Wdate" type="text" id="d15" onFocus="WdatePicker({isShowClear:false,readOnly:true})"/>
+
+
+<input class="Wdate" type="text" id="d16" onfocus="WdatePicker({position:{left:100,top:50}})"/>
+
+
+<div id="div1"></div>
+<script>
+WdatePicker({eCont:'div1',onpicked:function(dp){alert('你选择的日期是:'+dp.cal.getDateStr())}})
+</script>
+
+
+<span id="demospan">2008-01-01</span>
+<img onClick="WdatePicker({el:'demospan'})" src="../../My97DatePicker/skin/datePicker.gif" width="16" height="22" align="absmiddle" style="cursor:pointer" />
+
+
+<input type="text" id="d221" onFocus="WdatePicker({startDate:'1980-05-01'})"/>
+
+
+<input type="text" id="d222" onFocus="WdatePicker({startDate:'1980-05-01',alwaysUseStartDate:true})"/>
+
+
+<input type="text" id="d233" onFocus="WdatePicker({startDate:'%y-%M-01 00:00:00',dateFmt:'yyyy-MM-dd HH:mm:ss',alwaysUseStartDate:true})"/>
+
+<pre>
+	自定义格式
+
+yMdHmswW分别代表年月日时分秒星期周,你可以任意组合这些元素来自定义你个性化的日期格式.
+
+日期格式表
+格式 	说明
+y 	将年份表示为最多两位数字。如果年份多于两位数，则结果中仅显示两位低位数。
+yy 	同上，如果小于两位数，前面补零。
+yyy 	将年份表示为三位数字。如果少于三位数，前面补零。
+yyyy 	将年份表示为四位数字。如果少于四位数，前面补零。
+M 	将月份表示为从 1 至 12 的数字
+MM 	同上，如果小于两位数，前面补零。
+d 	将月中日期表示为从 1 至 31 的数字。
+dd 	同上，如果小于两位数，前面补零。
+H 	将小时表示为从 0 至 23 的数字。
+HH 	同上，如果小于两位数，前面补零。
+m 	将分钟表示为从 0 至 59 的数字。
+mm 	同上，如果小于两位数，前面补零。
+s 	将秒表示为从 0 至 59 的数字。
+ss 	同上，如果小于两位数，前面补零。
+w 	返回星期对应的数字 0 (星期天) - 6 (星期六) 。
+D 	返回星期的缩写 一 至 六 (英文状态下 Sun to Sat) 。
+W 	返回周对应的数字 (1 - 53) 。
+WW 	同上，如果小于两位数，前面补零 (01 - 53) 。
+
+示例
+格式字符串 	值
+yyyy-MM-dd HH:mm:ss 	2008-03-12 19:20:00
+yy年M月 	08年3月
+yyyyMMdd 	20080312
+今天是:yyyy年M年d HH时mm分 	今天是:2008年3月12日 19时20分
+H:m:s 	19:20:0
+y年 	8年
+</pre>
+
+
+<input type="text" id="d241" onfocus="WdatePicker({dateFmt:'yyyy年MM月dd日 HH时mm分ss秒'})" class="Wdate" style="width:300px"/>
+<input type="text" id="d242" onfocus="WdatePicker({skin:'whyGreen',dateFmt:'H:mm:ss'})" class="Wdate"/>
+<input type="text" id="d243" onfocus="WdatePicker({skin:'whyGreen',dateFmt:'yyyy年MM月'})" class="Wdate"/>
+<input id="d244" type="text" class="Wdate" onfocus="WdatePicker({dateFmt:'yyyy年M月d日',vel:'d244_2'})"/>
+<input id="d244_2" type="text" />
+
+<pre>
+	皮肤名称：blue
+发布时间：2008-04-22
+皮肤大小：3.91KB
+皮肤作者：My97
+格式配置：{name:'blue', charset:'gb2312'}
+</pre>
+<input type="text" id="d243" onfocus="WdatePicker({skin:'blue',dateFmt:'yyyy年MM月'})" class="Wdate"/>
+
+
+<input type="text" id="d241" onfocus="WdatePicker({skin:'blue',dateFmt:'yyyy年MM月dd日 HH时mm分ss秒'})" class="Wdate" style="width:300px"/>
+<input type="text" id="d241" onfocus="WdatePicker({skin:'ext',dateFmt:'yyyy年MM月dd日 HH时mm分ss秒'})" class="Wdate" style="width:300px"/>
+<input type="text" id="d241" onfocus="WdatePicker({skin:'simple',dateFmt:'yyyy年MM月dd日 HH时mm分ss秒'})" class="Wdate" style="width:300px"/>
+<input type="text" id="d241" onfocus="WdatePicker({skin:'YcloudRed',dateFmt:'yyyy年MM月dd日 HH时mm分ss秒'})" class="Wdate" style="width:300px"/>
+
+	</body>
+	
+</html>

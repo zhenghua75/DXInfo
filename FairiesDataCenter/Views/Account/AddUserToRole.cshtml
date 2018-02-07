@@ -1,0 +1,85 @@
+﻿@model ynhnTransportManage.Models.AddUserToRolesModel
+
+@{
+    ViewBag.Title = "添加用户到角色";
+}
+
+<h2>添加用户到角色</h2>
+
+<script src="@Url.Content("~/Scripts/jquery.validate.min.js")" type="text/javascript"></script>
+<script src="@Url.Content("~/Scripts/jquery.validate.unobtrusive.min.js")" type="text/javascript"></script>
+
+@using (Html.BeginForm()) {
+    @Html.ValidationSummary(true)
+    <fieldset>
+        <legend>添加用户到角色</legend>
+        <div class="editor-label" style="display:none">
+            @Html.LabelFor(model => model.UserId)
+        </div>
+        <div class="editor-field" style="display:none">
+            @Html.EditorFor(model => model.UserId)
+            @Html.ValidationMessageFor(model => model.UserId)
+        </div>
+
+        <div class="editor-label">
+            @Html.LabelFor(model => model.UserName)
+        </div>
+        <div class="editor-field">
+            @Html.EditorFor(model => model.UserName)
+            @Html.ValidationMessageFor(model => model.UserName)
+        </div>
+
+        <div class="editor-label">
+            @Html.LabelFor(model => model.FullName)
+        </div>
+        <div class="editor-field">
+            @Html.EditorFor(model => model.FullName)
+            @Html.ValidationMessageFor(model => model.FullName)
+        </div>
+
+        <div class="editor-label">
+            @Html.LabelFor(model => model.DeptName)
+        </div>
+        <div class="editor-field">
+            @Html.EditorFor(model => model.DeptName)
+            @Html.ValidationMessageFor(model => model.DeptName)
+        </div>    
+        
+        @{
+    var grid = new WebGrid(Model.Roles, canPage: true, rowsPerPage: 20, canSort: true, selectionFieldName: "SelectedRow");
+    
+    var i = grid.RowsPerPage * grid.PageIndex;
+    }
+    @grid.GetHtml(
+        tableStyle: "webgrid-table",
+        headerStyle: "webgrid-header",
+        footerStyle: "paging-number",
+        alternatingRowStyle: "webgrid-AlternatingItemStyle",
+        selectedRowStyle: "webgrid-SelectedItemStyle",
+        mode: WebGridPagerModes.All,
+        firstText: "首页",
+        previousText: "上页",
+        nextText: "下页",
+        lastText: "最后页",
+        numericLinksCount: 50,
+        rowStyle: "webgrid-RowStyle",
+        columns: grid.Columns(
+                                grid.Column(format: item => item.IsInRole ?
+                                    Html.ActionLink("删除", "DeleteUserFromRole", new { userId = Model.UserId, roleName = item.RoleName }) :
+                                        Html.ActionLink("添加", "AddToRole", "Account", new { userId = Model.UserId, roleName = item.RoleName },null)),
+                                    grid.Column(columnName: "RoleName", header: "角色名"),
+                                    grid.Column(columnName: "Description", header: "描述")
+                            )
+                            )
+        
+            
+        @*<p>
+            <input type="submit" value="添加" />
+        </p>*@
+    </fieldset>
+}
+
+<div>
+    @Html.ActionLink("返回", "Users")
+</div>
+

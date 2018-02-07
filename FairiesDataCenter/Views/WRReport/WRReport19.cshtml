@@ -1,0 +1,73 @@
+﻿@using Trirand.Web.Mvc
+@using ynhnTransportManage
+@model ynhnTransportManage.Models.WRReport19GridModel
+<script type="text/javascript">
+    $(function () {
+        $("#query").button();
+        $("#query").button().click(function () {
+            query();
+        });
+        $("#export").button();
+        $("#export").button().click(function () {
+            ExportToExcel();
+        });
+    });
+    function query() {
+        if ($("#CardNo").val()) {
+            var filtersStr = '{"groupOp":"AND","rules":[{"field":"CardNo","op":"eq","data":"' + $("#CardNo").val() + '"}]}';
+            var postData = $("#WRReport19Grid").jqGrid("getGridParam", "postData");
+            $.extend(postData, { filters: filtersStr });
+            $("#WRReport19Grid").jqGrid("setGridParam", { search: true }).trigger("reloadGrid", [{ page: 1}]);
+        }
+        else {
+            alert("请输入卡号");
+        }
+    }
+	</script>
+
+<table style="width:100%;">
+<tr>
+<td>
+    <h2 class="ui-jqgrid-titlebar ui-widget-header ui-corner-top ui-helper-clearfix" style="text-align:center">@ViewBag.Title</h2>
+</td>
+</tr>
+    <tr>
+        <td>
+        <div class="ui-state-default ui-jqgrid-toppager">
+        <table>
+    <tr>
+        <td>卡号：</td><td><input id="CardNo" type="text"/></td>
+        <td><button id="query">查询</button></td><td><button id="export">导出EXCEL</button></td>
+            </tr>
+        </table>
+        </div>
+        </td>
+        </tr>
+</table>
+@Html.Trirand().JQGrid(Model.WRReport19Grid, "WRReport19Grid")
+@using (Html.BeginForm("WRReport19_RequestData", "WRReport", FormMethod.Post, new { id = "ExportToExcel" })) { } 
+
+<script type="text/javascript">
+    function FormatNumber(num) {
+        if (num.length > 0) {
+            return parseFloat(num);
+        }
+        return "";
+    }
+    function UnFormatNumber(num) {
+        return num;
+    }
+    function ExportToExcel() {
+        if ($("#CardNo").val()) {
+            $("input:hidden").remove()
+            var input1 = $("<input>").attr("type", "hidden").attr("name", "oper").val("excel");
+            var input2 = $("<input>").attr("type", "hidden").attr("name", "CardNo").val($("#CardNo").val());
+            $("#ExportToExcel").append($(input1));
+            $("#ExportToExcel").append($(input2));
+            $("#ExportToExcel").submit();
+        }
+        else {
+            alert("请输入卡号");
+        }
+    }
+</script>

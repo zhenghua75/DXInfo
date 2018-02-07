@@ -1,0 +1,188 @@
+﻿@using DXInfo.Web
+@model DXInfo.Web.Models.Report3Model              
+<script type="text/javascript">
+    $(function () {
+        $("#BeginDate").datepicker();
+        $("#EndDate").datepicker();
+    });
+	</script>
+ 
+@using (Html.BeginForm("Report3", "Report"))
+{
+@Html.ValidationSummary(true, "参数错误。请更正错误并重试。")
+    <div>
+        <fieldset>
+        <table>
+            <tr>
+                <td colspan="10" align="center"><legend>充值明细查询</legend></td>
+            </tr>
+            <tr>
+                <td>
+                <div class="editor-label">
+                @Html.LabelFor(m => m.DeptId)
+            </div>
+            </td>
+                <td>
+                <div class="editor-field">
+                @Html.DropDownListFor(m => m.DeptId, @Helpers.GetDepts2())
+                @Html.ValidationMessageFor(m => m.DeptId)
+            </div>
+                </td>
+                <td>
+                    <div class="editor-label">
+                @Html.LabelFor(m => m.UserId)
+            </div>
+                </td>
+                <td>
+                    <div class="editor-field">
+                @Html.DropDownListFor(m => m.UserId, @Helpers.GetUsers())
+                @Html.ValidationMessageFor(m => m.UserId)
+            </div>
+                </td>
+
+                <td>
+                    <div class="editor-label">
+                @Html.LabelFor(m => m.RechargeType)
+            </div>
+                </td>
+                <td>
+                    <div class="editor-field">
+                @Html.DropDownListFor(m => m.RechargeType, @Helpers.GetRechargeType())
+                @Html.ValidationMessageFor(m => m.RechargeType)
+            </div>
+                </td>
+                <td>
+                    <div class="editor-label">
+                @Html.LabelFor(m => m.PayType)
+            </div>
+                </td>
+                <td>
+                    <div class="editor-field">
+                @Html.DropDownListFor(m => m.PayType, @Helpers.GetPayType())
+                @Html.ValidationMessageFor(m => m.PayType)
+            </div>
+                </td>
+                <td>
+                    <div class="editor-label">
+                @Html.LabelFor(m => m.CardNo)
+            </div>
+                </td>
+                <td>
+                    <div class="editor-field">
+                @Html.TextBoxFor(m => m.CardNo, new { @class = "wide" })
+                @Html.ValidationMessageFor(m => m.CardNo)
+            </div>
+                </td>
+                </tr>
+                <tr>
+                <td>
+                    <div class="editor-label">
+                @Html.LabelFor(m => m.MemberName)
+            </div>
+                </td>
+                
+                <td>
+                    <div class="editor-field">
+                @Html.TextBoxFor(m => m.MemberName, new { @class = "wide" })
+                @Html.ValidationMessageFor(m => m.MemberName)
+            </div>
+                </td>
+
+                <td>
+                    <div class="editor-label">
+                @Html.LabelFor(m => m.BeginDate)
+            </div>
+                </td>
+                <td>
+                    <div class="editor-field">
+                @Html.TextBoxFor(m => m.BeginDate, new { @class = "wide" })
+                @Html.ValidationMessageFor(m => m.BeginDate)
+            </div>
+                </td>
+                <td>
+                    <div class="editor-label">
+                @Html.LabelFor(m => m.EndDate)
+            </div>
+                </td>
+                <td>
+                    <div class="editor-field">
+                @Html.TextBoxFor(m => m.EndDate, new { @class = "wide" })
+                @Html.ValidationMessageFor(m => m.EndDate)
+            </div>
+                </td>
+                <td colspan="4">
+                    <p>
+                <input type="submit" value="查询" />
+                @Html.ActionLink("导出EXCEL", "Report3ExportToExcel", "Report")
+            </p>
+                </td>
+            </tr>
+        </table>
+        </fieldset>
+    </div>
+
+    var grid = new WebGrid(source: Model.result,
+        defaultSort: "CreateDate",
+    canPage: true,
+    canSort: true,
+    rowsPerPage: 20);
+
+	<div id="DivGrid" style="width:1800px;">
+	@grid.GetHtml(
+     mode: WebGridPagerModes.All,
+    numericLinksCount: 50,
+    firstText: "首页",
+    previousText: "上页",
+    nextText: "下页",
+    lastText: "最后页",    
+        columns: grid.Columns(
+            grid.Column("DeptName", "门店"),
+                        grid.Column("FullName", "操作员"),
+                        grid.Column("RechargeType", "充值类型"),
+                        grid.Column("PayType", "支付方式"),
+                        grid.Column("CardNo", "卡号"),
+                        grid.Column("MemberName", "会员名"),
+                            grid.Column("LastBalance", "上次余额"),
+                            grid.Column("Amount", "充值金额"),
+                            grid.Column("Donate", "赠送"),
+                            grid.Column("Balance", "余额"),
+                        grid.Column("CreateDate", "充值日期")                        
+        )
+    )
+	</div>
+<div>
+        <fieldset>
+        <table>
+            <tr>
+                <td colspan="6" align="center">
+                <legend>汇总信息</legend>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                <div class="editor-label">
+                @Html.LabelFor(m => m.Amount)
+            </div>
+                </td>
+                <td>
+                <div class="editor-field">
+                @Html.TextBoxFor(m => m.Amount, new { @class = "wide" })
+                @Html.ValidationMessageFor(m => m.Amount)
+            </div>
+                </td>
+                <td>
+                <div class="editor-label">
+                @Html.LabelFor(m => m.Donate)
+            </div>
+                </td>
+                <td>
+                <div class="editor-field">
+                @Html.TextBoxFor(m => m.Donate, new { @class = "wide" })
+                @Html.ValidationMessageFor(m => m.Donate)
+            </div>
+                </td>                
+            </tr>
+        </table>
+        </fieldset>
+    </div>
+}

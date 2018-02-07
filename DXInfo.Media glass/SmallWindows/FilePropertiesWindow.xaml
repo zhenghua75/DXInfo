@@ -1,0 +1,43 @@
+﻿<!--http://stackoverflow.com/questions/632519/how-can-i-hide-the-header-of-a-listview-wpf-->
+<Window x:Class="Media_glass.SmallWindows.FilePropertiesWindow"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    Title="属性" Height="418" Width="447" SizeToContent="WidthAndHeight"  WindowStartupLocation="CenterScreen" Loaded="Window_Loaded" MouseLeftButtonDown="Window_MouseLeftButtonDown">
+    <Window.Resources>        
+        <Style TargetType="ListViewItem" x:Key="PropertyItemStyle">
+            <Setter Property="FontFamily" Value="Verdana"/>
+            <Setter Property="FontSize" Value="11"/>                    
+            <Setter Property="Foreground" Value="Black"/>   
+            <Setter Property="Height" Value="34"/>            
+        </Style>
+    </Window.Resources>
+    <Grid Width="430" Height="333">
+        <Button Height="23" HorizontalAlignment="Right" Margin="0,0,11,11" Name="okButton" VerticalAlignment="Bottom" Width="75" Click="okButton_Click">确定</Button>        
+        <Image Margin="11,10,0,0" Name="fileImage" Stretch="None" Height="34" HorizontalAlignment="Left" VerticalAlignment="Top" Width="34" Source="pack://application:,,,/Resources/Images/Document.png" />
+        <ListView Margin="11,53,11,0" Name="listView1" Height="224" VerticalAlignment="Top" ItemContainerStyle="{StaticResource PropertyItemStyle}">
+            <ListView.View>
+                <GridView AllowsColumnReorder="false" > 
+                         
+                    <GridViewColumn Header="属性" Width="80">
+                        <GridViewColumn.CellTemplate>
+                            <DataTemplate>
+                                <TextBlock Text="{Binding Path=Name}" ToolTip="{Binding Name}" />
+                            </DataTemplate>
+                        </GridViewColumn.CellTemplate>
+                    </GridViewColumn >
+                    
+                    <GridViewColumn Header="值" Width="310">
+                        <GridViewColumn.CellTemplate>
+                            <DataTemplate>
+                                <TextBlock Text="{Binding Path=Value}" ToolTip="{Binding Value}" />
+                            </DataTemplate>
+                        </GridViewColumn.CellTemplate>
+                    </GridViewColumn >                    
+                                      
+                </GridView>
+                </ListView.View>
+        </ListView>
+        <Separator Height="1" Margin="4,0,4,45" Name="separator1" VerticalAlignment="Bottom" />        
+        <Label Height="24" Margin="48,15,11,0" Name="nameLabel" VerticalAlignment="Top" FontFamily="Verdana" FontSize="11" VerticalContentAlignment="Center">Song name</Label>        
+    </Grid>
+</Window>

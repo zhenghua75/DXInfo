@@ -1,0 +1,73 @@
+﻿@using Trirand.Web.Mvc
+@using ynhnTransportManage
+@model ynhnTransportManage.Models.StockManage.LocatorSummaryGridModel
+<script type="text/javascript">
+    $(function () {
+        $("#query").button();
+        
+        $("#BeginDate").datepicker();
+        $("#EndDate").datepicker();
+        $("#query").button().click(function () {
+            query();
+        });
+        $("#export").button();
+        $("#export").button().click(function () {
+            ExportToExcel();
+        });
+    });
+    function query() {
+        if ($("#BeginDate").val() && $("#EndDate").val()) {
+            var postData = $("#LocatorSummaryGrid").jqGrid("getGridParam", "postData");
+            var sdata = {
+                BeginDate: $("#BeginDate").val(),
+                EndDate: $("#EndDate").val(),
+                WhId: $("#WhId").val(),
+                Locator:$("#Locator").val(),
+                InvName: $("#InvName").val(),
+            };
+            var newPostData = $.extend(postData, sdata);
+            $("#LocatorSummaryGrid").jqGrid().trigger("reloadGrid", [{ page: 1}]);//, {search: true}
+        }
+        else {
+            alert("请选择日期");
+        }
+    }
+	</script>
+<h2 class="ui-jqgrid-titlebar ui-widget-header ui-corner-top ui-helper-clearfix" style="text-align:center">@ViewBag.Title</h2>
+<div class="ui-state-default ui-jqgrid-toppager">
+<table>
+    <tr>
+        <td>@Html.LabelFor(m => m.BeginDate)</td><td>@Html.TextBoxFor(m => m.BeginDate)</td>
+        <td>@Html.LabelFor(m => m.EndDate)</td><td>@Html.TextBoxFor(m => m.EndDate)</td>
+        <td>@Html.LabelFor(m => m.WhId)</td><td>@Html.DropDownListFor(m => m.WhId, @Helpers.GetWhs())</td>
+        <td>@Html.LabelFor(m => m.Locator)</td><td>@Html.DropDownListFor(m => m.Locator, @Helpers.GetLocators())</td>
+        <td>@Html.LabelFor(m => m.InvName)</td><td>@Html.TextBoxFor(m => m.InvName)</td>
+        <td><button id="query">查询</button></td><td><button id="export">导出EXCEL</button></td>
+    </tr>
+</table>
+</div>
+@Html.Trirand().JQGrid(Model.LocatorSummaryGrid, "LocatorSummaryGrid")
+@using (Html.BeginForm("LocatorSummary_RequestData", "StockManage", FormMethod.Post, new { id = "ExportToExcel" })) { } 
+<script type="text/javascript">
+    function FormatNumber(num) {
+        return parseFloat(num);
+    }
+    function UnFormatNumber(num) {
+        return num;
+    }
+    function ExportToExcel() {
+        var input1 = $("<input>").attr("type", "hidden").attr("name", "oper").val("excel");
+        var input2 = $("<input>").attr("type", "hidden").attr("name", "BeginDate").val($("#BeginDate").val());
+        var input3 = $("<input>").attr("type", "hidden").attr("name", "EndDate").val($("#EndDate").val());
+        var input4 = $("<input>").attr("type", "hidden").attr("name", "WhId").val($("#WhId").val());
+        var input5 = $("<input>").attr("type", "hidden").attr("name", "Locator").val($("#Locator").val());
+        var input6 = $("<input>").attr("type", "hidden").attr("name", "InvName").val($("#InvName").val());
+        $("#ExportToExcel").append($(input1));
+        $("#ExportToExcel").append($(input2));
+        $("#ExportToExcel").append($(input3));
+        $("#ExportToExcel").append($(input4));
+        $("#ExportToExcel").append($(input5));
+        $("#ExportToExcel").append($(input6));
+        $("#ExportToExcel").submit();
+    }
+</script>

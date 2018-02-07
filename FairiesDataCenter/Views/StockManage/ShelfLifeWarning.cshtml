@@ -1,0 +1,79 @@
+﻿@using Trirand.Web.Mvc
+@using ynhnTransportManage
+@model ynhnTransportManage.Models.StockManage.ShelfLifeWarningGridModel
+@{
+    ViewBag.Title = "库存保质期预警";    
+}
+<script type="text/javascript">
+    $(function () {
+        $("#query").button();
+        $("#BeginDate").datepicker();
+        $("#EndDate").datepicker();
+        $("#query").button().click(function () {
+            query();
+        });
+        $("#export").button();
+        $("#export").button().click(function () {
+            ExportToExcel();
+        });
+    });
+    function query() {
+            var postData = $("#ShelfLifeWarningGrid").jqGrid("getGridParam", "postData");
+            var sdata = {
+                InvType:$("#InvType").val(),
+                BeginDate: $("#BeginDate").val(),
+                EndDate: $("#EndDate").val(),
+                OutOfDays:$("#OutOfDays").val(),
+                BeginCloseToDays:$("#BeginCloseToDays").val(),
+                EndCloseToDays:$("#EndCloseToDays").val(),
+            };
+            var newPostData = $.extend(postData, sdata);
+            $("#ShelfLifeWarningGrid").jqGrid().trigger("reloadGrid", [{ page: 1}]);
+        }
+	</script>
+<h2 class="ui-jqgrid-titlebar ui-widget-header ui-corner-top ui-helper-clearfix" style="text-align:center">@ViewBag.Title</h2>
+<div class="ui-state-default ui-jqgrid-toppager">
+<table>
+    <tr>
+        
+        <td>存货类别</td><td><select id="InvType">
+                                <option value="0">所有存货</option>
+                                <option value="1">过期存货</option>
+                                <option value="2">未过期存货</option>
+                                <option value="3">临近存货</option>
+                            </select></td>
+        <td>失效日期</td><td>@Html.TextBoxFor(m => m.BeginDate)-</td><td>@Html.TextBoxFor(m => m.EndDate)</td>
+        <td>@Html.LabelFor(m => m.OutOfDays)</td><td>@Html.TextBoxFor(m => m.OutOfDays)</td>
+        <td>临近天数</td><td>@Html.TextBoxFor(m => m.BeginCloseToDays)-</td><td>@Html.TextBoxFor(m => m.EndCloseToDays)</td>
+        <td><button id="query">查询</button></td><td><button id="export">导出EXCEL</button></td>
+    </tr>
+</table>
+</div>
+@Html.Trirand().JQGrid(Model.ShelfLifeWarningGrid, "ShelfLifeWarningGrid")
+@using (Html.BeginForm("ShelfLifeWarning_RequestData", "StockManage", FormMethod.Post, new { id = "ExportToExcel" })) { } 
+
+<script type="text/javascript">
+    function ExportToExcel() {
+        var input1 = $("<input>").attr("type", "hidden").attr("name", "oper").val("excel");
+        var input2 = $("<input>").attr("type", "hidden").attr("name", "InvType").val($("#InvType").val());
+        var input3 = $("<input>").attr("type", "hidden").attr("name", "BeginDate").val($("#BeginDate").val());
+        var input4 = $("<input>").attr("type", "hidden").attr("name", "EndDate").val($("#EndDate").val());
+        var input5 = $("<input>").attr("type", "hidden").attr("name", "OutOfDays").val($("#OutOfDays").val());
+        var input6 = $("<input>").attr("type", "hidden").attr("name", "BeginCloseToDays").val($("#BeginCloseToDays").val());
+        var input7 = $("<input>").attr("type", "hidden").attr("name", "EndCloseToDays").val($("#EndCloseToDays").val());
+        $("#ExportToExcel").append($(input1));
+        $("#ExportToExcel").append($(input2));
+        $("#ExportToExcel").append($(input3));
+        $("#ExportToExcel").append($(input4));
+        $("#ExportToExcel").append($(input5));
+        $("#ExportToExcel").append($(input6));
+        $("#ExportToExcel").append($(input7));
+        $("#ExportToExcel").submit();
+    }
+    function FormatNumber(num) {
+        return parseFloat(num);
+    }
+    function UnFormatNumber(num) {
+        return num;
+    }
+</script>

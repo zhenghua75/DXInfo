@@ -1,0 +1,37 @@
+﻿<Window x:Class="FairiesCoolerCash.Business.InvDynamicPriceWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="协议价"  
+        WindowStartupLocation="CenterScreen" 
+        FontSize="20" 
+        ResizeMode="NoResize" 
+        xmlns:local="clr-namespace:FairiesCoolerCash.Business"
+        Background="{DynamicResource WindowBackgroundBrush}"  
+        SizeToContent="WidthAndHeight"
+        local:DialogCloser.DialogResult="{Binding DialogResult}" 
+        mc:Ignorable="d" 
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006">
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition></RowDefinition>
+            <RowDefinition></RowDefinition>
+            <RowDefinition></RowDefinition>
+            <RowDefinition></RowDefinition>
+            <RowDefinition></RowDefinition>            
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition></ColumnDefinition>
+            <ColumnDefinition></ColumnDefinition>
+        </Grid.ColumnDefinitions>
+        <TextBlock Grid.Row="0" Grid.Column="0">品名：</TextBlock>
+        <TextBlock Grid.Row="0" Grid.Column="1" Text="{Binding SelectedInventoryEx.Name}"></TextBlock>
+        <TextBlock Grid.Row="1" Grid.Column="0">单价：</TextBlock>
+        <TextBlock Grid.Row="1" Grid.Column="1" Text="{Binding SelectedInventoryEx.SalePrice}"></TextBlock>
+        <TextBlock Grid.Row="2" Grid.Column="0">折扣(%)：</TextBlock>
+        <TextBox Grid.Row="2" Grid.Column="1" local:TextBoxMaskBehavior.MinimumValue="0" local:TextBoxMaskBehavior.MaximumValue="100" local:TextBoxMaskBehavior.Mask="Integer" Text="{Binding SelectedInventoryEx.Discount,UpdateSourceTrigger=PropertyChanged}"/>        
+        <TextBlock Grid.Row="3" Grid.Column="0">协议价：</TextBlock>
+        <TextBox Grid.Row="3" Grid.Column="1" local:TextBoxMaskBehavior.Mask="Decimal" Text="{Binding SelectedInventoryEx.AgreementPrice,UpdateSourceTrigger=PropertyChanged}"/>
+        <Button Grid.Row="4" Grid.ColumnSpan="2" Content="确定" Command="{Binding Confirm}" IsDefault="True"/>
+    </Grid>
+</Window>

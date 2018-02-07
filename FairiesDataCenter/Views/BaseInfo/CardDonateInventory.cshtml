@@ -1,0 +1,63 @@
+﻿@using Trirand.Web.Mvc
+@model ynhnTransportManage.Models.CardDonateInventoryGrid
+@Html.Trirand().JQGrid(Model.CardGrid, "CardGrid")
+@Html.Trirand().JQGrid(Model.InventoryGrid, "InventoryGrid")
+
+<script type="text/javascript">
+     $(function () {
+         $("#InvalideDate").datepicker();
+
+     });
+     function customButtonClicked() {
+         var grid = $("#CardGrid");
+         
+         var ids = grid.jqGrid('getGridParam', 'selarrrow');
+         
+          var url = "@Url.Action("DonateInventory_EditData","BaseInfo")";
+          
+                if (ids.length>0) {                    
+                    $("#dialog-confirm").dialog({
+                        height: 480,
+                        width:800,
+                        modal:true,
+                        buttons:{
+                            '关闭': function(){
+                                $(this).dialog('close');
+                            },
+                            '确定': function(){
+                                var grid2 = $("#InventoryGrid2");
+                                var ids2 = grid2.jqGrid('getGridParam', 'selarrrow');
+                                if (ids2.length>0) {
+                                $.ajax({
+                                    type: "POST",
+                                    url:  url,
+                                    data: { cards: ids.join(", "),
+                                        invs: ids2.join(", "),
+                                        InvalideDate:$("#InvalideDate").val()
+                                    },
+                                    dataType: "json",
+                                    success: function(msg){
+                                        alert(msg);                                        
+                                    },
+                                    error: function(res, status, exeption) {
+                                        alert(res);
+                                    }
+                                });
+                                $(this).dialog('close');
+                                }
+                            }
+                        }
+                    });
+                };
+     }           
+     function showInventorySubGrid(subgrid_id, row_id) {
+        showSubGrid_InventoryGrid(subgrid_id, row_id);
+    }   
+</script>
+
+<div style="display:none;" id="dialog-confirm" title="会员卡商品赠送">
+<p><span class="ui-icon-alert" style="float:left; margin:0 7px 20px 0;"></span>
+@Html.Trirand().JQGrid(Model.InventoryGrid2, "InventoryGrid2")
+</p>
+<p>有效期：<input type="text" id="InvalideDate" /></p>
+</div>

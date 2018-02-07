@@ -1,0 +1,50 @@
+﻿@model ynhnTransportManage.Models.Report9Model
+@using ynhnTransportManage
+@{
+    var para = "year=" + Model.year + "&" + "month=" + Model.month+"&IsCup="+Model.IsCup;
+}
+<h2>销售曲线图</h2>
+@using (Html.BeginForm()) 
+{    
+    @Html.ValidationSummary(true, "请更正错误并重试。")
+    <table>
+        <fieldset>
+        <tr>
+        <td>
+            <div class="editor-label">
+                @Html.LabelFor(m => m.year)
+            </div>
+            </td><td>
+            <div class="editor-field">
+                @Html.DropDownListFor(m => m.year, @Helpers.GetYears())
+                @Html.ValidationMessageFor(m => m.year)
+            </div>
+            </td>
+        <td>
+            <div class="editor-label">
+                @Html.LabelFor(m => m.month)
+            </div>
+            </td><td>
+            <div class="editor-field">
+                @Html.DropDownListFor(m => m.month, @Helpers.GetMonths())
+                @Html.ValidationMessageFor(m => m.month)
+            </div>
+            </td>
+            <td>
+            <div class="editor-label">
+                @Html.LabelFor(m => m.IsCup)
+            </div>
+            </td><td>
+            <div class="editor-field">
+                @Html.CheckBoxFor(m=>m.IsCup)
+                @Html.ValidationMessageFor(m => m.IsCup)
+            </div>
+            </td>
+        <td>
+                <input type="submit" value="查询" />
+            </td></tr>
+        </fieldset>
+    </table>
+}
+
+<img src="/Report/MyChart.aspx?@para" />

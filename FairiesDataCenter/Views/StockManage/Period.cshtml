@@ -1,0 +1,13 @@
+﻿@using Trirand.Web.Mvc
+@model ynhnTransportManage.Models.StockManage.PeriodGridModel
+@Html.Trirand().JQGrid(Model.PeriodGrid, "PeriodGrid")
+<script type="text/javascript">
+    $(document).ready(function () {
+        $("#PeriodGrid").closest("div.ui-jqgrid-view")
+                .children("div.ui-jqgrid-titlebar")
+                .css("text-align", "center")
+                .css("font-size", "large")
+                .children("span.ui-jqgrid-title")
+                .css("float", "none");
+    });
+</script>

@@ -1,0 +1,282 @@
+﻿<Window x:Class="FairiesCoolerCash.Business.DeskNoCardConsume2Window"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="会员卡消费打印" Width="280" ResizeMode="NoResize"
+        WindowStartupLocation="CenterScreen" FontSize="13" SizeToContent="Height"
+        Loaded="Window_Loaded" ContentRendered="Window_ContentRendered">
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*"></RowDefinition>
+            <RowDefinition Height="Auto"></RowDefinition>
+        </Grid.RowDefinitions>
+        <Grid Grid.Row="1">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="50"></RowDefinition>
+                <RowDefinition></RowDefinition>
+                <RowDefinition></RowDefinition>
+                <RowDefinition></RowDefinition>
+            </Grid.RowDefinitions>
+
+            <Button Grid.Row="1" Click="Button_Click" Height="100">打印</Button>
+            <Border Padding="3" Grid.Row="2">
+            <Grid Name="GridPrint"  Margin="5,0,5,0">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto"></ColumnDefinition>
+                <ColumnDefinition Width="*"></ColumnDefinition>
+            </Grid.ColumnDefinitions>
+            <Grid.RowDefinitions>
+                <RowDefinition></RowDefinition>
+                <RowDefinition></RowDefinition>
+                <RowDefinition></RowDefinition>
+                <RowDefinition></RowDefinition>
+                <RowDefinition></RowDefinition>
+                <RowDefinition></RowDefinition>
+                <RowDefinition></RowDefinition>
+                <RowDefinition></RowDefinition>
+                <RowDefinition></RowDefinition>
+                    <RowDefinition></RowDefinition>
+                    <RowDefinition></RowDefinition>
+                    <RowDefinition></RowDefinition>
+                    <RowDefinition></RowDefinition>
+                    <RowDefinition></RowDefinition>
+                    <RowDefinition></RowDefinition>
+                </Grid.RowDefinitions>
+            <TextBlock Name="txtTitle" FontSize="25" Grid.ColumnSpan="2" HorizontalAlignment="Center" VerticalAlignment="Center">里约</TextBlock>
+
+                <TextBlock Grid.Row="1">卡号：</TextBlock>
+                <TextBlock Text="{Binding CardNo}" Grid.Row="1" Grid.Column="1"></TextBlock>
+
+                <TextBlock Grid.Row="2">会员名：</TextBlock>
+                <TextBlock Text="{Binding MemberName}" Grid.Row="2" Grid.Column="1"></TextBlock>
+
+                <TextBlock Grid.Row="3">上次余额：</TextBlock>
+                <TextBlock Text="{Binding LastBalance}" Grid.Row="3" Grid.Column="1"></TextBlock>
+
+
+                    <TextBlock Grid.Row="4">本次共计优惠：</TextBlock>
+                    <TextBlock Name="txtDiscountAmount" Grid.Row="4" Grid.Column="1"></TextBlock>
+                
+                    <DataGrid Grid.Row="5" Grid.ColumnSpan="2" ItemsSource="{Binding lSelInv}" 
+                              IsEnabled="False" MaxWidth="250" 
+                          ScrollViewer.CanContentScroll="False"
+                          ScrollViewer.HorizontalScrollBarVisibility="Disabled" 
+                          ScrollViewer.VerticalScrollBarVisibility="Disabled"
+                          RowDetailsVisibilityMode="Visible"
+                              AutoGenerateColumns="False"
+                           GridLinesVisibility="Horizontal">
+                    <DataGrid.RowDetailsTemplate>
+                        <DataTemplate>
+                            <StackPanel Orientation="Horizontal">
+                                <TextBlock TextWrapping="Wrap" Text="{Binding EnglishName}">
+                                </TextBlock>
+                                <!--<TextBlock TextWrapping="Wrap" Text="{Binding Tastes,StringFormat={}口味:{0}}">
+                                </TextBlock>-->
+                            </StackPanel>
+                        </DataTemplate>
+                    </DataGrid.RowDetailsTemplate>
+                    <DataGrid.Columns>
+                        <DataGridTextColumn Header="名称"  Binding="{Binding Name}">
+                        </DataGridTextColumn>
+                        <DataGridTextColumn Binding="{Binding Price}" Header="单价"></DataGridTextColumn>
+                        <DataGridTextColumn Binding="{Binding Quantity}" Header="数量" ></DataGridTextColumn>
+                        <DataGridTextColumn Binding="{Binding Amount}" Header="金额"></DataGridTextColumn>
+                    </DataGrid.Columns>
+                </DataGrid>
+
+                <ListView Name="CDI" Grid.Row="6" Grid.ColumnSpan="2" ItemsSource="{Binding CardDonateInventory}" IsEnabled="False" >
+                    <ListView.ItemContainerStyle>
+                        <Style TargetType="ListViewItem">
+                            <Setter Property="Background" Value="White"/>
+                            <Setter Property="Foreground" Value="Black"/>
+                        </Style>
+                    </ListView.ItemContainerStyle>
+                    <ListView.View>
+                        <GridView>
+                            <GridView.ColumnHeaderContainerStyle>
+                                <Style TargetType="{x:Type GridViewColumnHeader}">
+                                    <Setter Property="Background" Value="White" />
+                                    <Setter Property="Foreground" Value="Black"/>
+                                    <Setter Property="BorderThickness" Value="0" />
+                                    <Setter Property="HorizontalContentAlignment" Value="Center" />
+                                    <Setter Property="VerticalContentAlignment" Value="Center" />
+                                    <Setter Property="Padding" Value="0,0,0,0" />
+                                    <Setter Property="Template">
+                                        <Setter.Value>
+                                            <ControlTemplate TargetType="{x:Type GridViewColumnHeader}">
+                                                <Grid Margin="0,0,0,0">
+                                                    <Grid>
+
+                                                        <Border x:Name="Main" BorderThickness="0" Padding="{TemplateBinding Padding}" 
+                                                                Background="White" BorderBrush="{DynamicResource NormalBorderBrush}" CornerRadius="0,0,0,0" />
+                                                        <Border x:Name="HoverBorder" BorderThickness="{TemplateBinding BorderThickness}" 
+                                                                Padding="{TemplateBinding Padding}" 
+                                                                Background="White" BorderBrush="{x:Null}" CornerRadius="0,0,0,0" Opacity="0" />
+
+                                                        <Border BorderThickness="0" Padding="{TemplateBinding Padding}">
+                                                            <Border.BorderBrush>
+                                                                <SolidColorBrush Color="{DynamicResource WhiteColor}"/>
+                                                            </Border.BorderBrush>
+                                                            <ContentPresenter VerticalAlignment="{TemplateBinding VerticalContentAlignment}" 
+                                                                              HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}" 
+                                                                              RecognizesAccessKey="True" Margin="0,0,0,0"
+                                                                               />
+                                                        </Border>
+                                                    </Grid>
+
+                                                </Grid>
+                                            </ControlTemplate>
+
+                                        </Setter.Value>
+                                    </Setter>
+                                </Style>
+                            </GridView.ColumnHeaderContainerStyle>
+                            <GridViewColumn DisplayMemberBinding="{Binding Name}" Header="赠送商品"></GridViewColumn>
+                        </GridView>
+                    </ListView.View>
+                </ListView>
+                <TextBlock Grid.Row="7">总计：</TextBlock>
+                <TextBlock Text="{Binding Sum}" Grid.Row="7" Grid.Column="1"></TextBlock>
+
+
+                <TextBlock Grid.Row="8" Name="txtV1">代金券：</TextBlock>
+                <TextBlock Text="{Binding Voucher}" Name="txtV2" Grid.Row="8" Grid.Column="1"></TextBlock>
+
+                <TextBlock Grid.Row="9">折扣：</TextBlock>
+                <TextBlock Text="{Binding Discount,StringFormat={}{0:f2}%}" Grid.Row="9" Grid.Column="1"></TextBlock>
+
+                <TextBlock Grid.Row="10">消费金额：</TextBlock>
+                <TextBlock Text="{Binding Amount}" Grid.Row="10" Grid.Column="1"></TextBlock>
+            
+                <TextBlock Grid.Row="11">当前余额：</TextBlock>
+                <TextBlock Text="{Binding Balance}" Grid.Row="11" Grid.Column="11"></TextBlock>
+
+                <!--<TextBlock Grid.Row="7">赠送商品</TextBlock>
+                <TextBlock Text="{Binding CardDonateInventory}" Grid.Row="7" Grid.Column="1"></TextBlock>-->
+
+                
+                <TextBlock Grid.Row="12">操作员：</TextBlock>
+                <TextBlock Text="{Binding FullName}" Grid.Row="12" Grid.Column="1"></TextBlock>
+
+                <TextBlock Grid.Row="13">门店：</TextBlock>
+                <TextBlock Text="{Binding DeptName}" Grid.Row="13" Grid.Column="1"></TextBlock>
+
+                <!--<TextBlock Grid.Row="13">号牌：</TextBlock>
+                <TextBlock Name="txtDeskNo" Text="{Binding DeskNo}" Grid.Row="13" Grid.Column="1"></TextBlock>-->
+                
+                <TextBlock Grid.Row="14" Text="消费时间："></TextBlock>
+                <TextBlock  Grid.Row="14" Grid.Column="1" Text="{Binding CreateDate,StringFormat={}{0:yyyy-MM-dd HH:mm:ss}}"></TextBlock>
+        </Grid>
+        </Border>
+            
+        <Border Grid.Row="3" Padding="3">
+                <Grid Name="GridPrint2"  Margin="20,0,20,0">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto"></ColumnDefinition>
+                        <ColumnDefinition Width="*"></ColumnDefinition>
+                    </Grid.ColumnDefinitions>
+                    <Grid.RowDefinitions>
+                        <RowDefinition></RowDefinition>
+                        <RowDefinition></RowDefinition>
+                        <RowDefinition></RowDefinition>
+                        <RowDefinition></RowDefinition>
+                        <RowDefinition></RowDefinition>
+                        <RowDefinition></RowDefinition>
+                        <RowDefinition></RowDefinition>
+                    </Grid.RowDefinitions>
+                    
+                    <TextBlock FontSize="25" Grid.Row="0" Grid.ColumnSpan="2" HorizontalAlignment="Center" VerticalAlignment="Center" Name="txtDeskNo2"></TextBlock>
+                    <DataGrid Grid.Row="1" FontSize="15" Grid.ColumnSpan="2" ItemsSource="{Binding lSelInv}" IsEnabled="False" MaxWidth="240" 
+                          ScrollViewer.CanContentScroll="False"
+                          ScrollViewer.HorizontalScrollBarVisibility="Disabled" 
+                          ScrollViewer.VerticalScrollBarVisibility="Disabled"
+                          RowDetailsVisibilityMode="Visible"
+                              LoadingRow="DataGrid_LoadingRow"
+                           GridLinesVisibility="None">
+                        <!--<DataGrid.RowDetailsTemplate>
+                            <DataTemplate>
+                                <StackPanel Orientation="Horizontal">
+                                    <Border BorderThickness="0,0,0,1" BorderBrush="Black">
+                                    <TextBlock TextWrapping="Wrap" Text="{Binding Tastes}" Width="180">
+                                    </TextBlock>
+                                    </Border>
+                                </StackPanel>
+                            </DataTemplate>
+                        </DataGrid.RowDetailsTemplate>-->
+                        <DataGrid.Columns>
+                            
+                            <DataGridTextColumn Header="名称"  Binding="{Binding Name}">
+                            </DataGridTextColumn>
+                            <!--<DataGridTextColumn Binding="{Binding CupType}" Header="杯型"></DataGridTextColumn>-->
+                            <DataGridTextColumn Binding="{Binding Quantity}" Header="数量" ></DataGridTextColumn>
+                        </DataGrid.Columns>
+                    </DataGrid>
+
+                    <ListView Name="CDI2" Grid.Row="2" Grid.ColumnSpan="2" ItemsSource="{Binding CardDonateInventory}" IsEnabled="False" 
+                              FontSize="15">
+                        <ListView.ItemContainerStyle>
+                            <Style TargetType="ListViewItem">
+                                <Setter Property="Background" Value="White"/>
+                                <Setter Property="Foreground" Value="Black"/>
+                            </Style>
+                        </ListView.ItemContainerStyle>
+                        <ListView.View>
+                            <GridView>
+                                <GridView.ColumnHeaderContainerStyle>
+                                    <Style TargetType="{x:Type GridViewColumnHeader}">
+                                        <Setter Property="Background" Value="White" />
+                                        <Setter Property="Foreground" Value="Black"/>
+                                        <Setter Property="BorderThickness" Value="0" />
+                                        <Setter Property="HorizontalContentAlignment" Value="Center" />
+                                        <Setter Property="VerticalContentAlignment" Value="Center" />
+                                        <Setter Property="Padding" Value="0,0,0,0" />
+                                        <Setter Property="Template">
+                                            <Setter.Value>
+                                                <ControlTemplate TargetType="{x:Type GridViewColumnHeader}">
+                                                    <Grid Margin="0,0,0,0">
+                                                        <Grid>
+
+                                                            <Border x:Name="Main" BorderThickness="0" Padding="{TemplateBinding Padding}" 
+                                                                Background="White" BorderBrush="{DynamicResource NormalBorderBrush}" CornerRadius="0,0,0,0" />
+                                                            <Border x:Name="HoverBorder" BorderThickness="{TemplateBinding BorderThickness}" 
+                                                                Padding="{TemplateBinding Padding}" 
+                                                                Background="White" BorderBrush="{x:Null}" CornerRadius="0,0,0,0" Opacity="0" />
+
+                                                            <Border BorderThickness="0" Padding="{TemplateBinding Padding}">
+                                                                <Border.BorderBrush>
+                                                                    <SolidColorBrush Color="{DynamicResource WhiteColor}"/>
+                                                                </Border.BorderBrush>
+                                                                <ContentPresenter VerticalAlignment="{TemplateBinding VerticalContentAlignment}" 
+                                                                              HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}" 
+                                                                              RecognizesAccessKey="True" Margin="0,0,0,0"
+                                                                               />
+                                                            </Border>
+                                                        </Grid>
+
+                                                    </Grid>
+                                                </ControlTemplate>
+
+                                            </Setter.Value>
+                                        </Setter>
+                                    </Style>
+                                </GridView.ColumnHeaderContainerStyle>
+                                <GridViewColumn DisplayMemberBinding="{Binding Name}" Header="赠送商品"></GridViewColumn>
+                            </GridView>
+                        </ListView.View>
+                    </ListView>
+                    <TextBlock Grid.Row="3" FontSize="15">总计：</TextBlock>
+                    <TextBlock Text="{Binding Sum}" FontSize="15" Grid.Row="3" Grid.Column="1"></TextBlock>
+
+                    <TextBlock Grid.Row="4" FontSize="15">总数：</TextBlock>
+                    <TextBlock Name="txtCount" Grid.Row="4" Grid.Column="1" FontSize="15"></TextBlock>
+                    <TextBlock Grid.Row="5" FontSize="15">门店：</TextBlock>
+                    <TextBlock Text="{Binding DeptName}" Grid.Row="5" Grid.Column="1" FontSize="15"></TextBlock>
+
+                    <TextBlock Grid.Row="6" Text="日期：" FontSize="15"></TextBlock>
+                    <TextBlock  Grid.Row="6" Grid.Column="1" FontSize="15" Text="{Binding CreateDate,StringFormat={}{0:HH:mm:ss}}"></TextBlock>
+
+                </Grid>
+            </Border>
+        </Grid>
+        
+    </Grid>
+</Window>

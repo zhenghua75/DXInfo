@@ -1,0 +1,11 @@
+body
+{
+}
+
+.table_content_group{
+	background-color: #efefef;
+	border-top:  1px solid #666666;
+	border-right:  1px solid #666666;
+	border-bottom:  1px solid #666666;
+	border-left:  1px solid #666666;
+}

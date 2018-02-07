@@ -1,0 +1,61 @@
+﻿@using DXInfo.Web.Models
+@model DXInfo.Web.Models.RegisterModel
+
+@{
+    ViewBag.Title = "注册";
+}
+
+<h2 class="ui-widget-header h2-center">创建新帐户</h2>
+<div class="ui-state-highlight">
+<p>
+    使用以下表单创建新帐户。 
+</p>
+<p>
+    密码应至少包含 @ViewBag.PasswordLength 个字符。
+</p>
+</div>
+<script type="text/javascript">
+    $(function () {
+        $("#btnRegister").button();
+        $("#btnReturn").button();
+        InitCtrl();
+    });
+</script>
+@using (Html.BeginForm("Register", "Account", FormMethod.Post, new { id = "Register", @class = "ui-widget" }))
+{    
+    @Html.ValidationSummary(true, "帐户创建不成功。请更正错误并重试。", new { @class = "ui-state-error" })
+    <fieldset class="ui-widget-content">
+        <legend class="ui-widget-header ui-corner-all">帐户信息</legend>
+        <table>
+            <tr>
+                <td>@Html.LabelFor(m => m.UserName)</td>
+                <td>@Html.TextBoxFor(m => m.UserName)
+                    @Html.ValidationMessageFor(m => m.UserName)</td>
+            </tr>
+            <tr>
+                <td>@Html.LabelFor(m => m.FullName)</td>
+                <td>@Html.TextBoxFor(m => m.FullName)
+                    @Html.ValidationMessageFor(m => m.FullName)</td>
+            </tr>
+            <tr>
+                <td>@Html.LabelFor(m => m.DeptId)</td>
+                <td>@Html.DropDownListFor(m => m.DeptId, @Html.GetDept())
+                    @Html.ValidationMessageFor(m => m.DeptId)</td>
+            </tr>
+            <tr>
+                <td>@Html.LabelFor(m => m.Password)</td>
+                <td>@Html.PasswordFor(m => m.Password)
+                    @Html.ValidationMessageFor(m => m.Password)</td>
+            </tr>
+            <tr>
+                <td>@Html.LabelFor(m => m.ConfirmPassword)</td>
+                <td>@Html.PasswordFor(m => m.ConfirmPassword)
+                    @Html.ValidationMessageFor(m => m.ConfirmPassword)</td>
+            </tr>
+            <tr>
+                <td colspan="2">@Html.ActionLink("返回", "Users", "Account", new { onclick = "addToDiv(this);return false;", id = "btnReturn" })
+                <input id="btnRegister" type="submit" value="创建" onclick="submitToDiv('Register');" /></td>
+            </tr>
+        </table>
+    </fieldset>
+}

@@ -1,0 +1,207 @@
+﻿@using DXInfo.Web.Models
+@model DXInfo.Web.Models.Report12Model           
+<script type="text/javascript">
+    $(function () {
+        $("#Date").datepicker();
+    });
+    function pcommit() {
+        return confirm("长款金额：" + $("#curResult_More").val() + "\n短款金额" + $("#curResult_Less").val() + "\n情况说明" + $("#curResult_Comment").val());
+    }
+	</script>
+ 
+@using (Html.BeginForm("Report12", "Report"))
+{
+@Html.ValidationSummary(true, "参数错误。请更正错误并重试。")
+    <div>
+        <fieldset>
+        <table>
+            <tr>
+                <td colspan="8" align="center"><legend>长短款设置</legend></td>
+            </tr>
+            <tr>
+                <td>
+                <div class="editor-label">
+                @Html.LabelFor(m => m.DeptId)
+            </div>
+            </td>
+                <td>
+                <div class="editor-field">
+                @Html.DropDownListFor(m => m.DeptId, @Helpers.GetDepts2())
+                @Html.ValidationMessageFor(m => m.DeptId)
+            </div>
+                </td>
+                <td>
+                <div class="editor-label">
+                @Html.LabelFor(m => m.UserId)
+            </div>
+            </td>
+                <td>
+                <div class="editor-field">
+                @Html.DropDownListFor(m => m.UserId, @Helpers.GetUsers())
+                @Html.ValidationMessageFor(m => m.UserId)
+            </div>
+                </td>
+                
+                <td>
+                    <div class="editor-label">
+                @Html.LabelFor(m => m.Date)
+            </div>
+                </td>
+                <td>
+                    <div class="editor-field">
+                @Html.TextBoxFor(m => m.Date, new { @class = "wide" })
+                @Html.ValidationMessageFor(m => m.Date)
+            </div>
+                </td>               
+                <td>
+                    <p>
+                <input type="submit" name="button" value="查询" />
+            </p>
+                </td>
+            </tr>
+        </table>
+        </fieldset>
+    </div>
+    if (Model.result != null)
+    {
+        var grid = new WebGrid(source: Model.result,
+            defaultSort: "Amount",
+        canPage: true,
+        canSort: true,
+        rowsPerPage: 20);
+
+	<div id="DivGrid" style="width:1800px;">
+	@grid.GetHtml(
+        tableStyle: "table",
+        alternatingRowStyle: "alternate",
+        selectedRowStyle: "selected",
+        headerStyle: "header",
+                mode: WebGridPagerModes.All,
+        numericLinksCount: 50,
+        firstText: "首页",
+        previousText: "上页",
+        nextText: "下页",
+        lastText: "最后页", 
+        columns: grid.Columns(
+                grid.Column(format: (item) => item.GetSelectLink("编辑")),
+                    grid.Column("DifDate", "日期", format: (item) => string.Format("{0:yyyy-MM-dd}", item.DifDate)),
+
+                                grid.Column("DeptName", "店名"),
+                                grid.Column("FullName", "收银员"),
+                                    grid.Column("Amount", "应收款", format: (item) => string.Format("{0:f2}", item.Amount)),
+                                                    grid.Column("More", "长款金额", format: (item) => string.Format("{0:f2}", item.More)),
+                                                                    grid.Column("Less", "短款金额", format: (item) => string.Format("{0:f2}", item.Less)),
+                                                        grid.Column("Comment", "情况说明")
+        )
+    )
+	</div>
+    
+        if (grid.HasSelection)
+        {
+            Model.curResult = grid.SelectedRow.Value;
+        <div>
+        <fieldset>
+        <table>
+            <tr>
+                <td colspan="10" align="center"><legend>长短款设置</legend>
+                @Html.HiddenFor(m => m.curResult.DeptId)
+                @Html.HiddenFor(m => m.curResult.UserId)
+                @Html.HiddenFor(m => m.curResult.IsIn)
+                </td>
+            </tr>
+            <tr>     
+            <td>
+                    <div class="editor-label">
+                @Html.LabelFor(m => m.curResult.DifDate)
+            </div>
+                </td>
+                <td>
+                    <div class="editor-field">
+                @Html.TextBoxFor(m => m.curResult.DifDate, new Dictionary<string, object>() { { "readonly", "readonly" },{"size","7"} })
+                @Html.ValidationMessageFor(m => m.curResult.DifDate)
+            </div>
+                </td>  
+
+            <td>
+                    <div class="editor-label">
+                @Html.LabelFor(m => m.curResult.DeptName)
+            </div>
+                </td>
+                <td>
+                    <div class="editor-field">
+                @Html.TextBoxFor(m => m.curResult.DeptName, new Dictionary<string, object>() { { "readonly", "readonly" }, { "size", "7" } })
+                @Html.ValidationMessageFor(m => m.curResult.DeptName)
+            </div>
+                </td>    
+                 
+            <td>
+                    <div class="editor-label">
+                @Html.LabelFor(m => m.curResult.FullName)
+            </div>
+                </td>
+                <td>
+                    <div class="editor-field">
+                @Html.TextBoxFor(m => m.curResult.FullName, new Dictionary<string, object>() { { "readonly", "readonly" }, { "size", "7" } })
+                @Html.ValidationMessageFor(m => m.curResult.FullName)
+            </div>
+                </td>    
+                         
+                <td>
+                    <div class="editor-label">
+                @Html.LabelFor(m => m.curResult.Amount)
+            </div>
+                </td>
+                <td>
+                    <div class="editor-field">
+                @Html.TextBoxFor(m => m.curResult.Amount, new Dictionary<string, object>() { { "readonly", "readonly" }, { "size", "7" } })
+                @Html.ValidationMessageFor(m => m.curResult.Amount)
+            </div>
+                </td>    
+    </tr>
+    <tr>
+                <td>
+                    <div class="editor-label">
+                @Html.LabelFor(m => m.curResult.More)
+            </div>
+                </td>
+                <td>
+                    <div class="editor-field">
+                @Html.TextBoxFor(m => m.curResult.More, new { @class = "wide" })
+                @Html.ValidationMessageFor(m => m.curResult.More)
+            </div>
+                </td>    
+                <td>
+                    <div class="editor-label">
+                @Html.LabelFor(m => m.curResult.Less)
+            </div>
+                </td>
+                <td>
+                    <div class="editor-field">
+                @Html.TextBoxFor(m => m.curResult.Less, new { @class = "wide" })
+                @Html.ValidationMessageFor(m => m.curResult.Less)
+            </div>
+                </td>    
+        <td >
+                    <div class="editor-label">
+                @Html.LabelFor(m => m.curResult.Comment)
+            </div>
+                </td>
+                <td>
+                    <div class="editor-field">
+                @Html.TextBoxFor(m => m.curResult.Comment, new { @class = "wide" })
+                @Html.ValidationMessageFor(m => m.curResult.Comment)
+            </div>
+                </td>               
+                <td colspan="2">
+                    <p>
+                        <input type="submit" name="button" value="修改" onclick="return pcommit();" />
+                    </p>
+                </td>
+            </tr>
+        </table>
+        </fieldset>
+        </div>
+        }
+    }
+}
+    

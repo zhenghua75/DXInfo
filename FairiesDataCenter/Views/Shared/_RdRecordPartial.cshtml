@@ -1,0 +1,40 @@
+﻿<style>
+	#toolbar {
+		padding: 10px 4px;
+	}
+	</style>
+<script src="@Url.Content("~/Scripts/chosen/chosen.jquery.min.js")" type="text/javascript"></script>
+<link href="@Url.Content("~/Scripts/chosen/chosen.css")" rel="stylesheet" type="text/css" />
+<script src="@Url.Content("~/Scripts/jquery.blockUI.js")" type="text/javascript"></script>
+<script src="@Url.Content("~/Scripts/jquery.dateFormat-1.0.js")" type="text/javascript"></script>
+<script src="@Url.Content("~/Scripts/RdRecord/resetForm.js")" type="text/javascript"></script>
+<script src="@Url.Content("~/Scripts/RdRecord/resetValidation.js")" type="text/javascript"></script>
+<script src="@Url.Content("~/Scripts/RdRecord/setButton.js")" type="text/javascript"></script>
+<script src="@Url.Content("~/Scripts/RdRecord/setButtonState.js")" type="text/javascript"></script>
+<script src="@Url.Content("~/Scripts/RdRecord/resetGrid.js")" type="text/javascript"></script>
+<script src="@Url.Content("~/Scripts/RdRecord/initForm.js")" type="text/javascript"></script>
+<script src="@Url.Content("~/Scripts/RdRecord/ExportToExcel.js")" type="text/javascript"></script>
+
+<div id="addurl" data-url="@Url.Action("GetRdCode", "StockManage")"></div>
+<div id="saveaddurl" data-url="@Url.Action("AddRdRecord", "StockManage")"></div>
+<div id="savemodifyurl" data-url="@Url.Action("ModifyRdRecord", "StockManage")"></div>
+<div id="verifyurl" data-url="@Url.Action("VerifyRdRecord", "StockManage")"></div>
+<div id="unverifyurl" data-url="@Url.Action("UnVerifyRdRecord", "StockManage")"></div>
+<div id="deleteurl" data-url="@Url.Action("DeleteRdRecord", "StockManage")"></div>
+<div id="cururl" data-url="@Url.Action("CurRdRecord", "StockManage")"></div>
+<div id="starturl" data-url="@Url.Action("StartRdRecord", "StockManage")"></div>
+<div id="prevurl" data-url="@Url.Action("PrevRdRecord", "StockManage")"></div>
+<div id="nexturl" data-url="@Url.Action("NextRdRecord", "StockManage")"></div>
+<div id="endurl" data-url="@Url.Action("EndRdRecord", "StockManage")"></div>
+<div id="getExtRate" data-url="@Url.Action("GetExtRate", "StockManage")"></div>
+<div id="getLocatorByWh" data-url="@Url.Action("GetLocatorByWh", "StockManage")"></div>
+<div id="getInvInfo" data-url="@Url.Action("GetInvInfo", "StockManage")"></div>
+<div id="getUnitJsonByInv" data-url="@Url.Action("GetUnitJsonByInv", "StockManage")"></div>
+<div id="printurl" data-url="../../Print/PurchaseInStock.aspx"></div>
+<div id="searchurl" data-url="@Url.Action("SearchRdRecord", "StockManage")"></div>
+<div id="getBatchUrl" data-url="@Url.Action("GetBatch", "StockManage")"></div>
+<div id="getLocatorByWhBatchUrl" data-url="@Url.Action("getLocatorByWhBatch", "StockManage")"></div>
+<div id="getAvaNumUrl" data-url="@Url.Action("getAvaNum", "StockManage")"></div>
+<div id="addInventoryUrl" data-url="@Url.Action("Inventory", "StockManage", new { AddInventory="true"})"></div>
+<div id="getInvsUrl" data-url="@Url.Action("GetInvs", "StockManage")"></div>
+<div id="GetInvByWh" data-url="@Url.Action("GetInvByWh", "StockManage")"></div>

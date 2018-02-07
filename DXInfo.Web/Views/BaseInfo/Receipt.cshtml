@@ -1,0 +1,110 @@
+﻿@using Trirand.Web.Mvc
+@using DXInfo.Web.Models
+@model DXInfo.Web.Models.ReceiptGridModel 
+@Html.HiddenFor(m => m.ReceiptType)         
+<script type="text/javascript">
+    $(function () {
+        $("#query").button();
+        $("#query").button().click(function () {
+            setFilters();
+            query();
+        });
+        $("#export").button();
+        $("#export").button().click(function () {
+            setFilters();
+            excelExport();
+        });   
+        $("#complete").button();
+        $("#complete").button().click(function () {
+            ReceiptComplete();
+        }); 
+        InitCtrl();    
+    });
+    function setFilters() {
+        var filtersStr = '{"groupOp":"AND","rules":[';
+        filtersStr += '{"field":"ReceiptType","op":"eq","data":' + $("#ReceiptType").val() + '},';
+        if ($("#MemberName").val()) {
+            filtersStr += '{"field":"MemberName","op":"cn","data":"' + $("#MemberName").val() + '"},'
+        }
+        if ($("#IdCard").val()) {
+            filtersStr += '{"field":"IdCard","op":"cn","data":"' + $("#IdCard").val() + '"},'
+        }
+        if ($("#LinkPhone").val()) {
+            filtersStr += '{"field":"LinkPhone","op":"cn","data":"' + $("#LinkPhone").val() + '"},'
+        }
+        if ($("#LinkAddress").val()) {
+            filtersStr += '{"field":"LinkAddress","op":"cn","data":"' + $("#LinkAddress").val() + '"},'
+        }
+        if ($("#Email").val()) {
+            filtersStr += '{"field":"Email","op":"cn","data":"' + $("#Email").val() + '"},'
+        }
+        if ($("#Content").val()) {
+            filtersStr += '{"field":"Content","op":"cn","data":"' + $("#Content").val() + '"},'
+        }
+        if ($("#Comment").val()) {
+            filtersStr += '{"field":"Comment","op":"cn","data":"' + $("#Comment").val() + '"},'
+        }
+
+        filtersStr += '{}]}';
+        var postData = $("#ReceiptGrid").jqGrid("getGridParam", "postData");
+        $.extend(postData, { filters: filtersStr });
+    }
+    function query() {
+        $("#ReceiptGrid").jqGrid("setGridParam", { search: true }).trigger("reloadGrid", [{ page: 1}]);
+    }
+    function serializeGridData(postData) {
+        var sdata = {
+            _search:true,
+            ReceiptType: $("#ReceiptType").val()
+        };
+        var newPostData = $.extend(postData, sdata);
+        return newPostData;
+    }
+    function ReceiptComplete() {
+        var grid = $("#ReceiptGrid");
+        var url = "@Url.Action("ReceiptComplete","BaseInfo")";
+        var ids = grid.jqGrid('getGridParam', 'selarrrow');
+        if (ids.length > 0) {
+            $.ajax({
+                type: "POST",
+                url: url,
+                data: { receipts: ids.join(", ")
+                },
+                dataType: "json",
+                success: function (msg) {
+                    alert(msg);
+                    $("#ReceiptGrid").jqGrid().trigger("reloadGrid", [{ page: 1}]);
+                },
+                error: function (res, status, exeption) {
+                    alert(res);
+                }
+            });
+        }
+        else{
+            alert("请选择单据");
+        }
+    }
+	</script>
+<h2 class="ui-widget-header h2-center">@ViewBag.Title</h2>
+<div>
+        <fieldset class="ui-widget ui-widget-content ui-corner-all">
+            <legend class="ui-widget-header ui-corner-all"></legend>
+<table>
+    <tr>        
+        <td>姓名：</td><td><input id="MemberName" type="text"/></td>
+        <td>证件号：</td><td><input id="IdCard" type="text"/></td>
+        <td>联系电话：</td><td><input id="LinkPhone" type="text"/></td>
+        </tr><tr>
+        <td>联系地址：</td><td><input id="LinkAddress" type="text"/></td>                   
+        <td>EMAIL：</td><td><input id="Email" type="text"/></td>        
+        <td>内容：</td><td><input id="Content" type="text"/></td>  
+        </tr><tr>      
+        <td>描述：</td><td><input id="Comment" type="text"/></td>          
+        <td colspan="4"><button id="query">查询</button>
+        <button id="export">导出EXCEL</button>
+        <button id="complete">单据完成</button></td>
+    </tr>
+</table>
+</fieldset>
+</div>
+@Html.Trirand().JQGrid(Model.ReceiptGrid, "ReceiptGrid")

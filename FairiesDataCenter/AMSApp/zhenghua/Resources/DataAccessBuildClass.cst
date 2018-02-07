@@ -1,0 +1,113 @@
+﻿<%@ CodeTemplate Language="C#" ResponseEncoding="UTF-8" TargetLanguage="C#" Description="Generates a EntityObject." %>
+<%@ Property Name="SourceTable" Type="SchemaExplorer.TableSchema" Category="Context" Description="Table that the object is based on." %>
+<%@ Property Name="Author" Type="String" Default="郑华" Category="CopyRight" Description="作者" Optional="true"%>
+<%@ Property Name="ProjectName" Type="String"  Default="AMSApp" Category="Context" Description="项目名称" option = "true"%>
+<%@ Property Name="ClassDescription" Type = "String" Category ="Context" Description="功能描述" %> 
+<%@ Property Name="CopyRight" Type="System.String" Default="zhenghua"  Category="CopyRight" Optional="true"%>
+
+<%@ Assembly Name="SchemaExplorer" %>
+<%@ Assembly Name="System.Data" %>
+<%@ Import Namespace="SchemaExplorer" %>
+<%@ Import Namespace="System.Data" %>
+
+/******************************************************************** FR 1.20E *******
+* 项目名称： <%= ProjectName %>
+* 文件名: 	<%= GetFileName()%>
+* 作者:		     <%= Author %>
+* 创建日期:   <%= DateTime.Now.ToShortDateString() %>
+* 功能描述:   <%= ClassDescription %>
+
+*                                                           Copyright(C) <%= DateTime.Now.Year%> <%=CopyRight%>
+*************************************************************************************/
+#region ImportNameSpace
+using System;
+using System.Data;
+using System.Data.SqlClient;
+
+using AMSApp.zhenghua.EntityBase;
+using AMSApp.zhenghua.Entity;
+using AMSApp.zhenghua.QueryArgs;
+using AMSApp.zhenghua.Common;
+#endregion
+
+namespace AMSApp.zhenghua.DataAccess
+{
+	/// <summary>
+	/// **功能名称：<%=ClassDescription %>数据访问类
+	/// </summary>
+	public class <%= GetClassName(SourceTable) %>
+	{
+		//这里写你的代码
+
+
+
+        #region 生成器生成代码
+
+
+
+        /// <summary>
+        /// 取当前查询参数实例
+
+
+        /// </summary>
+        /// <returns>查询参数</returns>
+        private static <%= GetQueryArgsName(SourceTable)%> GetCurrentArgs()
+        {
+            return new <%= GetQueryArgsName(SourceTable)%>();
+        }
+		
+        #endregion
+	}
+}
+
+<script runat="template">
+
+public string GetFiledName(ColumnSchema column)
+{
+	string propertyName = column.Name;
+	
+	if (propertyName == column.Table.Name + "Name") return "Name";
+	if (propertyName == column.Table.Name + "Description") return "Description";
+	
+	if (propertyName.EndsWith("TypeCode")) propertyName = propertyName.Substring(0,1 ).ToUpper()+ propertyName.Substring(1, propertyName.Length );
+	
+	return propertyName;
+}
+		
+public string GetClassName(TableSchema table)
+{
+	string strClassName = table.Name;
+	return strClassName.Substring(2,1 ).ToUpper()+ strClassName.Substring(3, strClassName.Length-3 ) + "Access";
+	
+}
+
+public string GetQueryArgsName(TableSchema table)
+{
+	string strClassName = table.Name.Replace("whobe_","");
+	return strClassName.Substring(2,1 ).ToUpper()+ strClassName.Substring(3, strClassName.Length-3 ) + "Args";
+	
+}
+
+public string GetEnitiyName(TableSchema table)
+{
+	string strClassName = table.Name;
+	return strClassName.Substring(2,1 ).ToUpper()+ strClassName.Substring(3, strClassName.Length-3 );
+	
+}
+
+public string GetEnitiyObjectName(TableSchema table)
+{
+	return "obj" + GetEnitiyName(table);	
+}
+
+public string GetEnitiyObjectArgsName(TableSchema table)
+{
+	return "/// <param name=\"" + GetEnitiyObjectName(table) +"\">??</param>";	
+}
+
+public override string GetFileName()
+{
+	return this.GetClassName(this.SourceTable) + ".cs";
+}
+
+</script>

@@ -1,0 +1,90 @@
+﻿@using Trirand.Web.Mvc
+@model ynhnTransportManage.Models.CategoryDeptGridModel
+@Html.Trirand().JQGrid(Model.CategoryGrid, "CategoryGrid")
+@Html.Trirand().JQGrid(Model.DeptGrid, "DeptGrid")
+@Html.HiddenFor(m => m.CategoryType)
+@Html.HiddenFor(m => m.DeptType)
+<script type="text/javascript">
+    function showDeptSubGrid(subgrid_id, row_id) {
+        showSubGrid_DeptGrid(subgrid_id, row_id);
+    }
+    function serializeGridData(postData) {
+        var sdata = {
+            CategoryType: $("#CategoryType").val()
+        };
+        var newPostData = $.extend(postData, sdata);
+        return newPostData;
+    }
+    function serializeGridData2(postData) {
+        var sdata = {
+            DeptType: $("#DeptType").val()
+        };
+        var newPostData = $.extend(postData, sdata);
+        return newPostData;
+    }
+    function serializeRowData(postData) {
+        var sdata = {
+            CategoryType: $("#CategoryType").val(),
+            DeptType: $("#DeptType").val()
+        };
+        var newPostData = $.extend(postData, sdata);
+        return newPostData;
+    }
+    function beforeSubmit(postdata, formid) {
+        var sdata = { CategoryType: $("#CategoryType").val(),
+            DeptType: $("#DeptType").val()
+        };
+        $.extend(postdata, sdata);
+        return [true, ''];
+    }
+    </script>
+
+ <script type="text/javascript">
+
+     function customButtonClicked() {
+         var grid = $("#CategoryGrid");
+         
+         var ids = grid.jqGrid('getGridParam', 'selarrrow');
+         
+          var url = "@Url.Action("CategoryDept2_EditData","BaseInfo")";
+          
+                if (ids.length>0) {                    
+                    $("#dialog-confirm").dialog({
+                        height: 480,
+                        width:650,
+                        modal:true,
+                        buttons:{
+                            '关闭': function(){
+                                $(this).dialog('close');
+                            },
+                            '确定': function(){
+                                var grid2 = $("#Dept2Grid");
+                                var ids2 = grid2.jqGrid('getGridParam', 'selarrrow');
+                                if (ids2.length>0) {
+                                $.ajax({
+                                    type: "POST",
+                                    url:  url,
+                                    data: { categories: ids.join(", "),
+                                        depts: ids2.join(", ")
+                                    },
+                                    dataType: "json",
+                                    success: function(msg){
+                                        alert(msg);
+                                    },
+                                    error: function(res, status, exeption) {
+                                        alert(res);
+                                    }
+                                });
+                                }
+                                $(this).dialog('close');
+                            }
+                        }
+                    });
+                };
+     }           
+    </script>
+    <div style="display:none;" id="dialog-confirm" title="分类门店设置">
+<p><span class="ui-icon-alert" style="float:left; margin:0 7px 20px 0;"></span>
+@Html.Trirand().JQGrid(Model.Dept2Grid, "Dept2Grid")
+</p>
+</div>

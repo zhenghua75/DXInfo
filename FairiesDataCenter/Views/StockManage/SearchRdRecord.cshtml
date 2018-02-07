@@ -1,0 +1,58 @@
+﻿@using Trirand.Web.Mvc
+@model ynhnTransportManage.Models.StockManage.RdRecordGridModel
+@Html.Trirand().JQGrid(Model.RdRecordGrid, "RdRecordGrid")
+@Html.HiddenFor(m => m.vouchType.Code)
+<script type="text/javascript">
+$(document).ready(function () {
+        $("#RdRecordGrid").closest("div.ui-jqgrid-view")
+                .children("div.ui-jqgrid-titlebar")
+                .css("text-align", "center")
+                .css("font-size", "large")
+                .children("span.ui-jqgrid-title")
+                .css("float", "none");
+    });
+    function FormatNumber(num) {
+        return parseFloat(num);
+    }
+    function UnFormatNumber(num) {
+        return num;
+    }
+    function DblClick(rowid) {
+        switch($("#vouchType_Code").val()){        
+            case "001":
+                self.location = "@Url.Action("PurchaseInStock", "StockManage")"+"?Id="+rowid;
+            break;
+            case "002":
+                self.location = "@Url.Action("SaleOutStock", "StockManage")"+"?Id="+rowid;
+            break;
+            case "003":
+                self.location = "@Url.Action("OtherInStock", "StockManage")"+"?Id="+rowid;
+            break;
+            case "004":
+                self.location = "@Url.Action("OtherOutStock", "StockManage")"+"?Id="+rowid;
+            break;
+            case "005":
+                self.location = "@Url.Action("MaterialOutStock", "StockManage")"+"?Id="+rowid;
+            break;
+            case "006":
+                self.location = "@Url.Action("ProductInStock", "StockManage")"+"?Id="+rowid;
+            break;
+            case "007":
+                self.location = "@Url.Action("InitStock", "StockManage")"+"?Id="+rowid;
+            break;
+        }
+    }
+    function beforeRefresh() {
+        $("#RdRecordGrid").jqGrid("setGridParam", {search: true}).trigger("reloadGrid", [{ page: 1}]);
+    }
+    function serializeGridData(postData){
+        var sdata = {
+            searchField: "VouchType",
+            searchString: $("#vouchType_Code").val(),
+            searchOper: "eq",
+            vouchType:$("#vouchType_Code").val()
+        };
+        var newPostData = $.extend(postData, sdata);
+        return newPostData;
+    }
+</script>

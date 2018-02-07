@@ -1,0 +1,104 @@
+﻿@using Trirand.Web.Mvc
+@using DXInfo.Web.Models
+@model DXInfo.Web.Models.AssInfoGridModel
+<script type="text/javascript">
+    $(function () {
+        $("#query").button();
+        var myDate = new Date();
+        $("#BeginDate").datetimepicker();
+        $("#EndDate").datetimepicker();
+        var beginDateStr = myDate.getFullYear() + "-" + (myDate.getMonth() + 1) + "-" + myDate.getDate() + " 00:00";
+        var endDateStr = myDate.getFullYear() + "-" + (myDate.getMonth() + 1) + "-" + myDate.getDate() + " 23:59";
+        $("#BeginDate").datetimepicker("setDate", beginDateStr);
+        $("#EndDate").datetimepicker("setDate", endDateStr);
+
+        $("#query").button().click(function () {
+            query();
+        });
+        $("#export").button();
+        $("#export").button().click(function () {
+            excelExport();
+        });
+        var ctrls = [{ name: "BeginDate", type: "datetime" },
+                 { name: "EndDate", type: "datetime" },
+                 { name: "q_vcAssType", type: "select" },
+                 { name: "q_vcDeptID", type: "select" },
+                 { name: "q_vcAssState", type: "select" },
+                 { name: "q_vcCardID", type: "text" },
+                 { name: "q_vcAssName", type: "text" },
+                 { name: "q_vcLinkPhone", type: "text" },
+                 ];
+        InitCtrl(ctrls);
+    });
+    function serializeGridData(postData){
+        var filtersStr = '{"groupOp":"AND","rules":[';
+        var filtersStr1 = "";
+        if ($("#q_vcCardID").val()) {
+            filtersStr1 += '{"field":"vcCardID","op":"cn","data":"' + $("#q_vcCardID").val() + '"},'
+        }
+        if ($("#q_vcAssName").val()) {
+            filtersStr1 += '{"field":"vcAssName","op":"cn","data":"' + $("#q_vcAssName").val() + '"},'
+        }
+        if ($("#q_vcLinkPhone").val()) {
+            filtersStr1 += '{"field":"vcLinkPhone","op":"cn","data":"' + $("#q_vcLinkPhone").val() + '"},'
+        }
+        if ($("#q_vcAssType").val()) {
+            filtersStr1 += '{"field":"vcAssType","op":"eq","data":"' + $("#q_vcAssType").val() + '"},'
+        }
+        if ($("#q_vcAssState").val()) {
+            filtersStr1 += '{"field":"vcAssState","op":"eq","data":"' + $("#q_vcAssState").val() + '"},'
+        }
+        if ($("#q_vcDeptID").val()) {
+            filtersStr1 += '{"field":"vcDeptID","op":"eq","data":"' + $("#q_vcDeptID").val() + '"},'
+        }
+        if ($("#BeginDate").val()) {
+            filtersStr1 += '{"field":"dtCreateDate","op":"ge","data":"' + $("#BeginDate").val() + '"},'
+        }
+        if ($("#EndDate").val()) {
+            filtersStr1 += '{"field":"dtCreateDate","op":"le","data":"' + $("#EndDate").val() + '"},'
+        }
+        if (filtersStr1 == "") {
+            filtersStr = "";
+        }
+        else {
+            filtersStr += filtersStr1;
+            filtersStr += '{}]}';
+        }
+        var sdata = {
+            _search: true,
+            filters: filtersStr,
+//            BeginDate: $("#BeginDate").val(),
+//                EndDate: $("#EndDate").val(),
+//                vcCardID: $("#vcCardID").val(),
+//                vcAssType: $("#vcAssType").val(),
+//                vcAssName: $("#vcAssName").val(),
+//                vcAssState: $("#vcAssState").val(),
+//                vcLinkPhone: $("#vcLinkPhone").val(),
+        };
+        var newPostData = $.extend(postData, sdata);
+        return $.param(newPostData);
+    }
+    function query() {
+            $("#AssInfoGrid").jqGrid('setGridParam', { datatype: 'json' }).trigger('reloadGrid', [{ page: 1}]); 
+    }
+	</script>
+<h2 class="ui-widget-header h2-center">@ViewBag.Title</h2>
+<fieldset class="ui-widget ui-widget-content ui-corner-all">
+            <legend class="ui-widget-header ui-corner-all"></legend>
+<table>
+    <tr>
+        <td>会员卡号</td><td>@Html.TextBox("q_vcCardID")</td>
+        <td>会员类型</td><td>@Html.DropDownList("q_vcAssType", @Html.GetAssType())</td>
+        <td>门店</td><td>@Html.DropDownList("q_vcDeptID", @Html.GetMD())</td>
+        </tr><tr>
+        <td>会员姓名</td><td>@Html.TextBox("q_vcAssName")</td>
+        <td>会员状态</td><td>@Html.DropDownList("q_vcAssState", @Html.GetAssState())</td>
+        <td>联系电话</td><td>@Html.TextBox("q_vcLinkPhone")</td>
+        </tr><tr>
+        <td>创建时间</td><td>@Html.TextBox("BeginDate")</td>
+        <td>-</td><td>@Html.TextBox("EndDate")</td>
+        <td><button id="query">查询</button></td><td><button id="export"  style="display:none">导出EXCEL</button></td>
+    </tr>
+</table>
+</fieldset>
+@Html.Trirand().JQGrid(Model.AssInfoGrid, "AssInfoGrid")

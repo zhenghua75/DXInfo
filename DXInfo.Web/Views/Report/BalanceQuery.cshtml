@@ -1,0 +1,78 @@
+﻿@using Trirand.Web.Mvc
+@using DXInfo.Web.Models
+@model DXInfo.Web.Models.BalanceQueryGridModel
+<script type="text/javascript">
+    $(function () {
+        $("#query").button();
+        var myDate = new Date();
+        $("#BeginDate").datetimepicker();
+        $("#EndDate").datetimepicker();
+        var beginDateStr = myDate.getFullYear() + "-" + (myDate.getMonth() + 1) + "-" + myDate.getDate() + " 00:00";
+        var endDateStr = myDate.getFullYear() + "-" + (myDate.getMonth() + 1) + "-" + myDate.getDate() + " 23:59";
+        $("#BeginDate").datetimepicker("setDate", beginDateStr);
+        $("#EndDate").datetimepicker("setDate", endDateStr);
+
+        $("#query").button().click(function () {
+            query();
+        });
+        $("#export").button();
+        $("#export").button().click(function () {
+            excelExport();
+        });
+        var ctrls = [{ name: "BeginDate", type: "datetime" },
+                 { name: "EndDate", type: "datetime" },
+                 { name: "vcDeptID", type: "select" },
+                 { name: "Days", type: "text"},
+                 ];
+        InitCtrl(ctrls);
+
+        $("#compute").button();
+        $("#compute").button().click(function () {
+            ComputeBalance();
+        });
+    });
+    function serializeGridData(postData){        
+        var sdata = {
+            _search: true,
+            vcDeptID:$("#vcDeptID").val(),
+            BeginDate:$("#BeginDate").val(),
+            EndDate:$("#EndDate").val(),
+        };
+        var newPostData = $.extend(postData, sdata);
+        return $.param(newPostData);
+    }
+    function query() {
+            $("#BalanceQueryGrid").jqGrid('setGridParam', { datatype: 'json' }).trigger('reloadGrid', [{ page: 1}]); 
+    }
+    function isNumber(n) {
+  return !isNaN(parseFloat(n)) && isFinite(n);
+}
+    function ComputeBalance(){
+        var days = $("#Days").val();
+        if(isNumber(days)){
+        var url = "@Url.Action("ComputeBalance", "Report")";
+        $.getJSON(url, { Days: days },
+        function (json) {if(json.Error!="") alert(json.Error); else alert("计算成功");});
+        }
+        else{
+            alert("请输入数字");
+        }
+    }
+	</script>
+<h2 class="ui-widget-header h2-center">@ViewBag.Title</h2>
+<fieldset class="ui-widget ui-widget-content ui-corner-all">
+            <legend class="ui-widget-header ui-corner-all"></legend>
+<table>
+    <tr>        
+        <td>开始时间</td><td>@Html.TextBox("BeginDate")</td>    
+        <td>门店</td><td>@Html.DropDownList("vcDeptID", @Html.GetMD())</td> 
+        <td>所填的天数，是以当前日期之前多少天的数据重新结算！</td>             
+     </tr><tr>
+        <td>结束时间</td><td>@Html.TextBox("EndDate")</td>    
+        <td><button id="query">查询</button></td>                
+        <td><button id="export">导出EXCEL</button></td>
+        <td><button id="compute">计算结算数据</button>@Html.TextBox("Days")</td>
+    </tr>
+</table>
+</fieldset>
+@Html.Trirand().JQGrid(Model.BalanceQueryGrid, "BalanceQueryGrid")

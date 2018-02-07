@@ -1,0 +1,30 @@
+﻿@using Trirand.Web.Mvc
+@model ynhnTransportManage.Models.StockManage.VendorGridModel
+@Html.Trirand().JQGrid(Model.VendorGrid, "VendorGrid")
+@Html.HiddenFor(m => m.VendorType)
+<script type="text/javascript">
+    $(document).ready(function () {
+        $("#VendorGrid").closest("div.ui-jqgrid-view")
+                .children("div.ui-jqgrid-titlebar")
+                .css("text-align", "center")
+                .css("font-size", "large")
+                .children("span.ui-jqgrid-title")
+                .css("float", "none");
+    });
+    function serializeGridData(postData) {
+        var sdata = {
+            searchField: "VendorType",
+            searchString: $("#VendorType").val(),
+            searchOper: "eq",
+            VendorType: $("#VendorType").val()
+        };
+        var newPostData = $.extend(postData, sdata);
+        return newPostData;
+    }
+    function beforeSubmit(postdata, formid) {
+        var sdata = { VendorType: $("#VendorType").val()
+        };
+        $.extend(postdata, sdata);
+        return [true, ''];
+    }
+</script>
