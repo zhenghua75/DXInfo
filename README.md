@@ -1,4 +1,6 @@
 # DXInfo
+## 下载软件
+[git](https://git-scm.com/)
 
 ## create a new repository on the command line
 
