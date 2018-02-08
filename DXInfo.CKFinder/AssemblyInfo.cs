@@ -75,6 +75,5 @@ using System.Security;
 //       documentation for more information on this.
 //
 [assembly: AssemblyDelaySign( false )]
-[assembly: AssemblyKeyFile( "..\\..\\CKFinderKey.snk" )]
 [assembly: AssemblyKeyName( "" )]
 [assembly: ComVisibleAttribute( false )]

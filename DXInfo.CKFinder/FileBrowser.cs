@@ -37,7 +37,8 @@ namespace CKFinder
 				object o = ViewState[ "BasePath" ];
 
 				if ( o == null )
-					o = System.Configuration.ConfigurationSettings.AppSettings[ "CKFinder:BasePath" ];
+                    o = System.Configuration.ConfigurationManager.AppSettings["CKFinder:BasePath"];
+					//o = System.Configuration.ConfigurationSettings.AppSettings[ "CKFinder:BasePath" ];
 
 				return ( o == null ? "/ckfinder/" : (string)o );
 			}

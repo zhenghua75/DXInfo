@@ -600,7 +600,7 @@ namespace FairiesCoolerCash
                     uow = null;
                 }
             }
-            catch(Exception ex)
+            catch(Exception)
             {
             }
             if (mutex != null && ownsMutex)
