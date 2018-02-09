@@ -168,12 +168,13 @@ namespace DXInfo.Restaurant
             }
 
         }
-        private void Order_OrderPackage(DXInfo.Models.OrderPackages op)
+        private void Order_OrderPackage(DXInfo.Models.OrderPackages op,bool isTemp = false)
         {
             if (op.Status == (int)DXInfo.Models.OrderMenuStatus.Normal)
             {
                 op.OperDate = dtOperDate;
-                op.Status = (int)DXInfo.Models.OrderMenuStatus.Order;
+                if(!isTemp)
+                    op.Status = (int)DXInfo.Models.OrderMenuStatus.Order;
                 if (op.Id == Guid.Empty)
                 {
                     uow.OrderPackages.Add(op);
@@ -189,12 +190,15 @@ namespace DXInfo.Restaurant
                 uow.OrderPackagesHis.Add(packagesHis);
             }
         }
-        private void Order_OrderDish(DXInfo.Models.OrderDishes odish)
+        private void Order_OrderDish(DXInfo.Models.OrderDishes odish,bool isTemp = false)
         {
 
             if (odish.Status == (int)DXInfo.Models.OrderDishStatus.Opened)
             {
-                odish.Status = (int)DXInfo.Models.OrderDishStatus.Ordered;
+                if (!isTemp)
+                {
+                    odish.Status = (int)DXInfo.Models.OrderDishStatus.Ordered;
+                }
                 odish.UserId = userId;
                 odish.DeptId = deptId;
                 uow.OrderDishes.Update(odish);
@@ -206,7 +210,7 @@ namespace DXInfo.Restaurant
             }
         }
         private void Order_OrderMenu_UpdateOrderMenu(DXInfo.Models.OrderMenus orderMenu,
-            DXInfo.Models.InventoryEx iex)
+            DXInfo.Models.InventoryEx iex,bool isTemp)
         {
 
             orderMenu.Quantity = iex.Quantity;
@@ -216,14 +220,18 @@ namespace DXInfo.Restaurant
             orderMenu.OrderCreateDate = dtOperDate;
             orderMenu.Oper = userId;
             orderMenu.OperDate = dtOperDate;
-            if (orderMenu.Quantity > orderMenu.MenuQuantity)
+            if (!isTemp)
             {
-                orderMenu.Status = (int)DXInfo.Models.OrderMenuStatus.Order;
+                if (orderMenu.Quantity > orderMenu.MenuQuantity)
+                {
+                    orderMenu.Status = (int)DXInfo.Models.OrderMenuStatus.Order;
+                }
+                else
+                {
+                    orderMenu.Status = (int)DXInfo.Models.OrderMenuStatus.Out;
+                }
             }
-            else
-            {
-                orderMenu.Status = (int)DXInfo.Models.OrderMenuStatus.Out;
-            }
+            
             uow.OrderMenus.Update(orderMenu);
 
             DXInfo.Models.OrderMenusHis menuHis = Mapper.Map<DXInfo.Models.OrderMenusHis>(orderMenu);
@@ -928,7 +936,8 @@ namespace DXInfo.Restaurant
         }
         private void Order_OrderMenu(DXInfo.Models.InventoryEx iex,DXInfo.Models.OrderDishStatus orderDishStatus,
             ref Hashtable htOtherPrint,
-            ref Hashtable htLocalPrint)
+            ref Hashtable htLocalPrint,
+            bool isTemp = false)
         {
             if (iex.OrderMenuId != Guid.Empty)
             {
@@ -937,17 +946,21 @@ namespace DXInfo.Restaurant
                 {
                     if (orderMenu.Status == (int)DXInfo.Models.OrderMenuStatus.Normal)
                     {
-                        orderMenu.Status = (int)DXInfo.Models.OrderMenuStatus.Order;
-                        Order_OrderMenu_UpdateOrderMenu(orderMenu, iex);
-                        iex.Status = (int)DXInfo.Models.OrderMenuStatus.Order;
+                        if(!isTemp)
+                            orderMenu.Status = (int)DXInfo.Models.OrderMenuStatus.Order;
+                        Order_OrderMenu_UpdateOrderMenu(orderMenu, iex,isTemp);
+                        iex.Status = isTemp?(int)DXInfo.Models.OrderMenuStatus.Normal:(int)DXInfo.Models.OrderMenuStatus.Order;
 
-                        if (orderDishStatus == OrderDishStatus.Opened)
+                        if (!isTemp)
                         {
-                            AddPrint(ref htOtherPrint, ref htLocalPrint, iex, PrintType.Order);
-                        }
-                        else
-                        {
-                            AddPrint(ref htOtherPrint, ref htLocalPrint, iex, PrintType.Menu);
+                            if (orderDishStatus == OrderDishStatus.Opened)
+                            {
+                                AddPrint(ref htOtherPrint, ref htLocalPrint, iex, PrintType.Order);
+                            }
+                            else
+                            {
+                                AddPrint(ref htOtherPrint, ref htLocalPrint, iex, PrintType.Menu);
+                            }
                         }
                     }
                     else
@@ -977,7 +990,7 @@ namespace DXInfo.Restaurant
                             {
                                 AddPrint(ref htOtherPrint, ref htLocalPrint, iex, PrintType.Taste);
                             }
-                            Order_OrderMenu_UpdateOrderMenu(orderMenu, iex);
+                            Order_OrderMenu_UpdateOrderMenu(orderMenu, iex,false);
                         }
                     }
                     
@@ -991,7 +1004,7 @@ namespace DXInfo.Restaurant
                 orderMenu.UserId = userId;
                 orderMenu.Oper = userId;
                 orderMenu.OperDate = dtOperDate;
-                orderMenu.Status = (int)DXInfo.Models.OrderMenuStatus.Order;
+                orderMenu.Status = isTemp?(int)DXInfo.Models.OrderMenuStatus.Normal:(int)DXInfo.Models.OrderMenuStatus.Order;
                 orderMenu.Price = iex.SalePrice;
                 orderMenu.OrderUserId = userId;
                 orderMenu.OrderCreateDate = dtOperDate;
@@ -1000,7 +1013,7 @@ namespace DXInfo.Restaurant
                 uow.Commit();
 
                 iex.OrderMenuId = orderMenu.Id;
-                iex.Status = (int)DXInfo.Models.OrderMenuStatus.Order;
+                iex.Status = isTemp?(int)DXInfo.Models.OrderMenuStatus.Normal:(int)DXInfo.Models.OrderMenuStatus.Order;
                 DXInfo.Models.OrderMenusHis menuHis = Mapper.Map<DXInfo.Models.OrderMenusHis>(orderMenu);
                 menuHis.LinkId = orderMenu.Id;
                 uow.OrderMenusHis.Add(menuHis);
@@ -1023,7 +1036,8 @@ namespace DXInfo.Restaurant
             ObservableCollection<DXInfo.Models.InventoryEx> OCInventoryEx,
             List<DXInfo.Models.OrderPackages> lOrderPackage,
             ref Hashtable htOtherPrint,
-            ref Hashtable htLocalPrint)
+            ref Hashtable htLocalPrint,
+            bool isTemp = false)
         {
             using (TransactionScope transaction = new TransactionScope())
             {
@@ -1065,7 +1079,7 @@ namespace DXInfo.Restaurant
                 }
                 foreach (DXInfo.Models.InventoryEx iex in OCInventoryEx)
                 {
-                    Order_OrderMenu(iex, orderDishStatus, ref htOtherPrint, ref htLocalPrint);
+                    Order_OrderMenu(iex, orderDishStatus, ref htOtherPrint, ref htLocalPrint,isTemp);
                 }
                 if (lOrderPackage != null)
                 {
@@ -1075,10 +1089,10 @@ namespace DXInfo.Restaurant
 
                     foreach (DXInfo.Models.OrderPackages op in lOrderPackage.Where(w => w.Status == (int)DXInfo.Models.OrderMenuStatus.Normal))
                     {
-                        Order_OrderPackage(op);
+                        Order_OrderPackage(op,isTemp);
                     }
                 }
-                Order_OrderDish(orderDish);
+                Order_OrderDish(orderDish,isTemp);
                 uow.Commit();
                 transaction.Complete();
             }
@@ -1122,7 +1136,8 @@ namespace DXInfo.Restaurant
         //正常、退菜状态下单后成下单状态
         private void MenuOrder_OrderMenu(DXInfo.Models.InventoryEx iex,
             ref Hashtable htOtherPrint,
-            ref Hashtable htLocalPrint)
+            ref Hashtable htLocalPrint,
+            bool isTemp)
         {
             //iex.Status = (int)DXInfo.Models.OrderMenuStatus.Order;
             if (iex.OrderMenuId != Guid.Empty)
@@ -1138,9 +1153,10 @@ namespace DXInfo.Restaurant
                         orderMenu.Status == (int)DXInfo.Models.OrderMenuStatus.Withdraw||
                         orderMenu.Status == (int)DXInfo.Models.OrderMenuStatus.ReturnAfterOut)
                     {
-                        AddPrint(ref htOtherPrint, ref htLocalPrint, iex, PrintType.Menu);
-                        orderMenu.Status = (int)DXInfo.Models.OrderMenuStatus.Order;
-                        Order_OrderMenu_UpdateOrderMenu(orderMenu, iex);
+                        if(!isTemp)
+                            AddPrint(ref htOtherPrint, ref htLocalPrint, iex, PrintType.Menu);
+                        orderMenu.Status = isTemp?(int)DXInfo.Models.OrderMenuStatus.Normal:(int)DXInfo.Models.OrderMenuStatus.Order;
+                        Order_OrderMenu_UpdateOrderMenu(orderMenu, iex,isTemp);
                     }
                     //else
                     //{
@@ -1180,7 +1196,7 @@ namespace DXInfo.Restaurant
                 orderMenu.UserId = userId;
                 orderMenu.Oper = userId;
                 orderMenu.OperDate = dtOperDate;
-                orderMenu.Status = (int)DXInfo.Models.OrderMenuStatus.Order;
+                orderMenu.Status = isTemp?(int)DXInfo.Models.OrderMenuStatus.Normal:(int)DXInfo.Models.OrderMenuStatus.Order;
                 orderMenu.Price = iex.SalePrice;
                 orderMenu.OrderUserId = userId;
                 orderMenu.OrderCreateDate = dtOperDate;
@@ -1188,7 +1204,7 @@ namespace DXInfo.Restaurant
 
                 uow.Commit();
                 iex.OrderMenuId = orderMenu.Id;
-                iex.Status = (int)DXInfo.Models.OrderMenuStatus.Order;
+                iex.Status = isTemp ? (int)DXInfo.Models.OrderMenuStatus.Normal : (int)DXInfo.Models.OrderMenuStatus.Order;
                 DXInfo.Models.OrderMenusHis menuHis = Mapper.Map<DXInfo.Models.OrderMenusHis>(orderMenu);
                 menuHis.LinkId = orderMenu.Id;
                 uow.OrderMenusHis.Add(menuHis);
@@ -1203,7 +1219,8 @@ namespace DXInfo.Restaurant
             List<DXInfo.Models.InventoryEx> lInventoryEx,
             List<DXInfo.Models.OrderPackages> lOrderPackage,
             ref Hashtable htOtherPrint,
-            ref Hashtable htLoalPrint)
+            ref Hashtable htLoalPrint,
+            bool isTemp = false)
         {
             using (TransactionScope transaction = new TransactionScope())
             {
@@ -1211,12 +1228,12 @@ namespace DXInfo.Restaurant
                 {
                     foreach (DXInfo.Models.OrderPackages op in lOrderPackage)
                     {
-                        Order_OrderPackage(op);
+                        Order_OrderPackage(op,isTemp);
                     }
                 }
                 foreach (DXInfo.Models.InventoryEx iex in lInventoryEx)
                 {
-                    MenuOrder_OrderMenu(iex, ref htOtherPrint, ref htLoalPrint);
+                    MenuOrder_OrderMenu(iex, ref htOtherPrint, ref htLoalPrint,isTemp);
                 }
                 uow.Commit();
                 transaction.Complete();

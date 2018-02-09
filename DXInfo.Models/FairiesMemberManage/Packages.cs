@@ -32,7 +32,9 @@ namespace DXInfo.Models
         private String _OptionalGroup;
         
         private String _Comment;
-        
+
+        private int _Quantity;
+
         [DataMember()]
         public Guid Id
         {
@@ -148,6 +150,23 @@ namespace DXInfo.Models
                 {
                     _Comment = value;
                     OnPropertyChanged("Comment");
+                }
+            }
+        }
+
+        [DataMember()]
+        public int Quantity
+        {
+            get
+            {
+                return _Quantity;
+            }
+            set
+            {
+                if ((value != _Quantity))
+                {
+                    _Quantity = value;
+                    OnPropertyChanged("Quantity");
                 }
             }
         }

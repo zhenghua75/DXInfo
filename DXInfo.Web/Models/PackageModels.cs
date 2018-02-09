@@ -152,6 +152,13 @@ namespace DXInfo.Web.Models
                         DataType=typeof(string),
                         Editable=true,
                     },
+                    new JQGridColumn()
+                    {
+                        DataField="Quantity",
+                        HeaderText="数量",
+                        DataType=typeof(int),
+                        Editable=true,
+                    },
                 }
             };
             InvGrid.AppearanceSettings.Caption = "存货";

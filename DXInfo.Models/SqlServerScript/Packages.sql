@@ -11,3 +11,8 @@ CREATE TABLE [dbo].[Packages](
 )
 end
 
+
+if not exists (select * from syscolumns where name='Quantity' and id=OBJECT_ID(N'[dbo].[Packages]'))
+begin
+alter table dbo.Packages add Quantity int not null default(0)
+end

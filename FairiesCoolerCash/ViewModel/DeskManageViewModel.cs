@@ -276,7 +276,8 @@ namespace FairiesCoolerCash.ViewModel
                                 dd1s.Name,
                                 SalePrice = d1.Price,
                                 d1.OptionalGroup,
-                                d1.IsOptional
+                                d1.IsOptional,
+                                d1.Quantity
                             }).ToList();
             var lRequiredPackage = packages.Where(w => !w.IsOptional).ToList();
             foreach (var inv in lRequiredPackage)
@@ -286,8 +287,7 @@ namespace FairiesCoolerCash.ViewModel
                 selInv.Code = inv.Code;
                 selInv.Name = inv.Name;
                 selInv.SalePrice = inv.SalePrice;
-                selInv.Quantity = 1;
-                //selInv.Amount = inv.SalePrice;
+                selInv.Quantity = inv.Quantity;//1;
                 selInv.Comment = "TC";
                 selInv.IsPackage = true;
                 selInv.PackageId = packageId;
@@ -300,30 +300,28 @@ namespace FairiesCoolerCash.ViewModel
             {
                 PackageOptionalWindow pw = new PackageOptionalWindow();
                 pw.DataContext = lOptionalPackage;
-                if (pw.ShowDialog().GetValueOrDefault())
+                if (!pw.ShowDialog().GetValueOrDefault()) return false;
+
+                var optionalCount = lOptionalPackage.Select(s => s.OptionalGroup).Distinct().Count();
+                if (pw.lvOptional.SelectedItems.Count != optionalCount)
                 {
-                    var optionalCount = lOptionalPackage.Select(s => s.OptionalGroup).Distinct().Count();
-                    if (pw.lvOptional.SelectedItems.Count != optionalCount)
-                    {
-                        MessageBox.Show("套餐可选菜品组每个必须选一个，且只能选一个");
-                        return false;
-                    }
-                    foreach (dynamic si in pw.lvOptional.SelectedItems)
-                    {
-                        DXInfo.Models.InventoryEx selInv = new DXInfo.Models.InventoryEx();
-                        selInv.Id = si.Id;
-                        selInv.Code = si.Code;
-                        selInv.Name = si.Name;
-                        selInv.SalePrice = si.SalePrice;
-                        selInv.Quantity = 1;
-                        //selInv.Amount = si.SalePrice;
-                        selInv.Comment = "TC";
-                        selInv.IsPackage = true;
-                        selInv.PackageId = packageId;
-                        selInv.PackageSn = packageSn;
-                        selInv.OrderId = this.SelectedOrderDish.Id;
-                        lPackageDeskOrderMenu.Add(selInv);
-                    }
+                    MessageBox.Show("套餐可选菜品组每个必须选一个，且只能选一个");
+                    return false;
+                }
+                foreach (dynamic si in pw.lvOptional.SelectedItems)
+                {
+                    DXInfo.Models.InventoryEx selInv = new DXInfo.Models.InventoryEx();
+                    selInv.Id = si.Id;
+                    selInv.Code = si.Code;
+                    selInv.Name = si.Name;
+                    selInv.SalePrice = si.SalePrice;
+                    selInv.Quantity = si.Quantity;//1;
+                    selInv.Comment = "TC";
+                    selInv.IsPackage = true;
+                    selInv.PackageId = packageId;
+                    selInv.PackageSn = packageSn;
+                    selInv.OrderId = this.SelectedOrderDish.Id;
+                    lPackageDeskOrderMenu.Add(selInv);
                 }
             }
             return true;
@@ -1037,6 +1035,10 @@ namespace FairiesCoolerCash.ViewModel
         #region 下单
         private void MenuOrderExecute()
         {
+            MenuOrderMethod();
+        }
+        private void MenuOrderMethod(bool isTemp = false)
+        {
             if (this.SelectedOrderDish == null ||
                 this.SelectedInventoryEx == null)
                 return;
@@ -1071,10 +1073,13 @@ namespace FairiesCoolerCash.ViewModel
             }
 
             this.DeskManageFacade.MenuOrder(this.SelectedOrderDish.Id, lie, lop,
-                ref htOtherPrint, ref htLocalPrint);
+                ref htOtherPrint, ref htLocalPrint, isTemp);
             try
             {
-                PrintOrder(this.SelectedOrderDish.Id, htOtherPrint, htLocalPrint, null, null, dtOperDate);
+                if (!isTemp)
+                {
+                    PrintOrder(this.SelectedOrderDish.Id, htOtherPrint, htLocalPrint, null, null, dtOperDate);
+                }
             }
             catch (Exception ex)
             {
@@ -1082,7 +1087,14 @@ namespace FairiesCoolerCash.ViewModel
             }
             finally
             {
-                MessageBox.Show("下单成功！");
+                if(isTemp)
+                {
+                    MessageBox.Show("已存单");
+                }
+                else
+                {
+                    MessageBox.Show("下单成功！");
+                }
                 //this.CreateInventoryEx(this.SelectedOrderDish.Id);
                 this.AfterSelectDeskEx();
             }
@@ -1107,6 +1119,19 @@ namespace FairiesCoolerCash.ViewModel
         }
         #endregion
 
+        #region 存单
+        private void SaveMenuOrderExecute()
+        {
+            MenuOrderMethod(true);
+        }
+        public ICommand SaveMenuOrder
+        {
+            get
+            {
+                return new RelayCommand(SaveMenuOrderExecute, MenuOrderCanExecute);
+            }
+        }
+        #endregion
         #endregion
 
         #region 桌台
@@ -1404,6 +1429,10 @@ namespace FairiesCoolerCash.ViewModel
         #region 下单
         private void OrderExecute()
         {
+            OrderMethod();
+        }
+        private void OrderMethod(bool isTemp = false)
+        {
             if (this.SelectedOrderDish != null &&
                 this.OCInventoryEx != null &&
                 this.OCInventoryEx.Count > 0)
@@ -1413,10 +1442,11 @@ namespace FairiesCoolerCash.ViewModel
                 DateTime dtOperDate = Convert.ToDateTime(DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss"));
                 this.DeskManageFacade.dtOperDate = dtOperDate;
                 this.DeskManageFacade.Order(this.SelectedOrderDish.Id, this.OCInventoryEx, this.lSelectedOrderPackage, 
-                    ref htOtherPrint, ref htLocalPrint);
+                    ref htOtherPrint, ref htLocalPrint,isTemp);
                 try
                 {
-                    PrintOrder(this.SelectedOrderDish.Id, htOtherPrint, htLocalPrint, null, null, dtOperDate);
+                    if(!isTemp)
+                        PrintOrder(this.SelectedOrderDish.Id, htOtherPrint, htLocalPrint, null, null, dtOperDate);
                 }
                 catch (Exception ex)
                 {
@@ -1425,7 +1455,10 @@ namespace FairiesCoolerCash.ViewModel
                 finally
                 {
                     this.AfterSelectDeskEx();
-                    MessageBox.Show("下单成功！");
+                    if (isTemp)
+                        MessageBox.Show("存单成功");
+                    else
+                        MessageBox.Show("下单成功！");
                 }
                 
                 
@@ -1446,6 +1479,19 @@ namespace FairiesCoolerCash.ViewModel
         }
         #endregion
 
+        #region 存单
+        private void SaveOrderExecute()
+        {
+            OrderMethod(true);
+        }
+        public ICommand SaveOrder
+        {
+            get
+            {
+                return new RelayCommand(SaveOrderExecute, OrderCanExecute);
+            }
+        }
+        #endregion
         #region 加台
         private void AddDeskExecute()
         {

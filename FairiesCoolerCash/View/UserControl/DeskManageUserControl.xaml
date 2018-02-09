@@ -409,6 +409,7 @@
                                 <Button Command="{Binding Path=DataContext.MenuCancelOrder,RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type DataGrid}}}">退菜</Button>
                                 <Button Command="{Binding Path=DataContext.HurryMenu,RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type DataGrid}}}" >催菜</Button>
                                 <Button Command="{Binding Path=DataContext.DeleteMenu,RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type DataGrid}}}">撤销</Button>
+                                <Button Command="{Binding Path=DataContext.SaveMenuOrder,RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type DataGrid}}}">存单</Button>
                             </StackPanel>
                             </DataTemplate>
                         </DataGrid.RowDetailsTemplate>
@@ -501,6 +502,7 @@
                     <Button Content="加台" Command="{Binding AddDesk}"></Button>
                     <Button Content="撤台" Command="{Binding CancelOpenDesk}" ></Button>
                     <Button Content="并单" Command="{Binding Merge}"></Button>
+                    <Button Content="存单" Command="{Binding SaveOrder}"></Button>
                 </WrapPanel>
             </Grid>
         </Grid>

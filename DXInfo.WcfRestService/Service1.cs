@@ -16,21 +16,15 @@ using AutoMapper;
 using System.Web.Script.Serialization;
 using System.Net;
 using System.Runtime.Serialization.Json;
-//using Ninject;
 
 namespace DXInfo.WcfRestService
 {
-    // Start the service and browse to http://<machine_name>:<port>/Service1/help to view the service's generated help page
-    // NOTE: By default, a new instance of the service is created for each call; change the InstanceContextMode to Single if you want
-    // a single instance of the service to process all calls.	
     [ServiceContract]    
     [AspNetCompatibilityRequirements(RequirementsMode = AspNetCompatibilityRequirementsMode.Allowed)]
     [ServiceBehavior(InstanceContextMode = InstanceContextMode.Single)]
-    // NOTE: If the service is renamed, remember to update the global.asax.cs file
     public class Service1
     {
         private readonly IFairiesMemberManageUow uow;
-        //private readonly DXInfo.Models.NameCode nc;
         private readonly Guid localDeptId;
         public Service1(IFairiesMemberManageUow uow)
         {
@@ -44,73 +38,6 @@ namespace DXInfo.WcfRestService
             Mapper.CreateMap<DXInfo.Models.OrderMenus,DXInfo.Models.OrderMenusHis>();
         }
         
-
-        #region Sample
-        //private Font printFont;
-        //private void pd_PrintPage(object sender, PrintPageEventArgs ev)
-        //{
-        //    float linesPerPage = 0;
-        //    float yPos = 0;
-        //    int count = 0;
-        //    float leftMargin = ev.MarginBounds.Left;
-        //    float topMargin = ev.MarginBounds.Top;
-        //    string line = "abcdefghijklmn";
-
-        //    linesPerPage = ev.MarginBounds.Height /
-        //       printFont.GetHeight(ev.Graphics);
-
-        //    yPos = topMargin + (count *
-        //       printFont.GetHeight(ev.Graphics));
-        //    ev.Graphics.DrawString(line, printFont, Brushes.Black,
-        //       leftMargin, yPos, new StringFormat());
-        //    count++;
-        //    if (line != null)
-        //        ev.HasMorePages = true;
-        //    else
-        //        ev.HasMorePages = false;
-        //}
-        //[WebGet(UriTemplate = "")]
-        //public List<SampleItem> GetCollection()
-        //{
-        //    List<SampleItem> ls = new List<SampleItem>();
-        //    ls.Add(new SampleItem() { Id = 1, StringValue = "Hello" });
-        //    ls.Add(new SampleItem() { Id = 2, StringValue = "Hello" });
-
-        //    printFont = new Font("Arial", 10);
-        //    PrintDocument pd = new PrintDocument();
-        //    pd.PrintPage += new PrintPageEventHandler
-        //       (this.pd_PrintPage);
-        //    pd.Print();
-
-
-        //    return ls;
-        //}
-
-        //[WebInvoke(UriTemplate = "", Method = "POST")]
-        //public SampleItem Create(SampleItem instance)
-        //{
-        //    throw new NotImplementedException();
-        //}
-
-        //[WebGet(UriTemplate = "{id}")]
-        //public SampleItem Get(string id)
-        //{
-        //    throw new NotImplementedException();
-        //}
-
-        //[WebInvoke(UriTemplate = "{id}", Method = "PUT")]
-        //public SampleItem Update(string id, SampleItem instance)
-        //{
-        //    throw new NotImplementedException();
-        //}
-
-        //[WebInvoke(UriTemplate = "{id}", Method = "DELETE")]
-        //public void Delete(string id)
-        //{
-        //    throw new NotImplementedException();
-        //}
-        #endregion
-
         #region 获取
         [WebGet(UriTemplate = "GetDepts")]
         public List<DXInfo.Models.Depts> GetDepts()
@@ -228,14 +155,6 @@ namespace DXInfo.WcfRestService
             }
             throw new WebFaultException<string>("用户名或密码错误", HttpStatusCode.MethodNotAllowed);
         }
-
-        //[WebGet(UriTemplate = "OpenDeskNoUser/{deskNo}/{strquantity}")]
-        //public bool OpenDeskNoUser(string deskNo, string strquantity)
-        //{
-        //    return OpenDesk("", deskNo, strquantity);
-        //}
-        //{"DeskId":"b2d27fd0-a60f-e111-8331-002264899614","DeskNo":"05","OrderDeskId":"bfbefd86-65d8-e211-9fbc-005056c00008","OrderDishId":"bebefd86-65d8-e211-9fbc-005056c00008","UserId":"27aeb029-dd72-4169-be64-44a2aeba8630"
-
         [WebInvoke(UriTemplate = "OpenDesk",
             Method = "POST",
             BodyStyle = WebMessageBodyStyle.WrappedRequest)]
@@ -281,7 +200,6 @@ namespace DXInfo.WcfRestService
             DXInfo.Models.OrderDishes orderDish = new Models.OrderDishes();
             DXInfo.Models.OrderDeskes orderDesk = new Models.OrderDeskes();
             OrderInfo oi = new OrderInfo();
-            //OrderDeskInfo odi = new OrderDeskInfo();
             try
             {
                 dmf.Open(quantity, curdesk.Id, true, ref orderDish, ref orderDesk);
@@ -373,7 +291,6 @@ namespace DXInfo.WcfRestService
         [WebInvoke(UriTemplate = "Order", BodyStyle = WebMessageBodyStyle.WrappedRequest)]
         public bool Order(OrderDeskInfo orderDesk, List<OrderMenuInfo> lOrderMenu)
         {
-            //if (!LogOn(userName, passwd)) return false;
             DateTime dtOperDate = DateTime.Now;
             Guid userId = Guid.Empty;
             try
@@ -381,7 +298,6 @@ namespace DXInfo.WcfRestService
 
                 using (TransactionScope transaction = new TransactionScope())
                 {
-                    //DXInfo.Models.aspnet_Users user = (from d in uow.aspnet_Users.GetAll() where d.UserName == userName select d).FirstOrDefault();
                     if (!orderDesk.UserId.HasValue)
                     {
                         throw new WebFaultException<string>("无“" + orderDesk.UserName + "”操作员信息", HttpStatusCode.MethodNotAllowed);
@@ -409,8 +325,6 @@ namespace DXInfo.WcfRestService
                             throw new WebFaultException<string>(omi.InvName + "缺菜不能提交", HttpStatusCode.MethodNotAllowed);
                         }
 
-                        //string strcomment = omi.Comment;
-                        //if (strcomment.Contains("null")) strcomment = "";
                         if (omi.IsAdd&&!omi.OrderMenuId.HasValue)
                         {
                             DXInfo.Models.OrderMenus orderMenu = new DXInfo.Models.OrderMenus();
@@ -433,8 +347,6 @@ namespace DXInfo.WcfRestService
                             omHis.LinkId = orderMenu.Id;
                             uow.OrderMenusHis.Add(omHis);
 
-                            //orderDish.Status = 0;
-                            //uow.OrderDishes.Update(orderDish);
                         }
                         else
                         {
@@ -550,18 +462,14 @@ namespace DXInfo.WcfRestService
                         Amount = d.Amount,
                         Quantity = d.Quantity,
                         SalePrice = d.Price,
-                        //IsConfirmed=d.Status!=0?true:false,
-                        //EnglishName = dis.EnglishName == null ? "" : dis.EnglishName,
-                        //Comment = d.Comment==null?"":d.Comment,
                         EnglishName=dis.EnglishName,
                         Comment = d.Comment,
                         IsAdd=false,
                         IsDelete=false,
                         IsPackage = d.IsPackage,                        
-                        PackageId = d.PackageId,//dps.InventoryId,//d.PackageId,    
+                        PackageId = d.PackageId,
                         PackageSn=d.PackageSn,
                         Status = d.Status,
-                        //StatusName = d.Status == 0 ? "正常" :  d.Status == 2 ? "下单" : d.Status == 3 ? "缺菜" : d.Status == 4 ? "催菜" : d.Status == 5 ? "制作" : d.Status == 6 ? "出菜" : "其它",
                     };
             orderInfo.lOrderMenu = q.ToList();
 
@@ -604,8 +512,6 @@ namespace DXInfo.WcfRestService
                             DeskId = d1.Id,
                             DeskNo = d1.Code,
                             Status=dd3s.Status,
-                            //StatusName = dd3s.Status == null ? @"空" : dd3s.Status == 3 ? @"已确认提交" : @"已开台",
-                            //ImageFileName = dd3s.Status == null ? @"desk-white.png" : dd3s.Status == 3 ? @"desk-green.png" : @"desk-red.png",
                             UserId = dd2s.UserId,
                             UserName = dd4s.UserName,
                             FullName = dd5s.FullName,
@@ -652,12 +558,10 @@ namespace DXInfo.WcfRestService
                          LinkPhone = dd2s.LinkPhone,
                          Quantity = dd2s.Quantity,
                          FullName = dd4s.FullName,
-                         //DeptName = dd5s.DeptName,
                          DeskId = d1.DeskId,
                          DeskNo = dd3s.Code,
                          UserId = dd2s.UserId,
                          UserName = dd5s.UserName,
-                         //Status=dd2s.Status,
                      };
             return q.ToList();
         }

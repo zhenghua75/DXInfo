@@ -33,9 +33,6 @@ namespace DXInfo.Sync
         private bool IsRun7 = false;
         private bool IsRun8 = false;
         private bool IsRun9 = false;
-        //private bool IsRun10 = false;
-        //private bool IsRun11 = false;
-        //private bool IsRun12 = false;
         private bool IsFirstRun=true;
 
         public SqlConnection ClientConn { get; private set; }
@@ -71,10 +68,6 @@ namespace DXInfo.Sync
         private SyncOrchestrator PackageSyncOrchestrator;
         private SyncOrchestrator PackageuploadSyncOrchestrator;
         private SyncOrchestrator InvDeptPriceSyncOrchestrator;
-        //库存同步
-        //private SyncOrchestrator downloadStockSyncOrchestrator;
-        //private SyncOrchestrator uploadStockSyncOrchestrator;
-        //private SyncOrchestrator uploadAndDownloadStockSyncOrchestrator;
         #endregion
 
         #region 构造函数
@@ -617,7 +610,6 @@ namespace DXInfo.Sync
         #region 重建框架
         private void CheckProvision(SqlConnection conn,Dictionary<string,string> tablesThatChanged,bool isDropTrackingTable)
         {
-            //PopulateTrackingTable(conn);
             if (tablesThatChanged.Count > 0)
             {
                 var scopeNames = (from d in tablesThatChanged select d.Value).ToList().Distinct();
@@ -637,17 +629,11 @@ namespace DXInfo.Sync
         {
             Dictionary<string, string> tablesThatChangedServer = CheckProvision(this.ServerConn);
             CheckProvision(this.ServerConn, tablesThatChangedServer, true);
-
-            //Dictionary<string, string> tablesThatChangedServerTracking = CheckProvisionOfTracking(this.ServerConn);
-            //CheckProvision(this.ServerConn, tablesThatChangedServerTracking, true);
         }
         public void CheckProvisionClient()
         {
             Dictionary<string, string> tablesThatChangedClient = CheckProvision(this.ClientConn);
             CheckProvision(this.ClientConn, tablesThatChangedClient, true);
-
-            //Dictionary<string, string> tablesThatChangedClientTracking = CheckProvisionOfTracking(this.ClientConn);
-            //CheckProvision(this.ClientConn, tablesThatChangedClientTracking, true);
         }
         public string SerializeObject(object obj)
         {
@@ -718,6 +704,7 @@ namespace DXInfo.Sync
                     tablesThatChanged.Add(tbl, scopeName);
                 }
             }
+            
             return tablesThatChanged;
         }
         private Dictionary<string, string> CheckProvisionOfTracking(SqlConnection conn)
@@ -786,11 +773,9 @@ namespace DXInfo.Sync
             List<string> lDropTrackingTables = new List<string>();
             foreach (var tableName in tablesThatChanged)
             {                
-                //var bracketedName = string.Format("[{0}]", tableName);
                 var count = (from d in scopeDesc.Tables where d.UnquotedLocalName == tableName select d).Count();
                 if (count == 0)
                 {
-                    //isDropTrackingTable = true;
                     lDropTrackingTables.Add(tableName);
                     DropTrackingForTable(conn, tableName, true);
                 }
@@ -812,8 +797,6 @@ namespace DXInfo.Sync
             
             foreach (var tableName in tablesThatChanged)
             {
-                //var bracketedName = string.Format("[{0}]", tableName);
-
                 serverConfig.Tables[tableName].CreateProcedures = DbSyncCreationOption.Create;
                 if (isDropTrackingTable || lDropTrackingTables.Contains(tableName))
                 {
@@ -1096,56 +1079,6 @@ namespace DXInfo.Sync
                 return true;
             }
         }
-
-        //object lockIsRun10Object = new object();
-        //public bool IsRun10Block(bool canRun = false)
-        //{
-        //    lock (lockIsRun10Object)
-        //    {
-        //        if (!IsRun10)
-        //        {
-        //            if (canRun)
-        //            {
-        //                IsRun10 = true;
-        //            }
-        //            return false;
-        //        }
-        //        return true;
-        //    }
-        //}
-
-        //object lockIsRun11Object = new object();
-        //public bool IsRun11Block(bool canRun = false)
-        //{
-        //    lock (lockIsRun11Object)
-        //    {
-        //        if (!IsRun11)
-        //        {
-        //            if (canRun)
-        //            {
-        //                IsRun11 = true;
-        //            }
-        //            return false;
-        //        }
-        //        return true;
-        //    }
-        //}
-        //object lockIsRun12Object = new object();
-        //public bool IsRun12Block(bool canRun = false)
-        //{
-        //    lock (lockIsRun12Object)
-        //    {
-        //        if (!IsRun12)
-        //        {
-        //            if (canRun)
-        //            {
-        //                IsRun12 = true;
-        //            }
-        //            return false;
-        //        }
-        //        return true;
-        //    }
-        //}
         private bool SyncOrchestratorIsRunning(SyncOrchestrator syncOrchestrator)
         {
             if (syncOrchestrator != null)
@@ -1425,11 +1358,8 @@ namespace DXInfo.Sync
         }
         public void ExecuteSyncSync()
         {
-            //ClientMetadataCleanup();
-
             ProvisionClient();
             CheckProvisionClient();
-
 
             downloadSyncOrchestrator.Synchronize();
             uploadAndDownloadSyncOrchestrator.Synchronize();
@@ -1440,9 +1370,6 @@ namespace DXInfo.Sync
             PackageSyncOrchestrator.Synchronize();
             PackageuploadSyncOrchestrator.Synchronize();
             InvDeptPriceSyncOrchestrator.Synchronize();
-            //downloadStockSyncOrchestrator.Synchronize();
-            //uploadStockSyncOrchestrator.Synchronize();
-            //uploadAndDownloadStockSyncOrchestrator.Synchronize();
         }
         #endregion
 

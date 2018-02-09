@@ -34,12 +34,6 @@ namespace DXInfo.Web
             AuthConfig.RegisterAuth();
             IocConfig.RegisterIoc();
             MapperConfig.RegisterMapper();
-
-            
-            //if (Helper.IsAMSApp())
-            //{
-            //    AMSAppProcess();
-            //}
         }
 
         private void InitData()
@@ -48,13 +42,12 @@ namespace DXInfo.Web
             {
                 string connectionString = System.Configuration.ConfigurationManager.ConnectionStrings["FairiesMemberManage"].ConnectionString;
                 DXInfo.Sync.Sync sync = new DXInfo.Sync.Sync(connectionString);
-                //using (sync.ServerConn)
-                //{
+
                 bool bAMSApp = DXInfo.Web.Models.Helper.IsAMSApp();
                 sync.ServerConn.Open();
                 DXInfo.Web.Models.Helper.SyncStruct(sync.ServerConn,bAMSApp);
                 sync.ServerConn.Close();
-                //}
+
                 if (!bAMSApp)
                 {
                     sync.ProvisionServer();
@@ -64,23 +57,5 @@ namespace DXInfo.Web
             }
         }
 
-        //#region AMSApp处理
-        //private void AMSAppProcess()
-        //{
-        //    var Uow = DependencyResolver.Current.GetService<IFairiesMemberManageUow>();
-        //    Common centerCommon = new Common(Uow);
-
-        //    #region 刷新AMSApp数据至FairiesMemberManage
-        //    if (Helper.IsAMSAppRefresh())
-        //    {
-        //        centerCommon.SyncDept();
-        //        centerCommon.SyncOper();
-        //        centerCommon.SyncGT();
-        //        centerCommon.SyncGoods();
-        //    }
-        //    #endregion
-
-        //}
-        //#endregion
     }
 }

@@ -2527,6 +2527,7 @@ namespace DXInfo.Web.Controllers
                         d.IsOptional,
                         d.OptionalGroup,
                         d.Comment,
+                        d.Quantity
                     };
             return gridModel.InvGrid.DataBind(q);
         }
@@ -2553,6 +2554,7 @@ namespace DXInfo.Web.Controllers
             oldPackage.IsOptional = package.IsOptional;
             oldPackage.OptionalGroup = package.OptionalGroup;
             oldPackage.Comment = package.Comment;
+            oldPackage.Quantity = package.Quantity;
             Uow.Packages.Update(oldPackage);
             Uow.Commit();
         }

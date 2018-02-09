@@ -52,6 +52,7 @@
                     <GridViewColumn Width="100" DisplayMemberBinding="{Binding Code}" Header="编码"> </GridViewColumn>
                     <GridViewColumn Width="100" DisplayMemberBinding="{Binding Name}" Header="名称"></GridViewColumn>
                     <GridViewColumn Width="100" DisplayMemberBinding="{Binding SalePrice}" Header="单价"></GridViewColumn>
+                    <GridViewColumn Width="100" DisplayMemberBinding="{Binding Quantity}" Header="数量"></GridViewColumn>
                 </GridView>
             </ListView.View>
         </ListView>
