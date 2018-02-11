@@ -287,7 +287,7 @@ namespace FairiesCoolerCash.ViewModel
                 selInv.Code = inv.Code;
                 selInv.Name = inv.Name;
                 selInv.SalePrice = inv.SalePrice;
-                selInv.Quantity = inv.Quantity;//1;
+                selInv.Quantity = inv.Quantity>0?inv.Quantity:1;//1;
                 selInv.Comment = "TC";
                 selInv.IsPackage = true;
                 selInv.PackageId = packageId;
@@ -315,7 +315,7 @@ namespace FairiesCoolerCash.ViewModel
                     selInv.Code = si.Code;
                     selInv.Name = si.Name;
                     selInv.SalePrice = si.SalePrice;
-                    selInv.Quantity = si.Quantity;//1;
+                    selInv.Quantity = si.Quantity>0?si.Quantity:1;//1;
                     selInv.Comment = "TC";
                     selInv.IsPackage = true;
                     selInv.PackageId = packageId;
