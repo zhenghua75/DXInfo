@@ -589,6 +589,7 @@ namespace DXInfo.WcfRestService
                                                   OptionalGroup = d1.OptionalGroup,
                                                   IsOptional = d1.IsOptional,
                                                   Comment=d1.Comment,
+                                                  Quantity = d1.Quantity,
                                               }).ToList();
             return lPackageInfo;
         }
@@ -619,6 +620,7 @@ namespace DXInfo.WcfRestService
                                 OptionalGroup = d1.OptionalGroup,
                                 IsOptional = d1.IsOptional,
                                 Comment=d1.Comment,
+                                Quantity = d1.Quantity
                             }).ToList();
             return lPackageInfo;
         }

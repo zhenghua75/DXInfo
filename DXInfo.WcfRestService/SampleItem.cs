@@ -40,6 +40,7 @@ namespace DXInfo.WcfRestService
         public string OptionalGroup { get; set; }
         public bool IsOptional { get; set; }
         public string Comment { get; set; }
+        public int Quantity { get; set; }
     }
     public class OrderDeskInfo
     {

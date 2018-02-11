@@ -1,6 +1,7 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <publishData>
   <publishProfile publishUrl="D:\github\deploy\DXInfo.WcfRestService" deleteExistingFiles="True" ftpAnonymousLogin="False" ftpPassiveMode="True" msdeploySite="" msdeploySiteID="" msdeployRemoteSitePhysicalPath="" msdeployAllowUntrustedCertificate="False" msdeploySkipExtraFilesOnServer="True" msdeployMarkAsApp="False" profileName="配置文件1" publishMethod="FileSystem" replaceMatchingFiles="False" userName="" savePWD="False" userPWD="" SelectedForPublish="True">
+    <file relUrl="bin/Ninject.Extensions.Wcf.pdb" publishTime="02/08/2018 18:24:06" />
     <file relUrl="Global.asax" publishTime="02/08/2018 10:13:10" />
     <file relUrl="test/jquery-1.8.1.min.js" publishTime="02/08/2018 10:13:10" />
     <file relUrl="bin/Ninject.Web.Common.xml" publishTime="02/08/2018 18:24:10" />
@@ -10,8 +11,8 @@
     <file relUrl="bin/WebActivator.dll" publishTime="02/08/2018 18:24:14" />
     <file relUrl="bin/DXInfo.Data.dll" publishTime="02/09/2018 13:56:23" />
     <file relUrl="bin/DXInfo.EFConventions.pdb" publishTime="02/08/2018 18:28:06" />
-    <file relUrl="bin/DXInfo.WcfRestService.dll" publishTime="02/10/2018 11:14:54" />
-    <file relUrl="test/WebForm1.aspx" publishTime="02/08/2018 10:13:10" />
+    <file relUrl="bin/DXInfo.WcfRestService.dll" publishTime="02/11/2018 12:46:52" />
+    <file relUrl="bin/EntityFramework.dll" publishTime="02/08/2018 17:49:43" />
     <file relUrl="bin/Ninject.Web.Common.dll" publishTime="02/08/2018 18:24:10" />
     <file relUrl="bin/Ninject.Extensions.Wcf.dll" publishTime="02/08/2018 18:24:06" />
     <file relUrl="packages.config" publishTime="02/08/2018 10:13:10" />
@@ -20,7 +21,6 @@
     <file relUrl="bin/Ninject.Extensions.Wcf.xml" publishTime="02/08/2018 18:24:06" />
     <file relUrl="bin/Ninject.pdb" publishTime="02/08/2018 18:23:39" />
     <file relUrl="bin/AutoMapper.dll" publishTime="02/08/2018 17:27:30" />
-    <file relUrl="bin/DXInfo.Data.Contracts.pdb" publishTime="02/09/2018 13:56:20" />
     <file relUrl="bin/DXInfo.Data.pdb" publishTime="02/09/2018 13:56:23" />
     <file relUrl="bin/EntityFramework.SqlServer.xml" publishTime="02/08/2018 17:49:44" />
     <file relUrl="bin/AutoMapper.Net4.dll" publishTime="02/08/2018 17:27:30" />
@@ -28,13 +28,13 @@
     <file relUrl="bin/DXInfo.Data.Contracts.dll" publishTime="02/09/2018 13:56:20" />
     <file relUrl="bin/DXInfo.Models.dll" publishTime="02/09/2018 13:56:14" />
     <file relUrl="bin/Ninject.xml" publishTime="02/08/2018 18:23:39" />
-    <file relUrl="bin/Ninject.Extensions.Wcf.pdb" publishTime="02/08/2018 18:24:06" />
+    <file relUrl="test/WebForm1.aspx" publishTime="02/08/2018 10:13:10" />
     <file relUrl="bin/Microsoft.Web.Infrastructure.dll" publishTime="02/08/2018 18:23:07" />
     <file relUrl="bin/zh-Hans/EntityFramework.resources.dll" publishTime="02/08/2018 17:49:48" />
-    <file relUrl="bin/DXInfo.WcfRestService.pdb" publishTime="02/10/2018 11:14:54" />
+    <file relUrl="bin/DXInfo.WcfRestService.pdb" publishTime="02/11/2018 12:46:52" />
     <file relUrl="bin/DXInfo.Models.pdb" publishTime="02/09/2018 13:56:14" />
     <file relUrl="bin/Ninject.dll" publishTime="02/08/2018 18:23:39" />
-    <file relUrl="bin/EntityFramework.dll" publishTime="02/08/2018 17:49:43" />
+    <file relUrl="bin/DXInfo.Data.Contracts.pdb" publishTime="02/09/2018 13:56:20" />
     <file relUrl="bin/DXInfo.Restaurant.pdb" publishTime="02/09/2018 13:56:25" />
     <file relUrl="Web.config" publishTime="02/10/2018 13:27:03" />
     <file relUrl="bin/DXInfo.EFConventions.dll" publishTime="02/08/2018 18:28:06" />
