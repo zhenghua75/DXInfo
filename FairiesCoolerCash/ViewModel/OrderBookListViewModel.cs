@@ -143,6 +143,7 @@ namespace FairiesCoolerCash.ViewModel
             try
             {
                 DXInfo.Restaurant.DeskManageFacade dmf = new DXInfo.Restaurant.DeskManageFacade(Uow, Dept.DeptId, User.UserId);
+                dmf.dtOperDate = DateTime.Now;
                 dmf.CancelBook(orderBookId);
                 MessageBox.Show("取消预定成功");
                 query();
@@ -171,7 +172,7 @@ namespace FairiesCoolerCash.ViewModel
             try
             {
                 dynamic d = this.SelectedResult;
-                Guid deskId = d.DeksId;
+                Guid deskId = d.DeskId;
                 int quantity = d.Quantity;
 
                 DXInfo.Restaurant.DeskManageFacade dmf = new DXInfo.Restaurant.DeskManageFacade(Uow, Dept.DeptId, User.UserId);
