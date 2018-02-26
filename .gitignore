@@ -286,3 +286,6 @@ __pycache__/
 *.btm.cs
 *.odx.cs
 *.xsd.cs
+
+!Microsoft Ribbon for WPF/
+!DXInfo.Web/Content/ckfinder/plugins/fileeditor/
