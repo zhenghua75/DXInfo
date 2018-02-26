@@ -288,4 +288,4 @@ __pycache__/
 *.xsd.cs
 
 !Microsoft Ribbon for WPF/
-!DXInfo.Web/Content/ckfinder/plugins/fileeditor/
+!DXInfo.Web/Content/ckfinder/plugins/fileeditor/bin
