@@ -288,3 +288,5 @@ __pycache__/
 *.xsd.cs
 
 !Microsoft Ribbon for WPF/
+web.config
+app.config
