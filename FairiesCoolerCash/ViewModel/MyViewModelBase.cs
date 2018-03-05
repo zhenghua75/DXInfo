@@ -90,6 +90,7 @@ namespace FairiesCoolerCash.ViewModel
                 conf.IsTicket2 = true;
                 conf.IsTicket3 = false;
                 conf.IsThree = false;
+                conf.IsPrintOrder = true;
                 using (FileStream fs = new FileStream(path, FileMode.Create))
                 {
                     xmlSerializer.Serialize(fs, conf);
@@ -110,6 +111,7 @@ namespace FairiesCoolerCash.ViewModel
             conf.IsTicket2 = App.IsTicket2;
             conf.IsTicket3 = App.IsTicket3;
             conf.IsThree = App.IsThree;
+            conf.IsPrintOrder = App.IsPrintOrder;
             using (FileStream fs = new FileStream(path, FileMode.Create))
             {
                 xmlSerializer.Serialize(fs, conf);
@@ -744,6 +746,22 @@ namespace FairiesCoolerCash.ViewModel
             {
                 App.IsThree = value;
                 base.RaisePropertyChanged("IsThree");
+                SaveConf();
+            }
+        }
+        #endregion
+
+        #region 是否打印订单
+        public bool IsPrintOrder
+        {
+            get
+            {
+                return App.IsPrintOrder;
+            }
+            set
+            {
+                App.IsPrintOrder = value;
+                base.RaisePropertyChanged("IsPrintOrder");
                 SaveConf();
             }
         }

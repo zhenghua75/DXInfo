@@ -1206,7 +1206,8 @@ namespace FairiesCoolerCash.ViewModel
             para.Sn=sn;
             switch (this.DeptType)
             {
-                case DXInfo.Models.DeptType.Sale:                    
+                case DXInfo.Models.DeptType.Sale:
+                    #region 零售
                     bool deskNoVisi = BusinessCommon.DeskNoVisibility();
                     if (bPassword)
                     {
@@ -1318,6 +1319,7 @@ namespace FairiesCoolerCash.ViewModel
                         this.ResetSwipingCard();
                         this.ResetCheckOut();                        
                     }
+#endregion
                     break;
                 case DXInfo.Models.DeptType.Shop:
                     if (!CheckLackMenu(oiex)) return;
@@ -1474,6 +1476,7 @@ namespace FairiesCoolerCash.ViewModel
             switch (this.DeptType)
             {
                 case DXInfo.Models.DeptType.Sale:
+                    #region 零售
                     bool deskNoVisi = BusinessCommon.DeskNoVisibility();
                     if (bPassword)
                     {
@@ -1598,6 +1601,7 @@ namespace FairiesCoolerCash.ViewModel
                         this.ResetSwipingCard();
                         this.ResetCheckOut();
                     }
+#endregion
                     break;
                 case DXInfo.Models.DeptType.Shop:
                     if (!CheckLackMenu(oiex)) return;
@@ -1771,6 +1775,7 @@ namespace FairiesCoolerCash.ViewModel
             switch (this.DeptType)
             {
                 case DXInfo.Models.DeptType.Sale:
+                    #region 零售
                     //dAmount = GetAmount(oiex, dDiscount);//, dVoucher);
                     //dReceivableAmount = dAmount;
                     if (!this.PayTypeColumnVisibility)
@@ -1889,6 +1894,7 @@ namespace FairiesCoolerCash.ViewModel
                         this.AfterCheckOut();
                         this.ResetCheckOut();
                     }
+#endregion
                     break;
                 case DXInfo.Models.DeptType.Shop:                    
                     if (!CheckLackMenu(oiex)) return;

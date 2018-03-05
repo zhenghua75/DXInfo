@@ -15,5 +15,6 @@ namespace DXInfo.Models
         public bool IsTicket2 { get; set; }
         public bool IsTicket3 { get; set; }
         public bool IsThree { get; set; }
+        public bool IsPrintOrder { get; set; }
     }
 }

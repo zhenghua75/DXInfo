@@ -1429,9 +1429,9 @@ namespace FairiesCoolerCash.ViewModel
         #region 下单
         private void OrderExecute()
         {
-            OrderMethod();
+            OrderMethod(false,App.IsPrintOrder);
         }
-        private void OrderMethod(bool isTemp = false)
+        private void OrderMethod(bool isTemp = false,bool isPrint = true)
         {
             if (this.SelectedOrderDish != null &&
                 this.OCInventoryEx != null &&
@@ -1445,7 +1445,7 @@ namespace FairiesCoolerCash.ViewModel
                     ref htOtherPrint, ref htLocalPrint,isTemp);
                 try
                 {
-                    if(!isTemp)
+                    if(!isTemp && isPrint)
                         PrintOrder(this.SelectedOrderDish.Id, htOtherPrint, htLocalPrint, null, null, dtOperDate);
                 }
                 catch (Exception ex)

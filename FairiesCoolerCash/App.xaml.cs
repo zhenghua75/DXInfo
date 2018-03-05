@@ -31,6 +31,7 @@ namespace FairiesCoolerCash
         public static bool IsTicket3 = false;
         public static bool IsThree = false;
         public static string OperatorsOnDuty = "";
+        public static bool IsPrintOrder = true;
         #endregion
 
         #region 字段

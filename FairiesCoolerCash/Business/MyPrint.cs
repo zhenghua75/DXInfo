@@ -898,7 +898,7 @@ namespace FairiesCoolerCash.Business
             float maxLength1 = sf1.Width;
             float maxLength2 = sf2.Width;
             float maxLength3 = sf3.Width;
-            element.AddMiddleText(Title, HeadFont);
+            element.AddMiddleText(Title + "(" + DeskNo + ")", HeadFont);
             #region 商品
             element.AddHorizontalRule();
             element.AddFourText("名称", "单价", "数量", "金额", maxLength1, maxLength2, maxLength3, BodyFont);
@@ -996,7 +996,7 @@ namespace FairiesCoolerCash.Business
             float maxLength2 = sf2.Width;
             float maxLength3 = sf3.Width;
 
-            element.AddMiddleText(Title, HeadFont);
+            element.AddMiddleText(Title+"("+DeskNo+")", HeadFont);
             element.AddPairText("卡号", this.CardNo, maxLength, BodyFont, BodyFont);
             element.AddPairText("会员名", string.Format(MyFormat, "{0:NameStar}", this.MemberName),
                 maxLength, BodyFont, BodyFont);
@@ -1117,7 +1117,7 @@ namespace FairiesCoolerCash.Business
             float maxLength2 = sf2.Width;
             float maxLength3 = sf3.Width;
 
-            element.AddMiddleText(Title, HeadFont);
+            element.AddMiddleText(Title + "(" + DeskNo + ")", HeadFont);
             element.AddPairText("卡号", this.CardNo, maxLength, BodyFont, BodyFont);
             element.AddPairText("会员名", string.Format(MyFormat, "{0:NameStar}", this.MemberName),
                 maxLength, BodyFont, BodyFont);

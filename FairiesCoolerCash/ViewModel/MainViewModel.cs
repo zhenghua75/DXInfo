@@ -1242,6 +1242,18 @@ namespace FairiesCoolerCash.ViewModel
                 return chkIsThreeLabel;
             }
         }
+        public string ChkIsPrintOrderLabel
+        {
+            get
+            {
+                string chkIsPrintOrderLabel = "ÏÂµ¥´òÓ¡";
+                if (this.MyPricipal.IsInRole("ChkIsPrintOrderLabel"))
+                {
+                    chkIsPrintOrderLabel = GetSiteMapTitle("ChkIsPrintOrderLabel");
+                }
+                return chkIsPrintOrderLabel;
+            }
+        }
         public string DataBaseBackupLabel
         {
             get

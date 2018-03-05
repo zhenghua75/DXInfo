@@ -160,6 +160,8 @@
                     </ribbon:RibbonCheckBox>
                     <ribbon:RibbonCheckBox Name="ChkIsThree" Label="{Binding ChkIsThreeLabel}" IsChecked="{Binding IsThree}">
                     </ribbon:RibbonCheckBox>
+                    <ribbon:RibbonCheckBox Name="ChkIsPrintOrder" Label="{Binding ChkIsPrintOrderLabel}" IsChecked="{Binding IsPrintOrder}">
+                    </ribbon:RibbonCheckBox>
                     <ribbon:RibbonButton x:Name="DataBaseBackup" Label="{Binding DataBaseBackupLabel}" LargeImageSource="images\1324727226_Pink_Backup_B.png" Command="{Binding Button_Click}" CommandParameter="{Binding RelativeSource={RelativeSource Self}}"/>     
                     
                 </ribbon:RibbonGroup>
