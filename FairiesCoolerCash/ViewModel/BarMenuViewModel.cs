@@ -179,17 +179,11 @@ namespace FairiesCoolerCash.ViewModel
             }
             List<DXInfo.Models.MenuInfo> lmi = lMenuInfo.OrderBy(o => o.Sort).ToList();
             this.OCNoCtMenuInfo = new ObservableCollection<DXInfo.Models.MenuInfo>(lmi);
-        //}
-        //private void UpdateOrderMenuDataComplete()
-        //{
-            //已出菜单
+
             IEnumerable<DXInfo.Models.MenuInfo> iMenuInfoComplete = Uow.Db.SqlQuery<DXInfo.Models.MenuInfo>("sp_DXInfo_UpdateOrderMenuDataComplete @DeptType",
                 new SqlParameter("DeptType", this.SectionType));
             List<DXInfo.Models.MenuInfo> lMenuInfoComplete = iMenuInfoComplete.ToList();
-
-            //IEnumerable<DXInfo.Models.MenuDeskInfo> iMenuDeskInfo = Uow.Db.SqlQuery<DXInfo.Models.MenuDeskInfo>("select * from vw_MenuDeskInfo");
-            //List<DXInfo.Models.MenuDeskInfo> lMenuDeskInfo = iMenuDeskInfo.ToList().OrderBy(o=>o.DeskCode).ToList();
-
+            
             foreach (DXInfo.Models.MenuInfo mi in lMenuInfoComplete)
             {
                 List<DXInfo.Models.MenuDeskInfo> lMenuDeskInfoSub = lMenuDeskInfo.Where(w => w.OrderId == mi.OrderId).ToList();
@@ -212,20 +206,6 @@ namespace FairiesCoolerCash.ViewModel
         {
             IEnumerable<DXInfo.Models.OrderMenuQuantityInfo> iQuantityInfo = Uow.Db.SqlQuery<DXInfo.Models.OrderMenuQuantityInfo>("select * from vw_UpdateInfoData");
             List<DXInfo.Models.OrderMenuQuantityInfo> lQuantityInfo = iQuantityInfo.ToList(); ;
-            //DateTime dtNow = DateTime.Now;
-            
-            //List<DXInfo.Models.OrderMenuQuantityInfo> lQuantityInfo = (from d in Uow.OrderMenus.GetAll()
-            //         join d1 in Uow.OrderDishes.GetAll() on d.OrderId equals d1.Id into dd1
-            //         from dd1s in dd1.DefaultIfEmpty()
-            //         where (dd1s.Status == 0 || dd1s.Status == 3)
-            //         && d.Status > 0 && d.Status != 8 
-            //         select new DXInfo.Models.OrderMenuQuantityInfo()
-            //         {
-            //             BillQuantity = d.BillQuantity,
-            //             MenuQuantity = d.MenuQuantity,
-            //             MissQuantity = d.MissQuantity,
-            //             Quantity = d.Quantity,
-            //         }).ToList();
             
             if (this.CurrentInfo == null) this.CurrentInfo = new DXInfo.Models.Info();
 
@@ -238,7 +218,6 @@ namespace FairiesCoolerCash.ViewModel
         private void refresh()
         {
             UpdateOrderMenuData();
-            //UpdateOrderMenuDataComplete();
             UpdateInfoData();
         }
         public ICommand Refresh

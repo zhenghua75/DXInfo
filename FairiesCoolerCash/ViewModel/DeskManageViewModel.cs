@@ -1492,6 +1492,7 @@ namespace FairiesCoolerCash.ViewModel
             }
         }
         #endregion
+
         #region 加台
         private void AddDeskExecute()
         {
