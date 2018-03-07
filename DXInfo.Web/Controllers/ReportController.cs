@@ -157,8 +157,8 @@ namespace DXInfo.Web.Controllers
                         MemberName = cms.MemberName,
 
                         Balance = c.Balance,
-                        Recharge = crs.Recharg == null ? 0 : crs.Recharg,
-                        Points = cps.Points == null ? 0 : cps.Points,
+                        Recharge = crs.Recharg,// == null ? 0 : crs.Recharg,
+                        Points = cps.Points,// == null ? 0 : cps.Points,
 
                         CreateDate = c.CreateDate,
                         c.UserId,
@@ -814,8 +814,8 @@ namespace DXInfo.Web.Controllers
                          Id = Guid.NewGuid(),
                          q.Status,
                          q.Balance,
-                         Point = qps.Point == null ? 0 : qps.Point,
-                         Fee = qrs.Amount == null ? 0 : qrs.Amount,
+                         Point = qps.Point,// == null ? 0 : qps.Point,
+                         Fee = qrs.Amount,// == null ? 0 : qrs.Amount,
                          Count = 1,
                          q.DeptId,
                          q.UserId,
@@ -844,8 +844,8 @@ namespace DXInfo.Web.Controllers
                          Id = Guid.NewGuid(),
                          q.Status,
                          q.Balance,
-                         Point = qps.Point == null ? 0 : qps.Point,
-                         Fee = qrs.Amount == null ? 0 : qrs.Amount,
+                         Point = qps.Point,// == null ? 0 : qps.Point,
+                         Fee = qrs.Amount,// == null ? 0 : qrs.Amount,
                          Count = 1,
                          q.DeptId,
                          q.UserId,
@@ -874,8 +874,8 @@ namespace DXInfo.Web.Controllers
                          Id = Guid.NewGuid(),
                          q.Status,
                          q.Balance,
-                         Point = qps.Point == null ? 0 : qps.Point,
-                         Fee = qrs.Amount == null ? 0 : qrs.Amount,
+                         Point = qps.Point,// == null ? 0 : qps.Point,
+                         Fee = qrs.Amount,// == null ? 0 : qrs.Amount,
                          Count = 1,
                          q.DeptId,
                          q.UserId,
@@ -904,8 +904,8 @@ namespace DXInfo.Web.Controllers
                           Id = Guid.NewGuid(),
                           q.Status,
                           q.Balance,
-                          Point = qps.Point == null ? 0 : qps.Point,
-                          Fee = qrs.Amount == null ? 0 : qrs.Amount,
+                          Point = qps.Point,// == null ? 0 : qps.Point,
+                          Fee = qrs.Amount,// == null ? 0 : qrs.Amount,
                           Count = 1,
                           q.DeptId,
                           q.UserId,
@@ -1548,7 +1548,7 @@ namespace DXInfo.Web.Controllers
             var q10 = from d in Uow.OrderDishesHis.GetAll()
                       join u in Uow.aspnet_CustomProfile.GetAll() on d.UserId equals u.UserId into cu
                       from cus in cu.DefaultIfEmpty()
-                      join d in Uow.Depts.GetAll() on d.DeptId equals d.DeptId into cld
+                      join d1 in Uow.Depts.GetAll() on d.DeptId equals d1.DeptId into cld
                       from clds in cld.DefaultIfEmpty()
                       where d.Status == (int)DXInfo.Models.OrderDishStatus.Checkouted &&
                       d.CreateDate >= dtBeginDate && d.CreateDate <= dtEndDate
@@ -3481,9 +3481,9 @@ namespace DXInfo.Web.Controllers
                         cl.UserId,
                         FullName = cus.FullName,
                         clcs.OperatorsOnDuty,
-                        ConsumeType = clcs.ConsumeType == null ? -1 : clcs.ConsumeType,
+                        ConsumeType = clcs.ConsumeType == 0 ? -1 : clcs.ConsumeType,
                         ConsumeTypeName = dd3s.Name,
-                        PayType = clcs.ConsumeType == null ? gEmpty : clcs.ConsumeType == 0 ? gcardPayType : clcs.ConsumeType == 2 ? gpointPayType : cps.Id,
+                        PayType = clcs.ConsumeType == 0 ? gEmpty : clcs.ConsumeType == 0 ? gcardPayType : clcs.ConsumeType == 2 ? gpointPayType : cps.Id,
                         PayTypeName = clcs.ConsumeType == 0 ? "会员卡" : clcs.ConsumeType == 2 ? "积分兑换" : cps.Name,
                         CardNo = ccards.CardNo,
                         MemberName = cms.MemberName,
@@ -5020,9 +5020,9 @@ namespace DXInfo.Web.Controllers
                         SectionName = dd2s.Name,
                         cl.UserId,
                         FullName = cus.FullName,
-                        ConsumeType = clcs.ConsumeType == null ? -1 : clcs.ConsumeType,
+                        ConsumeType = clcs.ConsumeType == 0 ? -1 : clcs.ConsumeType,
                         ConsumeTypeName = dd3s.Name,
-                        PayType = clcs.ConsumeType == null ? gEmpty :
+                        PayType = //clcs.ConsumeType == 0 ? gEmpty :
                         clcs.ConsumeType == 0 ? gcardPayType :
                         clcs.ConsumeType == 2 ? gpointPayType : cps == null ? gEmpty : cps.Id,
                         PayTypeName = clcs.ConsumeType == 0 ? "会员卡" : clcs.ConsumeType == 2 ? "积分兑换" : cps.Name,
@@ -6234,7 +6234,7 @@ namespace DXInfo.Web.Controllers
                          cds.DeptType == deptType
                     select new
                     {
-                        Consume = clcsos.OrderNo == null ? 0 : clcsos.OrderNo,
+                        Consume = clcsos.OrderNo,// == null ? 0 : clcsos.OrderNo,
                         cl.DeptId,
                         cl.UserId,
                         CardNo = ccards.CardNo,
@@ -6634,13 +6634,13 @@ namespace DXInfo.Web.Controllers
                      {
                          OrderDeskCreateDate = d1.CreateDate,
                          OrderDeskFullName = dd6s.FullName,
-                         OrderDeskStatus = d1.Status == null ? 0 : d1.Status,
+                         OrderDeskStatus = d1.Status,// == null ? 0 : d1.Status,
                          OrderId = d1.OrderId == null ? empty : d1.OrderId,
                          DeskNo = dd2s.Code,
                          OrderDishUserId = dd3s.UserId,
                          OrderDishFullName = dd5s.FullName,
                          OrderDishCreateDate = dd3s.CreateDate,
-                         iOrderDishStatus = dd3s.Status == null ? 0 : dd3s.Status,
+                         iOrderDishStatus = dd3s.Status,// == null ? 0 : dd3s.Status,
                          OrderDishStatus = dd7s.Name,
                          DeptName = dd4s.DeptName,
                          dd3s.Quantity,
@@ -6668,14 +6668,14 @@ namespace DXInfo.Web.Controllers
                         OrderDishStatus = dd2s.OrderDishStatus,
                         dd2s.DeptName,
                         OrderId = dd2s.OrderId == null ? empty : dd2s.OrderId,
-                        Quantity = dd2s.Quantity == null ? 0 : dd2s.Quantity,
+                        Quantity = dd2s.Quantity,// == null ? 0 : dd2s.Quantity,
                         dd2s.OrderDishFullName,
                         OrderDishCreateDate = dd2s.OrderDishCreateDate == null ? dm : dd2s.OrderDishCreateDate,
                         dd2s.OrderDeskFullName,
                         OrderDeskCreateDate = dd2s.OrderDeskCreateDate == null ? dm : dd2s.OrderDeskCreateDate,
-                        OrderDeskStatus = dd2s.OrderDeskStatus == null ? 0 : dd2s.OrderDeskStatus,
+                        OrderDeskStatus = dd2s.OrderDeskStatus,// == null ? 0 : dd2s.OrderDeskStatus,
                         OrderMenuInvName = dd3s.Name,
-                        iOrderMenuStatus = d1.Status == null ? 0 : d1.Status,
+                        iOrderMenuStatus = d1.Status,// == null ? 0 : d1.Status,
                         OrderMenuStatus = dd5s.Name,
                         OrderMenuInvPrice = d1.Price,
                         OrderMenuInvQuantity = d1.Quantity,
@@ -7941,8 +7941,8 @@ namespace DXInfo.Web.Controllers
                          vcGoodsId = d.vcGoodsId == null ? dd1s.vcGoodsId : d.vcGoodsId,
                          vcDeptId = d.vcDeptId == null ? dd1s.vcDeptId : d.vcDeptId,
                          InDate = BalanceDate,
-                         LastCheckQuantity = dd1s.Quantity == null ? 0 : dd1s.Quantity,
-                         InQuantity = d.Quantity == null ? 0 : d.Quantity,
+                         LastCheckQuantity = dd1s.Quantity,// == null ? 0 : dd1s.Quantity,
+                         InQuantity = d.Quantity,// == null ? 0 : d.Quantity,
                      };
 
             var q2 = from d in Uow.SaleCheck.GetAll().Where(w => w.CheckDate == dtLast)
@@ -7955,8 +7955,8 @@ namespace DXInfo.Web.Controllers
                          vcGoodsId = d.vcGoodsId == null ? dd1s.vcGoodsId : d.vcGoodsId,
                          vcDeptId = d.vcDeptId == null ? dd1s.vcDeptId : d.vcDeptId,
                          InDate = BalanceDate,
-                         LastCheckQuantity = d.Quantity == null ? 0 : d.Quantity,
-                         InQuantity = dd1s.Quantity == null ? 0 : dd1s.Quantity,
+                         LastCheckQuantity = d.Quantity,// == null ? 0 : d.Quantity,
+                         InQuantity = dd1s.Quantity,// == null ? 0 : dd1s.Quantity,
                      };
             var q3 = q1.Union(q2);
 
@@ -7982,10 +7982,10 @@ namespace DXInfo.Web.Controllers
                         dd4s.nPrice,
                         LastCheckQuantity = d.LastCheckQuantity,
                         InQuantity = d.InQuantity,
-                        SaleQuantity = dd1s.Quantity==null?0:dd1s.Quantity,
-                        CheckQuantity = dd2s.Quantity==null?0:dd2s.Quantity,
-                        Differences = (d.LastCheckQuantity + d.InQuantity - (dd1s.Quantity == null ? 0 : dd1s.Quantity) - (dd2s.Quantity == null ? 0 : dd2s.Quantity)) * dd4s.nPrice * -1,
-                        IsBalance = d.LastCheckQuantity+d.InQuantity - (dd1s.Quantity == null ? 0 : dd1s.Quantity) - (dd2s.Quantity == null ? 0 : dd2s.Quantity) == 0,
+                        SaleQuantity = dd1s.Quantity,//==null?0:dd1s.Quantity,
+                        CheckQuantity = dd2s.Quantity,//==null?0:dd2s.Quantity,
+                        Differences = (d.LastCheckQuantity + d.InQuantity - dd1s.Quantity - dd2s.Quantity) * dd4s.nPrice * -1,
+                        IsBalance = (d.LastCheckQuantity+d.InQuantity - dd1s.Quantity - dd2s.Quantity) == 0,
                     };
             if (!string.IsNullOrEmpty(vcDeptId))
             {

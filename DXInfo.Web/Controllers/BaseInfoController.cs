@@ -3066,10 +3066,10 @@ namespace DXInfo.Web.Controllers
                         cms.LinkAddress,
                         cms.LinkPhone,
                         cms.MemberName,
-                        Points = cps.Points == null ? 0 : cps.Points,
+                        Points = cps.Points,// == null ? 0 : cps.Points,
                         FullName = cus.FullName,
                         DeptName = cds.DeptName,
-                        Recharge = rcs.Recharge == null ? 0 : rcs.Recharge,
+                        Recharge = rcs.Recharge,// == null ? 0 : rcs.Recharge,
                     };
             return gridModel.CardGrid.DataBind(q);
         }
