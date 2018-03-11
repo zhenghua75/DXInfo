@@ -39,14 +39,9 @@ namespace FairiesCoolerCash.ViewModel
             SetDept();
             SetUser();
             SetOper();
-            //SetMyPricipal();
-            //SetMyIdentity();
-            //SetFunc();
             this.Uow = uow;
             this.SetValidate(lValidationPropertyNames);
-
-            //Messenger.Default.Register<IsOpenMessageToken>(this, Handle_IsOpenMessageToken);
-            //Messenger.Default.Register<IsStickerPrintToken>(this, Handle_IsStickerPrintToken);
+            
             this.LoadData();
 
             path = "FairiesCoolerCash.xml";
@@ -102,6 +97,7 @@ namespace FairiesCoolerCash.ViewModel
             App.IsTicket2 = conf.IsTicket2;
             App.IsTicket3 = conf.IsTicket3;
             App.IsThree = conf.IsThree;
+            App.IsPrintOrder = conf.IsPrintOrder;
         }
         private void SaveConf()
         {
@@ -311,25 +307,12 @@ namespace FairiesCoolerCash.ViewModel
                 this.SyncProgressMsg = null;
             }
             this.Title = null;
-            
-            //if (this.Uow != null)
-            //{
-            //    this.Uow.Dispose();
-            //    this.Uow = null;
-            //}
             this.UserName = null;
             this.Voucher = null;
 
             this.Dept = null;
             this.User = null;
             this.Oper = null;
-            //this.MyPricipal = null;
-            //this.MyIdentity = null;
-            //if (this.Func != null)
-            //{
-            //    this.Func.Clear();
-            //    this.Func = null;
-            //}
         }
         public virtual void LoadData()
         {

@@ -9,7 +9,6 @@
                      xmlns:local="clr-namespace:FairiesCoolerCash.Business"
         DataContext="{Binding MainViewModel, Source={StaticResource Locator}}">
     <Grid>
-        <!--Width="1024" Height="768"-->
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="*"/>
