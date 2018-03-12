@@ -30,6 +30,6 @@ left join InvDepts b on a.Id=b.Inv
 left join (select * from InventoryDeptPrice where DeptId=@DeptId) c on a.Id =c.InvId
 where b.Dept=@DeptId
 and a.IsInvalid=0 and a.InvType=@InvType
-order by a.Code
+order by a.Sort
 end')
 end

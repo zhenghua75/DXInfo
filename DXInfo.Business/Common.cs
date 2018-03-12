@@ -24,7 +24,7 @@ namespace DXInfo.Business
         /// <summary>
         /// 脚本版本
         /// </summary>
-        public static string SqlVersion = "3.8";
+        public static string SqlVersion = "4.0";
         /// <summary>
         /// 支付方式-会员卡外卖
         /// </summary>

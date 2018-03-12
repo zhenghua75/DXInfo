@@ -52,7 +52,6 @@ namespace FairiesCoolerCash.ViewModel
     {
         #region ×Ö¶Î
         private DispatcherTimer dTimer;
-        //private DispatcherTimer GCTimer;
         private System.Timers.Timer timer1;
         private System.Timers.Timer timer2;
         private System.Timers.Timer timer3;
@@ -162,10 +161,6 @@ namespace FairiesCoolerCash.ViewModel
                 this.CurrentSyncOperate = "ÏÂÔØÎÄ¼þ--" + dfi.FileName + "--" + dfi.ProgressPercentage.ToString() + "%";
             }
         }
-        //public override void UpdateSyncMsg(string msg)
-        //{
-        //    this.CurrentSyncOperate = msg;
-        //}
         private void SetSyncMsg()
         {
             
@@ -175,49 +170,10 @@ namespace FairiesCoolerCash.ViewModel
         private void s_SyncMsgEvent(object sender, SyncMsgEventArgs e)
         {
             this.CurrentSyncOperate = e.msg;
-            //UpdateSyncMsg(e.msg);
         }
         private void Handle_RibbonMessageToken(RibbonMessageToken token)
         {
             this.MyRibbon = token.MyRibbon;
-            //dImagePath = new Dictionary<string, string>();
-            //if (token.MyRibbon.HasItems)
-            //{
-            //    foreach (object objrt in token.MyRibbon.Items)
-            //    {
-            //        if (objrt is RibbonTab)
-            //        {
-            //            RibbonTab rt = objrt as RibbonTab;
-            //            if (rt.HasItems)
-            //            {
-            //                foreach (object objrg in rt.Items)
-            //                {
-            //                    if (objrg is RibbonGroup)
-            //                    {
-            //                        RibbonGroup rg = objrg as RibbonGroup;
-            //                        if (rg.HasItems)
-            //                        {
-            //                            foreach (object objrb in rg.Items)
-            //                            {
-            //                                if (objrb is RibbonButton)
-            //                                {
-            //                                    RibbonButton rb = objrb as RibbonButton;
-            //                                    if (rb.LargeImageSource is BitmapFrame)
-            //                                    {
-            //                                        BitmapFrame bf = rb.LargeImageSource as BitmapFrame;//((BitmapFrame)rb.LargeImageSource)
-            //                                        string path = bf.Decoder.ToString();
-            //                                        dImagePath.Add(rb.Name, path);
-            //                                    }
-                                                
-            //                                }
-            //                            }
-            //                        }
-            //                    }
-            //                }
-            //            }
-            //        }
-            //    }
-            //}
             this.SetMenu();
 #if !DEBUG
             CheckEkey();
@@ -232,11 +188,6 @@ namespace FairiesCoolerCash.ViewModel
                     MyViewModelBase vmb = this.MyContent.DataContext as MyViewModelBase;
                     if (vmb != null)
                     {
-                        //if (vmb.Uow != null)
-                        //{
-                        //    vmb.Uow.Dispose();
-                        //    vmb.Uow = null;
-                        //}
                         vmb.Cleanup();
                     }
                     this.MyContent.DataContext = null;
@@ -310,11 +261,6 @@ namespace FairiesCoolerCash.ViewModel
                 timer4.Interval = 1 * 60 * 1000 * 60;
                 timer4.Elapsed += new System.Timers.ElapsedEventHandler(timer4_Tick);
             }
-
-            //this.GCTimer = new DispatcherTimer();
-            //this.GCTimer.Interval = TimeSpan.FromMinutes(3); 
-            //this.GCTimer.Start();
-            //this.GCTimer.Tick += new EventHandler(OnGarbageCollection);
         }
         void OnGarbageCollection(object sender, EventArgs e)
         {
