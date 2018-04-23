@@ -1098,7 +1098,6 @@
     <Content Include="Content\jquery-ui-timepicker-addon.min.css" />
     <Content Include="Content\jquery.jqGrid\ellipsis-xbl.xml" />
     <Content Include="Content\jquery.jqGrid\ui.jqgrid.css" />
-    <Content Include="Content\jquery.layout-1.4.3.css" />
     <Content Include="Content\jquery.raty\cancel-off.png" />
     <Content Include="Content\jquery.raty\cancel-on.png" />
     <Content Include="Content\jquery.raty\star-half.png" />

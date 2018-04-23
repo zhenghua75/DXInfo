@@ -1855,7 +1855,7 @@ $.fn.layout = function (opts) {
 		};
 		// loop hash and bind all methods - include layoutID namespacing
 		for (name in layoutMethods) {
-			$N.bind("layout"+ name.toLowerCase() +"."+ sID, Instance[ layoutMethods[name] || name ]);
+			$N.on("layout"+ name.toLowerCase() +"."+ sID, Instance[ layoutMethods[name] || name ]);
 		}
 
 		// if this container is another layout's 'pane', then set child/parent pointers
