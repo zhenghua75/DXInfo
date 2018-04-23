@@ -35,7 +35,10 @@ namespace DXInfo.WcfRestService
             {
                 Guid.TryParse(nc.Value, out localDeptId);
             }
-            Mapper.CreateMap<DXInfo.Models.OrderMenus,DXInfo.Models.OrderMenusHis>();
+            Mapper.Initialize(cfg => {
+                cfg.CreateMap<DXInfo.Models.OrderMenus, DXInfo.Models.OrderMenusHis>();
+            });
+            //Mapper.CreateMap<DXInfo.Models.OrderMenus,DXInfo.Models.OrderMenusHis>();
         }
         
         #region 获取

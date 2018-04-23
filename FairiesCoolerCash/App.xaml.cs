@@ -16,8 +16,10 @@ using DXInfo.Data.Contracts;
 using FairiesCoolerCash.Business;
 using FairiesCoolerCash.ViewModel;
 using Microsoft.Practices.EnterpriseLibrary.ExceptionHandling;
-using Microsoft.Practices.ServiceLocation;
-using Microsoft.Practices.Unity;
+using Unity.ServiceLocation;
+//using Microsoft.Practices.Unity;
+using Unity;
+using CommonServiceLocator;
 
 namespace FairiesCoolerCash
 {
@@ -482,28 +484,31 @@ namespace FairiesCoolerCash
         }
         private void SetMapper()
         {
-            Mapper.CreateMap<DXInfo.Models.Members, DXInfo.Models.MembersLog>();
-            Mapper.CreateMap<DXInfo.Models.Cards, DXInfo.Models.CardsLog>();
-            Mapper.CreateMap<DXInfo.Models.Inventory, DXInfo.Models.InventoryEx>();
+            Mapper.Initialize(cfg =>
+            {
+                cfg.CreateMap<DXInfo.Models.Members, DXInfo.Models.MembersLog>();
+                cfg.CreateMap<DXInfo.Models.Cards, DXInfo.Models.CardsLog>();
+                cfg.CreateMap<DXInfo.Models.Inventory, DXInfo.Models.InventoryEx>();
 
-            Mapper.CreateMap<DXInfo.Models.OrderDeskes, DXInfo.Models.OrderDeskesHis>();
-            Mapper.CreateMap<DXInfo.Models.OrderMenus, DXInfo.Models.OrderMenusHis>();
+                cfg.CreateMap<DXInfo.Models.OrderDeskes, DXInfo.Models.OrderDeskesHis>();
+                cfg.CreateMap<DXInfo.Models.OrderMenus, DXInfo.Models.OrderMenusHis>();
 
-            Mapper.CreateMap<DXInfo.Models.OrderMenus, DXInfo.Models.Inventory>();
-            //.Include<DXInfo.Models.OrderMenus, DXInfo.Models.InventoryEx>();
-            Mapper.CreateMap<DXInfo.Models.OrderMenus, DXInfo.Models.InventoryEx>();
-            Mapper.CreateMap<DXInfo.Models.BillInvLists, DXInfo.Models.InventoryEx>()
-                .ForMember(m => m.CupType, o => o.Ignore());
-            Mapper.CreateMap<DXInfo.Models.BillDonateInvLists, DXInfo.Models.CardDonateInventoryEx>();
-            Mapper.CreateMap<DXInfo.Models.InventoryEx, DXInfo.Models.OrderMenus>();
+                cfg.CreateMap<DXInfo.Models.OrderMenus, DXInfo.Models.Inventory>();
+                //.Include<DXInfo.Models.OrderMenus, DXInfo.Models.InventoryEx>();
+                cfg.CreateMap<DXInfo.Models.OrderMenus, DXInfo.Models.InventoryEx>();
+                cfg.CreateMap<DXInfo.Models.BillInvLists, DXInfo.Models.InventoryEx>()
+                    .ForMember(m => m.CupType, o => o.Ignore());
+                cfg.CreateMap<DXInfo.Models.BillDonateInvLists, DXInfo.Models.CardDonateInventoryEx>();
+                cfg.CreateMap<DXInfo.Models.InventoryEx, DXInfo.Models.OrderMenus>();
 
-            Mapper.CreateMap<DXInfo.Models.OrderBooks, DXInfo.Models.OrderBookEx>();
-            Mapper.CreateMap<DXInfo.Models.OrderPackages, DXInfo.Models.OrderPackagesHis>();
-            Mapper.CreateMap<DXInfo.Models.Desks, DXInfo.Models.DeskEx>();
-            Mapper.CreateMap<DXInfo.Models.InvPrice, DXInfo.Models.ConsumeInvPrice>();
-            Mapper.CreateMap<DXInfo.Models.InvPrice, DXInfo.Models.OrderInvPrice>();
-            Mapper.CreateMap<DXInfo.Models.OrderInvPrice, DXInfo.Models.InvPrice>();
-            Mapper.CreateMap<DXInfo.Models.Receipts, DXInfo.Models.ReceiptHis>();
+                cfg.CreateMap<DXInfo.Models.OrderBooks, DXInfo.Models.OrderBookEx>();
+                cfg.CreateMap<DXInfo.Models.OrderPackages, DXInfo.Models.OrderPackagesHis>();
+                cfg.CreateMap<DXInfo.Models.Desks, DXInfo.Models.DeskEx>();
+                cfg.CreateMap<DXInfo.Models.InvPrice, DXInfo.Models.ConsumeInvPrice>();
+                cfg.CreateMap<DXInfo.Models.InvPrice, DXInfo.Models.OrderInvPrice>();
+                cfg.CreateMap<DXInfo.Models.OrderInvPrice, DXInfo.Models.InvPrice>();
+                cfg.CreateMap<DXInfo.Models.Receipts, DXInfo.Models.ReceiptHis>();
+            });
         }
         private IUnityContainer ConfigureUnityContainer()
         {
@@ -571,7 +576,7 @@ namespace FairiesCoolerCash
         }
         private void SetIoc()
         {
-            Microsoft.Practices.Unity.UnityServiceLocator locator = new Microsoft.Practices.Unity.UnityServiceLocator(ConfigureUnityContainer());
+            UnityServiceLocator locator = new UnityServiceLocator(ConfigureUnityContainer());
             ServiceLocator.SetLocatorProvider(() => locator);
         }
         private void DisplayLogin(SqlConnection conn)

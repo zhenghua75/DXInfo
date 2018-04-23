@@ -1989,7 +1989,7 @@ namespace DXInfo.Web.Controllers
                     };
 
             object obj = GetVouchAuthorityData(q, VouchType, MakeTime, Descending);
-            return Mapper.DynamicMap<VouchModel>(obj);
+            return Mapper.Map<VouchModel>(obj);
         }
         private VouchModel GetRdRecordOrderByDescending(string VouchType, DateTime? makeTime)
         {
@@ -3157,7 +3157,7 @@ from vwConsItem a
                     };
 
             object obj = GetVouchAuthorityData(q, null, MakeTime, Descending);
-            return Mapper.DynamicMap<VouchModel>(obj);
+            return Mapper.Map<VouchModel>(obj);
         }
         private VouchModel GetTransVouchOrderByDescending(string VouchType, DateTime? makeTime)
         {
@@ -3592,7 +3592,7 @@ from vwConsItem a
                     };
 
             object obj = GetVouchAuthorityData(q, null, MakeTime, Descending);
-            return Mapper.DynamicMap<VouchModel>(obj);
+            return Mapper.Map<VouchModel>(obj);
         }
         private VouchModel GetScrapVouchOrderByDescending(string VouchType, DateTime? makeTime)
         {
@@ -4161,7 +4161,7 @@ from vwConsItem a
                     };
 
             object obj = GetVouchAuthorityData(q, null, MakeTime, Descending);
-            return Mapper.DynamicMap<VouchModel>(obj);
+            return Mapper.Map<VouchModel>(obj);
         }
         private VouchModel GetCheckVouchOrderByDescending(string VouchType, DateTime? makeTime)
         {
@@ -4764,7 +4764,7 @@ from vwConsItem a
                     };
 
             object obj = GetVouchAuthorityData(q, null, MakeTime, Descending);
-            return Mapper.DynamicMap<VouchModel>(obj);
+            return Mapper.Map<VouchModel>(obj);
         }
         private VouchModel GetAdjustLocatorVouchOrderByDescending(string VouchType, DateTime? makeTime)
         {
@@ -5196,7 +5196,7 @@ from vwConsItem a
                     };
 
             object obj = GetVouchAuthorityData(q, null, MakeTime, Descending);
-            return Mapper.DynamicMap<VouchModel>(obj);
+            return Mapper.Map<VouchModel>(obj);
         }
         private VouchModel GetMixVouchOrderByDescending(string VouchType, DateTime? makeTime)
         {
@@ -5927,7 +5927,7 @@ from vwConsItem a
 
             foreach (dynamic d in inRdRecordGroup)
             {
-                DXInfo.Models.Books newBooks = Mapper.DynamicMap<DXInfo.Models.Books>(d);
+                DXInfo.Models.Books newBooks = Mapper.Map<DXInfo.Models.Books>(d);
 
                 newBooks.InQuantity = newBooks.Quantity;
                 newBooks.InNum = newBooks.Num;
@@ -5939,7 +5939,7 @@ from vwConsItem a
             }
             foreach (dynamic d in outRdRecordGroup)
             {
-                DXInfo.Models.Books newBooks = Mapper.DynamicMap<DXInfo.Models.Books>(d);
+                DXInfo.Models.Books newBooks = Mapper.Map<DXInfo.Models.Books>(d);
 
                 newBooks.OutQuantity = newBooks.Quantity;
                 newBooks.OutNum = newBooks.Num;
@@ -5951,7 +5951,7 @@ from vwConsItem a
             }
             foreach (dynamic d in rdRecordGroup)
             {
-                DXInfo.Models.Books newBooks = Mapper.DynamicMap<DXInfo.Models.Books>(d);
+                DXInfo.Models.Books newBooks = Mapper.Map<DXInfo.Models.Books>(d);
 
                 lBooks.Add(newBooks);
             }
@@ -5995,7 +5995,7 @@ from vwConsItem a
                                  }).ToList();
             foreach (dynamic d in books)
             {
-                DXInfo.Models.Books newBooks = Mapper.DynamicMap<DXInfo.Models.Books>(d);
+                DXInfo.Models.Books newBooks = Mapper.Map<DXInfo.Models.Books>(d);
                 newBooks.Period = period.Id;
                 newBooks.SourceId = monthBalance.Id;
                 newBooks.WhId = monthBalance.WhId;

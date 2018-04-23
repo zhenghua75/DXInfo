@@ -14,12 +14,13 @@
 
 using GalaSoft.MvvmLight;
 using GalaSoft.MvvmLight.Ioc;
-using Microsoft.Practices.ServiceLocation;
+using Unity.ServiceLocation;
 using DXInfo.Data.Contracts;
 using DXInfo.Data;
 using System.Data.Entity;
 using FairiesCoolerCash.Business;
-using Microsoft.Practices.Unity;
+using Unity;
+using CommonServiceLocator;
 
 namespace FairiesCoolerCash.ViewModel
 {

@@ -8,10 +8,12 @@ using DXInfo.Data.Contracts;
 using Ninject.Extensions.Wcf;
 using Ninject.Web.Common;
 
+using Ninject.Web.Common.WebHost;
+
 namespace DXInfo.WcfRestService
 {
 
-    public class Global :NinjectHttpApplication //HttpApplication
+    public class Global : NinjectHttpApplication
     {
         //void Application_Start(object sender, EventArgs e)
         //{
@@ -27,7 +29,7 @@ namespace DXInfo.WcfRestService
         {
             // Edit the base address of Service1 by replacing the "Service1" string below
             //RouteTable.Routes.Add(new ServiceRoute("Service1", new WebServiceHostFactory(), typeof(Service1)));
-            RouteTable.Routes.Add(new ServiceRoute("Service1", new NinjectWebServiceHostFactory(), typeof(Service1)));
+            RouteTable.Routes.Add(new ServiceRoute("Service1", new NinjectServiceHostFactory(), typeof(Service1)));
         }
 
         protected override IKernel CreateKernel()

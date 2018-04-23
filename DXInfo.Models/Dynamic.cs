@@ -152,7 +152,7 @@ namespace System.Linq.Dynamic
             List<T> lt = new List<T>();
             while (enumerator.MoveNext())
             {                
-                lt.Add(Mapper.DynamicMap<T>(enumerator.Current));
+                lt.Add(Mapper.Map<T>(enumerator.Current));
             }
             return lt;
         }
