@@ -751,7 +751,7 @@ namespace FairiesCoolerCash.ViewModel
         #endregion
 
         #region IDataErrorInfo, IValidationExceptionHandler
-        protected override void RaisePropertyChanged(string propertyName)
+        public override void RaisePropertyChanged(string propertyName)
         {
             base.RaisePropertyChanged(propertyName);
             this.PropertyChangedCompleted(propertyName);

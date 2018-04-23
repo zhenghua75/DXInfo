@@ -1013,14 +1013,15 @@ namespace Media_glass
         /// <returns></returns>
         double GetWidthInPixelFromIndex(int index)
         {
-            FormattedText sFT = new FormattedText(this.RunningCurrentPlayedMediaInfo.Substring(index),
-            CultureInfo.GetCultureInfo("en-us"),
-            System.Windows.FlowDirection.LeftToRight,
-            new Typeface(this.runningMediaInfoFontFamily),
-            runningMediaInfoFontSize,
-            Brushes.Black);
+            return VisualTreeHelper.GetDpi(this).PixelsPerDip;
+            //FormattedText sFT = new FormattedText(this.RunningCurrentPlayedMediaInfo.Substring(index),
+            //CultureInfo.GetCultureInfo("en-us"),
+            //System.Windows.FlowDirection.LeftToRight,
+            //new Typeface(this.runningMediaInfoFontFamily),
+            //runningMediaInfoFontSize,
+            //Brushes.Black);
 
-            return sFT.Width + this.runningMediaInfoBorderWidth;
+            //return sFT.Width + this.runningMediaInfoBorderWidth;
         }
 
         #endregion

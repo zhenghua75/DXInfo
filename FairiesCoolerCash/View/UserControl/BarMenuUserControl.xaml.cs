@@ -18,7 +18,7 @@ using System.Timers;
 using Microsoft.Practices.EnterpriseLibrary.ExceptionHandling;
 using DXInfo.Data.Contracts;
 using Ninject;
-using Microsoft.Practices.ServiceLocation;
+using Unity.ServiceLocation;
 
 namespace FairiesCoolerCash.Business
 {

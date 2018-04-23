@@ -11,8 +11,9 @@ using System.Windows.Input;
 using GalaSoft.MvvmLight.Command;
 using System.ComponentModel.DataAnnotations;
 using GalaSoft.MvvmLight.Messaging;
-using Microsoft.Practices.ServiceLocation;
+using Unity.ServiceLocation;
 using AutoMapper;
+using CommonServiceLocator;
 
 namespace FairiesCoolerCash.ViewModel
 {

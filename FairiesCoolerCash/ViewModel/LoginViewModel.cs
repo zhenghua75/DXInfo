@@ -11,11 +11,12 @@ using System.Web.Security;
 using System.Threading;
 using System.IO;
 using System.Diagnostics;
-using Microsoft.Practices.ServiceLocation;
+using Unity.ServiceLocation;
 using GalaSoft.MvvmLight.Messaging;
 using System.Windows.Controls;
 using System.ComponentModel.DataAnnotations;
 using FairiesCoolerCash.Business;
+using CommonServiceLocator;
 
 namespace FairiesCoolerCash.ViewModel
 {

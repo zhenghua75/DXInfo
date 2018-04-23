@@ -5,7 +5,7 @@ using System.Text;
 using DXInfo.Data.Contracts;
 using System.ComponentModel;
 using FairiesCoolerCash.Business;
-using Microsoft.Practices.ServiceLocation;
+using Unity.ServiceLocation;
 using System.Collections.ObjectModel;
 using System.Timers;
 using System.Windows.Controls;
