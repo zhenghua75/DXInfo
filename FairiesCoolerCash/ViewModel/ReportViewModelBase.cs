@@ -6,7 +6,7 @@ using GalaSoft.MvvmLight;
 using DXInfo.Data.Contracts;
 using System.Collections.ObjectModel;
 using System.Windows.Input;
-using GalaSoft.MvvmLight.Command;
+using GalaSoft.MvvmLight.CommandWpf;
 using System.Windows.Controls;
 using GalaSoft.MvvmLight.Messaging;
 using FairiesCoolerCash.Business;

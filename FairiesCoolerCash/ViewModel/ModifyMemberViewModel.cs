@@ -5,7 +5,7 @@ using System.Text;
 using DXInfo.Data.Contracts;
 using FairiesCoolerCash.Business;
 using System.Windows.Input;
-using GalaSoft.MvvmLight.Command;
+using GalaSoft.MvvmLight.CommandWpf;
 using System.Text.RegularExpressions;
 using DXInfo.Data;
 using AutoMapper;

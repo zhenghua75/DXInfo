@@ -9,7 +9,7 @@ using System.Text.RegularExpressions;
 using System.Windows;
 using System.Transactions;
 using System.Windows.Input;
-using GalaSoft.MvvmLight.Command;
+using GalaSoft.MvvmLight.CommandWpf;
 using AutoMapper;
 
 namespace FairiesCoolerCash.ViewModel

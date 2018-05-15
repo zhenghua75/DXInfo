@@ -9,7 +9,7 @@ using Microsoft.Practices.EnterpriseLibrary.ExceptionHandling;
 using FairiesCoolerCash.Business;
 using Microsoft.Synchronization;
 using System.Windows.Input;
-using GalaSoft.MvvmLight.Command;
+using GalaSoft.MvvmLight.CommandWpf;
 using System.ComponentModel;
 using Microsoft.Synchronization.Data;
 using Microsoft.Synchronization.Data.SqlServer;

@@ -10,7 +10,7 @@ using System.Threading;
 using System.Windows;
 using FairiesCoolerCash.Business;
 using System.Windows.Input;
-using GalaSoft.MvvmLight.Command;
+using GalaSoft.MvvmLight.CommandWpf;
 using GalaSoft.MvvmLight.Messaging;
 using System.Windows.Data;
 using System.Collections.Specialized;

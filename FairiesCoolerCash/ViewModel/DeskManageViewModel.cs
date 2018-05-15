@@ -9,7 +9,7 @@ using System.Collections.ObjectModel;
 using DXInfo.Models;
 using FairiesCoolerCash.Business;
 using System.Windows.Input;
-using GalaSoft.MvvmLight.Command;
+using GalaSoft.MvvmLight.CommandWpf;
 using System.Collections;
 using System.Transactions;
 using System.Windows.Data;

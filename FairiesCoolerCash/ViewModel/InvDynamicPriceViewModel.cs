@@ -5,7 +5,7 @@ using System.Text;
 using DXInfo.Data.Contracts;
 using System.Windows;
 using System.Windows.Input;
-using GalaSoft.MvvmLight.Command;
+using GalaSoft.MvvmLight.CommandWpf;
 
 namespace FairiesCoolerCash.ViewModel
 {

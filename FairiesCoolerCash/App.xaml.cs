@@ -508,6 +508,14 @@ namespace FairiesCoolerCash
                 cfg.CreateMap<DXInfo.Models.InvPrice, DXInfo.Models.OrderInvPrice>();
                 cfg.CreateMap<DXInfo.Models.OrderInvPrice, DXInfo.Models.InvPrice>();
                 cfg.CreateMap<DXInfo.Models.Receipts, DXInfo.Models.ReceiptHis>();
+
+                cfg.CreateMap<DXInfo.Models.OrderDishes, DXInfo.Models.OrderDishesHis>();
+                cfg.CreateMap<DXInfo.Models.OrderBooks, DXInfo.Models.OrderBooksHis>();
+                cfg.CreateMap<DXInfo.Models.OrderBookDeskes, DXInfo.Models.OrderBookDeskesHis>();
+                cfg.CreateMap<DXInfo.Models.OrderDeskes, DXInfo.Models.OrderDeskesHis>();
+                cfg.CreateMap<DXInfo.Models.OrderMenus, DXInfo.Models.OrderMenusHis>();
+                cfg.CreateMap<DXInfo.Models.OrderPackages, DXInfo.Models.OrderPackagesHis>();
+
             });
         }
         private IUnityContainer ConfigureUnityContainer()

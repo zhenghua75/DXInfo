@@ -11,7 +11,7 @@ using System.Timers;
 using System.Windows.Controls;
 using System.Windows.Threading;
 using System.Windows.Input;
-using GalaSoft.MvvmLight.Command;
+using GalaSoft.MvvmLight.CommandWpf;
 using System.Data.SqlClient;
 
 namespace FairiesCoolerCash.ViewModel

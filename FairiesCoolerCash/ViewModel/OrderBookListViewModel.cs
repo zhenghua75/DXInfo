@@ -9,7 +9,7 @@ using System.Windows.Controls;
 using FairiesCoolerCash.Business;
 using System.Windows;
 using System.Windows.Input;
-using GalaSoft.MvvmLight.Command;
+using GalaSoft.MvvmLight.CommandWpf;
 using GalaSoft.MvvmLight.Messaging;
 using System.Data.Entity.SqlServer;
 namespace FairiesCoolerCash.ViewModel

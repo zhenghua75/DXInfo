@@ -11,7 +11,7 @@ using System.ComponentModel.DataAnnotations;
 using System.Reflection;
 using GalaSoft.MvvmLight.Messaging;
 using System.Windows.Input;
-using GalaSoft.MvvmLight.Command;
+using GalaSoft.MvvmLight.CommandWpf;
 using System.Collections.ObjectModel;
 using System.Windows;
 using System.Windows.Controls;
@@ -758,8 +758,6 @@ namespace FairiesCoolerCash.ViewModel
         }
         private void PropertyChangedCompleted(string propertyName)
         {
-            //if (propertyName != "IsValid")
-            //{
             if (string.IsNullOrEmpty(this.Error) && this.ValidPropertiesCount == this.TotalPropertiesWithValidationCount)
             {
                 this.IsValid = true;
@@ -768,7 +766,6 @@ namespace FairiesCoolerCash.ViewModel
             {
                 this.IsValid = false;
             }
-            //}
         }
         private bool _IsValid;
         public bool IsValid

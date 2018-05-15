@@ -5,7 +5,7 @@ using System.Text;
 using GalaSoft.MvvmLight;
 using System.Windows;
 using System.Windows.Input;
-using GalaSoft.MvvmLight.Command;
+using GalaSoft.MvvmLight.CommandWpf;
 using DXInfo.Data.Contracts;
 using System.Web.Security;
 using System.Threading;
@@ -167,7 +167,7 @@ namespace FairiesCoolerCash.ViewModel
             {
                 if (_Login == null)
                 {
-                    _Login = new RelayCommand(login, LoginCanExecute);
+                    _Login = new RelayCommand(login, ()=>this.IsValid);
                 }
                 return _Login;
             }

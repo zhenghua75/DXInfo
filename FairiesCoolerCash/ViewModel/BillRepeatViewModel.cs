@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using DXInfo.Data.Contracts;
 using System.Windows.Input;
-using GalaSoft.MvvmLight.Command;
+using GalaSoft.MvvmLight.CommandWpf;
 using System.Windows.Controls;
 using FairiesCoolerCash.Business;
 //using System.Data.Objects.SqlClient;

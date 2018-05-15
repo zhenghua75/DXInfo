@@ -8,7 +8,7 @@ using System.Net;
 using DXInfo.Models;
 using System.ComponentModel;
 using System.Windows.Input;
-using GalaSoft.MvvmLight.Command;
+using GalaSoft.MvvmLight.CommandWpf;
 using FairiesCoolerCash.Business;
 using System.Configuration;
 using System.Windows;

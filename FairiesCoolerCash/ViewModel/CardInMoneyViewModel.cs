@@ -8,7 +8,7 @@ using FairiesCoolerCash.Business;
 using System.Windows;
 using GalaSoft.MvvmLight.Messaging;
 using System.Windows.Input;
-using GalaSoft.MvvmLight.Command;
+using GalaSoft.MvvmLight.CommandWpf;
 using Microsoft.Reporting.WinForms;
 using System.Data;
 

@@ -10,7 +10,7 @@ using DXInfo.Models;
 using System.ComponentModel.DataAnnotations;
 using System.Collections.Specialized;
 using System.Windows.Input;
-using GalaSoft.MvvmLight.Command;
+using GalaSoft.MvvmLight.CommandWpf;
 using GalaSoft.MvvmLight.Messaging;
 using System.Windows.Data;
 using AutoMapper;

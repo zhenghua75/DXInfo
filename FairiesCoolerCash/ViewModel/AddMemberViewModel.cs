@@ -8,7 +8,7 @@ using System.Text.RegularExpressions;
 using System.Transactions;
 using System.Windows;
 using System.Windows.Input;
-using GalaSoft.MvvmLight.Command;
+using GalaSoft.MvvmLight.CommandWpf;
 using System.ComponentModel.DataAnnotations;
 using GalaSoft.MvvmLight.Messaging;
 using Unity.ServiceLocation;

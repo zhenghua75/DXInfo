@@ -38,22 +38,14 @@ namespace DXInfo.Restaurant
             this.uow = uow;
             this.deptId = deptId;
             this.userId = userId;
-            //this.dtOperDate = dtOperDate;
-            Mapper.Initialize(cfg => {
-                //cfg.CreateMap<Source, Dest>();
-                cfg.CreateMap<DXInfo.Models.OrderDishes, DXInfo.Models.OrderDishesHis>();
-                cfg.CreateMap<DXInfo.Models.OrderBooks, DXInfo.Models.OrderBooksHis>();
-                cfg.CreateMap<DXInfo.Models.OrderBookDeskes, DXInfo.Models.OrderBookDeskesHis>();
-                cfg.CreateMap<DXInfo.Models.OrderDeskes, DXInfo.Models.OrderDeskesHis>();
-                cfg.CreateMap<DXInfo.Models.OrderMenus, DXInfo.Models.OrderMenusHis>();
-                cfg.CreateMap<DXInfo.Models.OrderPackages, DXInfo.Models.OrderPackagesHis>();
-            });
-            //Mapper.CreateMap<DXInfo.Models.OrderDishes, DXInfo.Models.OrderDishesHis>();
-            //Mapper.CreateMap<DXInfo.Models.OrderBooks, DXInfo.Models.OrderBooksHis>();
-            //Mapper.CreateMap<DXInfo.Models.OrderBookDeskes, DXInfo.Models.OrderBookDeskesHis>();
-            //Mapper.CreateMap<DXInfo.Models.OrderDeskes, DXInfo.Models.OrderDeskesHis>();
-            //Mapper.CreateMap<DXInfo.Models.OrderMenus, DXInfo.Models.OrderMenusHis>();
-            //Mapper.CreateMap<DXInfo.Models.OrderPackages, DXInfo.Models.OrderPackagesHis>();
+            //Mapper.Initialize(cfg => {
+            //    cfg.CreateMap<DXInfo.Models.OrderDishes, DXInfo.Models.OrderDishesHis>();
+            //    cfg.CreateMap<DXInfo.Models.OrderBooks, DXInfo.Models.OrderBooksHis>();
+            //    cfg.CreateMap<DXInfo.Models.OrderBookDeskes, DXInfo.Models.OrderBookDeskesHis>();
+            //    cfg.CreateMap<DXInfo.Models.OrderDeskes, DXInfo.Models.OrderDeskesHis>();
+            //    cfg.CreateMap<DXInfo.Models.OrderMenus, DXInfo.Models.OrderMenusHis>();
+            //    cfg.CreateMap<DXInfo.Models.OrderPackages, DXInfo.Models.OrderPackagesHis>();
+            //});
         }
 
         #region 公共方法
