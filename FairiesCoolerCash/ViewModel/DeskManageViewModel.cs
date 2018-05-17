@@ -1445,8 +1445,12 @@ namespace FairiesCoolerCash.ViewModel
                     ref htOtherPrint, ref htLocalPrint,isTemp);
                 try
                 {
-                    if(!isTemp && isPrint)
+                    if (!isTemp && isPrint)
                         PrintOrder(this.SelectedOrderDish.Id, htOtherPrint, htLocalPrint, null, null, dtOperDate);
+                }
+                catch(System.Drawing.Printing.InvalidPrinterException ipx)
+                {
+                    MessageBox.Show(ipx.Message, "打印机", MessageBoxButton.OK, MessageBoxImage.Error);
                 }
                 catch (Exception ex)
                 {
