@@ -1285,7 +1285,10 @@ namespace FairiesCoolerCash.Business
 
             string strIdx = Idx.ToString() + "/" + Count.ToString();
             strIdx = strIdx.PadLeft(7);
-            element.AddImage("StickerLogo.bmp", strIdx, new Font("宋体", 10), DeskNo, HeadFont);
+            //element.AddImage("StickerLogo.bmp", strIdx, new Font("宋体", 10), DeskNo, HeadFont);
+            element.AddWhiteLine();
+            element.AddWhiteLine();
+            element.AddWhiteLine();
             string taste1 = "";
             if (InventoryEx.lTasteEx != null && InventoryEx.lTasteEx.Count > 0)
             {
@@ -1299,7 +1302,8 @@ namespace FairiesCoolerCash.Business
                 });
             }
             string invName = strInvName.PadRight(10);
-            element.AddText(invName + taste1, BodyFont);
+            //element.AddText(invName + taste1, BodyFont);//DeskNo-strIdx
+            element.AddText(invName + DeskNo + "-" + strIdx, BodyFont);
             element.AddText(strCuptType
                 + "     ￥:"
                 + strPrice
