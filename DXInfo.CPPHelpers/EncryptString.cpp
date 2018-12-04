@@ -91,8 +91,7 @@ string CEncryptString::Encrypt(string message)
 					 true,
 					 new StreamTransformationFilter( Encryptor1,
 						 new StringSink( strEncTxt ),
-						 BlockPaddingSchemeDef::BlockPaddingScheme::ONE_AND_ZEROS_PADDING,
-						 true)
+						 BlockPaddingSchemeDef::BlockPaddingScheme::ONE_AND_ZEROS_PADDING)
 			 );
 	 return string_to_hex(strEncTxt);
 }
@@ -104,8 +103,7 @@ string CEncryptString::Decrypt(string strEncTxt)
 					 true,
 					 new StreamTransformationFilter( Decryptor1,
 						 new StringSink( strDecTxt ),
-						 BlockPaddingSchemeDef::BlockPaddingScheme::ONE_AND_ZEROS_PADDING,
-						 true)
+						 BlockPaddingSchemeDef::BlockPaddingScheme::ONE_AND_ZEROS_PADDING)
 			 );
 	 return strDecTxt;
 }

@@ -201,11 +201,13 @@ Global
 		{0784CDC9-0F52-4B8B-9488-6589C11E94E2}.Release|x86.ActiveCfg = Release|Any CPU
 		{CF6D105B-2ABA-4D9D-823E-14F5FD716D6E}.Debug|Any CPU.ActiveCfg = Debug|Win32
 		{CF6D105B-2ABA-4D9D-823E-14F5FD716D6E}.Debug|Mixed Platforms.ActiveCfg = Debug|Win32
+		{CF6D105B-2ABA-4D9D-823E-14F5FD716D6E}.Debug|Mixed Platforms.Build.0 = Debug|Win32
 		{CF6D105B-2ABA-4D9D-823E-14F5FD716D6E}.Debug|Win32.ActiveCfg = Debug|Win32
 		{CF6D105B-2ABA-4D9D-823E-14F5FD716D6E}.Debug|Win32.Build.0 = Debug|Win32
 		{CF6D105B-2ABA-4D9D-823E-14F5FD716D6E}.Debug|x86.ActiveCfg = Debug|Win32
 		{CF6D105B-2ABA-4D9D-823E-14F5FD716D6E}.Release|Any CPU.ActiveCfg = Release|Win32
 		{CF6D105B-2ABA-4D9D-823E-14F5FD716D6E}.Release|Mixed Platforms.ActiveCfg = Release|Win32
+		{CF6D105B-2ABA-4D9D-823E-14F5FD716D6E}.Release|Mixed Platforms.Build.0 = Release|Win32
 		{CF6D105B-2ABA-4D9D-823E-14F5FD716D6E}.Release|Win32.ActiveCfg = Release|Win32
 		{CF6D105B-2ABA-4D9D-823E-14F5FD716D6E}.Release|Win32.Build.0 = Release|Win32
 		{CF6D105B-2ABA-4D9D-823E-14F5FD716D6E}.Release|x86.ActiveCfg = Release|Win32
@@ -398,6 +400,7 @@ Global
 		{466740B7-553E-43FA-B036-F7071F27D504}.Debug|x86.ActiveCfg = Debug|Win32
 		{466740B7-553E-43FA-B036-F7071F27D504}.Release|Any CPU.ActiveCfg = Release|Win32
 		{466740B7-553E-43FA-B036-F7071F27D504}.Release|Mixed Platforms.ActiveCfg = Release|Win32
+		{466740B7-553E-43FA-B036-F7071F27D504}.Release|Mixed Platforms.Build.0 = Release|Win32
 		{466740B7-553E-43FA-B036-F7071F27D504}.Release|Win32.ActiveCfg = Release|Win32
 		{466740B7-553E-43FA-B036-F7071F27D504}.Release|Win32.Build.0 = Release|Win32
 		{466740B7-553E-43FA-B036-F7071F27D504}.Release|x86.ActiveCfg = Release|Win32
@@ -408,6 +411,7 @@ Global
 		{029ED34E-5790-417A-BEC2-A3D89F2FD802}.Debug|x86.ActiveCfg = Debug|Win32
 		{029ED34E-5790-417A-BEC2-A3D89F2FD802}.Release|Any CPU.ActiveCfg = Release|Win32
 		{029ED34E-5790-417A-BEC2-A3D89F2FD802}.Release|Mixed Platforms.ActiveCfg = Release|Win32
+		{029ED34E-5790-417A-BEC2-A3D89F2FD802}.Release|Mixed Platforms.Build.0 = Release|Win32
 		{029ED34E-5790-417A-BEC2-A3D89F2FD802}.Release|Win32.ActiveCfg = Release|Win32
 		{029ED34E-5790-417A-BEC2-A3D89F2FD802}.Release|Win32.Build.0 = Release|Win32
 		{029ED34E-5790-417A-BEC2-A3D89F2FD802}.Release|x86.ActiveCfg = Release|Win32
