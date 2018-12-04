@@ -246,9 +246,14 @@ namespace FairiesCoolerCash.Business
                         string count = (i + 1).ToString() + ".";
                         DXInfo.Models.InventoryEx ie = lInventoryEx[i];
                         string invName = DXInfo.Business.Helper.Truncate(ie.Name, 8);
-                        element.AddTripleText(count + invName, ie.CupType.Name,
+                        element.AddTripleText(count + invName, "",
+                            "",
+                            maxLength1, maxLength2, BodyFont, BodyFont, BodyBigFont);
+
+                        element.AddTripleText("", ie.CupType.Name,
                             string.Format(MyFormat, "{0:DelZero}", ie.Quantity),
                             maxLength1, maxLength2, BodyFont, BodyFont, BodyBigFont);
+
                         string taste = "  ";
                         if (ie.lTasteEx != null && ie.lTasteEx.Count > 0)
                         {
@@ -298,7 +303,8 @@ namespace FairiesCoolerCash.Business
             element.AddPairText("门店", DeptName, maxLength, BodyFont, BodyFont);
             element.AddPairText("日期", CreateDate.ToString("yyyy-MM-dd HH:mm:ss"),
                 maxLength, BodyFont, BodySmallFont);
-            element.AddText("凭此小票或号牌在吧台领取饮品", BodyFont);
+            Font font1 = new Font("黑体", 9, FontStyle.Bold);
+            element.AddText("凭此小票或号牌在吧台领取饮品", font1);
             element.AddText("", BodyFont);
             element.AddText("", BodyFont);
             element.AddText("", BodyFont);
@@ -485,9 +491,14 @@ namespace FairiesCoolerCash.Business
                         string count = (i + 1).ToString() + ".";
                         DXInfo.Models.InventoryEx ie = lInventoryEx[i];
                         string invName = DXInfo.Business.Helper.Truncate(ie.Name, 8);
-                        element.AddTripleText(count + invName, ie.CupType.Name,
+                        element.AddTripleText(count + invName, "",
+                            "",
+                            maxLength1, maxLength2, BodyFont, BodyFont, BodyBigFont);
+
+                        element.AddTripleText("", ie.CupType.Name,
                             string.Format(MyFormat, "{0:DelZero}", ie.Quantity),
                             maxLength1, maxLength2, BodyFont, BodyFont, BodyBigFont);
+
                         string taste = "  ";
                         if (ie.lTasteEx != null && ie.lTasteEx.Count > 0)
                         {
