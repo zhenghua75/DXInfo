@@ -25,7 +25,14 @@ namespace FairiesCoolerCash.ViewModel
         {
             this.Title = title;
             this.ReceivableAmount = dReceivableAmount;
-            this.Cash = dReceivableAmount;
+            if (System.Configuration.ConfigurationManager.AppSettings.AllKeys.Contains("CashEqualReceivable"))
+            {
+                string bCash = System.Configuration.ConfigurationManager.AppSettings["CashEqualReceivable"];
+                if(bCash == "true")
+                {
+                    this.Cash = dReceivableAmount;
+                }
+            }
             if (bReceivable)
             {
                 this.ReceivableVisibility = System.Windows.Visibility.Visible;
