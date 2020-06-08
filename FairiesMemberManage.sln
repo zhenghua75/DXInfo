@@ -201,7 +201,6 @@ Global
 		{0784CDC9-0F52-4B8B-9488-6589C11E94E2}.Release|x86.ActiveCfg = Release|Any CPU
 		{CF6D105B-2ABA-4D9D-823E-14F5FD716D6E}.Debug|Any CPU.ActiveCfg = Debug|Win32
 		{CF6D105B-2ABA-4D9D-823E-14F5FD716D6E}.Debug|Mixed Platforms.ActiveCfg = Debug|Win32
-		{CF6D105B-2ABA-4D9D-823E-14F5FD716D6E}.Debug|Mixed Platforms.Build.0 = Debug|Win32
 		{CF6D105B-2ABA-4D9D-823E-14F5FD716D6E}.Debug|Win32.ActiveCfg = Debug|Win32
 		{CF6D105B-2ABA-4D9D-823E-14F5FD716D6E}.Debug|Win32.Build.0 = Debug|Win32
 		{CF6D105B-2ABA-4D9D-823E-14F5FD716D6E}.Debug|x86.ActiveCfg = Debug|Win32
@@ -515,8 +514,8 @@ Global
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
-		EnterpriseLibraryConfigurationToolBinariesPath = packages\Unity.2.1.505.2\lib\NET35;packages\Unity.Interception.2.1.505.2\lib\NET35;packages\EnterpriseLibrary.Common.5.0.505.0\lib\NET35;packages\EnterpriseLibrary.ExceptionHandling.5.0.505.0\lib\NET35;packages\EnterpriseLibrary.Logging.5.0.505.1\lib\NET35;packages\EnterpriseLibrary.ExceptionHandling.Logging.5.0.505.0\lib\NET35;packages\EnterpriseLibrary.Logging.5.0.505.0\lib\NET35;packages\EnterpriseLibrary.Security.5.0.505.0\lib\NET35;packages\EnterpriseLibrary.Security.Cryptography.5.0.505.0\lib\NET35;packages\EnterpriseLibrary.Data.5.0.505.0\lib\NET35
-		SolutionGuid = {E95A6A3B-DE98-4AD2-ADF9-4E8DF35FACB7}
 		EnterpriseLibraryConfigurationToolBinariesPathV6 = packages\EnterpriseLibrary.Common.6.0.1304.0\lib\NET45;packages\EnterpriseLibrary.ExceptionHandling.6.0.1304.0\lib\NET45;packages\EnterpriseLibrary.Logging.6.0.1304.0\lib\NET45;packages\EnterpriseLibrary.ExceptionHandling.Logging.6.0.1304.0\lib\NET45;packages\EnterpriseLibrary.Data.6.0.1304.0\lib\NET45
+		SolutionGuid = {E95A6A3B-DE98-4AD2-ADF9-4E8DF35FACB7}
+		EnterpriseLibraryConfigurationToolBinariesPath = packages\Unity.2.1.505.2\lib\NET35;packages\Unity.Interception.2.1.505.2\lib\NET35;packages\EnterpriseLibrary.Common.5.0.505.0\lib\NET35;packages\EnterpriseLibrary.ExceptionHandling.5.0.505.0\lib\NET35;packages\EnterpriseLibrary.Logging.5.0.505.1\lib\NET35;packages\EnterpriseLibrary.ExceptionHandling.Logging.5.0.505.0\lib\NET35;packages\EnterpriseLibrary.Logging.5.0.505.0\lib\NET35;packages\EnterpriseLibrary.Security.5.0.505.0\lib\NET35;packages\EnterpriseLibrary.Security.Cryptography.5.0.505.0\lib\NET35;packages\EnterpriseLibrary.Data.5.0.505.0\lib\NET35
 	EndGlobalSection
 EndGlobal

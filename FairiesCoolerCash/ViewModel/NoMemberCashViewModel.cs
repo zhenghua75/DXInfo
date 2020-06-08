@@ -5,6 +5,7 @@ using System.Text;
 using DXInfo.Data.Contracts;
 using System.Windows.Input;
 using GalaSoft.MvvmLight.CommandWpf;
+using AutoMapper;
 
 namespace FairiesCoolerCash.ViewModel
 {
@@ -16,22 +17,33 @@ namespace FairiesCoolerCash.ViewModel
         private bool bReceivable = false;
         private bool bPassword = false;
         private bool bDeskNo = false;
+        private readonly IMapper mapper;
         public NoMemberCashViewModel(IFairiesMemberManageUow uow,
+            IMapper mapper,
             List<string> lValidationPropertyNames,
             decimal dReceivableAmount,
             string title,
-            bool bReceivable,bool bPassword,bool bDeskNo)
-            : base(uow, lValidationPropertyNames)//new List<string>() { "DeskNo","Cash"})
+            bool bReceivable,bool bPassword,bool bDeskNo, bool bCashEqualReceivable, decimal cash)
+            : base(uow,mapper, lValidationPropertyNames)//new List<string>() { "DeskNo","Cash"})
         {
+            this.mapper = mapper;
             this.Title = title;
             this.ReceivableAmount = dReceivableAmount;
-            if (System.Configuration.ConfigurationManager.AppSettings.AllKeys.Contains("CashEqualReceivable"))
+            //if (System.Configuration.ConfigurationManager.AppSettings.AllKeys.Contains("CashEqualReceivable"))
+            //{
+            //    string bCash = System.Configuration.ConfigurationManager.AppSettings["CashEqualReceivable"];
+            //    if(bCash == "true")
+            //    {
+            //        this.Cash = dReceivableAmount;
+            //    }
+            //}
+            if (bCashEqualReceivable)
             {
-                string bCash = System.Configuration.ConfigurationManager.AppSettings["CashEqualReceivable"];
-                if(bCash == "true")
-                {
-                    this.Cash = dReceivableAmount;
-                }
+                this.Cash = dReceivableAmount;
+            }
+            else
+            {
+                this.Cash = cash;
             }
             if (bReceivable)
             {

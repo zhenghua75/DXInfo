@@ -8,49 +8,29 @@ using DXInfo.Models;
 using DXInfo.Data.Contracts;
 using AutoMapper;
 using System.Collections.ObjectModel;
-//using FairiesCoolerCash.Business;
+
 
 namespace DXInfo.Restaurant
 {
-    //public static class ExtensionMethods
-    //{
-    //    public static int Remove<T>(
-    //        this ObservableCollection<T> coll, Func<T, bool> condition)
-    //    {
-    //        var itemsToRemove = coll.Where(condition).ToList();
 
-    //        foreach (var itemToRemove in itemsToRemove)
-    //        {
-    //            coll.Remove(itemToRemove);
-    //        }
-
-    //        return itemsToRemove.Count;
-    //    }
-    //}
     public class DeskManageFacade
     {
         private IFairiesMemberManageUow uow;
         private Guid deptId;
         private Guid userId;
         public DateTime dtOperDate { get; set; }
-        public DeskManageFacade(IFairiesMemberManageUow uow,Guid deptId,Guid userId)
+        private readonly IMapper mapper;
+        public DeskManageFacade(IFairiesMemberManageUow uow, IMapper mapper, Guid deptId, Guid userId)
         {
             this.uow = uow;
             this.deptId = deptId;
             this.userId = userId;
-            //Mapper.Initialize(cfg => {
-            //    cfg.CreateMap<DXInfo.Models.OrderDishes, DXInfo.Models.OrderDishesHis>();
-            //    cfg.CreateMap<DXInfo.Models.OrderBooks, DXInfo.Models.OrderBooksHis>();
-            //    cfg.CreateMap<DXInfo.Models.OrderBookDeskes, DXInfo.Models.OrderBookDeskesHis>();
-            //    cfg.CreateMap<DXInfo.Models.OrderDeskes, DXInfo.Models.OrderDeskesHis>();
-            //    cfg.CreateMap<DXInfo.Models.OrderMenus, DXInfo.Models.OrderMenusHis>();
-            //    cfg.CreateMap<DXInfo.Models.OrderPackages, DXInfo.Models.OrderPackagesHis>();
-            //});
+            this.mapper = mapper;
         }
 
         #region 公共方法
         #region 检查桌台是否预订
-        public bool CheckDeskIsBook(Guid deskId,DateTime dtBeginDate,DateTime dtEndDate)
+        public bool CheckDeskIsBook(Guid deskId, DateTime dtBeginDate, DateTime dtEndDate)
         {
             int count = (from d in uow.OrderBookDeskes.GetAll()
                          join o in uow.OrderBooks.GetAll() on d.OrderBookId equals o.Id into od
@@ -65,68 +45,64 @@ namespace DXInfo.Restaurant
         public DXInfo.Models.OrderBookDeskes GetBookDesk(Guid deskId)
         {
             DXInfo.Models.OrderBookDeskes obd = (from d in uow.OrderBookDeskes.GetAll()
-                         join o in uow.OrderBooks.GetAll() on d.OrderBookId equals o.Id into od
-                         from ods in od.DefaultIfEmpty()
-                         where d.DeskId == deskId &&
-                         ods.Status == (int)DXInfo.Models.OrderBookStatus.Booked &&
-                         d.Status == (int)DXInfo.Models.OrderBookDeskStatus.Booked &&
-                         ods.BookBeginDate <= DateTime.Now &&
-                         ods.BookEndDate >= DateTime.Now
-                         select d).FirstOrDefault();
+                                                 join o in uow.OrderBooks.GetAll() on d.OrderBookId equals o.Id into od
+                                                 from ods in od.DefaultIfEmpty()
+                                                 where d.DeskId == deskId &&
+                                                 ods.Status == (int)DXInfo.Models.OrderBookStatus.Booked &&
+                                                 d.Status == (int)DXInfo.Models.OrderBookDeskStatus.Booked &&
+                                                 ods.BookBeginDate <= DateTime.Now &&
+                                                 ods.BookEndDate >= DateTime.Now
+                                                 select d).FirstOrDefault();
             return obd;
         }
         #endregion
 
         public void cleanData()
         {
-            
-                var orderDishCanceld = (from d in uow.OrderDishes.GetAll()
-                                        where d.Status == (int)DXInfo.Models.OrderDishStatus.Canceled
-                                        orderby d.CreateDate descending
-                                        select d.Id).Take(100).Distinct().ToList();
-                foreach (Guid orderId in orderDishCanceld)
-                {
-                    CancelOpen(orderId);
-                }
 
-                var orderDishCheckouted = (from d in uow.OrderDishes.GetAll()
-                                           where d.Status == (int)DXInfo.Models.OrderDishStatus.Checkouted
-                                           orderby d.CreateDate descending
-                                           select d.Id).Take(100).Distinct().ToList();
-                foreach (Guid orderId in orderDishCheckouted)
-                {
-                    CancelChecked(orderId);
-                }
+            var orderDishCanceld = (from d in uow.OrderDishes.GetAll()
+                                    where d.Status == (int)DXInfo.Models.OrderDishStatus.Canceled
+                                    orderby d.CreateDate descending
+                                    select d.Id).Take(100).Distinct().ToList();
+            foreach (Guid orderId in orderDishCanceld)
+            {
+                CancelOpen(orderId);
+            }
 
-                var orders = (from d in uow.OrderDeskes.GetAll()
-                              join d1 in uow.OrderDishes.GetAll() on d.OrderId equals d1.Id into dd1
-                              from dd1s in dd1.DefaultIfEmpty()
-                              where d.Status == (int)DXInfo.Models.OrderDeskStatus.InUse &&
-                                  dd1s.Id == null
-                              orderby d.CreateDate descending
-                              select d.OrderId).Take(100).Distinct().ToList();
-                foreach (Guid orderId in orders)
-                {
-                    CancelNothing(orderId);
-                }          
+            var orderDishCheckouted = (from d in uow.OrderDishes.GetAll()
+                                       where d.Status == (int)DXInfo.Models.OrderDishStatus.Checkouted
+                                       orderby d.CreateDate descending
+                                       select d.Id).Take(100).Distinct().ToList();
+            foreach (Guid orderId in orderDishCheckouted)
+            {
+                CancelChecked(orderId);
+            }
+
+            var orders = (from d in uow.OrderDeskes.GetAll()
+                          join d1 in uow.OrderDishes.GetAll() on d.OrderId equals d1.Id into dd1
+                          from dd1s in dd1.DefaultIfEmpty()
+                          where d.Status == (int)DXInfo.Models.OrderDeskStatus.InUse &&
+                              dd1s.Id == null
+                          orderby d.CreateDate descending
+                          select d.OrderId).Take(100).Distinct().ToList();
+            foreach (Guid orderId in orders)
+            {
+                CancelNothing(orderId);
+            }
         }
         public bool CheckDeskIsUse(Guid deskId)
         {
             int count = (from d in uow.OrderDeskes.GetAll()
-                          join d1 in uow.OrderDishes.GetAll() on d.OrderId equals d1.Id into dd1
-                          from dd1s in dd1.DefaultIfEmpty()
-                          where d.Status == (int)DXInfo.Models.OrderDeskStatus.InUse &&
-                          d.DeskId == deskId&&
-                              dd1s.Id != null
+                         join d1 in uow.OrderDishes.GetAll() on d.OrderId equals d1.Id into dd1
+                         from dd1s in dd1.DefaultIfEmpty()
+                         where d.Status == (int)DXInfo.Models.OrderDeskStatus.InUse &&
+                         d.DeskId == deskId &&
+                             dd1s.Id != null
                          select d).Count();
 
-            //int count = (from d in uow.OrderDeskes.GetAll()
-            //             where d.Status == (int)DXInfo.Models.OrderDeskStatus.InUse &&
-            //             d.DeskId == deskId
-            //             select d).Count();
             return count > 0;
         }
-        public void AddPrint(ref Hashtable htOtherPrint,ref Hashtable htLocalPrint, DXInfo.Models.InventoryEx iex,DXInfo.Models.PrintType pt)
+        public void AddPrint(ref Hashtable htOtherPrint, ref Hashtable htLocalPrint, DXInfo.Models.InventoryEx iex, DXInfo.Models.PrintType pt)
         {
             if (!htOtherPrint.Contains(pt))
             {
@@ -169,12 +145,12 @@ namespace DXInfo.Restaurant
             }
 
         }
-        private void Order_OrderPackage(DXInfo.Models.OrderPackages op,bool isTemp = false)
+        private void Order_OrderPackage(DXInfo.Models.OrderPackages op, bool isTemp = false)
         {
             if (op.Status == (int)DXInfo.Models.OrderMenuStatus.Normal)
             {
                 op.OperDate = dtOperDate;
-                if(!isTemp)
+                if (!isTemp)
                     op.Status = (int)DXInfo.Models.OrderMenuStatus.Order;
                 if (op.Id == Guid.Empty)
                 {
@@ -186,12 +162,12 @@ namespace DXInfo.Restaurant
                     uow.OrderPackages.Update(op);
                 }
                 DXInfo.Models.OrderPackagesHis packagesHis =
-                    Mapper.Map<DXInfo.Models.OrderPackagesHis>(op);
+                    mapper.Map<DXInfo.Models.OrderPackagesHis>(op);
                 packagesHis.LinkId = op.Id;
                 uow.OrderPackagesHis.Add(packagesHis);
             }
         }
-        private void Order_OrderDish(DXInfo.Models.OrderDishes odish,bool isTemp = false)
+        private void Order_OrderDish(DXInfo.Models.OrderDishes odish, bool isTemp = false)
         {
 
             if (odish.Status == (int)DXInfo.Models.OrderDishStatus.Opened)
@@ -204,14 +180,14 @@ namespace DXInfo.Restaurant
                 odish.DeptId = deptId;
                 uow.OrderDishes.Update(odish);
 
-                DXInfo.Models.OrderDishesHis odHis = Mapper.Map<DXInfo.Models.OrderDishesHis>(odish);
+                DXInfo.Models.OrderDishesHis odHis = mapper.Map<DXInfo.Models.OrderDishesHis>(odish);
                 odHis.LinkId = odish.Id;
                 odHis.CreateDate = dtOperDate;
                 uow.OrderDishesHis.Add(odHis);
             }
         }
         private void Order_OrderMenu_UpdateOrderMenu(DXInfo.Models.OrderMenus orderMenu,
-            DXInfo.Models.InventoryEx iex,bool isTemp)
+            DXInfo.Models.InventoryEx iex, bool isTemp)
         {
 
             orderMenu.Quantity = iex.Quantity;
@@ -232,10 +208,10 @@ namespace DXInfo.Restaurant
                     orderMenu.Status = (int)DXInfo.Models.OrderMenuStatus.Out;
                 }
             }
-            
+
             uow.OrderMenus.Update(orderMenu);
 
-            DXInfo.Models.OrderMenusHis menuHis = Mapper.Map<DXInfo.Models.OrderMenusHis>(orderMenu);
+            DXInfo.Models.OrderMenusHis menuHis = mapper.Map<DXInfo.Models.OrderMenusHis>(orderMenu);
             menuHis.LinkId = orderMenu.Id;
             uow.OrderMenusHis.Add(menuHis);
         }
@@ -247,12 +223,12 @@ namespace DXInfo.Restaurant
         /// <summary>
         /// 预订
         /// </summary>
-        public void Book(Guid deskId, int quantity, string linkName, string linkPhone, 
+        public void Book(Guid deskId, int quantity, string linkName, string linkPhone,
             DateTime bookBeginDate, DateTime bookEndDate)
         {
             using (TransactionScope transaction = new TransactionScope())
             {
-                if (CheckDeskIsBook(deskId,bookBeginDate,bookEndDate)) throw new Exception("此桌台已预定");
+                if (CheckDeskIsBook(deskId, bookBeginDate, bookEndDate)) throw new Exception("此桌台已预定");
                 if (bookBeginDate <= dtOperDate && bookEndDate >= dtOperDate)
                 {
                     if (CheckDeskIsUse(deskId)) throw new Exception("此桌台已在用");
@@ -271,7 +247,7 @@ namespace DXInfo.Restaurant
 
                 uow.Commit();
 
-                DXInfo.Models.OrderBooksHis orderBookHis = Mapper.Map<DXInfo.Models.OrderBooksHis>(orderBook);
+                DXInfo.Models.OrderBooksHis orderBookHis = mapper.Map<DXInfo.Models.OrderBooksHis>(orderBook);
                 orderBookHis.LinkId = orderBook.Id;
                 uow.OrderBooksHis.Add(orderBookHis);
 
@@ -284,7 +260,7 @@ namespace DXInfo.Restaurant
                 uow.OrderBookDeskes.Add(desk);
                 uow.Commit();
 
-                DXInfo.Models.OrderBookDeskesHis deskHis = Mapper.Map<DXInfo.Models.OrderBookDeskesHis>(desk);
+                DXInfo.Models.OrderBookDeskesHis deskHis = mapper.Map<DXInfo.Models.OrderBookDeskesHis>(desk);
                 deskHis.LinkId = desk.Id;
                 deskHis.CreateDate = dtOperDate;
                 uow.OrderBookDeskesHis.Add(deskHis);
@@ -302,7 +278,7 @@ namespace DXInfo.Restaurant
         /// </summary>
         public void CancelBook(Guid orderBookId)
         {
-            DXInfo.Models.OrderBooks book = uow.OrderBooks.GetById(g=>g.Id==orderBookId);
+            DXInfo.Models.OrderBooks book = uow.OrderBooks.GetById(g => g.Id == orderBookId);
             if (book == null)
             {
                 throw new Exception("未找到预订信息，不能取消预定");
@@ -316,7 +292,7 @@ namespace DXInfo.Restaurant
             book.DeptId = deptId;
             uow.OrderBooks.Update(book);
 
-            DXInfo.Models.OrderBooksHis orderBookHis = Mapper.Map<DXInfo.Models.OrderBooksHis>(book);
+            DXInfo.Models.OrderBooksHis orderBookHis = mapper.Map<DXInfo.Models.OrderBooksHis>(book);
             orderBookHis.LinkId = book.Id;
             orderBookHis.CreateDate = dtOperDate;
             uow.OrderBooksHis.Add(orderBookHis);
@@ -328,7 +304,7 @@ namespace DXInfo.Restaurant
                 obd.UserId = userId;
                 uow.OrderBookDeskes.Update(obd);
 
-                DXInfo.Models.OrderBookDeskesHis deskHis = Mapper.Map<DXInfo.Models.OrderBookDeskesHis>(obd);
+                DXInfo.Models.OrderBookDeskesHis deskHis = mapper.Map<DXInfo.Models.OrderBookDeskesHis>(obd);
                 deskHis.LinkId = obd.Id;
                 deskHis.CreateDate = dtOperDate;
                 uow.OrderBookDeskesHis.Add(deskHis);
@@ -341,23 +317,23 @@ namespace DXInfo.Restaurant
         /// <summary>
         /// 预定-开台
         /// </summary>
-        public void OpenBook(Guid orderBookId,Guid deskId, int quantity, bool isIpad, 
+        public void OpenBook(Guid orderBookId, Guid deskId, int quantity, bool isIpad,
             ref DXInfo.Models.OrderDishes orderDish,
             ref DXInfo.Models.OrderDeskes orderDesk)
         {
             using (TransactionScope transaction = new TransactionScope())
             {
-                DXInfo.Models.OrderBooks orderBook = uow.OrderBooks.GetById(g=>g.Id==orderBookId);
+                DXInfo.Models.OrderBooks orderBook = uow.OrderBooks.GetById(g => g.Id == orderBookId);
                 if (orderBook.Status != (int)DXInfo.Models.OrderBookStatus.Booked)
                     throw new Exception("此桌台不在预定状态，不能开台");
-                if(this.CheckDeskIsUse(deskId))
+                if (this.CheckDeskIsUse(deskId))
                     throw new Exception("此桌台已在用，不能开台");
                 orderBook.Status = (int)DXInfo.Models.OrderBookStatus.Opened;
                 orderBook.DeptId = deptId;
                 orderBook.UserId = userId;
                 uow.OrderBooks.Update(orderBook);
 
-                DXInfo.Models.OrderBooksHis orderBookHis = Mapper.Map<DXInfo.Models.OrderBooksHis>(orderBook);//new DXInfo.Models.OrderBooksHis();
+                DXInfo.Models.OrderBooksHis orderBookHis = mapper.Map<DXInfo.Models.OrderBooksHis>(orderBook);//new DXInfo.Models.OrderBooksHis();
                 orderBookHis.LinkId = orderBookId;
                 orderBookHis.CreateDate = dtOperDate;
                 uow.OrderBooksHis.Add(orderBookHis);
@@ -379,7 +355,7 @@ namespace DXInfo.Restaurant
                 uow.OrderDishes.Add(od);
                 uow.Commit();
                 orderDish = od;
-                DXInfo.Models.OrderDishesHis odHis = Mapper.Map<DXInfo.Models.OrderDishesHis>(od);
+                DXInfo.Models.OrderDishesHis odHis = mapper.Map<DXInfo.Models.OrderDishesHis>(od);
                 odHis.LinkId = od.Id;
                 uow.OrderDishesHis.Add(odHis);
 
@@ -392,7 +368,7 @@ namespace DXInfo.Restaurant
                         obd.UserId = userId;
                         uow.OrderBookDeskes.Update(obd);
 
-                        DXInfo.Models.OrderBookDeskesHis orderBookDeskHis = Mapper.Map<DXInfo.Models.OrderBookDeskesHis>(obd);
+                        DXInfo.Models.OrderBookDeskesHis orderBookDeskHis = mapper.Map<DXInfo.Models.OrderBookDeskesHis>(obd);
                         orderBookDeskHis.LinkId = obd.Id;
                         orderBookDeskHis.CreateDate = dtOperDate;
                         uow.OrderBookDeskesHis.Add(orderBookDeskHis);
@@ -409,7 +385,7 @@ namespace DXInfo.Restaurant
                         {
                             orderDesk = desk;
                         }
-                        DXInfo.Models.OrderDeskesHis deskHis = Mapper.Map<DXInfo.Models.OrderDeskesHis>(desk);
+                        DXInfo.Models.OrderDeskesHis deskHis = mapper.Map<DXInfo.Models.OrderDeskesHis>(desk);
                         deskHis.LinkId = desk.Id;
                         uow.OrderDeskesHis.Add(deskHis);
                     }
@@ -436,13 +412,13 @@ namespace DXInfo.Restaurant
             }
             else
             {
-                DXInfo.Models.OrderBookDeskes chkDesk = uow.OrderBookDeskes.GetById(g=>g.Id==orderBookDeskId);//.GetAll().Where(w => w.Id == orderBookDesk.Id).FirstOrDefault();
+                DXInfo.Models.OrderBookDeskes chkDesk = uow.OrderBookDeskes.GetById(g => g.Id == orderBookDeskId);//.GetAll().Where(w => w.Id == orderBookDesk.Id).FirstOrDefault();
                 if (chkDesk.Status == (int)DXInfo.Models.OrderBookDeskStatus.Canceled) throw new Exception("此桌台已经撤销");
                 chkDesk.Status = (int)DXInfo.Models.OrderBookDeskStatus.Canceled;
                 chkDesk.UserId = userId;
                 uow.OrderBookDeskes.Update(chkDesk);
 
-                DXInfo.Models.OrderBookDeskesHis oldhis = Mapper.Map<DXInfo.Models.OrderBookDeskesHis>(chkDesk);
+                DXInfo.Models.OrderBookDeskesHis oldhis = mapper.Map<DXInfo.Models.OrderBookDeskesHis>(chkDesk);
                 oldhis.CreateDate = dtOperDate;
                 oldhis.LinkId = chkDesk.Id;
                 uow.OrderBookDeskesHis.Add(oldhis);
@@ -456,18 +432,18 @@ namespace DXInfo.Restaurant
         /// <summary>
         /// 预定-换台
         /// </summary>
-        public void ExchangeBookDesk(Guid newDeskId, Guid orderBookDeskId,DateTime dtBeginDate,DateTime dtEndDate)
+        public void ExchangeBookDesk(Guid newDeskId, Guid orderBookDeskId, DateTime dtBeginDate, DateTime dtEndDate)
         {
             using (TransactionScope transaction = new TransactionScope())
             {
-                if (CheckDeskIsBook(newDeskId,dtBeginDate,dtEndDate)) throw new Exception("桌台已被预订");
+                if (CheckDeskIsBook(newDeskId, dtBeginDate, dtEndDate)) throw new Exception("桌台已被预订");
 
-                DXInfo.Models.OrderBookDeskes orderBookDesk = uow.OrderBookDeskes.GetById(g=>g.Id==orderBookDeskId);
+                DXInfo.Models.OrderBookDeskes orderBookDesk = uow.OrderBookDeskes.GetById(g => g.Id == orderBookDeskId);
                 orderBookDesk.Status = (int)DXInfo.Models.OrderBookDeskStatus.Canceled;
                 orderBookDesk.UserId = userId;
                 uow.OrderBookDeskes.Update(orderBookDesk);
 
-                DXInfo.Models.OrderBookDeskesHis oldhis = Mapper.Map<DXInfo.Models.OrderBookDeskesHis>(orderBookDesk);
+                DXInfo.Models.OrderBookDeskesHis oldhis = mapper.Map<DXInfo.Models.OrderBookDeskesHis>(orderBookDesk);
                 oldhis.CreateDate = dtOperDate;
                 oldhis.LinkId = orderBookDesk.Id;
                 uow.OrderBookDeskesHis.Add(oldhis);
@@ -483,7 +459,7 @@ namespace DXInfo.Restaurant
 
                 uow.Commit();
 
-                DXInfo.Models.OrderBookDeskesHis newhis = Mapper.Map<DXInfo.Models.OrderBookDeskesHis>(neworderdesk);
+                DXInfo.Models.OrderBookDeskesHis newhis = mapper.Map<DXInfo.Models.OrderBookDeskesHis>(neworderdesk);
                 newhis.LinkId = neworderdesk.Id;
                 uow.OrderBookDeskesHis.Add(newhis);
 
@@ -513,7 +489,7 @@ namespace DXInfo.Restaurant
 
                 uow.Commit();
 
-                DXInfo.Models.OrderBookDeskesHis newhis = Mapper.Map<DXInfo.Models.OrderBookDeskesHis>(newOrderBookDesk);
+                DXInfo.Models.OrderBookDeskesHis newhis = mapper.Map<DXInfo.Models.OrderBookDeskesHis>(newOrderBookDesk);
                 newhis.LinkId = newOrderBookDesk.Id;
                 uow.OrderBookDeskesHis.Add(newhis);
 
@@ -531,8 +507,7 @@ namespace DXInfo.Restaurant
         /// <summary>
         /// 开台
         /// </summary>
-        public void Open(int quantity,Guid deskId,bool isIpad,ref DXInfo.Models.OrderDishes orderDish,
-            ref DXInfo.Models.OrderDeskes orderDesk)
+        public void Open(int quantity, Guid deskId, bool isIpad, ref DXInfo.Models.OrderDishes orderDish, ref DXInfo.Models.OrderDeskes orderDesk, string comment=null)
         {
             using (TransactionScope transaction = new TransactionScope())
             {
@@ -550,10 +525,11 @@ namespace DXInfo.Restaurant
                 od.UserId = userId;
                 od.IsIpad = isIpad;
                 od.Status = (int)DXInfo.Models.OrderDishStatus.Opened;
+                od.Comment = comment;
                 uow.OrderDishes.Add(od);
                 uow.Commit();
 
-                DXInfo.Models.OrderDishesHis odHis = Mapper.Map<DXInfo.Models.OrderDishesHis>(od);
+                DXInfo.Models.OrderDishesHis odHis = mapper.Map<DXInfo.Models.OrderDishesHis>(od);
                 odHis.LinkId = od.Id;
                 uow.OrderDishesHis.Add(odHis);
 
@@ -566,7 +542,7 @@ namespace DXInfo.Restaurant
                 uow.OrderDeskes.Add(desk);
                 uow.Commit();
 
-                DXInfo.Models.OrderDeskesHis deskHis = Mapper.Map<DXInfo.Models.OrderDeskesHis>(desk);
+                DXInfo.Models.OrderDeskesHis deskHis = mapper.Map<DXInfo.Models.OrderDeskesHis>(desk);
                 deskHis.LinkId = desk.Id;
                 uow.OrderDeskesHis.Add(deskHis);
 
@@ -585,19 +561,19 @@ namespace DXInfo.Restaurant
         /// </summary>
         public void CancelOpen(Guid orderDishId)
         {
-            DXInfo.Models.OrderDishes orderDish = uow.OrderDishes.GetById(g=>g.Id==orderDishId);
+            DXInfo.Models.OrderDishes orderDish = uow.OrderDishes.GetById(g => g.Id == orderDishId);
             if (orderDish != null)
             {
                 uow.OrderDishes.Delete(orderDish);
 
-                DXInfo.Models.OrderDishesHis orderDishHis = Mapper.Map<DXInfo.Models.OrderDishesHis>(orderDish);
+                DXInfo.Models.OrderDishesHis orderDishHis = mapper.Map<DXInfo.Models.OrderDishesHis>(orderDish);
                 orderDishHis.Status = (int)DXInfo.Models.OrderDishStatus.Canceled;
                 orderDishHis.UserId = userId;
                 orderDishHis.DeptId = deptId;
                 orderDishHis.LinkId = orderDish.Id;
                 uow.OrderDishesHis.Add(orderDishHis);
             }
-            //DXInfo.Models.OrderDishesHis odHis = Mapper.Map<DXInfo.Models.OrderDishesHis>(orderDish);
+            //DXInfo.Models.OrderDishesHis odHis = mapper.Map<DXInfo.Models.OrderDishesHis>(orderDish);
             //odHis.LinkId = orderDish.Id;
             //odHis.CreateDate = dtOperDate;
             //uow.OrderDishesHis.Add(odHis);
@@ -609,7 +585,7 @@ namespace DXInfo.Restaurant
             {
                 uow.OrderDeskes.Delete(orderDesk);
 
-                DXInfo.Models.OrderDeskesHis deskHis = Mapper.Map<DXInfo.Models.OrderDeskesHis>(orderDesk);
+                DXInfo.Models.OrderDeskesHis deskHis = mapper.Map<DXInfo.Models.OrderDeskesHis>(orderDesk);
                 deskHis.Status = (int)DXInfo.Models.OrderDeskStatus.Idle;
                 deskHis.UserId = userId;
                 deskHis.LinkId = orderDesk.Id;
@@ -617,14 +593,14 @@ namespace DXInfo.Restaurant
                 uow.OrderDeskesHis.Add(deskHis);
             }
             List<DXInfo.Models.OrderMenus> lOrderMenus = (from d in uow.OrderMenus.GetAll()
-                                                         where d.OrderId == orderDishId
-                                                              select d).ToList();
-            foreach(DXInfo.Models.OrderMenus orderMenu in lOrderMenus)
+                                                          where d.OrderId == orderDishId
+                                                          select d).ToList();
+            foreach (DXInfo.Models.OrderMenus orderMenu in lOrderMenus)
             {
                 uow.OrderMenus.Delete(orderMenu);
 
-                DXInfo.Models.OrderMenusHis menuHis = Mapper.Map<DXInfo.Models.OrderMenusHis>(orderMenu);
-                menuHis.Oper=userId;
+                DXInfo.Models.OrderMenusHis menuHis = mapper.Map<DXInfo.Models.OrderMenusHis>(orderMenu);
+                menuHis.Oper = userId;
                 menuHis.OperDate = this.dtOperDate;
                 menuHis.LinkId = orderMenu.Id;
                 menuHis.Status = (int)DXInfo.Models.OrderMenuStatus.Withdraw;
@@ -639,14 +615,14 @@ namespace DXInfo.Restaurant
             {
                 uow.OrderDishes.Delete(orderDish);
 
-                DXInfo.Models.OrderDishesHis orderDishHis = Mapper.Map<DXInfo.Models.OrderDishesHis>(orderDish);
+                DXInfo.Models.OrderDishesHis orderDishHis = mapper.Map<DXInfo.Models.OrderDishesHis>(orderDish);
                 orderDishHis.Status = (int)DXInfo.Models.OrderDishStatus.Checkouted;
                 orderDishHis.UserId = userId;
                 orderDishHis.DeptId = deptId;
                 orderDishHis.LinkId = orderDish.Id;
                 uow.OrderDishesHis.Add(orderDishHis);
             }
-            //DXInfo.Models.OrderDishesHis odHis = Mapper.Map<DXInfo.Models.OrderDishesHis>(orderDish);
+            //DXInfo.Models.OrderDishesHis odHis = mapper.Map<DXInfo.Models.OrderDishesHis>(orderDish);
             //odHis.LinkId = orderDish.Id;
             //odHis.CreateDate = dtOperDate;
             //uow.OrderDishesHis.Add(odHis);
@@ -658,7 +634,7 @@ namespace DXInfo.Restaurant
             {
                 uow.OrderDeskes.Delete(orderDesk);
 
-                DXInfo.Models.OrderDeskesHis deskHis = Mapper.Map<DXInfo.Models.OrderDeskesHis>(orderDesk);
+                DXInfo.Models.OrderDeskesHis deskHis = mapper.Map<DXInfo.Models.OrderDeskesHis>(orderDesk);
                 deskHis.Status = (int)DXInfo.Models.OrderDeskStatus.Idle;
                 deskHis.UserId = userId;
                 deskHis.LinkId = orderDesk.Id;
@@ -672,7 +648,7 @@ namespace DXInfo.Restaurant
             {
                 uow.OrderMenus.Delete(orderMenu);
 
-                DXInfo.Models.OrderMenusHis menuHis = Mapper.Map<DXInfo.Models.OrderMenusHis>(orderMenu);
+                DXInfo.Models.OrderMenusHis menuHis = mapper.Map<DXInfo.Models.OrderMenusHis>(orderMenu);
                 menuHis.Oper = userId;
                 menuHis.OperDate = this.dtOperDate;
                 menuHis.LinkId = orderMenu.Id;
@@ -684,18 +660,18 @@ namespace DXInfo.Restaurant
         public void CancelNothing(Guid orderDishId)
         {
             DXInfo.Models.OrderDishes orderDish = uow.OrderDishes.GetById(g => g.Id == orderDishId);
-            if (orderDish!=null)
+            if (orderDish != null)
             {
                 uow.OrderDishes.Delete(orderDish);
 
-                DXInfo.Models.OrderDishesHis orderDishHis = Mapper.Map<DXInfo.Models.OrderDishesHis>(orderDish);
+                DXInfo.Models.OrderDishesHis orderDishHis = mapper.Map<DXInfo.Models.OrderDishesHis>(orderDish);
                 orderDishHis.Status = (int)DXInfo.Models.OrderDishStatus.Checkouted;
                 orderDishHis.UserId = userId;
                 orderDishHis.DeptId = deptId;
                 orderDishHis.LinkId = orderDish.Id;
                 uow.OrderDishesHis.Add(orderDishHis);
             }
-            //DXInfo.Models.OrderDishesHis odHis = Mapper.Map<DXInfo.Models.OrderDishesHis>(orderDish);
+            //DXInfo.Models.OrderDishesHis odHis = mapper.Map<DXInfo.Models.OrderDishesHis>(orderDish);
             //odHis.LinkId = orderDish.Id;
             //odHis.CreateDate = dtOperDate;
             //uow.OrderDishesHis.Add(odHis);
@@ -707,7 +683,7 @@ namespace DXInfo.Restaurant
             {
                 uow.OrderDeskes.Delete(orderDesk);
 
-                DXInfo.Models.OrderDeskesHis deskHis = Mapper.Map<DXInfo.Models.OrderDeskesHis>(orderDesk);
+                DXInfo.Models.OrderDeskesHis deskHis = mapper.Map<DXInfo.Models.OrderDeskesHis>(orderDesk);
                 //deskHis.Status = orderDesk.Status;//(int)DXInfo.Models.OrderDeskStatus.Idle;
                 deskHis.UserId = userId;
                 deskHis.LinkId = orderDesk.Id;
@@ -721,7 +697,7 @@ namespace DXInfo.Restaurant
             {
                 uow.OrderMenus.Delete(orderMenu);
 
-                DXInfo.Models.OrderMenusHis menuHis = Mapper.Map<DXInfo.Models.OrderMenusHis>(orderMenu);
+                DXInfo.Models.OrderMenusHis menuHis = mapper.Map<DXInfo.Models.OrderMenusHis>(orderMenu);
                 menuHis.Oper = userId;
                 menuHis.OperDate = this.dtOperDate;
                 menuHis.LinkId = orderMenu.Id;
@@ -740,7 +716,7 @@ namespace DXInfo.Restaurant
         /// <param name="orderDeskId"></param>
         public void CancelOpenDesk(Guid orderDishId, Guid orderDeskId)
         {
-            DXInfo.Models.OrderDeskes chkDesk = uow.OrderDeskes.GetById(g=>g.Id==orderDeskId);
+            DXInfo.Models.OrderDeskes chkDesk = uow.OrderDeskes.GetById(g => g.Id == orderDeskId);
             if (chkDesk.Status == (int)DXInfo.Models.OrderDeskStatus.Idle) throw new Exception("此桌台已经撤销");
 
             List<DXInfo.Models.OrderDeskes> q = (from d in uow.OrderDeskes.GetAll()
@@ -752,10 +728,10 @@ namespace DXInfo.Restaurant
             }
             else
             {
-                
+
                 uow.OrderDeskes.Delete(chkDesk);
 
-                DXInfo.Models.OrderDeskesHis oldhis = Mapper.Map<DXInfo.Models.OrderDeskesHis>(chkDesk);
+                DXInfo.Models.OrderDeskesHis oldhis = mapper.Map<DXInfo.Models.OrderDeskesHis>(chkDesk);
                 oldhis.CreateDate = dtOperDate;
                 oldhis.LinkId = chkDesk.Id;
                 oldhis.Status = (int)DXInfo.Models.OrderDeskStatus.Idle;
@@ -771,7 +747,7 @@ namespace DXInfo.Restaurant
         /// <summary>
         /// 换台
         /// </summary>
-        public void ExchangeDesk(Guid orderDishId,Guid newDeskId, Guid orderDeskId)
+        public void ExchangeDesk(Guid orderDishId, Guid newDeskId, Guid orderDeskId)
         {
             using (TransactionScope transaction = new TransactionScope())
             {
@@ -782,7 +758,7 @@ namespace DXInfo.Restaurant
                 od.UserId = userId;
                 uow.OrderDeskes.Delete(od);
 
-                DXInfo.Models.OrderDeskesHis oldhis = Mapper.Map<DXInfo.Models.OrderDeskesHis>(od);
+                DXInfo.Models.OrderDeskesHis oldhis = mapper.Map<DXInfo.Models.OrderDeskesHis>(od);
                 oldhis.CreateDate = dtOperDate;
                 oldhis.LinkId = od.Id;
                 uow.OrderDeskesHis.Add(oldhis);
@@ -798,7 +774,7 @@ namespace DXInfo.Restaurant
 
                 uow.Commit();
 
-                DXInfo.Models.OrderDeskesHis newhis = Mapper.Map<DXInfo.Models.OrderDeskesHis>(neworderdesk);                
+                DXInfo.Models.OrderDeskesHis newhis = mapper.Map<DXInfo.Models.OrderDeskesHis>(neworderdesk);
                 newhis.LinkId = neworderdesk.Id;
                 uow.OrderDeskesHis.Add(newhis);
 
@@ -828,7 +804,7 @@ namespace DXInfo.Restaurant
 
                 uow.Commit();
 
-                DXInfo.Models.OrderDeskesHis newhis = Mapper.Map<DXInfo.Models.OrderDeskesHis>(newOrderDesk);
+                DXInfo.Models.OrderDeskesHis newhis = mapper.Map<DXInfo.Models.OrderDeskesHis>(newOrderDesk);
                 newhis.LinkId = newOrderDesk.Id;
 
                 uow.OrderDeskesHis.Add(newhis);
@@ -856,7 +832,7 @@ namespace DXInfo.Restaurant
 
             foreach (Guid newOrderDishId in lNewOrderDishId)
             {
-                DXInfo.Models.OrderDishes newOrderDish = uow.OrderDishes.GetById(g=>g.Id==newOrderDishId);
+                DXInfo.Models.OrderDishes newOrderDish = uow.OrderDishes.GetById(g => g.Id == newOrderDishId);
                 if (newOrderDish.Status == (int)DXInfo.Models.OrderDishStatus.Opened ||
                     newOrderDish.Status == (int)DXInfo.Models.OrderDishStatus.Ordered)
                 {
@@ -865,7 +841,7 @@ namespace DXInfo.Restaurant
                     newOrderDish.DeptId = deptId;
                     uow.OrderDishes.Delete(newOrderDish);
 
-                    DXInfo.Models.OrderDishesHis odHis = Mapper.Map<DXInfo.Models.OrderDishesHis>(newOrderDish);
+                    DXInfo.Models.OrderDishesHis odHis = mapper.Map<DXInfo.Models.OrderDishesHis>(newOrderDish);
                     odHis.LinkId = newOrderDish.Id;
                     odHis.CreateDate = dtOperDate;
                     uow.OrderDishesHis.Add(odHis);
@@ -881,7 +857,7 @@ namespace DXInfo.Restaurant
                         om.UserId = userId;
                         uow.OrderMenus.Update(om);
 
-                        DXInfo.Models.OrderMenusHis menuHis = Mapper.Map<DXInfo.Models.OrderMenusHis>(om);
+                        DXInfo.Models.OrderMenusHis menuHis = mapper.Map<DXInfo.Models.OrderMenusHis>(om);
                         menuHis.LinkId = om.Id;
                         menuHis.CreateDate = dtOperDate;
                         uow.OrderMenusHis.Add(menuHis);
@@ -898,7 +874,7 @@ namespace DXInfo.Restaurant
                         newOrderDesk.UserId = userId;
                         uow.OrderDeskes.Update(newOrderDesk);
 
-                        DXInfo.Models.OrderDeskesHis oldhis = Mapper.Map<DXInfo.Models.OrderDeskesHis>(newOrderDesk);
+                        DXInfo.Models.OrderDeskesHis oldhis = mapper.Map<DXInfo.Models.OrderDeskesHis>(newOrderDesk);
                         oldhis.CreateDate = dtOperDate;
                         oldhis.LinkId = newOrderDesk.Id;
                         oldhis.UserId = userId;
@@ -916,7 +892,7 @@ namespace DXInfo.Restaurant
                         newOrderPackage.OperDate = dtOperDate;
                         uow.OrderPackages.Update(newOrderPackage);
 
-                        DXInfo.Models.OrderPackagesHis opHis = Mapper.Map<DXInfo.Models.OrderPackagesHis>(newOrderPackage);
+                        DXInfo.Models.OrderPackagesHis opHis = mapper.Map<DXInfo.Models.OrderPackagesHis>(newOrderPackage);
                         opHis.LinkId = newOrderPackage.Id;
                         uow.OrderPackagesHis.Add(opHis);
                     }
@@ -929,28 +905,28 @@ namespace DXInfo.Restaurant
         #region 下单
         private void Order_OrderInvPrice(DXInfo.Models.InvPrice invPrice, Guid orderMenuId)
         {
-            DXInfo.Models.OrderInvPrice oInvPrice = Mapper.Map<DXInfo.Models.OrderInvPrice>(invPrice);
+            DXInfo.Models.OrderInvPrice oInvPrice = mapper.Map<DXInfo.Models.OrderInvPrice>(invPrice);
             oInvPrice.InvPriceId = invPrice.Id;
             oInvPrice.OrderMenuId = orderMenuId;
             uow.OrderInvPrice.Add(oInvPrice);
             uow.Commit();
         }
-        private void Order_OrderMenu(DXInfo.Models.InventoryEx iex,DXInfo.Models.OrderDishStatus orderDishStatus,
+        private void Order_OrderMenu(DXInfo.Models.InventoryEx iex, DXInfo.Models.OrderDishStatus orderDishStatus,
             ref Hashtable htOtherPrint,
             ref Hashtable htLocalPrint,
             bool isTemp = false)
         {
             if (iex.OrderMenuId != Guid.Empty)
             {
-                DXInfo.Models.OrderMenus orderMenu = uow.OrderMenus.GetById(g=>g.Id==iex.OrderMenuId);
+                DXInfo.Models.OrderMenus orderMenu = uow.OrderMenus.GetById(g => g.Id == iex.OrderMenuId);
                 if (orderMenu != null)
                 {
                     if (orderMenu.Status == (int)DXInfo.Models.OrderMenuStatus.Normal)
                     {
-                        if(!isTemp)
+                        if (!isTemp)
                             orderMenu.Status = (int)DXInfo.Models.OrderMenuStatus.Order;
-                        Order_OrderMenu_UpdateOrderMenu(orderMenu, iex,isTemp);
-                        iex.Status = isTemp?(int)DXInfo.Models.OrderMenuStatus.Normal:(int)DXInfo.Models.OrderMenuStatus.Order;
+                        Order_OrderMenu_UpdateOrderMenu(orderMenu, iex, isTemp);
+                        iex.Status = isTemp ? (int)DXInfo.Models.OrderMenuStatus.Normal : (int)DXInfo.Models.OrderMenuStatus.Order;
 
                         if (!isTemp)
                         {
@@ -991,21 +967,21 @@ namespace DXInfo.Restaurant
                             {
                                 AddPrint(ref htOtherPrint, ref htLocalPrint, iex, PrintType.Taste);
                             }
-                            Order_OrderMenu_UpdateOrderMenu(orderMenu, iex,false);
+                            Order_OrderMenu_UpdateOrderMenu(orderMenu, iex, false);
                         }
                     }
-                    
+
                 }
             }
             else
             {
-                DXInfo.Models.OrderMenus orderMenu = Mapper.Map<DXInfo.Models.OrderMenus>(iex);
+                DXInfo.Models.OrderMenus orderMenu = mapper.Map<DXInfo.Models.OrderMenus>(iex);
                 orderMenu.InventoryId = iex.Id;
                 orderMenu.CreateDate = dtOperDate;
                 orderMenu.UserId = userId;
                 orderMenu.Oper = userId;
                 orderMenu.OperDate = dtOperDate;
-                orderMenu.Status = isTemp?(int)DXInfo.Models.OrderMenuStatus.Normal:(int)DXInfo.Models.OrderMenuStatus.Order;
+                orderMenu.Status = isTemp ? (int)DXInfo.Models.OrderMenuStatus.Normal : (int)DXInfo.Models.OrderMenuStatus.Order;
                 orderMenu.Price = iex.SalePrice;
                 orderMenu.OrderUserId = userId;
                 orderMenu.OrderCreateDate = dtOperDate;
@@ -1014,8 +990,8 @@ namespace DXInfo.Restaurant
                 uow.Commit();
 
                 iex.OrderMenuId = orderMenu.Id;
-                iex.Status = isTemp?(int)DXInfo.Models.OrderMenuStatus.Normal:(int)DXInfo.Models.OrderMenuStatus.Order;
-                DXInfo.Models.OrderMenusHis menuHis = Mapper.Map<DXInfo.Models.OrderMenusHis>(orderMenu);
+                iex.Status = isTemp ? (int)DXInfo.Models.OrderMenuStatus.Normal : (int)DXInfo.Models.OrderMenuStatus.Order;
+                DXInfo.Models.OrderMenusHis menuHis = mapper.Map<DXInfo.Models.OrderMenusHis>(orderMenu);
                 menuHis.LinkId = orderMenu.Id;
                 uow.OrderMenusHis.Add(menuHis);
 
@@ -1033,6 +1009,7 @@ namespace DXInfo.Restaurant
                 }
             }
         }
+
         public void Order(Guid orderDishId,
             ObservableCollection<DXInfo.Models.InventoryEx> OCInventoryEx,
             List<DXInfo.Models.OrderPackages> lOrderPackage,
@@ -1042,7 +1019,7 @@ namespace DXInfo.Restaurant
         {
             using (TransactionScope transaction = new TransactionScope())
             {
-                DXInfo.Models.OrderDishes orderDish = uow.OrderDishes.GetById(g=>g.Id==orderDishId);
+                DXInfo.Models.OrderDishes orderDish = uow.OrderDishes.GetById(g => g.Id == orderDishId);
                 DXInfo.Models.OrderDishStatus orderDishStatus = (DXInfo.Models.OrderDishStatus)orderDish.Status;
                 if (!(orderDish.Status == (int)DXInfo.Models.OrderDishStatus.Opened ||
                     orderDish.Status == (int)DXInfo.Models.OrderDishStatus.Ordered))
@@ -1054,7 +1031,7 @@ namespace DXInfo.Restaurant
                 List<DXInfo.Models.OrderMenus> lOrderMenu = lOrderMenuAll
                     .Where(w => w.Status == (int)DXInfo.Models.OrderMenuStatus.Normal
                     ).ToList();
-                
+
                 foreach (DXInfo.Models.InventoryEx iex in OCInventoryEx.ToList())
                 {
                     if (iex.OrderMenuId != null &&
@@ -1064,14 +1041,14 @@ namespace DXInfo.Restaurant
                         OCInventoryEx.Remove(iex);
                     }
                 }
-                lOrderMenu.RemoveAll(delegate(DXInfo.Models.OrderMenus om) { return OCInventoryEx.Where(w => w.OrderMenuId == om.Id).Count() > 0; });
-                
+                lOrderMenu.RemoveAll(delegate (DXInfo.Models.OrderMenus om) { return OCInventoryEx.Where(w => w.OrderMenuId == om.Id).Count() > 0; });
+
                 foreach (DXInfo.Models.OrderMenus om in lOrderMenu)
                 {
                     if (om.Status == (int)DXInfo.Models.OrderMenuStatus.Normal)
                     {
-                        DXInfo.Models.InventoryEx iex = Mapper.Map<DXInfo.Models.InventoryEx>(om);
-                        DXInfo.Models.Inventory ie = uow.Inventory.GetById(g=>g.Id==om.InventoryId);
+                        DXInfo.Models.InventoryEx iex = mapper.Map<DXInfo.Models.InventoryEx>(om);
+                        DXInfo.Models.Inventory ie = uow.Inventory.GetById(g => g.Id == om.InventoryId);
                         iex.Code = ie.Code;
                         iex.Name = ie.Name;
                         iex.OrderMenuId = om.Id;
@@ -1080,20 +1057,72 @@ namespace DXInfo.Restaurant
                 }
                 foreach (DXInfo.Models.InventoryEx iex in OCInventoryEx)
                 {
-                    Order_OrderMenu(iex, orderDishStatus, ref htOtherPrint, ref htLocalPrint,isTemp);
+                    Order_OrderMenu(iex, orderDishStatus, ref htOtherPrint, ref htLocalPrint, isTemp);
                 }
                 if (lOrderPackage != null)
                 {
                     List<DXInfo.Models.OrderPackages> lOldOrderPackage = uow.OrderPackages.GetAll().Where(w => w.OrderId == orderDishId).ToList();
-                    lOldOrderPackage.RemoveAll(delegate(DXInfo.Models.OrderPackages op) { return lOrderPackage.Where(w => w.Id == op.Id).Count() > 0; });
+                    lOldOrderPackage.RemoveAll(delegate (DXInfo.Models.OrderPackages op) { return lOrderPackage.Where(w => w.Id == op.Id).Count() > 0; });
                     lOrderPackage.AddRange(lOldOrderPackage);
 
                     foreach (DXInfo.Models.OrderPackages op in lOrderPackage.Where(w => w.Status == (int)DXInfo.Models.OrderMenuStatus.Normal))
                     {
-                        Order_OrderPackage(op,isTemp);
+                        Order_OrderPackage(op, isTemp);
                     }
                 }
-                Order_OrderDish(orderDish,isTemp);
+                Order_OrderDish(orderDish, isTemp);
+                uow.Commit();
+                transaction.Complete();
+            }
+        }
+
+        public void Order(DXInfo.Models.Consume consume, DXInfo.Models.OrderDishes orderDish)
+        {
+            using (TransactionScope transaction = new TransactionScope())
+            {
+
+                orderDish.Status = (int)DXInfo.Models.OrderDishStatus.Ordered;
+
+                orderDish.UserId = userId;
+                orderDish.DeptId = deptId;
+                uow.OrderDishes.Update(orderDish);
+
+                DXInfo.Models.OrderDishesHis odHis = mapper.Map<DXInfo.Models.OrderDishesHis>(orderDish);
+                odHis.LinkId = orderDish.Id;
+                odHis.CreateDate = dtOperDate;
+                uow.OrderDishesHis.Add(odHis);
+
+                List<DXInfo.Models.OrderMenusHis> lMenuHis = uow.OrderMenusHis.GetAll().Where(w => w.OrderId == consume.OrderId && w.Status == (int)DXInfo.Models.OrderMenuStatus.Checkout).ToList();
+                List<DXInfo.Models.OrderPackagesHis> lPkgHis = uow.OrderPackagesHis.GetAll().Where(w => w.OrderId == consume.OrderId&& w.Status == (int)DXInfo.Models.OrderMenuStatus.Checkout).ToList();
+
+                foreach (DXInfo.Models.OrderMenusHis menuHis in lMenuHis)
+                {
+                    DXInfo.Models.OrderMenus orderMenu = mapper.Map<DXInfo.Models.OrderMenus>(menuHis);
+                    orderMenu.OrderId = orderDish.Id;
+                    orderMenu.CreateDate = dtOperDate;
+                    orderMenu.OperDate = dtOperDate;
+                    orderMenu.Status = (int)DXInfo.Models.OrderMenuStatus.Order;
+                    orderMenu.OrderCreateDate = dtOperDate;
+                    uow.OrderMenus.Add(orderMenu);
+
+                    DXInfo.Models.OrderMenusHis menuHis2 = mapper.Map<DXInfo.Models.OrderMenusHis>(orderMenu);
+                    menuHis2.LinkId = orderMenu.Id;
+                    uow.OrderMenusHis.Add(menuHis2);
+                }
+
+                foreach (DXInfo.Models.OrderPackagesHis pkgHis in lPkgHis)
+                {
+                    DXInfo.Models.OrderPackages op = mapper.Map<DXInfo.Models.OrderPackages>(pkgHis);
+                    op.OrderId = orderDish.Id;
+                    op.OrderCreateDate = dtOperDate;
+                    op.OperDate = dtOperDate;
+                    op.Status = (int)DXInfo.Models.OrderMenuStatus.Order;
+                    uow.OrderPackages.Add(op);
+
+                    DXInfo.Models.OrderPackagesHis packagesHis = mapper.Map<DXInfo.Models.OrderPackagesHis>(op);
+                    packagesHis.LinkId = op.Id;
+                    uow.OrderPackagesHis.Add(packagesHis);
+                }
                 uow.Commit();
                 transaction.Complete();
             }
@@ -1191,7 +1220,7 @@ namespace DXInfo.Restaurant
             }
             else
             {
-                DXInfo.Models.OrderMenus orderMenu = Mapper.Map<DXInfo.Models.OrderMenus>(iex);
+                DXInfo.Models.OrderMenus orderMenu = mapper.Map<DXInfo.Models.OrderMenus>(iex);
                 orderMenu.InventoryId = iex.Id;
                 orderMenu.CreateDate = dtOperDate;
                 orderMenu.UserId = userId;
@@ -1206,7 +1235,7 @@ namespace DXInfo.Restaurant
                 uow.Commit();
                 iex.OrderMenuId = orderMenu.Id;
                 iex.Status = isTemp ? (int)DXInfo.Models.OrderMenuStatus.Normal : (int)DXInfo.Models.OrderMenuStatus.Order;
-                DXInfo.Models.OrderMenusHis menuHis = Mapper.Map<DXInfo.Models.OrderMenusHis>(orderMenu);
+                DXInfo.Models.OrderMenusHis menuHis = mapper.Map<DXInfo.Models.OrderMenusHis>(orderMenu);
                 menuHis.LinkId = orderMenu.Id;
                 uow.OrderMenusHis.Add(menuHis);
                 if (iex.InvPrice != null)
@@ -1267,7 +1296,7 @@ namespace DXInfo.Restaurant
                 }
                 uow.OrderPackages.Update(orderPackage);
 
-                DXInfo.Models.OrderPackagesHis packagesHis = Mapper.Map<DXInfo.Models.OrderPackagesHis>(orderPackage);
+                DXInfo.Models.OrderPackagesHis packagesHis = mapper.Map<DXInfo.Models.OrderPackagesHis>(orderPackage);
                 packagesHis.LinkId = orderPackage.Id;
                 uow.OrderPackagesHis.Add(packagesHis);
             }
@@ -1292,7 +1321,7 @@ namespace DXInfo.Restaurant
                 orderMenu.BackReseaon = "退单";
                 uow.OrderMenus.Update(orderMenu);
 
-                DXInfo.Models.OrderMenusHis menuHis = Mapper.Map<DXInfo.Models.OrderMenusHis>(orderMenu);
+                DXInfo.Models.OrderMenusHis menuHis = mapper.Map<DXInfo.Models.OrderMenusHis>(orderMenu);
                 menuHis.LinkId = orderMenu.Id;
                 uow.OrderMenusHis.Add(menuHis);
 
@@ -1343,7 +1372,7 @@ namespace DXInfo.Restaurant
             om.OperDate = dtOperDate;
             uow.OrderMenus.Update(om);
 
-            OrderMenusHis menuHis = Mapper.Map<DXInfo.Models.OrderMenusHis>(om);
+            OrderMenusHis menuHis = mapper.Map<DXInfo.Models.OrderMenusHis>(om);
             menuHis.LinkId = om.Id;
             uow.OrderMenusHis.Add(menuHis);
 
@@ -1391,7 +1420,7 @@ namespace DXInfo.Restaurant
             om.OperDate = dtOperDate;
             uow.OrderMenus.Update(om);
 
-            OrderMenusHis menuHis = Mapper.Map<DXInfo.Models.OrderMenusHis>(om);
+            OrderMenusHis menuHis = mapper.Map<DXInfo.Models.OrderMenusHis>(om);
             menuHis.LinkId = om.Id;
             uow.OrderMenusHis.Add(menuHis);
 
@@ -1431,7 +1460,7 @@ namespace DXInfo.Restaurant
             om.OperDate = dtOperDate;
             uow.OrderMenus.Update(om);
 
-            OrderMenusHis menuHis = Mapper.Map<DXInfo.Models.OrderMenusHis>(om);
+            OrderMenusHis menuHis = mapper.Map<DXInfo.Models.OrderMenusHis>(om);
             menuHis.LinkId = om.Id;
             uow.OrderMenusHis.Add(menuHis);
             uow.Commit();
@@ -1462,7 +1491,7 @@ namespace DXInfo.Restaurant
                 om.OperDate = dtOperDate;
                 uow.OrderMenus.Update(om);
 
-                OrderMenusHis menuHis = Mapper.Map<DXInfo.Models.OrderMenusHis>(om);
+                OrderMenusHis menuHis = mapper.Map<DXInfo.Models.OrderMenusHis>(om);
                 menuHis.LinkId = om.Id;
                 uow.OrderMenusHis.Add(menuHis);
 
@@ -1499,7 +1528,7 @@ namespace DXInfo.Restaurant
             om.OperDate = dtOperDate;
             uow.OrderMenus.Update(om);
 
-            OrderMenusHis menuHis = Mapper.Map<DXInfo.Models.OrderMenusHis>(om);
+            OrderMenusHis menuHis = mapper.Map<DXInfo.Models.OrderMenusHis>(om);
             menuHis.LinkId = om.Id;
             uow.OrderMenusHis.Add(menuHis);
 
@@ -1528,7 +1557,7 @@ namespace DXInfo.Restaurant
             om.OperDate = dtOperDate;
             uow.OrderMenus.Update(om);
 
-            OrderMenusHis menuHis = Mapper.Map<DXInfo.Models.OrderMenusHis>(om);
+            OrderMenusHis menuHis = mapper.Map<DXInfo.Models.OrderMenusHis>(om);
             menuHis.LinkId = om.Id;
             uow.OrderMenusHis.Add(menuHis);
 
@@ -1575,7 +1604,7 @@ namespace DXInfo.Restaurant
             om.OperDate = dtOperDate;
             uow.OrderMenus.Update(om);
 
-            OrderMenusHis menuHis = Mapper.Map<DXInfo.Models.OrderMenusHis>(om);
+            OrderMenusHis menuHis = mapper.Map<DXInfo.Models.OrderMenusHis>(om);
             menuHis.LinkId = om.Id;
             uow.OrderMenusHis.Add(menuHis);
 
@@ -1591,6 +1620,36 @@ namespace DXInfo.Restaurant
         }
         #endregion
 
+        #region 预付
+        public void BookPay(Guid orderDishId, int pay)
+        {
+            using (TransactionScope transaction = new TransactionScope())
+            {
+                DXInfo.Models.OrderDishes odish = uow.OrderDishes.GetById(g => g.Id == orderDishId);
+
+                odish.Comment = pay.ToString();
+
+                odish.UserId = userId;
+                odish.DeptId = deptId;
+                uow.OrderDishes.Update(odish);
+
+                DXInfo.Models.OrderDishesHis odHis = mapper.Map<DXInfo.Models.OrderDishesHis>(odish);
+                odHis.LinkId = odish.Id;
+                odHis.CreateDate = dtOperDate;
+                uow.OrderDishesHis.Add(odHis);
+
+                uow.Commit();
+                transaction.Complete();
+            }
+        }
+        #endregion
+
+        #region 反结账
+        public void BackCheckout(Guid deskId)
+        {
+
+        }
+        #endregion
         #endregion
 
         public void LackMenu(Guid invId)

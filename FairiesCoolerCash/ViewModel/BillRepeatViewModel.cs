@@ -19,11 +19,13 @@ namespace FairiesCoolerCash.ViewModel
     {
         public bool IsCupType { get; set; }
         public bool IsInvDynamicPrice { get; set; }
-        public BillRepeatViewModel(IFairiesMemberManageUow uow)
-            : base(uow)
+        private readonly IMapper mapper;
+        public BillRepeatViewModel(IFairiesMemberManageUow uow, IMapper mapper)
+            : base(uow,mapper)
         {
             this.IsCupType = BusinessCommon.IsCupType();
             this.IsInvDynamicPrice = BusinessCommon.IsInvDynamicPrice();
+            this.mapper = mapper;
         }
         public override void LoadData()
         {
@@ -99,7 +101,7 @@ namespace FairiesCoolerCash.ViewModel
                 ObservableCollection<DXInfo.Models.InventoryEx> oiex = new ObservableCollection<DXInfo.Models.InventoryEx>();
                 foreach (DXInfo.Models.BillInvLists billInvList in lBillInvList)
                 {                    
-                    DXInfo.Models.InventoryEx iex = Mapper.Map<DXInfo.Models.InventoryEx>(billInvList);
+                    DXInfo.Models.InventoryEx iex = mapper.Map<DXInfo.Models.InventoryEx>(billInvList);
                     iex.CupType = new DXInfo.Models.MyEnum();
                     iex.CupType.Name = billInvList.CupType;
                     iex.lTasteEx = new DXInfo.Models.TasteExList();
@@ -123,7 +125,7 @@ namespace FairiesCoolerCash.ViewModel
                 List<DXInfo.Models.CardDonateInventoryEx> lcdi = new List<DXInfo.Models.CardDonateInventoryEx>();
                 foreach (DXInfo.Models.BillDonateInvLists billInvList in lBillDonateInvList)
                 {
-                    DXInfo.Models.CardDonateInventoryEx cdi = Mapper.Map<DXInfo.Models.CardDonateInventoryEx>(billInvList);
+                    DXInfo.Models.CardDonateInventoryEx cdi = mapper.Map<DXInfo.Models.CardDonateInventoryEx>(billInvList);
                     lcdi.Add(cdi);
                 }
                 DateTime dCreateDate = bill.CreateDate.Value;

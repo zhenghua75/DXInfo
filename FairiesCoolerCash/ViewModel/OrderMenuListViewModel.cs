@@ -9,6 +9,8 @@ using GalaSoft.MvvmLight.CommandWpf;
 using System.Windows.Input;
 using GalaSoft.MvvmLight.Messaging;
 using System.Data.Entity.SqlServer;
+using AutoMapper;
+
 namespace FairiesCoolerCash.ViewModel
 {
     /// <summary>
@@ -16,9 +18,11 @@ namespace FairiesCoolerCash.ViewModel
     /// </summary>
     public class OrderMenuListViewModel : ReportViewModelBase
     {
-        public OrderMenuListViewModel(IFairiesMemberManageUow uow)
-            : base(uow)
-        {            
+        private readonly IMapper mapper;
+        public OrderMenuListViewModel(IFairiesMemberManageUow uow,IMapper mapper)
+            : base(uow,mapper)
+        {       
+            this.mapper = mapper;
         }
         #region 查询
         protected override void query()

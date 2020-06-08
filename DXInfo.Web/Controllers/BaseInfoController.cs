@@ -27,8 +27,10 @@ namespace DXInfo.Web.Controllers
     public class BaseInfoController : BaseController
     {
         #region 构造
-        public BaseInfoController(IFairiesMemberManageUow uow):base(uow)
+        private readonly IMapper mapper;
+        public BaseInfoController(IFairiesMemberManageUow uow, IMapper mapper) :base(uow)
         {
+            this.mapper = mapper;
             this.Uow.Db.ExecuteSqlCommand("SET TRANSACTION ISOLATION LEVEL READ COMMITTED;");    
         }
         #endregion
@@ -3536,7 +3538,7 @@ namespace DXInfo.Web.Controllers
                         receipt.ModifyDeptId = deptId;
                         Uow.Receipts.Update(receipt);
 
-                        DXInfo.Models.ReceiptHis receiptHis = Mapper.Map<DXInfo.Models.ReceiptHis>(receipt);
+                        DXInfo.Models.ReceiptHis receiptHis = mapper.Map<DXInfo.Models.ReceiptHis>(receipt);
                         receiptHis.LinkId = receipt.Id;
                         Uow.ReceiptHis.Add(receiptHis);
 

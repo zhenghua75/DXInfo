@@ -10,15 +10,18 @@ using GalaSoft.MvvmLight.CommandWpf;
 using System.Windows.Controls;
 using GalaSoft.MvvmLight.Messaging;
 using FairiesCoolerCash.Business;
+using AutoMapper;
 
 namespace FairiesCoolerCash.ViewModel
 {
     public class ReportViewModelBase : MyViewModelBase
     {
         #region 构造
-        public ReportViewModelBase(IFairiesMemberManageUow uow)
-            : base(uow,new List<string>())
+        private readonly IMapper mapper;
+        public ReportViewModelBase(IFairiesMemberManageUow uow, IMapper mapper)
+            : base(uow,mapper,new List<string>())
         {
+            this.mapper = mapper;
             this.SetlOper();
             this.SetlPayType();
             Messenger.Default.Register<DataGridMessageToken>(this, Handle_DataGridMessageToken);

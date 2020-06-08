@@ -495,6 +495,10 @@ namespace DXInfo.Models
         /// </summary>
         [Description("后厨2")]
         Houchu2 = 3,
+        /// <summary>
+        /// 凉菜
+        /// </summary>
+        CodeDish=4,
 
     }
 

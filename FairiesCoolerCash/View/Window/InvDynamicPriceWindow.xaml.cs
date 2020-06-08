@@ -10,6 +10,7 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
+using AutoMapper;
 using DXInfo.Data.Contracts;
 using DXInfo.Models;
 using FairiesCoolerCash.ViewModel;
@@ -21,10 +22,12 @@ namespace FairiesCoolerCash.Business
     /// </summary>
     public partial class InvDynamicPriceWindow : Window
     {
-        public InvDynamicPriceWindow(IFairiesMemberManageUow uow, InventoryEx iex)
+        private readonly IMapper mapper;
+        public InvDynamicPriceWindow(IFairiesMemberManageUow uow,IMapper mapper, InventoryEx iex)
         {
             InitializeComponent();
-            this.DataContext = new InvDynamicPriceViewModel(uow, iex);
+            this.mapper = mapper;
+            this.DataContext = new InvDynamicPriceViewModel(uow,mapper, iex);
         }
     }
 }

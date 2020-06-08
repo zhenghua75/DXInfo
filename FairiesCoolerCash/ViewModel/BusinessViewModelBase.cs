@@ -17,14 +17,17 @@ using System.ComponentModel;
 using Microsoft.Synchronization;
 using Microsoft.Synchronization.Data;
 using Microsoft.Synchronization.Data.SqlServer;
+using AutoMapper;
 
 namespace FairiesCoolerCash.ViewModel
 {
     public class BusinessViewModelBase : MyViewModelBase
-    {         
-        public BusinessViewModelBase(IFairiesMemberManageUow uow, List<string> lValidationPropertyNames)
-            : base(uow, lValidationPropertyNames)
+    {
+        private readonly IMapper mapper;
+        public BusinessViewModelBase(IFairiesMemberManageUow uow, IMapper mapper, List<string> lValidationPropertyNames)
+            : base(uow,mapper, lValidationPropertyNames)
         {
+            this.mapper = mapper;
         }
     }
 }

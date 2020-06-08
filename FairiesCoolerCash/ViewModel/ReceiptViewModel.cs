@@ -22,11 +22,12 @@ namespace FairiesCoolerCash.ViewModel
     /// </summary>
     public class ReceiptAddViewModel:BusinessViewModelBase
     {
-        
-        public ReceiptAddViewModel(IFairiesMemberManageUow uow)
-            : base(uow, new List<string>() { "MemberName","Content","LinkPhone"})
+        private readonly IMapper mapper;
+        public ReceiptAddViewModel(IFairiesMemberManageUow uow, IMapper mapper)
+            : base(uow,mapper, new List<string>() { "MemberName","Content","LinkPhone"})
         {
             this.InitObject();
+            this.mapper = mapper;
         }
         protected virtual void InitObject()
         {
@@ -58,7 +59,7 @@ namespace FairiesCoolerCash.ViewModel
                 Uow.Members.Add(this.Member);
                 Uow.Commit();
 
-                DXInfo.Models.MembersLog memberLog = Mapper.Map<DXInfo.Models.Members, DXInfo.Models.MembersLog>(Member);
+                DXInfo.Models.MembersLog memberLog = mapper.Map<DXInfo.Models.Members, DXInfo.Models.MembersLog>(Member);
                 memberLog.MemberId = Member.Id;
                 Uow.MembersLog.Add(memberLog);
 
@@ -66,7 +67,7 @@ namespace FairiesCoolerCash.ViewModel
                 Uow.Receipts.Add(this.Receipt);
                 Uow.Commit();
 
-                DXInfo.Models.ReceiptHis receiptHis = Mapper.Map<DXInfo.Models.ReceiptHis>(this.Receipt);
+                DXInfo.Models.ReceiptHis receiptHis = mapper.Map<DXInfo.Models.ReceiptHis>(this.Receipt);
                 receiptHis.LinkId = this.Receipt.Id;
                 Uow.ReceiptHis.Add(receiptHis);
                 Uow.Commit();
@@ -94,8 +95,8 @@ namespace FairiesCoolerCash.ViewModel
     /// </summary>
     public class OrderAddViewModel : ReceiptAddViewModel
     {
-        public OrderAddViewModel(IFairiesMemberManageUow uow)
-            : base(uow)
+        public OrderAddViewModel(IFairiesMemberManageUow uow, IMapper mapper)
+            : base(uow,mapper)
         {
             this.ReceiptType = (int)DXInfo.Models.ReceiptType.Order;
             this.Title = "添加订货单";
@@ -106,8 +107,8 @@ namespace FairiesCoolerCash.ViewModel
     /// </summary>
     public class ReworkAddViewModel : ReceiptAddViewModel
     {
-        public ReworkAddViewModel(IFairiesMemberManageUow uow)
-            : base(uow)
+        public ReworkAddViewModel(IFairiesMemberManageUow uow,IMapper mapper)
+            : base(uow,mapper)
         {
             this.ReceiptType = (int)DXInfo.Models.ReceiptType.Rework;
             this.Title = "添加返修单";
@@ -118,9 +119,11 @@ namespace FairiesCoolerCash.ViewModel
     #region 查询
     public class ReceiptQueryViewModel : ReportViewModelBase
     {
-        public ReceiptQueryViewModel(IFairiesMemberManageUow uow)
-            : base(uow)
+        private readonly IMapper mapper;
+        public ReceiptQueryViewModel(IFairiesMemberManageUow uow, IMapper mapper)
+            : base(uow,mapper)
         {
+            this.mapper = mapper;
         }
         #region 查询
         protected override void query()
@@ -204,10 +207,10 @@ namespace FairiesCoolerCash.ViewModel
                 switch (receiptType)
                 {
                     case (int)DXInfo.Models.ReceiptType.Order:
-                        ruc.DataContext = new OrderModifyViewModel(Uow, memberId, receiptId);
+                        ruc.DataContext = new OrderModifyViewModel(Uow,mapper, memberId, receiptId);
                         break;
                     case (int)DXInfo.Models.ReceiptType.Rework:
-                        ruc.DataContext = new ReworkModifyViewModel(Uow, memberId, receiptId);
+                        ruc.DataContext = new ReworkModifyViewModel(Uow,mapper, memberId, receiptId);
                         break;
                 }
                 this.NavigationUserControl(ruc);
@@ -239,18 +242,22 @@ namespace FairiesCoolerCash.ViewModel
     }
     public class OrderQueryViewModel : ReceiptQueryViewModel
     {
-        public OrderQueryViewModel(IFairiesMemberManageUow uow)
-            : base(uow)
+        private readonly IMapper mapper;
+        public OrderQueryViewModel(IFairiesMemberManageUow uow, IMapper mapper)
+            : base(uow,mapper)
         {
+            this.mapper = mapper;
             this.Title = "订货单查询修改";
             this.ReceiptType = (int)DXInfo.Models.ReceiptType.Order;
         }
     }
     public class ReworkQueryViewModel : ReceiptQueryViewModel
     {
-        public ReworkQueryViewModel(IFairiesMemberManageUow uow)
-            : base(uow)
+        private readonly IMapper mapper;
+        public ReworkQueryViewModel(IFairiesMemberManageUow uow, IMapper mapper)
+            : base(uow,mapper)
         {
+            this.mapper = mapper;
             this.Title = "返修单查询修改";
             this.ReceiptType = (int)DXInfo.Models.ReceiptType.Rework;
         }
@@ -260,9 +267,12 @@ namespace FairiesCoolerCash.ViewModel
     #region 修改
     public class ReceiptModifyViewModel : BusinessViewModelBase
     {
-        public ReceiptModifyViewModel(IFairiesMemberManageUow uow, Guid memberId, Guid receiptId)
-            : base(uow, new List<string>() { "MemberName", "Content", "LinkPhone" })
+        private readonly IMapper mapper;
+
+        public ReceiptModifyViewModel(IFairiesMemberManageUow uow, IMapper mapper, Guid memberId, Guid receiptId)
+            : base(uow,mapper, new List<string>() { "MemberName", "Content", "LinkPhone" })
         {
+            this.mapper = mapper;
             this.Member = uow.Members.GetById(g => g.Id == memberId);
             this.Receipt = uow.Receipts.GetById(g => g.Id == receiptId);
             this.MemberName = this.Member.MemberName;
@@ -299,7 +309,7 @@ namespace FairiesCoolerCash.ViewModel
             this.Member.ModifyUserId = this.Oper.UserId;
             Uow.Members.Update(this.Member);
 
-            DXInfo.Models.MembersLog memberLog = Mapper.Map<DXInfo.Models.Members, DXInfo.Models.MembersLog>(Member);
+            DXInfo.Models.MembersLog memberLog = mapper.Map<DXInfo.Models.Members, DXInfo.Models.MembersLog>(Member);
             memberLog.MemberId = Member.Id;
             Uow.MembersLog.Add(memberLog);
 
@@ -309,7 +319,7 @@ namespace FairiesCoolerCash.ViewModel
             this.Receipt.ModifyUserId = this.Oper.UserId;
             Uow.Receipts.Update(this.Receipt);
 
-            DXInfo.Models.ReceiptHis receiptHis = Mapper.Map<DXInfo.Models.ReceiptHis>(this.Receipt);
+            DXInfo.Models.ReceiptHis receiptHis = mapper.Map<DXInfo.Models.ReceiptHis>(this.Receipt);
             receiptHis.LinkId = this.Receipt.Id;
             Uow.ReceiptHis.Add(receiptHis);
 
@@ -320,8 +330,8 @@ namespace FairiesCoolerCash.ViewModel
 
     public class OrderModifyViewModel : ReceiptModifyViewModel
     {
-        public OrderModifyViewModel(IFairiesMemberManageUow uow, Guid memberId, Guid receiptId)
-            : base(uow, memberId,receiptId)
+        public OrderModifyViewModel(IFairiesMemberManageUow uow, IMapper mapper, Guid memberId, Guid receiptId)
+            : base(uow,mapper, memberId,receiptId)
         {
             this.Title = "修改订货单";
             this.ReceiptType = (int)DXInfo.Models.ReceiptType.Order;
@@ -329,8 +339,8 @@ namespace FairiesCoolerCash.ViewModel
     }
     public class ReworkModifyViewModel : ReceiptModifyViewModel
     {
-        public ReworkModifyViewModel(IFairiesMemberManageUow uow, Guid memberId, Guid receiptId)
-            : base(uow, memberId, receiptId)
+        public ReworkModifyViewModel(IFairiesMemberManageUow uow, IMapper mapper, Guid memberId, Guid receiptId)
+            : base(uow,mapper, memberId, receiptId)
         {
             this.Title = "修改返修单";
             this.ReceiptType = (int)DXInfo.Models.ReceiptType.Rework;

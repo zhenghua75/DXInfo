@@ -404,7 +404,7 @@ namespace FairiesCoolerCash
                         DisplayScreen(conn);
                     }
                     this.SetIoc();
-                    SetMapper();
+                    //SetMapper();
                     JudgeSync(conn);
                     DisplayLogin(conn);
                 }
@@ -418,7 +418,7 @@ namespace FairiesCoolerCash
                     conn.Close();
                     if (s != null)
                     {
-                        s.Close();//new TimeSpan(0, 0, 1));
+                        s.Close();
                     }
                 }
             }
@@ -482,9 +482,10 @@ namespace FairiesCoolerCash
                 ld.ShowDialog();
             }
         }
-        private void SetMapper()
+
+        private IMapper SetMapper()
         {
-            Mapper.Initialize(cfg =>
+            var config = new MapperConfiguration(cfg =>
             {
                 cfg.CreateMap<DXInfo.Models.Members, DXInfo.Models.MembersLog>();
                 cfg.CreateMap<DXInfo.Models.Cards, DXInfo.Models.CardsLog>();
@@ -514,33 +515,38 @@ namespace FairiesCoolerCash
                 cfg.CreateMap<DXInfo.Models.OrderBookDeskes, DXInfo.Models.OrderBookDeskesHis>();
                 cfg.CreateMap<DXInfo.Models.OrderDeskes, DXInfo.Models.OrderDeskesHis>();
                 cfg.CreateMap<DXInfo.Models.OrderMenus, DXInfo.Models.OrderMenusHis>();
+                cfg.CreateMap<DXInfo.Models.OrderMenusHis, DXInfo.Models.OrderMenus>();
                 cfg.CreateMap<DXInfo.Models.OrderPackages, DXInfo.Models.OrderPackagesHis>();
 
             });
+
+            return config.CreateMapper();
+
         }
+
         private IUnityContainer ConfigureUnityContainer()
         {
             IUnityContainer container = new UnityContainer();
-            container.RegisterType<DbContext, FairiesMemberManageDbContext>();//(new ContainerControlledLifetimeManager(), new InjectionConstructor());//单实例
-            container.RegisterType<IFairiesMemberManageUow, FairiesMemberManageUow>();// (new ContainerControlledLifetimeManager());
+            container.RegisterInstance(SetMapper());
+
+            container.RegisterType<DbContext, FairiesMemberManageDbContext>();
+            container.RegisterType<IFairiesMemberManageUow, FairiesMemberManageUow>();
+
             container.RegisterType<LogOn>();
             container.RegisterType<Login>();
             container.RegisterType<LocalDeptWindow>();
 
             container.RegisterType<RibbonMainWindow>();
-            container.RegisterType<AddMemberUserControl>();//() => new AddMemberUserControl(Uow));
+            container.RegisterType<AddMemberUserControl>();
             container.RegisterType<MemberQueryUserControl>();
 
             container.RegisterType<PutCardInMoneyViewModel>();
             container.RegisterType<PutCardInMondeyUserControl>();
-            container.RegisterType<CardInMondeyUserControl>();//() => new CardInMondeyUserControl(Uow));
-
-            //SimpleIoc.Default.Register<CardInMondeyUserControl>(() => new CardInMondeyUserControl(uow, true, false), "PutCardInMondey");
-
+            container.RegisterType<CardInMondeyUserControl>();
+            
             container.RegisterType<CardLossUserControl>();
             container.RegisterType<CardFoundUserControl>();
             container.RegisterType<CardAddUserControl>();
-            //container.RegisterType<NoMemberConsumeUserControl>();
             container.RegisterType<PointsExchangeUserControl>();
             container.RegisterType<BillRepeatUserControl>();
             container.RegisterType<CardConsumeUserControl>();
@@ -551,7 +557,8 @@ namespace FairiesCoolerCash
             container.RegisterType<MenuNoCtUserControl>();
             container.RegisterType<BarMenuUserControl>();
             container.RegisterType<Houchu2UserControl>();
-            //container.RegisterType<CheckOutNoCardUserControl>();
+            container.RegisterType<CodeDishUserControl>();
+            container.RegisterType<DeskBookPayWindow>();
             container.RegisterType<WRReport2UserControl>();
             container.RegisterType<WRReport3UserControl>();
             container.RegisterType<WRReport4UserControl>();
@@ -561,9 +568,8 @@ namespace FairiesCoolerCash
             container.RegisterType<WRReport9UserControl>();
             container.RegisterType<WRReport10UserControl>();
             container.RegisterType<WRReport11UserControl>();
-
-
-
+            container.RegisterType<WRReport12UserControl>();
+            
             container.RegisterType<Report2UserControl>();
             container.RegisterType<Report3UserControl>();
             container.RegisterType<Report4UserControl>();
@@ -580,8 +586,11 @@ namespace FairiesCoolerCash
             container.RegisterType<OrderQueryViewModel>();
             container.RegisterType<ReworkAddViewModel>();
             container.RegisterType<ReworkQueryViewModel>();
+
+            //container.RegisterType<LoginViewModel>();
             return container;
         }
+
         private void SetIoc()
         {
             UnityServiceLocator locator = new UnityServiceLocator(ConfigureUnityContainer());

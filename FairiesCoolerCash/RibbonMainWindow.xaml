@@ -110,6 +110,7 @@
                     <ribbon:RibbonButton x:Name="LackMenuList" Label="{Binding LackMenuListLabel}" LargeImageSource="images\1372972161_cup_delete.png"  Command="{Binding Button_Click}" CommandParameter="{Binding RelativeSource={RelativeSource Self}}"/>                    
                     <ribbon:RibbonButton x:Name="MenuNoCt" Label="{Binding MenuNoCtLabel}" LargeImageSource="images\1372969272_user_cook.png"  Command="{Binding Button_Click}" CommandParameter="{Binding RelativeSource={RelativeSource Self}}"/>
                     <ribbon:RibbonButton x:Name="Houchu2" Label="{Binding Houchu2Label}" LargeImageSource="images\1372969272_user_cook.png"  Command="{Binding Button_Click}" CommandParameter="{Binding RelativeSource={RelativeSource Self}}"/>
+                    <ribbon:RibbonButton x:Name="CodeDish" Label="{Binding CodeDishLabel}" LargeImageSource="images\1372969272_user_cook.png"  Command="{Binding Button_Click}" CommandParameter="{Binding RelativeSource={RelativeSource Self}}"/>
                     <ribbon:RibbonButton x:Name="BarMenu" Label="{Binding BarMenuLabel}" LargeImageSource="images\1372969429_Bartender_Male_Light.png"  Command="{Binding Button_Click}" CommandParameter="{Binding RelativeSource={RelativeSource Self}}"/>
                     <ribbon:RibbonButton x:Name="CheckOutNoCard" Label="{Binding CheckOutNoCardLabel}" LargeImageSource="images\1320650055_table.png"  Command="{Binding Button_Click}" CommandParameter="{Binding RelativeSource={RelativeSource Self}}"/>
                 </ribbon:RibbonGroup>
@@ -126,6 +127,7 @@
                     <ribbon:RibbonButton x:Name="WRReport9" Label="{Binding WRReport9Label}" LargeImageSource="images\1306992444_report.png"   Command="{Binding Button_Click}" CommandParameter="{Binding RelativeSource={RelativeSource Self}}"/>
                     <ribbon:RibbonButton x:Name="WRReport10" Label="{Binding WRReport10Label}" LargeImageSource="images\1306992444_report.png" Command="{Binding Button_Click}" CommandParameter="{Binding RelativeSource={RelativeSource Self}}"/>
                     <ribbon:RibbonButton x:Name="WRReport11" Label="{Binding WRReport11Label}" LargeImageSource="images\1306992444_report.png" Command="{Binding Button_Click}" CommandParameter="{Binding RelativeSource={RelativeSource Self}}"/>
+                    <ribbon:RibbonButton x:Name="WRReport12" Label="{Binding WRReport12Label}" LargeImageSource="images\1306992444_report.png" Command="{Binding Button_Click}" CommandParameter="{Binding RelativeSource={RelativeSource Self}}"/>
                 </ribbon:RibbonGroup>
             </ribbon:RibbonTab>
 

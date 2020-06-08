@@ -9,6 +9,7 @@ using System.Windows.Input;
 using GalaSoft.MvvmLight.CommandWpf;
 using Microsoft.Reporting.WinForms;
 using System.Data;
+using AutoMapper;
 
 namespace FairiesCoolerCash.ViewModel
 {
@@ -17,9 +18,11 @@ namespace FairiesCoolerCash.ViewModel
     /// </summary>
     public class PutCardInMoneyViewModel : BusinessViewModelBase
     {
-        public PutCardInMoneyViewModel(IFairiesMemberManageUow uow)
-            : base(uow, new List<string>() { "SelectedPayType", "Amount" })
+        private readonly IMapper mapper;
+        public PutCardInMoneyViewModel(IFairiesMemberManageUow uow, IMapper mapper)
+            : base(uow,mapper, new List<string>() { "SelectedPayType", "Amount" })
         {
+            this.mapper = mapper;
             this.swipingCard();
         }
         public override void LoadData()
@@ -64,7 +67,7 @@ namespace FairiesCoolerCash.ViewModel
                 }
             }
 
-            DXInfo.Business.MemberManageFacade mb = new DXInfo.Business.MemberManageFacade(Uow);
+            DXInfo.Business.MemberManageFacade mb = new DXInfo.Business.MemberManageFacade(Uow,mapper);
             DXInfo.Business.CardInMoneyParaObj para = new DXInfo.Business.CardInMoneyParaObj();
             para.DeptId = Dept.DeptId;
             para.DeptName = Dept.DeptName;
@@ -81,7 +84,7 @@ namespace FairiesCoolerCash.ViewModel
             para.Amount = dAmount;
             para.Donate = dDonate;
             para.RechargeType = (int)DXInfo.Models.RechargeType.PutCardInMoney;
-            mb.CardInMoney(para);
+            mb.CardInMoney(para,mapper);
 
             if (this.IsThree)
             {

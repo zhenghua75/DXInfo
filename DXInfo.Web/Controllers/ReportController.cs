@@ -48,8 +48,10 @@ namespace DXInfo.Web.Controllers
     public class ReportController : BaseController
     {
         #region 构造
-        public ReportController(IFairiesMemberManageUow uow):base(uow)
+        private readonly IMapper mapper;
+        public ReportController(IFairiesMemberManageUow uow, IMapper mapper) :base(uow)
         {
+            this.mapper = mapper;
             this.Uow.Db.ExecuteSqlCommand("SET TRANSACTION ISOLATION LEVEL READ UNCOMMITTED;");    
         }
         #endregion
@@ -221,7 +223,7 @@ namespace DXInfo.Web.Controllers
                     oldCard.Status = (int)DXInfo.Models.CardStatus.Stoped;
                     Uow.Cards.Update(oldCard);
 
-                    DXInfo.Models.CardsLog cardsLog = Mapper.Map<DXInfo.Models.Cards, DXInfo.Models.CardsLog>(oldCard);
+                    DXInfo.Models.CardsLog cardsLog = mapper.Map<DXInfo.Models.Cards, DXInfo.Models.CardsLog>(oldCard);
                     cardsLog.CardId = oldCard.Id;
                     cardsLog.UserId = this.operId;
                     cardsLog.DeptId = this.deptId;
@@ -254,7 +256,7 @@ namespace DXInfo.Web.Controllers
                     oldCard.Status = (int)DXInfo.Models.CardStatus.InUser;
                     Uow.Cards.Update(oldCard);
 
-                    DXInfo.Models.CardsLog cardsLog = Mapper.Map<DXInfo.Models.Cards, DXInfo.Models.CardsLog>(oldCard);
+                    DXInfo.Models.CardsLog cardsLog = mapper.Map<DXInfo.Models.Cards, DXInfo.Models.CardsLog>(oldCard);
                     cardsLog.CardId = oldCard.Id;
                     cardsLog.UserId = this.operId;
                     cardsLog.DeptId = this.deptId;
@@ -6977,12 +6979,12 @@ namespace DXInfo.Web.Controllers
             string loginId = this.User.Identity.Name;
             var tbLogin = Uow.tbLogin.GetById(g => g.vcLoginID == loginId);
 
-            DXInfo.Models.tbAssociatorLog log = Mapper.Map<DXInfo.Models.tbAssociatorLog>(oldAss);
+            DXInfo.Models.tbAssociatorLog log = mapper.Map<DXInfo.Models.tbAssociatorLog>(oldAss);
             log.vcOperName = loginId;
             log.vcOperDeptID = tbLogin.vcDeptID;
             Uow.tbAssociatorLog.Add(log);
 
-            DXInfo.Models.tbAssociatorSync sync = Mapper.Map<DXInfo.Models.tbAssociatorSync>(oldAss);
+            DXInfo.Models.tbAssociatorSync sync = mapper.Map<DXInfo.Models.tbAssociatorSync>(oldAss);
             sync.iUpdateCount = 0;
             Uow.tbAssociatorSync.Add(sync);
 

@@ -8,6 +8,7 @@ using FairiesCoolerCash.Business;
 using System.Windows.Controls;
 using System.Net;
 using System.Data.Entity.SqlServer;
+using AutoMapper;
 
 namespace FairiesCoolerCash.ViewModel
 {    
@@ -16,10 +17,11 @@ namespace FairiesCoolerCash.ViewModel
     /// </summary>
     public class Report2ViewModel:ReportViewModelBase
     {
-        public Report2ViewModel(IFairiesMemberManageUow uow)
-            : base(uow)
+        private readonly IMapper mapper;
+        public Report2ViewModel(IFairiesMemberManageUow uow,IMapper mapper)
+            : base(uow,mapper)
         {            
-
+            this.mapper = mapper;
         }
 
         protected override void query()
@@ -193,9 +195,11 @@ namespace FairiesCoolerCash.ViewModel
     /// </summary>
     public class Report3ViewModel : ReportViewModelBase
     {
-        public Report3ViewModel(IFairiesMemberManageUow uow)
-            : base(uow)
+        private readonly IMapper mapper;
+        public Report3ViewModel(IFairiesMemberManageUow uow,IMapper mapper)
+            : base(uow,mapper)
         {
+            this.mapper = mapper;
         }
         protected override void query()
         {
@@ -277,9 +281,11 @@ namespace FairiesCoolerCash.ViewModel
     /// </summary>
     public class Report4ViewModel : ReportViewModelBase
     {
-        public Report4ViewModel(IFairiesMemberManageUow uow)
-            : base(uow)
+        private readonly IMapper mapper;
+        public Report4ViewModel(IFairiesMemberManageUow uow,IMapper mapper)
+            : base(uow,mapper)
         {
+            this.mapper = mapper;
         }
         protected override void query()
         {
@@ -407,9 +413,11 @@ namespace FairiesCoolerCash.ViewModel
     /// </summary>
     public class Report5ViewModel : ReportViewModelBase
     {
-        public Report5ViewModel(IFairiesMemberManageUow uow)
-            : base(uow)
+        private readonly IMapper mapper;
+        public Report5ViewModel(IFairiesMemberManageUow uow,IMapper mapper)
+            : base(uow,mapper)
         {
+            this.mapper = mapper;
         }
         protected override void query()
         {
@@ -593,9 +601,11 @@ namespace FairiesCoolerCash.ViewModel
     /// </summary>
     public class Report7ViewModel : ReportViewModelBase
     {
-        public Report7ViewModel(IFairiesMemberManageUow uow)
-            : base(uow)
+        private readonly IMapper mapper;
+        public Report7ViewModel(IFairiesMemberManageUow uow,IMapper mapper)
+            : base(uow,mapper)
         {
+            this.mapper = mapper;
         }
         protected override void query()
         {
@@ -755,9 +765,11 @@ namespace FairiesCoolerCash.ViewModel
     /// </summary>
     public class WRReportViewModelBase : ReportViewModelBase
     {
-        public WRReportViewModelBase(IFairiesMemberManageUow uow)
-            : base(uow)
+        private readonly IMapper mapper;
+        public WRReportViewModelBase(IFairiesMemberManageUow uow,IMapper mapper)
+            : base(uow,mapper)
         {
+            this.mapper = mapper;
             this.BeginTime = new DateTime(1, 1, 1, 3, 0, 0);
             this.EndTime = new DateTime(1, 1, 1, 3, 0, 0);
         }
@@ -767,9 +779,11 @@ namespace FairiesCoolerCash.ViewModel
     /// </summary>
     public class WRReport10ViewModel : WRReportViewModelBase
     {
-        public WRReport10ViewModel(IFairiesMemberManageUow uow)
-            : base(uow)
+        private readonly IMapper mapper;
+        public WRReport10ViewModel(IFairiesMemberManageUow uow,IMapper mapper)
+            : base(uow,mapper)
         {
+            this.mapper = mapper;
         }
         protected override void query()
         {
@@ -910,9 +924,11 @@ namespace FairiesCoolerCash.ViewModel
     /// </summary>
     public class WRReport2ViewModel : WRReportViewModelBase
     {
-        public WRReport2ViewModel(IFairiesMemberManageUow uow)
-            : base(uow)
+        private readonly IMapper mapper;
+        public WRReport2ViewModel(IFairiesMemberManageUow uow,IMapper mapper)
+            : base(uow,mapper)
         {
+            this.mapper = mapper;
         }
         protected override void query()
         {
@@ -1051,9 +1067,11 @@ namespace FairiesCoolerCash.ViewModel
     /// </summary>
     public class WRReport3ViewModel : WRReportViewModelBase
     {
-        public WRReport3ViewModel(IFairiesMemberManageUow uow)
-            : base(uow)
+        private readonly IMapper mapper;
+        public WRReport3ViewModel(IFairiesMemberManageUow uow,IMapper mapper)
+            : base(uow,mapper)
         {
+            this.mapper = mapper;
         }
         protected override void query()
         {
@@ -1144,9 +1162,11 @@ namespace FairiesCoolerCash.ViewModel
     /// </summary>
     public class WRReport4ViewModel : WRReportViewModelBase
     {
-        public WRReport4ViewModel(IFairiesMemberManageUow uow)
-            : base(uow)
+        private readonly IMapper mapper;
+        public WRReport4ViewModel(IFairiesMemberManageUow uow,IMapper mapper)
+            : base(uow,mapper)
         {
+            this.mapper = mapper;
         }
         protected override void query()
         {
@@ -1270,9 +1290,11 @@ namespace FairiesCoolerCash.ViewModel
     /// </summary>
     public class WRReport5ViewModel : WRReportViewModelBase
     {
-        public WRReport5ViewModel(IFairiesMemberManageUow uow)
-            : base(uow)
+        private readonly IMapper mapper;
+        public WRReport5ViewModel(IFairiesMemberManageUow uow,IMapper mapper)
+            : base(uow,mapper)
         {
+            this.mapper = mapper;
         }
         protected override void query()
         {
@@ -1450,9 +1472,11 @@ namespace FairiesCoolerCash.ViewModel
     /// </summary>
     public class WRReport7ViewModel : WRReportViewModelBase
     {
-        public WRReport7ViewModel(IFairiesMemberManageUow uow)
-            : base(uow)
+        private readonly IMapper mapper;
+        public WRReport7ViewModel(IFairiesMemberManageUow uow,IMapper mapper)
+            : base(uow,mapper)
         {
+            this.mapper = mapper;
         }
         protected override void query()
         {
@@ -1572,9 +1596,11 @@ namespace FairiesCoolerCash.ViewModel
     /// </summary>
     public class WRReport8ViewModel : WRReportViewModelBase
     {
-        public WRReport8ViewModel(IFairiesMemberManageUow uow)
-            : base(uow)
+        private readonly IMapper mapper;
+        public WRReport8ViewModel(IFairiesMemberManageUow uow,IMapper mapper)
+            : base(uow,mapper)
         {
+            this.mapper = mapper;
         }
         protected override void query()
         {
@@ -1715,9 +1741,11 @@ namespace FairiesCoolerCash.ViewModel
     /// </summary>
     public class WRReport11ViewModel : WRReportViewModelBase
     {
-        public WRReport11ViewModel(IFairiesMemberManageUow uow)
-            : base(uow)
+        private readonly IMapper mapper;
+        public WRReport11ViewModel(IFairiesMemberManageUow uow,IMapper mapper)
+            : base(uow,mapper)
         {
+            this.mapper = mapper;
         }
         protected override void query()
         {
@@ -1854,13 +1882,160 @@ namespace FairiesCoolerCash.ViewModel
         }
     }
     /// <summary>
+    /// 凉菜消费明细查询
+    /// </summary>
+    public class WRReport12ViewModel : WRReportViewModelBase
+    {
+        private readonly IMapper mapper;
+        public WRReport12ViewModel(IFairiesMemberManageUow uow,IMapper mapper)
+            : base(uow,mapper)
+        {
+            this.mapper = mapper;
+        }
+        protected override void query()
+        {
+            //查询
+            var q = from cl in Uow.ConsumeList.GetAll().Where(w => w.DeptId == this.Dept.DeptId)
+                    join c in Uow.Consume.GetAll() on cl.Consume equals c.Id into clc
+                    from clcs in clc.DefaultIfEmpty()
+
+                    join p in Uow.PayTypes.GetAll() on clcs.PayType equals p.Id into cp
+                    from cps in cp.DefaultIfEmpty()
+
+                    join card in Uow.Cards.GetAll() on clcs.Card.Value equals card.Id into ccard
+                    from ccards in ccard.DefaultIfEmpty()
+
+                    join member in Uow.Members.GetAll() on ccards.Member equals member.Id into cm
+                    from cms in cm.DefaultIfEmpty()
+
+                    join i in Uow.Inventory.GetAll() on cl.Inventory equals i.Id into ci
+                    from cis in ci.DefaultIfEmpty()
+
+                    join u in Uow.aspnet_CustomProfile.GetAll() on cl.UserId equals u.UserId into cu
+                    from cus in cu.DefaultIfEmpty()
+
+                    join d in Uow.Depts.GetAll() on cl.DeptId equals d.DeptId into cd
+                    from cds in cd.DefaultIfEmpty()
+
+                    join ic in Uow.InventoryCategory.GetAll() on cis.Category equals ic.Id into iic
+                    from iics in iic.DefaultIfEmpty()
+
+                    where iics.SectionType == 4
+                    select new
+                    {
+                        cl.Id,
+                        ccards.CardNo,
+                        cms.MemberName,
+                        InventoryName = cis.Name,
+                        cl.UserId,
+                        cus.FullName,
+                        cds.DeptName,
+                        cl.Discount,
+                        cl.Amount,
+                        cl.Sum,
+                        cl.CreateDate,
+                        cl.Price,
+                        cl.Quantity,
+                        clcs.ConsumeType,
+                        ConsumeTypeName = clcs.ConsumeType == 0 ? "会员卡消费" : clcs.ConsumeType == 1 ? "非会员消费" : clcs.ConsumeType == 2 ? "会员积分兑换" : "打折卡消费",
+                        clcs.PayType,
+                        PayTypeName = clcs.ConsumeType == 0 ? "会员卡" : clcs.ConsumeType == 2 ? "积分兑换" : cps.Name,
+                        clcs.Voucher
+                    };
+            if (!string.IsNullOrWhiteSpace(MemberName))
+                q = q.Where(w => w.MemberName.Contains(MemberName));
+            if (!string.IsNullOrWhiteSpace(CardNo))
+                q = q.Where(w => w.CardNo.Contains(CardNo));
+            if (this.SelectedOper != null)
+            {
+                //Guid userId = Guid.Parse(OperList.SelectedValue.ToString());
+                q = q.Where(w => w.UserId == SelectedOper.UserId);
+            }
+            if (this.SelectedConsumeType != null)
+            {
+                //int iConsumeType = Convert.ToInt32(ConsumeType.SelectedValue.ToString());
+                q = q.Where(w => w.ConsumeType == SelectedConsumeType.Id);
+            }
+            if (this.SelectedPayType != null)
+            {
+                //DXInfo.Models.PayTypes pt = cmbPayType.SelectedItem as DXInfo.Models.PayTypes;
+                q = q.Where(w => w.PayType == SelectedPayType.Id);
+            }
+            if (BeginDate > DateTime.MinValue)
+            {
+                //DateTime dtBeginDate = Convert.ToDateTime(BeginDate.Text + " " + BeginTime.Value.Value.ToShortTimeString());
+                DateTime dtBeginDate = new DateTime(BeginDate.Year, BeginDate.Month, BeginDate.Day, BeginTime.Hour, BeginTime.Minute, BeginTime.Second, BeginTime.Millisecond);
+                q = q.Where(w => w.CreateDate >= dtBeginDate);
+            }
+            if (EndDate > DateTime.MinValue)
+            {
+                DateTime dtEndDate = new DateTime(EndDate.Year, EndDate.Month, EndDate.Day, EndTime.Hour, EndTime.Minute, EndTime.Second, EndTime.Millisecond);
+                if (EndTime.TimeOfDay == TimeSpan.Zero)
+                {
+                    dtEndDate = dtEndDate.AddDays(1);
+                }
+                q = q.Where(w => w.CreateDate <= dtEndDate);
+            }
+
+            var q1 = (from s in q
+                      select new ReportResult()
+                      {
+                          Id = s.Id,
+                          CardNo = s.CardNo,
+                          MemberName = s.MemberName,
+                          InventoryName = s.InventoryName,
+                          PayTypeName = s.PayTypeName,
+                          ConsumeTypeName = s.ConsumeType == 0 ? "会员卡消费" : s.ConsumeType == 1 ? "非会员消费" : s.ConsumeType == 2 ? "会员积分兑换" : "打折卡消费",
+                          FullName = s.FullName,
+                          CreateDate = s.CreateDate,
+                          DeptName = s.DeptName,
+                          Sum = s.Sum,
+                          Discount = s.Discount,
+                          Amount = s.Amount,
+                          Price = s.Price,
+                          Quantity = s.Quantity
+                      });
+            var q2 = (from s in q.Where(w => w.Voucher > 0)
+                      select new ReportResult()
+                      {
+                          Id = Guid.Empty,
+                          CardNo = s.CardNo,
+                          MemberName = s.MemberName,
+                          InventoryName = "代金券",
+                          PayTypeName = "代金券",
+                          ConsumeTypeName = s.ConsumeType == 0 ? "会员卡消费" : s.ConsumeType == 1 ? "非会员消费" : s.ConsumeType == 2 ? "会员积分兑换" : "打折卡消费",
+                          FullName = s.FullName,
+                          CreateDate = s.CreateDate,
+                          DeptName = s.DeptName,
+                          Sum = -s.Voucher,
+                          Discount = s.Discount,
+                          Amount = -((s.Voucher * s.Discount) / 100),
+                          Price = -s.Voucher,
+                          Quantity = 1
+                      }).Distinct();
+
+            var q3 = q1.Concat(q2).OrderBy(o => o.CreateDate);
+
+            //MemberList.ItemsSource = q3.ToObservableCollection();
+            this.MyQuery = q3;
+            if (q3.Count() > 0)
+            {
+                SumQuantity = q3.Sum(s => s.Quantity);
+                SumPayable = q3.Sum(s => s.Sum);
+                SumAmount = q3.Sum(s => s.Amount);
+            }
+        }
+    }
+    /// <summary>
     /// 吧台消费明细查询
     /// </summary>
     public class WRReport9ViewModel : WRReportViewModelBase
     {
-        public WRReport9ViewModel(IFairiesMemberManageUow uow)
-            : base(uow)
+        private readonly IMapper mapper;
+        public WRReport9ViewModel(IFairiesMemberManageUow uow,IMapper mapper)
+            : base(uow,mapper)
         {
+            this.mapper = mapper;
         }
         protected override void query()
         {
@@ -2009,9 +2184,11 @@ namespace FairiesCoolerCash.ViewModel
     }
     public class QueryCurrentStockViewModel : ReportViewModelBase
     {        
-        public QueryCurrentStockViewModel(IFairiesMemberManageUow uow)
-            : base(uow)
+        private readonly IMapper mapper;
+        public QueryCurrentStockViewModel(IFairiesMemberManageUow uow,IMapper mapper)
+            : base(uow,mapper)
         {
+            this.mapper = mapper;
             this.SetBaseUri();
         }
         

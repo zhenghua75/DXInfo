@@ -11,7 +11,7 @@ namespace DXInfo.Web.App_Start
         public static void RegisterMapper()
         {
             #region 映射对象
-            Mapper.Initialize(cfg =>
+            new MapperConfiguration(cfg =>
             {
                 cfg.CreateMap<DXInfo.Models.ScrapVouch, DXInfo.Models.RdRecord>();
                 cfg.CreateMap<DXInfo.Models.ScrapVouchs, DXInfo.Models.RdRecords>();

@@ -25,17 +25,23 @@ namespace DXInfo.WcfRestService
     public class Service1
     {
         private readonly IFairiesMemberManageUow uow;
+        private readonly IMapper mapper;
         private readonly Guid localDeptId;
-        public Service1(IFairiesMemberManageUow uow)
+        public Service1(IFairiesMemberManageUow uow, IMapper mapper)
         {
             this.uow = uow;
+            this.mapper = mapper;
             this.localDeptId = Guid.Empty;
             DXInfo.Models.NameCode nc = uow.NameCode.GetAll().Where(w => w.Type == "LocalDept").FirstOrDefault();
             if (nc != null)
             {
                 Guid.TryParse(nc.Value, out localDeptId);
             }
-            Mapper.Initialize(cfg => {
+            //Mapper.Initialize(cfg => {
+            //    cfg.CreateMap<DXInfo.Models.OrderMenus, DXInfo.Models.OrderMenusHis>();
+            //});
+            var configuration = new MapperConfiguration(cfg =>
+            {
                 cfg.CreateMap<DXInfo.Models.OrderMenus, DXInfo.Models.OrderMenusHis>();
             });
             //Mapper.CreateMap<DXInfo.Models.OrderMenus,DXInfo.Models.OrderMenusHis>();
@@ -197,7 +203,7 @@ namespace DXInfo.WcfRestService
                 throw new WebFaultException<string>("未获得本地部门信息", HttpStatusCode.MethodNotAllowed);
             }
 
-            DXInfo.Restaurant.DeskManageFacade dmf = new DXInfo.Restaurant.DeskManageFacade(uow, localDeptId, userId);
+            DXInfo.Restaurant.DeskManageFacade dmf = new DXInfo.Restaurant.DeskManageFacade(uow,mapper, localDeptId, userId);
             DateTime dtOperDate = DateTime.Now;
             dmf.dtOperDate = dtOperDate;
             DXInfo.Models.OrderDishes orderDish = new Models.OrderDishes();
@@ -262,7 +268,7 @@ namespace DXInfo.WcfRestService
                 throw new WebFaultException<string>("未获得本地部门信息", HttpStatusCode.MethodNotAllowed);
             }
 
-            DXInfo.Restaurant.DeskManageFacade dmf = new DXInfo.Restaurant.DeskManageFacade(uow, localDeptId, userId);
+            DXInfo.Restaurant.DeskManageFacade dmf = new DXInfo.Restaurant.DeskManageFacade(uow,mapper, localDeptId, userId);
             DateTime dtOperDate = DateTime.Now;
             dmf.dtOperDate = dtOperDate;
             DXInfo.Models.OrderDishes orderDish = new Models.OrderDishes();
@@ -346,7 +352,7 @@ namespace DXInfo.WcfRestService
                             uow.OrderMenus.Add(orderMenu);
                             uow.Commit();
 
-                            DXInfo.Models.OrderMenusHis omHis = Mapper.Map<DXInfo.Models.OrderMenusHis>(orderMenu);
+                            DXInfo.Models.OrderMenusHis omHis = mapper.Map<DXInfo.Models.OrderMenusHis>(orderMenu);
                             omHis.LinkId = orderMenu.Id;
                             uow.OrderMenusHis.Add(omHis);
 
@@ -374,7 +380,7 @@ namespace DXInfo.WcfRestService
                                         orderMenu.Comment = omi.Comment;
                                         uow.OrderMenus.Update(orderMenu);
                                     }
-                                    DXInfo.Models.OrderMenusHis omHis = Mapper.Map<DXInfo.Models.OrderMenusHis>(orderMenu);
+                                    DXInfo.Models.OrderMenusHis omHis = mapper.Map<DXInfo.Models.OrderMenusHis>(orderMenu);
                                     omHis.LinkId = orderMenu.Id;
                                     omHis.UserId = userId;
                                     omHis.CreateDate = dtOperDate;

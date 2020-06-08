@@ -28,10 +28,12 @@ namespace FairiesCoolerCash.Business
     /// </summary>
     public partial class ModifyMemberUserControl : UserControl
     {
-        public ModifyMemberUserControl(IFairiesMemberManageUow uow, Guid id, Guid cardId)
+        private readonly IMapper mapper;
+        public ModifyMemberUserControl(IFairiesMemberManageUow uow, IMapper mapper, Guid id, Guid cardId)
         {
             InitializeComponent();
-            this.DataContext = new ModifyMemberViewModel(uow, id, cardId);
+            this.mapper = mapper;
+            this.DataContext = new ModifyMemberViewModel(uow,mapper, id, cardId);
         }
     }
 }

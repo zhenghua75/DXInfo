@@ -32,9 +32,11 @@ namespace DXInfo.Web.Controllers
     public class StockManageController : BaseController
     {
         #region 构造方法
-        public StockManageController(IFairiesMemberManageUow uow):base(uow)
+        private readonly IMapper mapper;
+        public StockManageController(IFairiesMemberManageUow uow, IMapper mapper) :base(uow)
         {
             this.Uow.Db.ExecuteSqlCommand("SET TRANSACTION ISOLATION LEVEL READ COMMITTED;");
+            this.mapper = mapper;
         }
         
         #endregion
@@ -76,7 +78,7 @@ namespace DXInfo.Web.Controllers
             {
                 var rdRecord = getData(VouchType, MakeTime);
                 if (rdRecord == null) throw new DXInfo.Models.BusinessException("无记录");
-                T retRdRecord = Mapper.Map<T>(rdRecord);
+                T retRdRecord = mapper.Map<T>(rdRecord);
                 PropertyInfo propertyInfo = retRdRecord.GetType().GetProperty("IsModify");
                 propertyInfo.SetValue(retRdRecord, Convert.ChangeType(true, propertyInfo.PropertyType), null);                
                 return Json(retRdRecord, JsonRequestBehavior.AllowGet);
@@ -680,7 +682,7 @@ namespace DXInfo.Web.Controllers
                         {
                             throw new DXInfo.Models.BusinessException("空记录");
                         }
-                        retVouchModel = Mapper.Map<VouchModel>(curScrapVouch);
+                        retVouchModel = mapper.Map<VouchModel>(curScrapVouch);
                         break;
                     case DXInfo.Models.VouchTypeCode.TransVouch:
                         var curTransVouch = Uow.TransVouch.GetById(g => g.Id == Id);
@@ -688,7 +690,7 @@ namespace DXInfo.Web.Controllers
                         {
                             throw new DXInfo.Models.BusinessException("空记录");
                         }
-                        retVouchModel = Mapper.Map<VouchModel>(curTransVouch);
+                        retVouchModel = mapper.Map<VouchModel>(curTransVouch);
                         break;
                     case DXInfo.Models.VouchTypeCode.CheckVouch:
                         var curCheckVouch = Uow.CheckVouch.GetById(g => g.Id == Id);
@@ -696,7 +698,7 @@ namespace DXInfo.Web.Controllers
                         {
                             throw new DXInfo.Models.BusinessException("空记录");
                         }
-                        retVouchModel = Mapper.Map<VouchModel>(curCheckVouch);
+                        retVouchModel = mapper.Map<VouchModel>(curCheckVouch);
                         break;
                     case DXInfo.Models.VouchTypeCode.AdjustLocatorVouch:
                         var curAdjustLocatorVouch = Uow.AdjustLocatorVouch.GetById(g => g.Id == Id);
@@ -704,7 +706,7 @@ namespace DXInfo.Web.Controllers
                         {
                             throw new DXInfo.Models.BusinessException("空记录");
                         }
-                        retVouchModel = Mapper.Map<VouchModel>(curAdjustLocatorVouch);
+                        retVouchModel = mapper.Map<VouchModel>(curAdjustLocatorVouch);
                         break;
                     case DXInfo.Models.VouchTypeCode.MixVouch:
                         var curMixVouch = Uow.MixVouch.GetById(g => g.Id == Id);
@@ -712,7 +714,7 @@ namespace DXInfo.Web.Controllers
                         {
                             throw new DXInfo.Models.BusinessException("空记录");
                         }
-                        retVouchModel = Mapper.Map<VouchModel>(curMixVouch);
+                        retVouchModel = mapper.Map<VouchModel>(curMixVouch);
                         break;
                     default:
                         DXInfo.Models.RdRecord rdRecord = Uow.RdRecord.GetById(g => g.Id == Id);
@@ -720,7 +722,7 @@ namespace DXInfo.Web.Controllers
                         {
                             throw new DXInfo.Models.BusinessException("空记录");
                         }
-                        retVouchModel = Mapper.Map<VouchModel>(rdRecord);
+                        retVouchModel = mapper.Map<VouchModel>(rdRecord);
                         break;
                 }
 
@@ -913,22 +915,22 @@ namespace DXInfo.Web.Controllers
             switch (VouchType)
             {
                 case DXInfo.Models.VouchTypeCode.ScrapVouch:
-                    DXInfo.Models.ScrapVouchs scrapVouchs = Mapper.Map<DXInfo.Models.ScrapVouchs>(vouchsModel);
+                    DXInfo.Models.ScrapVouchs scrapVouchs = mapper.Map<DXInfo.Models.ScrapVouchs>(vouchsModel);
                     return ajaxCallBack<DXInfo.Models.ScrapVouchs>(gridModel.VouchsGrid, scrapVouchs, addScrapVouchs, editScrapVouchs, delScrapVouchs);
                 case DXInfo.Models.VouchTypeCode.TransVouch:
-                    DXInfo.Models.TransVouchs transVouchs = Mapper.Map<DXInfo.Models.TransVouchs>(vouchsModel);
+                    DXInfo.Models.TransVouchs transVouchs = mapper.Map<DXInfo.Models.TransVouchs>(vouchsModel);
                     return ajaxCallBack<DXInfo.Models.TransVouchs>(gridModel.VouchsGrid, transVouchs, addTransVouchs, editTransVouchs, delTransVouchs);
                 case DXInfo.Models.VouchTypeCode.CheckVouch:
-                    DXInfo.Models.CheckVouchs checkVouchs = Mapper.Map<DXInfo.Models.CheckVouchs>(vouchsModel);
+                    DXInfo.Models.CheckVouchs checkVouchs = mapper.Map<DXInfo.Models.CheckVouchs>(vouchsModel);
                     return ajaxCallBack<DXInfo.Models.CheckVouchs>(gridModel.VouchsGrid, checkVouchs, addCheckVouchs, editCheckVouchs, delCheckVouchs);
                 case DXInfo.Models.VouchTypeCode.AdjustLocatorVouch:
-                    DXInfo.Models.AdjustLocatorVouchs adjustLocatorVouchs = Mapper.Map<DXInfo.Models.AdjustLocatorVouchs>(vouchsModel);
+                    DXInfo.Models.AdjustLocatorVouchs adjustLocatorVouchs = mapper.Map<DXInfo.Models.AdjustLocatorVouchs>(vouchsModel);
                     return ajaxCallBack<DXInfo.Models.AdjustLocatorVouchs>(gridModel.VouchsGrid, adjustLocatorVouchs, addAdjustLocatorVouchs, editAdjustLocatorVouchs, delAdjustLocatorVouchs);
                 case DXInfo.Models.VouchTypeCode.MixVouch:
-                    DXInfo.Models.MixVouchs mixVouchs = Mapper.Map<DXInfo.Models.MixVouchs>(vouchsModel);
+                    DXInfo.Models.MixVouchs mixVouchs = mapper.Map<DXInfo.Models.MixVouchs>(vouchsModel);
                     return ajaxCallBack<DXInfo.Models.MixVouchs>(gridModel.VouchsGrid, mixVouchs, addMixVouchs, editMixVouchs, delMixVouchs);
                 default:
-                    DXInfo.Models.RdRecords rdRecords = Mapper.Map<DXInfo.Models.RdRecords>(vouchsModel);
+                    DXInfo.Models.RdRecords rdRecords = mapper.Map<DXInfo.Models.RdRecords>(vouchsModel);
                     //if (rdRecords.Batch == "")
                     //{
                     //    rdRecords.Batch = null;
@@ -1498,27 +1500,8 @@ namespace DXInfo.Web.Controllers
         #endregion
 
         #region 批量审核弃审
-        //private void BatchVerifyRdRecord()
-        //{
-        //    DXInfo.Models.VouchType vouchType1 = Uow.VouchType.GetById(DXInfo.Models.VouchTypeCode.InitStock);
-        //    BatchVerifyRdRecord(vouchType1);
 
-        //    DXInfo.Models.VouchType vouchType2 = Uow.VouchType.GetById(DXInfo.Models.VouchTypeCode.PurchaseInStock);
-        //    BatchVerifyRdRecord(vouchType2);
-
-        //    DXInfo.Models.VouchType vouchType3 = Uow.VouchType.GetById(DXInfo.Models.VouchTypeCode.ProductInStock);
-        //    BatchVerifyRdRecord(vouchType3);
-
-        //    DXInfo.Models.VouchType vouchType5 = Uow.VouchType.GetById(DXInfo.Models.VouchTypeCode.OtherInStock);
-        //    BatchVerifyRdRecord(vouchType5);
-
-        //    DXInfo.Models.VouchType vouchType4 = Uow.VouchType.GetById(DXInfo.Models.VouchTypeCode.OtherOutStock);
-        //    BatchVerifyRdRecord(vouchType4);
-            
-        //    DXInfo.Models.VouchType vouchType6 = Uow.VouchType.GetById(DXInfo.Models.VouchTypeCode.SaleOutStock);
-        //    BatchVerifyRdRecord(vouchType6);
-        //}
-        private void BatchVerifyRdRecord()//DXInfo.Models.VouchType vouchType)
+        private void BatchVerifyRdRecord()
         {
             DateTime dt = new DateTime(2013,7,2);
             var lRdRecord = Uow.RdRecord.GetAll().Where(w => w.IsVerify && w.VerifyDate > dt).ToList();// w.VouchType == vouchType.Code && w.Code!="0042012110600027").ToList();                        
@@ -1530,10 +1513,6 @@ namespace DXInfo.Web.Controllers
                 using (TransactionScope transaction = new TransactionScope(TransactionScopeOption.RequiresNew, new TimeSpan(0, 10, 0)))
                 {
                     DXInfo.Models.RdRecord rdRecord = Uow.RdRecord.GetById(g => g.Id == rdRecordModel.Id);
-                    //if (rdRecord.IsVerify)
-                    //{
-                    //    throw new DXInfo.Models.BusinessException("已审核不能再次审核");
-                    //}
                     if (businessCommon.IsBalance(rdRecord.RdDate, rdRecord.WhId))
                     {
                         throw new DXInfo.Models.BusinessException("已月结不能操作单据");
@@ -1563,8 +1542,6 @@ namespace DXInfo.Web.Controllers
                                   ShelfLifeType = g.Key.ShelfLifeType,
                               }).ToList();
                     UpdateCurrentStock(rdRecord, l1);
-                    //DXInfo.Models.VouchType vouchType = Uow.VouchType.GetById(record.VouchType);                        
-                    //AddInvLocatorByRdRecord(rdRecord, lRdRecords, vouchType);
                     var l2 = (from d in lRdRecords
                               group d by new { d.InvId, d.Batch, d.MainUnit, d.STUnit, d.ExchRate, d.Price, d.InvalidDate, d.MadeDate, d.ShelfLife, d.ShelfLifeType, d.Locator } into g
                               select new DXInfo.Models.RdRecords()
@@ -1745,11 +1722,11 @@ namespace DXInfo.Web.Controllers
             {
                 throw new DXInfo.Models.BusinessException("已月结不能操作单据");
             }
-            DXInfo.Models.RdRecord rdRecord = Mapper.Map<DXInfo.Models.RdRecord>(vouchsGridModel);
-            List<DXInfo.Models.RdRecords> lRdRecords = Mapper.Map<List<DXInfo.Models.RdRecords>>(vouchsGridModel.lVouchs);
+            DXInfo.Models.RdRecord rdRecord = mapper.Map<DXInfo.Models.RdRecord>(vouchsGridModel);
+            List<DXInfo.Models.RdRecords> lRdRecords = mapper.Map<List<DXInfo.Models.RdRecords>>(vouchsGridModel.lVouchs);
             //foreach (VouchsModel vouchsModel in vouchsGridModel.lVouchs)
             //{
-            //    lRdRecords.Add(Mapper.Map<VouchsModel, DXInfo.Models.RdRecords>(vouchsModel));
+            //    lRdRecords.Add(mapper.Map<VouchsModel, DXInfo.Models.RdRecords>(vouchsModel));
             //}
             using (TransactionScope transaction = new TransactionScope())
             {
@@ -1769,7 +1746,7 @@ namespace DXInfo.Web.Controllers
                 }
                 Uow.Commit();
                 transaction.Complete();
-                VouchModel retVouchModel = Mapper.Map<VouchModel>(rdRecord);
+                VouchModel retVouchModel = mapper.Map<VouchModel>(rdRecord);
                 retVouchModel.IsModify = true;
                 return retVouchModel;
             }
@@ -1779,7 +1756,7 @@ namespace DXInfo.Web.Controllers
         {
             foreach (DXInfo.Models.RdRecords rdRecords in lRdRecords)
             {
-                DXInfo.Models.InvLocator inInvLocator = Mapper.Map<DXInfo.Models.RdRecords, DXInfo.Models.InvLocator>(rdRecords);
+                DXInfo.Models.InvLocator inInvLocator = mapper.Map<DXInfo.Models.RdRecords, DXInfo.Models.InvLocator>(rdRecords);
                 inInvLocator.ILDate = rdRecord.RdDate;
                 inInvLocator.RdFlag = rdRecord.RdFlag;
                 inInvLocator.WhId = rdRecord.WhId;
@@ -1803,7 +1780,7 @@ namespace DXInfo.Web.Controllers
             {
                 throw new DXInfo.Models.BusinessException("已审核不能修改");
             }
-            oldRdRecord = Mapper.Map<VouchModel, DXInfo.Models.RdRecord>(vouchModel, oldRdRecord);
+            oldRdRecord = mapper.Map<VouchModel, DXInfo.Models.RdRecord>(vouchModel, oldRdRecord);
             oldRdRecord.Modifier = operId;
             oldRdRecord.ModifyDate = DateTime.Now;
             oldRdRecord.ModifyTime = DateTime.Now;
@@ -1911,7 +1888,7 @@ namespace DXInfo.Web.Controllers
                 }
                 Uow.Commit();
                 transaction.Complete();
-                retVouchModel = Mapper.Map<DXInfo.Models.RdRecord, VouchModel>(rdRecord);
+                retVouchModel = mapper.Map<DXInfo.Models.RdRecord, VouchModel>(rdRecord);
                 retVouchModel.IsModify = true;
             }
             return retVouchModel;
@@ -1950,7 +1927,7 @@ namespace DXInfo.Web.Controllers
                 }
                 Uow.Commit();
                 transaction.Complete();
-                retVouchModel = Mapper.Map<DXInfo.Models.RdRecord, VouchModel>(rdRecord);
+                retVouchModel = mapper.Map<DXInfo.Models.RdRecord, VouchModel>(rdRecord);
                 retVouchModel.IsModify = true;
             }
             return retVouchModel;
@@ -1989,7 +1966,7 @@ namespace DXInfo.Web.Controllers
                     };
 
             object obj = GetVouchAuthorityData(q, VouchType, MakeTime, Descending);
-            return Mapper.Map<VouchModel>(obj);
+            return mapper.Map<VouchModel>(obj);
         }
         private VouchModel GetRdRecordOrderByDescending(string VouchType, DateTime? makeTime)
         {
@@ -2009,8 +1986,6 @@ namespace DXInfo.Web.Controllers
                           from dd2s in dd2.DefaultIfEmpty()
                           join d3 in Uow.UnitOfMeasures.GetAll() on d.STUnit equals d3.Id into dd3
                           from dd3s in dd3.DefaultIfEmpty()
-                          //join d4 in Uow.EnumTypeDescription.GetAll().Where(w => w.Code == DXInfo.Models.EnumHelper.ShelfLifeType) on d.ShelfLifeType equals d4.Value into dd4
-                          //from dd4s in dd4.DefaultIfEmpty()
                           join d5 in Uow.Locator.GetAll() on d.Locator equals d5.Id into dd5
                           from dd5s in dd5.DefaultIfEmpty()
                           select new
@@ -2029,7 +2004,6 @@ namespace DXInfo.Web.Controllers
                               d.MadeDate,
                               d.ShelfLife,
                               d.ShelfLifeType,
-                              //ShelfLifeTypeName = dd4s.Description,
                               d.InvalidDate,
                               d.Locator,
                               LocatorName = dd5s.Name,
@@ -2138,10 +2112,6 @@ namespace DXInfo.Web.Controllers
                 {
                     rdRecords.InvalidDate = getInvalidDate(rdRecords.ShelfLifeType.Value, rdRecords.ShelfLife.Value, rdRecords.MadeDate.Value);
                 }
-                //if (rdRecords.Amount != rdRecords.Num * rdRecords.Price)
-                //{
-                //    throw new DXInfo.Models.BusinessException("单价乘数量必须等于金额");
-                //}
                 if (isBatch)
                 {
                     DXInfo.Models.CurrentStock currentStock = Uow.CurrentStock.GetAll().Where(w => w.WhId == WhId && w.InvId == rdRecords.InvId && w.Batch == rdRecords.Batch).FirstOrDefault();
@@ -2426,9 +2396,6 @@ from vwConsItem a
                     rdRecords.Amount = consumeList.Amount;
                     rdRecords.Price = consumeList.Price;
                     rdRecords.Id = Guid.NewGuid();
-                    //rdRecords.MainUnit = consumeList.MainUnit;
-                    //rdRecords.
-                    //DXInfo.Models.Inventory inv = Uow.Inventory.GetById(g => g.Id == rdRecords.InvId);
                     DXInfo.Models.MeasurementUnitGroup group = Uow.MeasurementUnitGroup.GetById(g => g.Id == consumeList.MeasurementUnitGroup);
                     if (group.Category == (int)DXInfo.Models.UnitGroupCategory.No)
                     {
@@ -2441,7 +2408,6 @@ from vwConsItem a
                     {
                         if (!consumeList.StockUnit.HasValue)
                         {
-                            //return gridModel.RdRecordsGrid.ShowEditValidationMessage("请设置库存单位");
                             throw new DXInfo.Models.BusinessException("请设置库存单位");
                         }
                         DXInfo.Models.UnitOfMeasures uom = Uow.UnitOfMeasures.GetById(g => g.Id == consumeList.StockUnit);
@@ -2731,8 +2697,8 @@ from vwConsItem a
             {
                 throw new DXInfo.Models.BusinessException("已月结不能操作单据");
             }
-            DXInfo.Models.TransVouch transVouch = Mapper.Map<VouchsGridModel, DXInfo.Models.TransVouch>(vouchsGridModel);
-            List<DXInfo.Models.TransVouchs> lTransVouchs = Mapper.Map<List<DXInfo.Models.TransVouchs>>(vouchsGridModel.lVouchs);
+            DXInfo.Models.TransVouch transVouch = mapper.Map<VouchsGridModel, DXInfo.Models.TransVouch>(vouchsGridModel);
+            List<DXInfo.Models.TransVouchs> lTransVouchs = mapper.Map<List<DXInfo.Models.TransVouchs>>(vouchsGridModel.lVouchs);
 
             using (TransactionScope transaction = new TransactionScope())
             {
@@ -2757,7 +2723,7 @@ from vwConsItem a
                 Uow.Commit();
                 transaction.Complete();
 
-                VouchModel retVouchVouch = Mapper.Map<DXInfo.Models.TransVouch, VouchModel>(transVouch);
+                VouchModel retVouchVouch = mapper.Map<DXInfo.Models.TransVouch, VouchModel>(transVouch);
                 retVouchVouch.IsModify = true;
                 return retVouchVouch;
             }
@@ -2773,7 +2739,7 @@ from vwConsItem a
             {
                 throw new DXInfo.Models.BusinessException("已审核");
             }
-            oldTransVouch = Mapper.Map<VouchModel, DXInfo.Models.TransVouch>(vouchModel, oldTransVouch);
+            oldTransVouch = mapper.Map<VouchModel, DXInfo.Models.TransVouch>(vouchModel, oldTransVouch);
             oldTransVouch.Modifier = operId;
             oldTransVouch.ModifyDate = DateTime.Now;
             oldTransVouch.ModifyTime = DateTime.Now;
@@ -2816,7 +2782,7 @@ from vwConsItem a
         private Guid AddRdRecordByTransVouch(DXInfo.Models.TransVouch transVouch, List<DXInfo.Models.TransVouchs> lTransVouchs, 
             string VouchType, DXInfo.Models.RdType rdType, DXInfo.Models.BusType busType)
         {
-            DXInfo.Models.RdRecord rdRecord = Mapper.Map<DXInfo.Models.TransVouch, DXInfo.Models.RdRecord>(transVouch);
+            DXInfo.Models.RdRecord rdRecord = mapper.Map<DXInfo.Models.TransVouch, DXInfo.Models.RdRecord>(transVouch);
             rdRecord.SourceCode = transVouch.Code;
             rdRecord.SourceId = transVouch.Id;
             rdRecord.BusType = busType.Code;
@@ -2854,7 +2820,7 @@ from vwConsItem a
             List<DXInfo.Models.RdRecords> lrecords = new List<DXInfo.Models.RdRecords>();
             foreach (DXInfo.Models.TransVouchs transVouchs in lTransVouchs)
             {
-                DXInfo.Models.RdRecords rdRecordSub = Mapper.Map<DXInfo.Models.TransVouchs, DXInfo.Models.RdRecords>(transVouchs);
+                DXInfo.Models.RdRecords rdRecordSub = mapper.Map<DXInfo.Models.TransVouchs, DXInfo.Models.RdRecords>(transVouchs);
                 if (rdType.Flag == 0)
                 {
                     rdRecordSub.Locator = null;
@@ -2929,7 +2895,7 @@ from vwConsItem a
 
 
                 transaction.Complete();
-                retVouchModel = Mapper.Map<VouchModel>(oldTransVouch);
+                retVouchModel = mapper.Map<VouchModel>(oldTransVouch);
                 retVouchModel.IsModify = true;
             }
             using (TransactionScope transaction = new TransactionScope())
@@ -2980,7 +2946,7 @@ from vwConsItem a
 
                 Uow.Commit();
                 transaction.Complete();
-                retVouchModel = Mapper.Map<VouchModel>(OldTransVouch);
+                retVouchModel = mapper.Map<VouchModel>(OldTransVouch);
                 retVouchModel.IsModify = true;
             }
             return retVouchModel;
@@ -3157,7 +3123,7 @@ from vwConsItem a
                     };
 
             object obj = GetVouchAuthorityData(q, null, MakeTime, Descending);
-            return Mapper.Map<VouchModel>(obj);
+            return mapper.Map<VouchModel>(obj);
         }
         private VouchModel GetTransVouchOrderByDescending(string VouchType, DateTime? makeTime)
         {
@@ -3236,12 +3202,12 @@ from vwConsItem a
             {
                 throw new DXInfo.Models.BusinessException("已月结不能操作单据");
             }
-            DXInfo.Models.ScrapVouch scrapVouch = Mapper.Map<VouchsGridModel, DXInfo.Models.ScrapVouch>(vouchsGridModel);
-            List<DXInfo.Models.ScrapVouchs> lScrapVouchs = Mapper.Map<List<DXInfo.Models.ScrapVouchs>>(vouchsGridModel.lVouchs);
+            DXInfo.Models.ScrapVouch scrapVouch = mapper.Map<VouchsGridModel, DXInfo.Models.ScrapVouch>(vouchsGridModel);
+            List<DXInfo.Models.ScrapVouchs> lScrapVouchs = mapper.Map<List<DXInfo.Models.ScrapVouchs>>(vouchsGridModel.lVouchs);
             using (TransactionScope transaction = new TransactionScope())
             {
                 CheckCodeDup(DXInfo.Models.VouchTypeCode.ScrapVouch,scrapVouch.Code);
-                DXInfo.Models.ScrapVouch newScrapVouch = Mapper.Map<DXInfo.Models.ScrapVouch>(scrapVouch);
+                DXInfo.Models.ScrapVouch newScrapVouch = mapper.Map<DXInfo.Models.ScrapVouch>(scrapVouch);
                 DXInfo.Models.Warehouse warehouse = Uow.Warehouse.GetById(g => g.Id == newScrapVouch.WhId);
                 newScrapVouch.DeptId = warehouse.Dept;
                 newScrapVouch.Maker = operId;
@@ -3258,7 +3224,7 @@ from vwConsItem a
                 Uow.Commit();
                 transaction.Complete();
 
-                VouchModel retScrapVouch = Mapper.Map<VouchModel>(newScrapVouch);
+                VouchModel retScrapVouch = mapper.Map<VouchModel>(newScrapVouch);
                 retScrapVouch.IsModify = true;
                 return retScrapVouch;
             }
@@ -3274,7 +3240,7 @@ from vwConsItem a
             {
                 throw new DXInfo.Models.BusinessException("已审核");
             }
-            oldScrapVouch = Mapper.Map<VouchModel, DXInfo.Models.ScrapVouch>(vouchModel, oldScrapVouch);
+            oldScrapVouch = mapper.Map<VouchModel, DXInfo.Models.ScrapVouch>(vouchModel, oldScrapVouch);
             DXInfo.Models.Warehouse warehouse = Uow.Warehouse.GetById(g => g.Id == oldScrapVouch.WhId);
             oldScrapVouch.DeptId = warehouse.Dept;
             oldScrapVouch.Modifier = operId;
@@ -3316,7 +3282,7 @@ from vwConsItem a
             string VouchType,DXInfo.Models.RdType rdType,DXInfo.Models.BusType busType)
         {
             
-            DXInfo.Models.RdRecord rdRecord = Mapper.Map<DXInfo.Models.ScrapVouch, DXInfo.Models.RdRecord>(scrapVouch);
+            DXInfo.Models.RdRecord rdRecord = mapper.Map<DXInfo.Models.ScrapVouch, DXInfo.Models.RdRecord>(scrapVouch);
             rdRecord.SourceCode = scrapVouch.Code;
             rdRecord.SourceId = scrapVouch.Id;
             rdRecord.BusType = busType.Code;
@@ -3344,7 +3310,7 @@ from vwConsItem a
             List<DXInfo.Models.RdRecords> lrecords = new List<DXInfo.Models.RdRecords>();
             foreach (DXInfo.Models.ScrapVouchs scrapVouchs in lScrapVouchs)
             {
-                DXInfo.Models.RdRecords rdRecordSub = Mapper.Map<DXInfo.Models.ScrapVouchs, DXInfo.Models.RdRecords>(scrapVouchs);
+                DXInfo.Models.RdRecords rdRecordSub = mapper.Map<DXInfo.Models.ScrapVouchs, DXInfo.Models.RdRecords>(scrapVouchs);
                 rdRecordSub.InvId = scrapVouchs.InvId;
                 lrecords.Add(rdRecordSub);
             }                        
@@ -3385,7 +3351,7 @@ from vwConsItem a
                 AddRdRecordByScrapVouch(oldScrapVouch, lScrapVouchs, DXInfo.Models.VouchTypeCode.OtherOutStock, rdType, busType);
 
                 transaction.Complete();
-                retVouchModel = Mapper.Map<VouchModel>(oldScrapVouch);
+                retVouchModel = mapper.Map<VouchModel>(oldScrapVouch);
                 retVouchModel.IsModify = true;
             }
             return retVouchModel;
@@ -3426,7 +3392,7 @@ from vwConsItem a
                 Uow.ScrapVouch.Update(OldScrapVouch);
                 Uow.Commit();
                 transaction.Complete();
-                retVouchModel = Mapper.Map<VouchModel>(OldScrapVouch);
+                retVouchModel = mapper.Map<VouchModel>(OldScrapVouch);
                 retVouchModel.IsModify = true;
             }
             return retVouchModel;
@@ -3592,7 +3558,7 @@ from vwConsItem a
                     };
 
             object obj = GetVouchAuthorityData(q, null, MakeTime, Descending);
-            return Mapper.Map<VouchModel>(obj);
+            return mapper.Map<VouchModel>(obj);
         }
         private VouchModel GetScrapVouchOrderByDescending(string VouchType, DateTime? makeTime)
         {
@@ -3782,7 +3748,7 @@ from vwConsItem a
                 int count = Uow.CheckVouch.GetAll().Where(w => !w.IsVerify && w.WhId == vouchGridModel.WhId).Count();
                 if (count > 0)
                     throw new DXInfo.Models.BusinessException("有未审核盘点单，不能添加盘点单");
-                DXInfo.Models.CheckVouch newCheckVouch = Mapper.Map<DXInfo.Models.CheckVouch>(vouchGridModel);
+                DXInfo.Models.CheckVouch newCheckVouch = mapper.Map<DXInfo.Models.CheckVouch>(vouchGridModel);
                 DXInfo.Models.Warehouse warehouse = Uow.Warehouse.GetById(g => g.Id == newCheckVouch.WhId);
                 newCheckVouch.DeptId = warehouse.Dept;
 
@@ -3806,7 +3772,7 @@ from vwConsItem a
 
                     foreach (DXInfo.Models.CurrentInvLocator currentInvLocator in lCurrentInvLocator)
                     {
-                        DXInfo.Models.CheckVouchs checkVouchs = Mapper.Map<DXInfo.Models.CheckVouchs>(currentInvLocator);
+                        DXInfo.Models.CheckVouchs checkVouchs = mapper.Map<DXInfo.Models.CheckVouchs>(currentInvLocator);
                         checkVouchs.CVId = newCheckVouch.Id;
                         Uow.CheckVouchs.Add(checkVouchs);
                     }
@@ -3820,7 +3786,7 @@ from vwConsItem a
 
                     foreach (DXInfo.Models.CurrentStock currentStock in lCurrentStock)
                     {
-                        DXInfo.Models.CheckVouchs checkVouchs = Mapper.Map<DXInfo.Models.CheckVouchs>(currentStock);
+                        DXInfo.Models.CheckVouchs checkVouchs = mapper.Map<DXInfo.Models.CheckVouchs>(currentStock);
                         checkVouchs.CVId = newCheckVouch.Id;
                         Uow.CheckVouchs.Add(checkVouchs);
                     }
@@ -3828,7 +3794,7 @@ from vwConsItem a
                 Uow.Commit();
                 transaction.Complete();
 
-                retVouchModel = Mapper.Map<VouchModel>(newCheckVouch);
+                retVouchModel = mapper.Map<VouchModel>(newCheckVouch);
                 retVouchModel.IsModify = true;
             }
             return retVouchModel;
@@ -3844,7 +3810,7 @@ from vwConsItem a
             {
                 throw new DXInfo.Models.BusinessException("已审核");
             }
-            oldCheckVouch = Mapper.Map<VouchModel, DXInfo.Models.CheckVouch>(vouchModel, oldCheckVouch);
+            oldCheckVouch = mapper.Map<VouchModel, DXInfo.Models.CheckVouch>(vouchModel, oldCheckVouch);
             DXInfo.Models.Warehouse warehouse = Uow.Warehouse.GetById(g => g.Id == oldCheckVouch.WhId);
             oldCheckVouch.DeptId = warehouse.Dept;
             oldCheckVouch.Modifier = operId;
@@ -3862,7 +3828,7 @@ from vwConsItem a
                     var count = lCheckVouchs.Where(w => w.InvId == currentInvLocator.InvId && w.Batch == currentInvLocator.Batch && w.Locator == currentInvLocator.Locator).Count();
                     if (count == 0)
                     {
-                        DXInfo.Models.CheckVouchs checkVouchs = Mapper.Map<DXInfo.Models.CheckVouchs>(currentInvLocator);
+                        DXInfo.Models.CheckVouchs checkVouchs = mapper.Map<DXInfo.Models.CheckVouchs>(currentInvLocator);
                         checkVouchs.CVId = oldCheckVouch.Id;
                         Uow.CheckVouchs.Add(checkVouchs);
                     }
@@ -3876,7 +3842,7 @@ from vwConsItem a
                     var count = lCheckVouchs.Where(w => w.InvId == currentStock.InvId && w.Batch == currentStock.Batch).Count();
                     if (count == 0)
                     {
-                        DXInfo.Models.CheckVouchs checkVouchs = Mapper.Map<DXInfo.Models.CheckVouchs>(currentStock);
+                        DXInfo.Models.CheckVouchs checkVouchs = mapper.Map<DXInfo.Models.CheckVouchs>(currentStock);
                         checkVouchs.CVId = oldCheckVouch.Id;
                         Uow.CheckVouchs.Add(checkVouchs);
                     }
@@ -3915,7 +3881,7 @@ from vwConsItem a
             List<DXInfo.Models.CheckVouchs> lCheckVouchs, string VouchType, 
             DXInfo.Models.RdType rdType, DXInfo.Models.BusType busType)
         {
-            DXInfo.Models.RdRecord rdRecord = Mapper.Map<DXInfo.Models.CheckVouch, DXInfo.Models.RdRecord>(checkVouch);
+            DXInfo.Models.RdRecord rdRecord = mapper.Map<DXInfo.Models.CheckVouch, DXInfo.Models.RdRecord>(checkVouch);
             rdRecord.SourceCode = checkVouch.Code;
             rdRecord.SourceId = checkVouch.Id;
             rdRecord.BusType = busType.Code;
@@ -3942,7 +3908,7 @@ from vwConsItem a
             List<DXInfo.Models.RdRecords> lrecords = new List<DXInfo.Models.RdRecords>();
             foreach (DXInfo.Models.CheckVouchs checkVouchs in lCheckVouchs)
             {
-                DXInfo.Models.RdRecords rdRecordSub = Mapper.Map<DXInfo.Models.CheckVouchs, DXInfo.Models.RdRecords>(checkVouchs);
+                DXInfo.Models.RdRecords rdRecordSub = mapper.Map<DXInfo.Models.CheckVouchs, DXInfo.Models.RdRecords>(checkVouchs);
                 if (rdType.Flag == 0 && checkVouchs.AddInQuantity>0)
                 {
                     rdRecordSub.Quantity = checkVouchs.AddInQuantity;
@@ -4011,7 +3977,7 @@ from vwConsItem a
 
 
                 transaction.Complete();
-                retVouchModel = Mapper.Map<VouchModel>(oldCheckVouch);
+                retVouchModel = mapper.Map<VouchModel>(oldCheckVouch);
                 retVouchModel.IsModify = true;
             }
             return retVouchModel;
@@ -4053,7 +4019,7 @@ from vwConsItem a
 
                 Uow.Commit();
                 transaction.Complete();
-                retVouchModel = Mapper.Map<VouchModel>(OldCheckVouch);
+                retVouchModel = mapper.Map<VouchModel>(OldCheckVouch);
                 retVouchModel.IsModify = true;
             }
             return retVouchModel;
@@ -4161,7 +4127,7 @@ from vwConsItem a
                     };
 
             object obj = GetVouchAuthorityData(q, null, MakeTime, Descending);
-            return Mapper.Map<VouchModel>(obj);
+            return mapper.Map<VouchModel>(obj);
         }
         private VouchModel GetCheckVouchOrderByDescending(string VouchType, DateTime? makeTime)
         {
@@ -4311,11 +4277,16 @@ from vwConsItem a
             {
                 throw new DXInfo.Models.BusinessException("已月结不能操作单据");
             }
-            List<DXInfo.Models.AdjustLocatorVouchs> lAdjustLocatorVouchs = Mapper.Map<List<DXInfo.Models.AdjustLocatorVouchs>>(vouchsGridModel.lVouchs);
+            //var configuration = new MapperConfiguration(cfg =>
+            //{
+            //    cfg.CreateMap<DXInfo.Models.AdjustLocatorVouchs, VouchsModel>();
+            //});
+            //var mapper = configuration.CreateMapper();
+            List<DXInfo.Models.AdjustLocatorVouchs> lAdjustLocatorVouchs = mapper.Map<List<DXInfo.Models.AdjustLocatorVouchs>>(vouchsGridModel.lVouchs);
             using (TransactionScope transaction = new TransactionScope())
             {
                 CheckCodeDup(vouchsGridModel.VouchType, vouchsGridModel.Code);
-                DXInfo.Models.AdjustLocatorVouch newAdjustLocatorVouch = Mapper.Map<DXInfo.Models.AdjustLocatorVouch>(vouchsGridModel);
+                DXInfo.Models.AdjustLocatorVouch newAdjustLocatorVouch = mapper.Map<DXInfo.Models.AdjustLocatorVouch>(vouchsGridModel);
                 DXInfo.Models.Warehouse warehouse = Uow.Warehouse.GetById(g => g.Id == newAdjustLocatorVouch.WhId);
                 newAdjustLocatorVouch.DeptId = warehouse.Dept;
                 newAdjustLocatorVouch.Maker = operId;
@@ -4366,7 +4337,7 @@ from vwConsItem a
                 Uow.Commit();
                 transaction.Complete();
 
-                VouchModel retVouchModel = Mapper.Map<VouchModel>(newAdjustLocatorVouch);
+                VouchModel retVouchModel = mapper.Map<VouchModel>(newAdjustLocatorVouch);
                 retVouchModel.IsModify = true;
                 return retVouchModel;
             }
@@ -4382,7 +4353,7 @@ from vwConsItem a
             {
                 throw new DXInfo.Models.BusinessException("已审核");
             }
-            oldAdjustLocatorVouch = Mapper.Map<VouchModel, DXInfo.Models.AdjustLocatorVouch>(vouchModel, oldAdjustLocatorVouch);
+            oldAdjustLocatorVouch = mapper.Map<VouchModel, DXInfo.Models.AdjustLocatorVouch>(vouchModel, oldAdjustLocatorVouch);
             DXInfo.Models.Warehouse warehouse = Uow.Warehouse.GetById(g => g.Id == oldAdjustLocatorVouch.WhId);
             oldAdjustLocatorVouch.DeptId = warehouse.Dept;
             oldAdjustLocatorVouch.Modifier = operId;
@@ -4424,7 +4395,7 @@ from vwConsItem a
             foreach (DXInfo.Models.AdjustLocatorVouchs adjustLocatorVouchs in lAdjustLocatorVouchs)
             {
                 //入库
-                DXInfo.Models.InvLocator inInvLocator = Mapper.Map<DXInfo.Models.InvLocator>(adjustLocatorVouchs);
+                DXInfo.Models.InvLocator inInvLocator = mapper.Map<DXInfo.Models.InvLocator>(adjustLocatorVouchs);
                 inInvLocator.ILDate = adjustLocatorVouch.ALVDate;
                 inInvLocator.RdFlag = 0;
                 inInvLocator.WhId = adjustLocatorVouch.WhId;
@@ -4435,7 +4406,7 @@ from vwConsItem a
                 inInvLocator.Salesman = adjustLocatorVouch.Verifier.Value;
                 Uow.InvLocator.Add(inInvLocator);
                 //出库
-                DXInfo.Models.InvLocator outInvLocator = Mapper.Map<DXInfo.Models.AdjustLocatorVouchs, DXInfo.Models.InvLocator>(adjustLocatorVouchs);
+                DXInfo.Models.InvLocator outInvLocator = mapper.Map<DXInfo.Models.AdjustLocatorVouchs, DXInfo.Models.InvLocator>(adjustLocatorVouchs);
                 outInvLocator.ILDate = adjustLocatorVouch.ALVDate;
                 outInvLocator.RdFlag = 1;
                 outInvLocator.WhId = adjustLocatorVouch.WhId;
@@ -4451,7 +4422,7 @@ from vwConsItem a
             List<DXInfo.Models.AdjustLocatorVouchs> lAdjustLocatorVouchs, 
             string VouchType, DXInfo.Models.RdType rdType, DXInfo.Models.BusType busType)
         {
-            DXInfo.Models.RdRecord newRdRecord = Mapper.Map<DXInfo.Models.RdRecord>(adjustLocatorVouch);
+            DXInfo.Models.RdRecord newRdRecord = mapper.Map<DXInfo.Models.RdRecord>(adjustLocatorVouch);
             newRdRecord.SourceCode = adjustLocatorVouch.Code;
             newRdRecord.SourceId = adjustLocatorVouch.Id;
             newRdRecord.BusType = busType.Code;
@@ -4478,7 +4449,7 @@ from vwConsItem a
             List<DXInfo.Models.RdRecords> lrecords = new List<DXInfo.Models.RdRecords>();
             foreach (DXInfo.Models.AdjustLocatorVouchs adjustLocatorVouchs in lAdjustLocatorVouchs)
             {
-                DXInfo.Models.RdRecords rdRecords = Mapper.Map<DXInfo.Models.RdRecords>(adjustLocatorVouchs);
+                DXInfo.Models.RdRecords rdRecords = mapper.Map<DXInfo.Models.RdRecords>(adjustLocatorVouchs);
                 if (rdType.Flag == 0)
                 {
                     rdRecords.Locator = adjustLocatorVouchs.InLocator;
@@ -4495,18 +4466,18 @@ from vwConsItem a
         }        
         private void updateCurrentInvLocatorByALV(DXInfo.Models.AdjustLocatorVouch oldAdjustLocatorVouch, List<DXInfo.Models.AdjustLocatorVouchs> lAdjustLocatorVouchs)
         {
-            DXInfo.Models.RdRecord rdRecord1 = Mapper.Map<DXInfo.Models.RdRecord>(oldAdjustLocatorVouch);
+            DXInfo.Models.RdRecord rdRecord1 = mapper.Map<DXInfo.Models.RdRecord>(oldAdjustLocatorVouch);
             rdRecord1.RdFlag = 0;
-            DXInfo.Models.RdRecord rdRecord2 = Mapper.Map<DXInfo.Models.RdRecord>(oldAdjustLocatorVouch);
+            DXInfo.Models.RdRecord rdRecord2 = mapper.Map<DXInfo.Models.RdRecord>(oldAdjustLocatorVouch);
             rdRecord2.RdFlag = 1;
 
             List<DXInfo.Models.RdRecords> lRdRecords1 = new List<DXInfo.Models.RdRecords>();
             List<DXInfo.Models.RdRecords> lRdRecords2 = new List<DXInfo.Models.RdRecords>();
             foreach (DXInfo.Models.AdjustLocatorVouchs adjustLocatorVouchs in lAdjustLocatorVouchs)
             {
-                DXInfo.Models.RdRecords rdRecords1 = Mapper.Map<DXInfo.Models.RdRecords>(adjustLocatorVouchs);
+                DXInfo.Models.RdRecords rdRecords1 = mapper.Map<DXInfo.Models.RdRecords>(adjustLocatorVouchs);
                 rdRecords1.Locator = adjustLocatorVouchs.InLocator;
-                DXInfo.Models.RdRecords rdRecords2 = Mapper.Map<DXInfo.Models.RdRecords>(adjustLocatorVouchs);
+                DXInfo.Models.RdRecords rdRecords2 = mapper.Map<DXInfo.Models.RdRecords>(adjustLocatorVouchs);
                 rdRecords2.Locator = adjustLocatorVouchs.OutLocator;
 
                 lRdRecords1.Add(rdRecords1);
@@ -4546,7 +4517,7 @@ from vwConsItem a
                 }
                 Uow.Commit();
                 transaction.Complete();
-                retVouchModel = Mapper.Map<VouchModel>(oldAdjustLocatorVouch);
+                retVouchModel = mapper.Map<VouchModel>(oldAdjustLocatorVouch);
                 retVouchModel.IsModify = true;
             }
             return retVouchModel;
@@ -4583,7 +4554,7 @@ from vwConsItem a
 
                 Uow.Commit();
                 transaction.Complete();
-                retVouchModel = Mapper.Map<VouchModel>(oldAdjustLocatorVouch);
+                retVouchModel = mapper.Map<VouchModel>(oldAdjustLocatorVouch);
                 retVouchModel.IsModify = true;
             }
             return retVouchModel;
@@ -4764,7 +4735,7 @@ from vwConsItem a
                     };
 
             object obj = GetVouchAuthorityData(q, null, MakeTime, Descending);
-            return Mapper.Map<VouchModel>(obj);
+            return mapper.Map<VouchModel>(obj);
         }
         private VouchModel GetAdjustLocatorVouchOrderByDescending(string VouchType, DateTime? makeTime)
         {
@@ -4853,11 +4824,11 @@ from vwConsItem a
             {
                 throw new DXInfo.Models.BusinessException("已月结不能操作单据");
             }
-            List<DXInfo.Models.MixVouchs> lMixVouchs = Mapper.Map<List<DXInfo.Models.MixVouchs>>(vouchsGridModel.lVouchs);
+            List<DXInfo.Models.MixVouchs> lMixVouchs = mapper.Map<List<DXInfo.Models.MixVouchs>>(vouchsGridModel.lVouchs);
             using (TransactionScope transaction = new TransactionScope())
             {
                 CheckCodeDup(vouchsGridModel.VouchType, vouchsGridModel.Code);
-                DXInfo.Models.MixVouch newMixVouch = Mapper.Map<DXInfo.Models.MixVouch>(vouchsGridModel);
+                DXInfo.Models.MixVouch newMixVouch = mapper.Map<DXInfo.Models.MixVouch>(vouchsGridModel);
                 DXInfo.Models.Warehouse inWarehouse = Uow.Warehouse.GetById(g => g.Id == newMixVouch.InWhId);
                 DXInfo.Models.Warehouse outWarehouse = Uow.Warehouse.GetById(g => g.Id == newMixVouch.OutWhId);
                 newMixVouch.InDeptId = inWarehouse.Dept;
@@ -4897,7 +4868,7 @@ from vwConsItem a
                 Uow.Commit();
                 transaction.Complete();
 
-                VouchModel retVouchModel = Mapper.Map<VouchModel>(newMixVouch);
+                VouchModel retVouchModel = mapper.Map<VouchModel>(newMixVouch);
                 retVouchModel.IsModify = true;
                 return retVouchModel;
             }
@@ -4913,7 +4884,7 @@ from vwConsItem a
             {
                 throw new DXInfo.Models.BusinessException("已审核");
             }
-            oldMixVouch = Mapper.Map<VouchModel, DXInfo.Models.MixVouch>(vouchModel, oldMixVouch);
+            oldMixVouch = mapper.Map<VouchModel, DXInfo.Models.MixVouch>(vouchModel, oldMixVouch);
             DXInfo.Models.Warehouse inWarehouse = Uow.Warehouse.GetById(g => g.Id == oldMixVouch.InWhId);
             DXInfo.Models.Warehouse outWarehouse = Uow.Warehouse.GetById(g => g.Id == oldMixVouch.OutWhId);
             oldMixVouch.InDeptId = inWarehouse.Dept;
@@ -4955,7 +4926,7 @@ from vwConsItem a
             List<DXInfo.Models.MixVouchs> lMixVouchs)
         {
             //DXInfo.Models.VouchType vouchType = Uow.VouchType.GetById(g=>g.Code==DXInfo.Models.VouchTypeCode.TransVouch);
-            DXInfo.Models.TransVouch transVouch = Mapper.Map<DXInfo.Models.TransVouch>(mixVouch);
+            DXInfo.Models.TransVouch transVouch = mapper.Map<DXInfo.Models.TransVouch>(mixVouch);
 
             transVouch.Maker = operId;
             transVouch.MakeDate = DateTime.Now;
@@ -4978,7 +4949,7 @@ from vwConsItem a
 
             foreach (DXInfo.Models.MixVouchs mixVouchs in lMixVouchs)
             {
-                DXInfo.Models.TransVouchs transVouchs = Mapper.Map<DXInfo.Models.MixVouchs, DXInfo.Models.TransVouchs>(mixVouchs);
+                DXInfo.Models.TransVouchs transVouchs = mapper.Map<DXInfo.Models.MixVouchs, DXInfo.Models.TransVouchs>(mixVouchs);
                 transVouchs.TVId = transVouch.Id;
                 transVouchs.SourceId = mixVouchs.Id;
                 transVouchs.DueQuantity = mixVouchs.Quantity;
@@ -5015,7 +4986,7 @@ from vwConsItem a
                 AddTransVouchByMixVouch(oldMixVouch, lMixVouchs);
                 Uow.Commit();
                 transaction.Complete();
-                retVouchModel = Mapper.Map<VouchModel>(oldMixVouch);
+                retVouchModel = mapper.Map<VouchModel>(oldMixVouch);
                 retVouchModel.IsModify = true;
             }
             return retVouchModel;
@@ -5058,7 +5029,7 @@ from vwConsItem a
 
                 Uow.Commit();
                 transaction.Complete();
-                retVouchModel = Mapper.Map<VouchModel>(OldMixVouch);
+                retVouchModel = mapper.Map<VouchModel>(OldMixVouch);
                 retVouchModel.IsModify = true;
             }
             return retVouchModel;
@@ -5196,7 +5167,7 @@ from vwConsItem a
                     };
 
             object obj = GetVouchAuthorityData(q, null, MakeTime, Descending);
-            return Mapper.Map<VouchModel>(obj);
+            return mapper.Map<VouchModel>(obj);
         }
         private VouchModel GetMixVouchOrderByDescending(string VouchType, DateTime? makeTime)
         {
@@ -5927,7 +5898,7 @@ from vwConsItem a
 
             foreach (dynamic d in inRdRecordGroup)
             {
-                DXInfo.Models.Books newBooks = Mapper.Map<DXInfo.Models.Books>(d);
+                DXInfo.Models.Books newBooks = mapper.Map<DXInfo.Models.Books>(d);
 
                 newBooks.InQuantity = newBooks.Quantity;
                 newBooks.InNum = newBooks.Num;
@@ -5939,7 +5910,7 @@ from vwConsItem a
             }
             foreach (dynamic d in outRdRecordGroup)
             {
-                DXInfo.Models.Books newBooks = Mapper.Map<DXInfo.Models.Books>(d);
+                DXInfo.Models.Books newBooks = mapper.Map<DXInfo.Models.Books>(d);
 
                 newBooks.OutQuantity = newBooks.Quantity;
                 newBooks.OutNum = newBooks.Num;
@@ -5951,7 +5922,7 @@ from vwConsItem a
             }
             foreach (dynamic d in rdRecordGroup)
             {
-                DXInfo.Models.Books newBooks = Mapper.Map<DXInfo.Models.Books>(d);
+                DXInfo.Models.Books newBooks = mapper.Map<DXInfo.Models.Books>(d);
 
                 lBooks.Add(newBooks);
             }
@@ -5995,7 +5966,7 @@ from vwConsItem a
                                  }).ToList();
             foreach (dynamic d in books)
             {
-                DXInfo.Models.Books newBooks = Mapper.Map<DXInfo.Models.Books>(d);
+                DXInfo.Models.Books newBooks = mapper.Map<DXInfo.Models.Books>(d);
                 newBooks.Period = period.Id;
                 newBooks.SourceId = monthBalance.Id;
                 newBooks.WhId = monthBalance.WhId;

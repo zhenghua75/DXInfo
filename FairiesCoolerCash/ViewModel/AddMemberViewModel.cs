@@ -19,11 +19,12 @@ namespace FairiesCoolerCash.ViewModel
 {
     public class AddMemberViewModel:BusinessViewModelBase
     {
-        
-        
-        public AddMemberViewModel(IFairiesMemberManageUow uow)
-            : base(uow, new List<string>() { "SelectedCardLevel", "SelectedCardType", "CardNo", "MemberName" })
+
+        private readonly IMapper mapper;
+        public AddMemberViewModel(IFairiesMemberManageUow uow, IMapper mapper)
+            : base(uow,mapper, new List<string>() { "SelectedCardLevel", "SelectedCardType", "CardNo", "MemberName" })
         {
+            this.mapper = mapper;
             this.SetCardLevelAuto();
             if (this.IsCardLevelAuto)
             {
@@ -163,11 +164,11 @@ namespace FairiesCoolerCash.ViewModel
                 Uow.Cards.Add(this.Card);
                 Uow.Commit();
 
-                DXInfo.Models.MembersLog memberLog = Mapper.Map<DXInfo.Models.Members, DXInfo.Models.MembersLog>(Member);
+                DXInfo.Models.MembersLog memberLog = mapper.Map<DXInfo.Models.Members, DXInfo.Models.MembersLog>(Member);
                 memberLog.MemberId = Member.Id;
                 Uow.MembersLog.Add(memberLog);
 
-                DXInfo.Models.CardsLog cardsLog = Mapper.Map<DXInfo.Models.Cards, DXInfo.Models.CardsLog>(Card);
+                DXInfo.Models.CardsLog cardsLog = mapper.Map<DXInfo.Models.Cards, DXInfo.Models.CardsLog>(Card);
                 cardsLog.CardId = Card.Id;
                 Uow.CardsLog.Add(cardsLog);
 

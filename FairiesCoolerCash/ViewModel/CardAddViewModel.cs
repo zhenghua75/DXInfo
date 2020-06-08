@@ -50,9 +50,11 @@ namespace FairiesCoolerCash.ViewModel
     }
     public class CardAddViewModel : ReportViewModelBase
     {
-        public CardAddViewModel(IFairiesMemberManageUow uow)
-            : base(uow)
+        private readonly IMapper mapper;
+        public CardAddViewModel(IFairiesMemberManageUow uow, IMapper mapper)
+            : base(uow,mapper)
         {
+            this.mapper = mapper;
         }
         public override void LoadData()
         {
@@ -288,7 +290,7 @@ namespace FairiesCoolerCash.ViewModel
                 Uow.Cards.Add(newcard);
                 Uow.Commit();
 
-                DXInfo.Models.CardsLog cardsLog = Mapper.Map<DXInfo.Models.Cards, DXInfo.Models.CardsLog>(newcard);
+                DXInfo.Models.CardsLog cardsLog = mapper.Map<DXInfo.Models.Cards, DXInfo.Models.CardsLog>(newcard);
                 cardsLog.CardId = newcard.Id;
                 cardsLog.CreateDate = dtNow;
                 cardsLog.UserId = this.Oper.UserId;
@@ -303,7 +305,7 @@ namespace FairiesCoolerCash.ViewModel
                 c.Status = 2;
                 Uow.Cards.Update(c);
 
-                DXInfo.Models.CardsLog cardsLog1 = Mapper.Map<DXInfo.Models.Cards, DXInfo.Models.CardsLog>(c);
+                DXInfo.Models.CardsLog cardsLog1 = mapper.Map<DXInfo.Models.Cards, DXInfo.Models.CardsLog>(c);
                 cardsLog1.CardId = c.Id;
                 cardsLog1.CreateDate = dtNow;
                 cardsLog1.UserId = this.Oper.UserId;

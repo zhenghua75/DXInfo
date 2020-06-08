@@ -228,6 +228,13 @@ namespace FairiesCoolerCash.ViewModel
                 return ServiceLocator.Current.GetInstance<WRReport11ViewModel>();
             }
         }
+        public WRReport12ViewModel WRReport12ViewModel
+        {
+            get
+            {
+                return ServiceLocator.Current.GetInstance<WRReport12ViewModel>();
+            }
+        }
         public OrderMenuListViewModel OrderMenuListViewModel
         {
             get

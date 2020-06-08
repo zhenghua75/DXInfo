@@ -13,14 +13,17 @@ using System.Windows;
 //using System.Data.Objects.SqlClient;
 using GalaSoft.MvvmLight.Messaging;
 using System.Data.Entity.SqlServer;
+using AutoMapper;
 
 namespace FairiesCoolerCash.ViewModel
 {
     public class MemberQueryViewModel : ReportViewModelBase
     {
-        public MemberQueryViewModel(IFairiesMemberManageUow uow)
-            : base(uow)
+        private readonly IMapper mapper;
+        public MemberQueryViewModel(IFairiesMemberManageUow uow,IMapper mapper)
+            : base(uow,mapper)
         {
+            this.mapper = mapper;
             this.Card = new DXInfo.Models.Cards();
         }
         public override void LoadData()
@@ -137,7 +140,7 @@ namespace FairiesCoolerCash.ViewModel
             if (this.SelectedResult != null)
             {
                 dynamic d = this.SelectedResult;
-                ModifyMemberUserControl ap = new ModifyMemberUserControl(Uow, d.Id, d.CardId);
+                ModifyMemberUserControl ap = new ModifyMemberUserControl(Uow,mapper, d.Id, d.CardId);
                 this.NavigationUserControl(ap);
             }
         }

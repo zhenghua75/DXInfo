@@ -27,9 +27,11 @@ namespace FairiesCoolerCash.ViewModel
 {
     public class StockDeskManageViewModel : DeskManageViewModel
     {
-        public StockDeskManageViewModel(IFairiesMemberManageUow uow)
-            : base(uow)
+        private readonly IMapper mapper;
+        public StockDeskManageViewModel(IFairiesMemberManageUow uow, IMapper mapper)
+            : base(uow,mapper)
         {
+            this.mapper = mapper;
         }
         public override void SetCurrentType()
         {
@@ -38,11 +40,6 @@ namespace FairiesCoolerCash.ViewModel
             this.DeptType = DeptType.Shop;
             this.IsStock = true;
         }
-        //public override void AfterCheckOut()
-        //{
-        //    base.AfterCheckOut();
-        //    AddRetailOutStock();
-        //}
     }
     public class DeskManageViewModel : ConsumeViewModelBase
     {
@@ -53,14 +50,19 @@ namespace FairiesCoolerCash.ViewModel
 
         #region 字段
         private DXInfo.Restaurant.DeskManageFacade DeskManageFacade;
+
         private DispatcherTimer RefreshDeskTimer;
         #endregion
 
         #region 构造
-        public DeskManageViewModel(IFairiesMemberManageUow uow)
-            : base(uow)
+
+        private readonly IMapper mapper;
+
+        public DeskManageViewModel(IFairiesMemberManageUow uow, IMapper mapper)
+            : base(uow,mapper)
         {
-            this.DeskManageFacade = new DXInfo.Restaurant.DeskManageFacade(uow,Dept.DeptId,User.UserId);
+            this.mapper = mapper;
+            this.DeskManageFacade = new DXInfo.Restaurant.DeskManageFacade(uow,mapper,Dept.DeptId,User.UserId);
 
             this.ScrollBarHeight = 36;
             this.ScrollBarWidth = 60;
@@ -113,10 +115,7 @@ namespace FairiesCoolerCash.ViewModel
                         this.Dept.DeptName, dtOperDate, dSum, dQuantity,
                         printerName);
                 opo.Print();
-
-                //OrderPrintObject opo1 = new OrderPrintObject(confirmmenu, msg,
-                //    this.MyIdentity.dept.DeptName, dtOperDate, dSum, dQuantity);
-                //opo1.Print();
+                
             }
         }
         private void Print(ObservableCollection<InventoryEx> confirmmenu, string msg, DateTime dtOperDate)
@@ -125,11 +124,6 @@ namespace FairiesCoolerCash.ViewModel
             {
                 decimal dSum = confirmmenu.Sum(s => s.Amount);
                 decimal dQuantity = confirmmenu.Sum(s => s.Quantity);
-
-                //OrderPrintObject opo = new OrderPrintObject(confirmmenu, msg,
-                //        this.MyIdentity.dept.DeptName, dtOperDate, dSum, dQuantity,
-                //        printerName);
-                //opo.Print();
 
                 OrderPrintObject opo1 = new OrderPrintObject(confirmmenu, msg,
                     this.Dept.DeptName, dtOperDate, dSum, dQuantity);
@@ -149,12 +143,10 @@ namespace FairiesCoolerCash.ViewModel
             foreach (DXInfo.Models.OrderMenus om in lom)
             {
                 DXInfo.Models.Inventory inv = Uow.Inventory.GetById(g => g.Id == om.InventoryId);
-                DXInfo.Models.InventoryEx iex = Mapper.Map<DXInfo.Models.InventoryEx>(om);
+                DXInfo.Models.InventoryEx iex = mapper.Map<DXInfo.Models.InventoryEx>(om);
                 iex.Code = inv.Code;
                 iex.Name = inv.Name;
-                //iex.Amount = om.Price * om.Quantity;
                 iex.SalePrice = om.Price;
-                //iex.Quantity = om.Quantity;
                 this.DeskManageFacade.AddPrint(ref htOtherPrint, ref htLocalPrint, iex, pt);
             }
         }
@@ -218,10 +210,7 @@ namespace FairiesCoolerCash.ViewModel
                 }
             }
         }
-        private void PrintOrder(Guid? orderDishId,
-            Hashtable htOtherPrint, Hashtable htLocalPrint,
-            string oldDeskNo, string newDeskNo,
-            DateTime dtOperDate)
+        private void PrintOrder(Guid? orderDishId,Hashtable htOtherPrint, Hashtable htLocalPrint,string oldDeskNo, string newDeskNo,DateTime dtOperDate)
         {
             //加单、减单、加菜、退单、撤销、口味变化
             string deskCodes = "";
@@ -242,9 +231,7 @@ namespace FairiesCoolerCash.ViewModel
                 }
             }
         }
-        private void PrintOrder(Hashtable htOtherPrint, Hashtable htLocalPrint,
-            string oldDeskNo, string newDeskNo,
-            DateTime dtOperDate, string deskCodes)
+        private void PrintOrder(Hashtable htOtherPrint, Hashtable htLocalPrint,string oldDeskNo, string newDeskNo,DateTime dtOperDate, string deskCodes)
         {
             //加单、减单、加菜、退单、撤销、口味变化
             if (htOtherPrint != null && htOtherPrint.Count > 0)
@@ -375,18 +362,14 @@ namespace FairiesCoolerCash.ViewModel
         }
         protected override void CreateInventoryEx(DXInfo.Models.Inventory inv)
         {
-            //if (this.SelectedInventory != null && this.SelectedOrderDish != null)
-            //{
-                InventoryEx inventoryEx = Mapper.Map<DXInfo.Models.InventoryEx>(inv);
-                inventoryEx.Quantity = 1;
-                inventoryEx.IsPackage = false;
-                inventoryEx.OrderId = this.SelectedOrderDish.Id;
-                
-                this.SetInvPrice(inventoryEx);
-                //this.SetCurrentStock(inventoryEx);
-                this.SetOCInventoryEx();
-                this.OCInventoryEx.Add(inventoryEx);
-            //}
+            InventoryEx inventoryEx = mapper.Map<DXInfo.Models.InventoryEx>(inv);
+            inventoryEx.Quantity = 1;
+            inventoryEx.IsPackage = false;
+            inventoryEx.OrderId = this.SelectedOrderDish.Id;
+
+            this.SetInvPrice(inventoryEx);
+            this.SetOCInventoryEx();
+            this.OCInventoryEx.Add(inventoryEx);
         }
         private void CreateInventoryEx(Guid orderId)
         {
@@ -432,7 +415,6 @@ namespace FairiesCoolerCash.ViewModel
             {
                 sd.WaitMinutes = Convert.ToInt32(sd.MenuCreateDate.HasValue ? (sd.MenuCreateDate.Value - sd.CreateDate).TotalMinutes : (dtNow - sd.CreateDate).TotalMinutes);
                 this.SetInvPrice(sd);
-                //this.SetCurrentStock(sd);
                 this.OCInventoryEx.Add(sd);
             }
 
@@ -440,15 +422,17 @@ namespace FairiesCoolerCash.ViewModel
         #endregion
 
         #region 房间与桌台
+
         public override void AfterCheckOut()
         {
-            //base.AfterCheckOut();
             SetOCDesk(null);
         }
+
         private void RefreshDeskExecute()
         {            
             SetOCDesk(null);
         }
+
         public ICommand RefreshDesk
         {
             get
@@ -456,6 +440,7 @@ namespace FairiesCoolerCash.ViewModel
                 return new RelayCommand(RefreshDeskExecute);
             }
         }
+
         protected override void AfterSelectRoom()
         {
             if (this.SelectedRoom != null)
@@ -467,6 +452,7 @@ namespace FairiesCoolerCash.ViewModel
                 SetOCDesk(null);
             }
         }
+
         private void SetOCDesk(Guid? roomId)
         {
             if (this.lDeskEx == null)
@@ -538,11 +524,6 @@ namespace FairiesCoolerCash.ViewModel
             //}
             this.OCDeskEx = new ObservableCollection<DeskEx>(ldeskex);            
         }
-        //private void ResetCheckout()
-        //{
-            
-
-        //}
         
 
         private List<DXInfo.Models.OrderBookEx> GetOrderBookEx(Guid? deskId)
@@ -588,20 +569,22 @@ namespace FairiesCoolerCash.ViewModel
             List<DXInfo.Models.OrderBookEx> lobe = q.ToList();
             return lobe;
         }
+
         protected override void AfterSelectDeskEx()
+        {
+            selectDesk(OrderDeskStatus.InUse);
+        }
+
+        private void selectDesk(DXInfo.Models.OrderDeskStatus ods)
         {
             this.ResetSwipingCard();
             this.ResetCheckOut();
             if (this.SelectedDeskEx != null)
             {
-                //DXInfo.Models.OrderDeskes orderDesk = Uow.OrderDeskes
-                //    .GetAll()
-                //    .Where(w => w.Status == (int)DXInfo.Models.OrderDeskStatus.InUse &&
-                //        w.DeskId == this.SelectedDeskEx.Id).FirstOrDefault();
                 DXInfo.Models.OrderDeskes orderDesk = (from d in Uow.OrderDeskes.GetAll()
                                                        join d1 in Uow.OrderDishes.GetAll() on d.OrderId equals d1.Id into dd1
                                                        from dd1s in dd1.DefaultIfEmpty()
-                                                       where d.Status == (int)DXInfo.Models.OrderDeskStatus.InUse &&
+                                                       where d.Status == (int)ods &&
                                                            d.DeskId == this.SelectedDeskEx.Id &&
                                                            dd1s.Id != null
                                                        select d).FirstOrDefault();
@@ -668,6 +651,7 @@ namespace FairiesCoolerCash.ViewModel
                 }
             }
         }
+
         #endregion
 
         #region OrderBook预约
@@ -1221,7 +1205,7 @@ namespace FairiesCoolerCash.ViewModel
             foreach (DXInfo.Models.OrderMenus om in lom)
             {
                 DXInfo.Models.Inventory inv = Uow.Inventory.GetById(g => g.Id == om.InventoryId);
-                DXInfo.Models.InventoryEx iex = Mapper.Map<DXInfo.Models.InventoryEx>(om);
+                DXInfo.Models.InventoryEx iex = mapper.Map<DXInfo.Models.InventoryEx>(om);
                 iex.Code = inv.Code;
                 iex.Name = inv.Name;
                 iex.Printer = inv.Printer;
@@ -1574,7 +1558,90 @@ namespace FairiesCoolerCash.ViewModel
                 return new RelayCommand(RepeatPrintExecute, RepeatPrintCanExecute);
             }
         }
-        #endregion        
+        #endregion
+
+        #region 预付款
+        //顾客点完菜就说要先付钱，结账时候就容易忘记，在结账按钮旁边增加个预付按钮，输入预付金额，结账时候扣件掉预付金额
+        private void BookPayExecute()
+        {
+            if (this.SelectedOrderDish != null)
+            {
+                DeskBookPayWindow dqw = new DeskBookPayWindow();
+                if (dqw.ShowDialog().GetValueOrDefault())
+                {
+                    this.DeskManageFacade.dtOperDate = Convert.ToDateTime(DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss"));
+                    this.DeskManageFacade.BookPay(this.SelectedOrderDish.Id,dqw.Quantity);
+                    this.AfterSelectDeskEx();
+                }
+            }
+        }
+        private bool BookPayCanExecute()
+        {
+            if (this.SelectedOrderDish != null)
+                return true;
+            return false;
+        }
+        public ICommand BookPay
+        {
+            get
+            {
+                return new RelayCommand(BookPayExecute, BookPayCanExecute);
+            }
+        }
+        #endregion
+
+        #region 反结账
+        //常顾客说错桌号，就把别桌的结账单打了，菜单也没在了，增加一个反结账功能，把点错的结账桌和菜品信息恢复到未结帐状态。
+        private void BackCheckoutExecute()
+        {
+            if (this.SelectedDeskEx != null)
+            {
+                if(MessageBox.Show(this.SelectedDeskEx.Name+"桌信息将恢复到未结帐状态", "反结账",MessageBoxButton.YesNo)== MessageBoxResult.Yes)
+                {
+                                        
+                    DXInfo.Models.Consume consume = Uow.Consume.GetAll().Where(w => w.DeskNo == this.SelectedDeskEx.Code && w.OrderId != null && w.IsValid).OrderByDescending(o => o.CreateDate).FirstOrDefault();
+                    if (consume == null) return;
+
+                    DXInfo.Business.MemberManageFacade mb = new DXInfo.Business.MemberManageFacade(Uow, mapper);
+                    DateTime dCreateDate = DateTime.Now;
+                    //反结账
+                    if (mb.CancelCheckoutOfShop(consume, FairiesCoolerCash.Business.Helper.CardCancelConsume, this.IsCardLevelAuto, dCreateDate))
+                    {
+                        //开台
+                        //下单
+                        
+                        DXInfo.Models.OrderDishesHis dishHis = Uow.OrderDishesHis.GetAll().Where(w => w.LinkId == consume.OrderId.Value && w.Status== (int)DXInfo.Models.OrderDishStatus.Checkouted).FirstOrDefault();
+                        //DXInfo.Models.OrderDeskesHis deskHis = Uow.OrderDeskesHis.GetAll().Where(w => w.OrderId == consume.OrderId.Value).FirstOrDefault();
+                                                
+                        this.DeskManageFacade.dtOperDate = Convert.ToDateTime(DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss"));
+                        DXInfo.Models.OrderDishes orderDish = new OrderDishes();
+                        DXInfo.Models.OrderDeskes orderDesk = new OrderDeskes();
+                        this.DeskManageFacade.Open(dishHis.Quantity, this.SelectedDeskEx.Id, false,ref orderDish, ref orderDesk, dishHis.Comment);                        
+                        this.DeskManageFacade.Order(consume,orderDish);
+                    }
+                    this.AfterCheckOut();
+                    this.ResetSwipingCard();
+                    this.ResetCheckOut();
+
+
+                }
+                
+            }
+        }
+        private bool BackCheckoutCanExecute()
+        {
+            if (this.SelectedDeskEx != null)
+                return true;
+            return false;
+        }
+        public ICommand BackCheckout
+        {
+            get
+            {
+                return new RelayCommand(BackCheckoutExecute, BackCheckoutCanExecute);
+            }
+        }
+        #endregion
 
         #endregion
 

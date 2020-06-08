@@ -6,24 +6,22 @@ using DXInfo.Data.Contracts;
 using System.Windows.Input;
 using GalaSoft.MvvmLight.CommandWpf;
 using System.Windows;
+using AutoMapper;
 
 namespace FairiesCoolerCash.ViewModel
 {
     public class CardConsumeSetViewModel:BusinessViewModelBase
     {
-        public CardConsumeSetViewModel(IFairiesMemberManageUow uow,DXInfo.Models.InventoryEx inventoryEx)
-            : base(uow, new List<string>())
+        private readonly IMapper mapper;
+        public CardConsumeSetViewModel(IFairiesMemberManageUow uow, IMapper mapper, DXInfo.Models.InventoryEx inventoryEx)
+            : base(uow,mapper, new List<string>())
         {
+            this.mapper = mapper;
             this.SelectedInventoryEx = inventoryEx;        
         }
 
         private void ConfirmExecute()
         {
-            //if (SelectedInventoryEx.lTasteEx.Where(w => !w.Name.Contains("无") && w.IsSelected).Count() > 1)
-            //{
-            //    MessageBox.Show("多冰、少冰、温、热等只能选一个");
-            //    return;
-            //}
             this.DialogResult = true;
         }
         public ICommand Confirm

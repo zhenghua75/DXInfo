@@ -53,9 +53,11 @@ namespace FairiesCoolerCash.ViewModel
         #endregion
 
         #region 构造
-        public ConsumeViewModelBase(IFairiesMemberManageUow uow)
-            : base(uow, new List<string>())
+        private readonly IMapper mapper;
+        public ConsumeViewModelBase(IFairiesMemberManageUow uow, IMapper mapper)
+            : base(uow,mapper, new List<string>())
         {
+            this.mapper = mapper;
             Messenger.Default.Register<DataGridMessageToken>(this, Handle_DataGridMessageToken);
             
             bool barcode = BusinessCommon.BarcodeVisibility();
@@ -384,7 +386,7 @@ namespace FairiesCoolerCash.ViewModel
                         .FirstOrDefault();
                     if (orderInvPrice != null)
                     {
-                        inventoryEx.InvPrice = Mapper.Map<DXInfo.Models.InvPrice>(orderInvPrice);
+                        inventoryEx.InvPrice = mapper.Map<DXInfo.Models.InvPrice>(orderInvPrice);
                         inventoryEx.InvPrice.Id = orderInvPrice.InvPriceId;
                         inventoryEx.SalePrice = inventoryEx.InvPrice.SalePrice;
                         inventoryEx.SalePoint = inventoryEx.InvPrice.SalePoint;
@@ -402,7 +404,7 @@ namespace FairiesCoolerCash.ViewModel
                     if (lInvPrice.Count > 0)
                     {
                         inventoryEx.lInvPrice = lInvPrice; ;
-                        InvPriceSetWindow csw = new InvPriceSetWindow(Uow, inventoryEx);
+                        InvPriceSetWindow csw = new InvPriceSetWindow(Uow,mapper, inventoryEx);
                         if (csw.ShowDialog().GetValueOrDefault())
                         {
                             if (inventoryEx.InvPrice != null)
@@ -443,7 +445,7 @@ namespace FairiesCoolerCash.ViewModel
             {
                 if (this.DeptType == DXInfo.Models.DeptType.Sale)
                 {
-                    InvDynamicPriceWindow idpw = new InvDynamicPriceWindow(Uow, inventoryEx);
+                    InvDynamicPriceWindow idpw = new InvDynamicPriceWindow(Uow,mapper, inventoryEx);
                     idpw.ShowDialog();
                     if (idpw.DialogResult.HasValue && idpw.DialogResult.Value)
                     {
@@ -478,7 +480,7 @@ namespace FairiesCoolerCash.ViewModel
                 inventoryEx.dSalePoint = this.GetdSalePoint(this.SelectedInventory);
                 inventoryEx.lCupType = this.lCupType;
                 inventoryEx.CupType = inventoryEx.lCupType.Find(f => f.Id == (int)DXInfo.Models.CupType.Standard);
-                CardConsumeSetWindow csw = new CardConsumeSetWindow(Uow, inventoryEx);
+                CardConsumeSetWindow csw = new CardConsumeSetWindow(Uow,mapper, inventoryEx);
                 csw.ShowDialog();
             }
         }
@@ -561,14 +563,23 @@ namespace FairiesCoolerCash.ViewModel
             }
         }
         public bool IsCancelCheckOut { get; set; }        
+
         public DXInfo.Models.Consume CancelConsume { get; set; }
+
         public List<DXInfo.Models.ConsumeList> lCancelConsumeList { get; set; }
+        
         private void ConsumeSnCmdExecute(object sender)
+        {
+            DXInfo.Models.Consume consume = Uow.Consume.GetAll().Where(w => w.Sn == this.Sn).FirstOrDefault();
+            this.consumeSnMethod(consume);
+        }
+
+        private void consumeSnMethod(DXInfo.Models.Consume consume)
         {
             this.ResetSwipingCard();
             this.ResetCheckOut();
 
-            CancelConsume = Uow.Consume.GetAll().Where(w => w.Sn == this.Sn).FirstOrDefault();
+            CancelConsume = consume;
             if (CancelConsume != null)
             {
                 if (!CancelConsume.IsValid)
@@ -576,7 +587,7 @@ namespace FairiesCoolerCash.ViewModel
                     if (MessageBox.Show(this.Sn + "已撤销，是否按原单重新结账？", "结账撤销提示", MessageBoxButton.YesNo, MessageBoxImage.Question) != MessageBoxResult.Yes)
                     {
                         return;
-                    }                  
+                    }
                     this.IsCancelCheckOut = false;
                 }
                 else
@@ -587,14 +598,12 @@ namespace FairiesCoolerCash.ViewModel
                 lCancelConsumeList = Uow.ConsumeList.GetAll().Where(w => w.Consume == CancelConsume.Id).ToList();
                 if (lCancelConsumeList.Count > 0)
                 {
-                    
+
                     if (CancelConsume.Card.HasValue)
-                    {                        
+                    {
                         Guid PayTypeCard = Guid.Parse(DXInfo.Business.Helper.PayType_Card);
                         if (CancelConsume.PayType.HasValue && CancelConsume.PayType.Value == PayTypeCard)
                         {
-                            //this.ResetSwipingCard();
-                            //this.ResetCheckOut();
                             this.swipingCard();
                         }
                         else
@@ -607,8 +616,8 @@ namespace FairiesCoolerCash.ViewModel
                             return;
                         }
                     }
-                    
-                    
+
+
                     if (CancelConsume.PayType.HasValue)
                     {
                         if (this.lPayTypeCard != null && this.IsCard && this.IsMoney)
@@ -626,27 +635,19 @@ namespace FairiesCoolerCash.ViewModel
                             this.SelectedPayType = this.lPayType.Find(f => f.Id == CancelConsume.PayType.Value);
                         }
                     }
-                    //if (this.OCInventoryEx != null && this.OCInventoryEx.Count>0)
-                    //{
-                    //    this.OCInventory.Clear();
-                    //}
-                    //if (this.SelectedInventory != null)
-                    //{
-                    //    this.SelectedInventory = null;
-                    //}
-                    
+
+
                     foreach (DXInfo.Models.ConsumeList consumeList in lCancelConsumeList)
                     {
                         DXInfo.Models.Inventory inv = Uow.Inventory.GetById(g => g.Id == consumeList.Inventory);
-                        //this.CreateInventoryEx(inv);
-                        DXInfo.Models.InventoryEx inventoryEx = Mapper.Map<DXInfo.Models.InventoryEx>(inv);
+
+                        DXInfo.Models.InventoryEx inventoryEx = mapper.Map<DXInfo.Models.InventoryEx>(inv);
                         inventoryEx.IsCupType = this.IsCupType;
                         inventoryEx.IsInvPrice = this.IsInvPrice;
                         inventoryEx.lTasteEx = this.lTasteEx.Clone() as DXInfo.Models.TasteExList;
                         inventoryEx.Quantity = 1;
                         inventoryEx.IsDiscount = JudgeIsDiscount(inv.Id);
 
-                        //this.SetCupType(inventoryEx);
                         inventoryEx.dSalePrice = this.GetdSalePrice(inv);
                         inventoryEx.dSalePoint = this.GetdSalePoint(inv);
                         inventoryEx.lCupType = this.lCupType;
@@ -655,28 +656,11 @@ namespace FairiesCoolerCash.ViewModel
                         List<DXInfo.Models.ConsumeTastes> lTastes = Uow.ConsumeTastes.GetAll().Where(w => w.ConsumeList == consumeList.Id).ToList();
                         foreach (DXInfo.Models.TasteEx tasteEx in inventoryEx.lTasteEx)
                         {
-                            tasteEx.IsSelected = lTastes.Exists(delegate(DXInfo.Models.ConsumeTastes taste) { return tasteEx.Id == taste.Taste; });
+                            tasteEx.IsSelected = lTastes.Exists(delegate (DXInfo.Models.ConsumeTastes taste) { return tasteEx.Id == taste.Taste; });
                         }
-                        //CardConsumeSetWindow csw = new CardConsumeSetWindow(Uow, inventoryEx);
-                        //csw.ShowDialog();
 
-                        //this.SetInvPrice(inventoryEx);
-                        //this.SetCurrentStock(inventoryEx);
                         if (this.IsInvPrice)
                         {
-                            //if (inventoryEx.OrderMenuId != null && inventoryEx.OrderMenuId != Guid.Empty)
-                            //{
-                            //    var orderInvPrice = Uow.OrderInvPrice.GetAll()
-                            //        .Where(w => w.OrderMenuId == inventoryEx.OrderMenuId)
-                            //        .FirstOrDefault();
-                            //    if (orderInvPrice != null)
-                            //    {
-                            //        inventoryEx.InvPrice = Mapper.Map<DXInfo.Models.InvPrice>(orderInvPrice);
-                            //        inventoryEx.InvPrice.Id = orderInvPrice.InvPriceId;
-                            //    }
-                            //}
-                            //else
-                            //{
                             List<DXInfo.Models.InvPrice> lInvPrice =
                                 (from d in Uow.InvPrice.GetAll()
                                  where d.InvId == inventoryEx.Id && !d.IsInvalid
@@ -686,9 +670,7 @@ namespace FairiesCoolerCash.ViewModel
                             if (lInvPrice.Count > 0)
                             {
                                 inventoryEx.lInvPrice = lInvPrice; ;
-                                //InvPriceSetWindow csw = new InvPriceSetWindow(Uow, inventoryEx);
-                                //if (csw.ShowDialog().GetValueOrDefault())
-                                //{
+
                                 DXInfo.Models.ConsumeInvPrice invPrice = Uow.ConsumeInvPrice.GetAll().Where(w => w.ConsumeListId == consumeList.Id).FirstOrDefault();
                                 if (invPrice != null)
                                 {
@@ -702,22 +684,22 @@ namespace FairiesCoolerCash.ViewModel
                                         }
                                     }
                                 }
-                                //}
                             }
-                            //}
+
                             if (inventoryEx.InvPrice != null)
                             {
                                 inventoryEx.Name += "(" + inventoryEx.InvPrice.Name + ")";
                             }
                         }
-
                         this.SetOCInventoryEx();
                         this.OCInventoryEx.Add(inventoryEx);
                     }
+
                 }
             }
             this.Sn = null;
         }
+
         public ICommand ConsumeSnCmd
         {
             get
@@ -725,6 +707,7 @@ namespace FairiesCoolerCash.ViewModel
                 return new RelayCommand<object>(ConsumeSnCmdExecute);
             }
         }
+
         #endregion
 
         #region 是否授权结账
@@ -995,7 +978,7 @@ namespace FairiesCoolerCash.ViewModel
             
             lom.ForEach(delegate(DXInfo.Models.OrderMenus om)
             {
-                DXInfo.Models.InventoryEx iex = Mapper.Map<DXInfo.Models.InventoryEx>(om);
+                DXInfo.Models.InventoryEx iex = mapper.Map<DXInfo.Models.InventoryEx>(om);
                 iex.Id = om.InventoryId;
                 iex.OrderMenuId = om.Id;
                 iex.SalePrice = om.Price;
@@ -1056,15 +1039,7 @@ namespace FairiesCoolerCash.ViewModel
         private decimal GetSum(ObservableCollection<DXInfo.Models.InventoryEx> oiex)
         {
             decimal dAmount = 0;
-            //switch (this.DeptType)
-            //{
-            //    case DXInfo.Models.DeptType.Sale:
-            //        dAmount = oiex.Sum(s => s.Amount);
-            //        break;
-            //    case DXInfo.Models.DeptType.Shop:
-                    dAmount = oiex.Sum(s => s.Amount);
-            //        break;
-            //}
+            dAmount = oiex.Sum(s => s.Amount);
             return dAmount;
         }        
         private string GetTitle()
@@ -1102,7 +1077,7 @@ namespace FairiesCoolerCash.ViewModel
             ClientCommon.CardDonateInventoryExDeptPrice(Dept, lCardDonateInventoryEx);
             if (lCardDonateInventoryEx.Count > 0)
             {
-                CardDonateInventoryViewModel donateVM = new CardDonateInventoryViewModel(Uow, lCardDonateInventoryEx);
+                CardDonateInventoryViewModel donateVM = new CardDonateInventoryViewModel(Uow,mapper, lCardDonateInventoryEx);
                 CardDonateInventoryWindow donateWindow = new CardDonateInventoryWindow(donateVM);
                 if (donateWindow.ShowDialog().GetValueOrDefault())
                 {
@@ -1164,7 +1139,7 @@ namespace FairiesCoolerCash.ViewModel
 
             bool bPassword = !string.IsNullOrEmpty(this.Card.CardPwd);
             List<string> lValidationPropertyNames;
-            DXInfo.Business.MemberManageFacade mb = new DXInfo.Business.MemberManageFacade(Uow);
+            DXInfo.Business.MemberManageFacade mb = new DXInfo.Business.MemberManageFacade(Uow,mapper);
             bool checkOuted;
             NoMemberCashViewModel ncv;
             NoMemberCashWindow ncw;
@@ -1204,6 +1179,9 @@ namespace FairiesCoolerCash.ViewModel
             para.Amount =dAmount;
             para.Quantity =dQuantity;            
             para.Sn=sn;
+
+            bool bCashEqualReceivable = false;
+            int cash = 0;
             switch (this.DeptType)
             {
                 case DXInfo.Models.DeptType.Sale:
@@ -1224,7 +1202,20 @@ namespace FairiesCoolerCash.ViewModel
                             lValidationPropertyNames = new List<string>();
                         }
                     }
-                    ncv = new NoMemberCashViewModel(Uow, lValidationPropertyNames, 0, "消费", false, bPassword, deskNoVisi);
+                    if (System.Configuration.ConfigurationManager.AppSettings.AllKeys.Contains("CashEqualReceivable"))
+                    {
+                        string bCash = System.Configuration.ConfigurationManager.AppSettings["CashEqualReceivable"];
+                        if (bCash == "true")
+                        {
+                            bCashEqualReceivable = true;
+                        }
+                    }
+                    cash = Convert.ToInt32(this.SelectedOrderDish.Comment);
+                    if (cash > 0)
+                    {
+                        bCashEqualReceivable = false;
+                    }
+                    ncv = new NoMemberCashViewModel(Uow,mapper, lValidationPropertyNames, 0, "消费", false, bPassword, deskNoVisi,bCashEqualReceivable,Convert.ToDecimal(cash));
                     ncw = new NoMemberCashWindow(ncv);
                     ncw.ShowDialog();
 
@@ -1281,8 +1272,6 @@ namespace FairiesCoolerCash.ViewModel
                             report.ReportPath = GetThreePrintFile(DXInfo.Models.NameCodeType.SaleThreePrintMemmber);//@"Report1.rdlc";
                             NoMemberThreePrintObject threePrintObject = new NoMemberThreePrintObject();
                             threePrintObject.Title = title;
-                            //threePrintObject.DeskNo = DeskNo;
-                            //threePrintObject.PeopleCount = this.SelectedOrderDish.Quantity;
                             threePrintObject.Amount = dAmount;
                             threePrintObject.CreateDate = dCreateDate;
                             threePrintObject.ButtomTitle = GetButtomTitle(this.DeptType);
@@ -1326,7 +1315,22 @@ namespace FairiesCoolerCash.ViewModel
                     if (bPassword)
                     {
                         lValidationPropertyNames = new List<string>() { "Password" };
-                        ncv = new NoMemberCashViewModel(Uow, lValidationPropertyNames, 0, "消费", false, bPassword, false);
+
+                        
+                    if (System.Configuration.ConfigurationManager.AppSettings.AllKeys.Contains("CashEqualReceivable"))
+                    {
+                        string bCash = System.Configuration.ConfigurationManager.AppSettings["CashEqualReceivable"];
+                        if (bCash == "true")
+                        {
+                            bCashEqualReceivable = true;
+                        }
+                    }
+                    cash = Convert.ToInt32(this.SelectedOrderDish.Comment);
+                    if (cash > 0)
+                    {
+                        bCashEqualReceivable = false;
+                    }
+                        ncv = new NoMemberCashViewModel(Uow,mapper, lValidationPropertyNames, 0, "消费", false, bPassword, false,bCashEqualReceivable,Convert.ToDecimal(cash));
                         ncw = new NoMemberCashWindow(ncv);
                         ncw.ShowDialog();
                         if (!ncv.DialogResult.HasValue || !ncv.DialogResult.Value)
@@ -1344,13 +1348,15 @@ namespace FairiesCoolerCash.ViewModel
                     para.OrderDishId = this.SelectedOrderDish.Id;
                     para.PeopleCount = this.SelectedOrderDish.Quantity;
                     para.BillType = DXInfo.Models.BillType.WRCardConsumeWindow.ToString();
-                    checkOuted = mb.CheckOut(para,FairiesCoolerCash.Business.Helper.CardConsume);
+
+                    checkOuted = mb.CheckOut(para, FairiesCoolerCash.Business.Helper.CardConsume);
 
                     if (!checkOuted)
                     {
                         Helper.ShowErrorMsg(mb.ErrorMsg);
                         return;
                     }
+
                     if (this.IsThree)
                     {
                         LocalReport report = new LocalReport();
@@ -1439,7 +1445,7 @@ namespace FairiesCoolerCash.ViewModel
 
             decimal dLastBalance = this.CardBalance.Value;
             decimal dBalance = dLastBalance;// -dAmount;
-            DXInfo.Business.MemberManageFacade mb = new DXInfo.Business.MemberManageFacade(Uow);
+            DXInfo.Business.MemberManageFacade mb = new DXInfo.Business.MemberManageFacade(Uow,mapper);
             List<DXInfo.Models.CardDonateInventoryEx> lCardDonateInventoryEx = GetCardDonateInventoryEx();
             DateTime dCreateDate = DateTime.Now;
             string sn = Dept.DeptCode + dCreateDate.ToString("yyyyMMddHHmmssfff");
@@ -1473,6 +1479,8 @@ namespace FairiesCoolerCash.ViewModel
             para.Quantity = dQuantity;
             para.Sn = sn;
             para.Erasing = this.Erasing;
+            bool bCashEqualReceivable = false;
+            int cash = 0;
             switch (this.DeptType)
             {
                 case DXInfo.Models.DeptType.Sale:
@@ -1493,7 +1501,20 @@ namespace FairiesCoolerCash.ViewModel
                             lValidationPropertyNames = new List<string>();
                         }
                     }
-                    ncv = new NoMemberCashViewModel(Uow, lValidationPropertyNames, dReceivableAmount, "收您", true, bPassword, deskNoVisi);
+                    if (System.Configuration.ConfigurationManager.AppSettings.AllKeys.Contains("CashEqualReceivable"))
+                    {
+                        string bCash = System.Configuration.ConfigurationManager.AppSettings["CashEqualReceivable"];
+                        if (bCash == "true")
+                        {
+                            bCashEqualReceivable = true;
+                        }
+                    }
+                    cash = Convert.ToInt32(this.SelectedOrderDish.Comment);
+                    if (cash > 0)
+                    {
+                        bCashEqualReceivable = false;
+                    }
+                    ncv = new NoMemberCashViewModel(Uow,mapper, lValidationPropertyNames, dReceivableAmount, "收您", true, bPassword, deskNoVisi,bCashEqualReceivable,Convert.ToDecimal(cash));
                     ncw = new NoMemberCashWindow(ncv);
                     ncw.ShowDialog();
 
@@ -1613,7 +1634,20 @@ namespace FairiesCoolerCash.ViewModel
                     {
                         lValidationPropertyNames = new List<string>() ;
                     }
-                    ncv = new NoMemberCashViewModel(Uow, lValidationPropertyNames, dReceivableAmount, "收您", true, bPassword, false);
+                    if (System.Configuration.ConfigurationManager.AppSettings.AllKeys.Contains("CashEqualReceivable"))
+                    {
+                        string bCash = System.Configuration.ConfigurationManager.AppSettings["CashEqualReceivable"];
+                        if (bCash == "true")
+                        {
+                            bCashEqualReceivable = true;
+                        }
+                    }
+                    cash = Convert.ToInt32(this.SelectedOrderDish.Comment);
+                    if (cash > 0)
+                    {
+                        bCashEqualReceivable = false;
+                    }
+                    ncv = new NoMemberCashViewModel(Uow,mapper, lValidationPropertyNames, dReceivableAmount, "收您", true, bPassword, false,bCashEqualReceivable,Convert.ToDecimal(cash));
                     ncw = new NoMemberCashWindow(ncv);
                     ncw.ShowDialog();
 
@@ -1705,7 +1739,7 @@ namespace FairiesCoolerCash.ViewModel
                     break;
             }
         }
-        private void NoMemberBalance()
+        private void NoMemberBalance(bool isPrint = false)
         {
             //结账
             ObservableCollection<DXInfo.Models.InventoryEx> oiex = new ObservableCollection<DXInfo.Models.InventoryEx>();
@@ -1715,10 +1749,10 @@ namespace FairiesCoolerCash.ViewModel
             decimal dSum = GetSum(oiex);
             string title = GetTitle();
             DateTime dCreateDate = DateTime.Now;
-            string sn = Dept.DeptCode + dCreateDate.ToString("yyyyMMddHHmmssfff");            
+            string sn = Dept.DeptCode + dCreateDate.ToString("yyyyMMddHHmmssfff");
             decimal dQuantity = oiex.Sum(s => s.Quantity);
 
-            decimal dPayAmount =0;
+            decimal dPayAmount = 0;
             decimal dReceivableAmount = 0;
             switch (this.DeptType)
             {
@@ -1739,7 +1773,7 @@ namespace FairiesCoolerCash.ViewModel
             }
             NoMemberCashViewModel ncv;
             NoMemberCashWindow ncw;
-            DXInfo.Business.MemberManageFacade mb = new DXInfo.Business.MemberManageFacade(Uow);
+            DXInfo.Business.MemberManageFacade mb = new DXInfo.Business.MemberManageFacade(Uow, mapper);
             List<string> lValidationPropertyNames;
 
             DXInfo.Business.CheckoutParaObj para = new DXInfo.Business.CheckoutParaObj();
@@ -1751,14 +1785,7 @@ namespace FairiesCoolerCash.ViewModel
             para.FullName = Oper.FullName;
             para.PayTypeId = SelectedPayType.Id;
             para.PayTypeName = SelectedPayType.Name;
-            //para.CardId = Card.Id;
-            //para.CardNo = Card.CardNo;
-            //para.LastBalance = dLastBalance;
-            //para.Balance = dBalance;
-            //para.MemberId = Member.Id;
-            //para.MemberName = Member.MemberName;
             para.CreateDate = dCreateDate;
-            //para.IsVirtual = this.CardType.IsVirtual;
             para.IsCardLevelAuto = this.IsCardLevelAuto;
             para.lInventoryEx = oiex;
             para.lCardDonateInventoryEx = lCardDonateInventoryEx;
@@ -1771,16 +1798,18 @@ namespace FairiesCoolerCash.ViewModel
             para.Quantity = dQuantity;
             para.Sn = sn;
             para.Erasing = this.Erasing;
-            //para.Comment = Dept.Comment;
+
+            decimal dCash = 0;
+            decimal dChange = 0;
+            bool bCashEqualReceivable = false;
+            int cash = 0;
             switch (this.DeptType)
             {
                 case DXInfo.Models.DeptType.Sale:
                     #region 零售
-                    //dAmount = GetAmount(oiex, dDiscount);//, dVoucher);
-                    //dReceivableAmount = dAmount;
                     if (!this.PayTypeColumnVisibility)
                     {
-                        PayTypeViewModel ptvw = new PayTypeViewModel(Uow, new List<string>());
+                        PayTypeViewModel ptvw = new PayTypeViewModel(Uow, mapper, new List<string>());
                         PayTypeWindow ptw = new PayTypeWindow(ptvw);
                         ptw.ShowDialog();
                         if (ptw.DialogResult.HasValue && ptw.DialogResult.Value)
@@ -1801,13 +1830,26 @@ namespace FairiesCoolerCash.ViewModel
                     {
                         lValidationPropertyNames = new List<string>();
                     }
-                    ncv = new NoMemberCashViewModel(Uow, lValidationPropertyNames, dReceivableAmount, "收您", true, false, deskNoVisi);
+                    if (System.Configuration.ConfigurationManager.AppSettings.AllKeys.Contains("CashEqualReceivable"))
+                    {
+                        string bCash = System.Configuration.ConfigurationManager.AppSettings["CashEqualReceivable"];
+                        if (bCash == "true")
+                        {
+                            bCashEqualReceivable = true;
+                        }
+                    }
+                    cash = Convert.ToInt32(this.SelectedOrderDish.Comment);
+                    if (cash > 0)
+                    {
+                        bCashEqualReceivable = false;
+                    }
+                    ncv = new NoMemberCashViewModel(Uow, mapper, lValidationPropertyNames, dReceivableAmount, "收您", true, false, deskNoVisi, bCashEqualReceivable, Convert.ToDecimal(cash));
                     ncw = new NoMemberCashWindow(ncv);
                     ncw.ShowDialog();
 
                     if (ncv.DialogResult.HasValue && ncv.DialogResult.Value)
                     {
-                        decimal dCash = dReceivableAmount;
+                        dCash = dReceivableAmount;
                         if (ncv.Cash.HasValue)
                         {
                             dCash = ncv.Cash.Value;
@@ -1819,7 +1861,7 @@ namespace FairiesCoolerCash.ViewModel
                             Helper.ShowErrorMsg("收的钱应不小于消费金额");
                             return;
                         }
-                        decimal dChange = dCash - dAmount;
+                        dChange = dCash - dAmount;
 
                         para.DeskNo = DeskNo;
                         para.SourceType = (int)DXInfo.Models.SourceType.ColdDrinkShop;
@@ -1834,9 +1876,9 @@ namespace FairiesCoolerCash.ViewModel
                         }
                         if (this.IsTicket3)
                         {
-                            
-                            NoMemberConsumePrintObject2 po2 = new NoMemberConsumePrintObject2(title, oiex, dSum, dAmount, dVoucher, dCash, dChange, SelectedPayType.Name, DeskNo, 
-                                Oper.FullName,User.UserName, Dept.DeptName, dCreateDate,this.IsCupType);
+
+                            NoMemberConsumePrintObject2 po2 = new NoMemberConsumePrintObject2(title, oiex, dSum, dAmount, dVoucher, dCash, dChange, SelectedPayType.Name, DeskNo,
+                                Oper.FullName, User.UserName, Dept.DeptName, dCreateDate, this.IsCupType);
                             po2.Print();
                         }
                         if (this.IsTicket1)
@@ -1850,7 +1892,7 @@ namespace FairiesCoolerCash.ViewModel
                         {
                             try
                             {
-                                mb.StickerBill(oiex, DeskNo,dCreateDate,Dept.DeptName);
+                                mb.StickerBill(oiex, DeskNo, dCreateDate, Dept.DeptName);
                                 ClientCommon.PrintSticker(oiex, DeskNo, dCreateDate, Dept.DeptName);
                             }
                             catch (Exception ex)
@@ -1894,92 +1936,120 @@ namespace FairiesCoolerCash.ViewModel
                         this.AfterCheckOut();
                         this.ResetCheckOut();
                     }
-#endregion
+                    #endregion
                     break;
-                case DXInfo.Models.DeptType.Shop:                    
+                case DXInfo.Models.DeptType.Shop:
                     if (!CheckLackMenu(oiex)) return;
-                    ncv = new NoMemberCashViewModel(Uow, new List<string>(), dReceivableAmount, "收您", true, false, false);
-                    ncw = new NoMemberCashWindow(ncv);
-                    ncw.ShowDialog();
 
-                    if (ncv.DialogResult.HasValue && ncv.DialogResult.Value)
+                    dCash = dReceivableAmount;
+                    if (!isPrint)
                     {
-                        decimal dCash = dReceivableAmount;
+                        if (System.Configuration.ConfigurationManager.AppSettings.AllKeys.Contains("CashEqualReceivable"))
+                        {
+                            string bCash = System.Configuration.ConfigurationManager.AppSettings["CashEqualReceivable"];
+                            if (bCash == "true")
+                            {
+                                bCashEqualReceivable = true;
+                            }
+                        }
+                        cash = Convert.ToInt32(this.SelectedOrderDish.Comment);
+                        if (cash > 0)
+                        {
+                            bCashEqualReceivable = false;
+                        }
+                        ncv = new NoMemberCashViewModel(Uow, mapper, new List<string>(), dReceivableAmount, "收您", true, false, false, bCashEqualReceivable, Convert.ToDecimal(cash));
+                        ncw = new NoMemberCashWindow(ncv);
+                        ncw.ShowDialog();
+
+                        if (!ncv.DialogResult.HasValue || !ncv.DialogResult.Value)
+                        {
+                            return;
+                        }
                         if (ncv.Cash.HasValue)
                         {
                             dCash = ncv.Cash.Value;
                         }
+                    }
 
-                        if (dCash < dAmount)
+                    if (dCash < dAmount)
+                    {
+                        if (!(this.Erasing && (int)dCash / 10 == (int)dAmount / 10))
                         {
-                            if (!(this.Erasing && (int)dCash / 10 == (int)dAmount / 10))
-                            {
-                                Helper.ShowErrorMsg("收的钱应不小于消费金额");
-                                return;
-                            }
+                            Helper.ShowErrorMsg("收的钱应不小于消费金额");
+                            return;
                         }
-                        decimal dChange = dCash > dAmount?dCash - dAmount:0;
-                        DeskNo = this.SelectedDeskEx.Code;
+                    }
+                    dChange = dCash > dAmount ? dCash - dAmount : 0;
+                    DeskNo = this.SelectedDeskEx.Code;
 
-                        para.DeskNo = DeskNo;
-                        para.SourceType = (int)DXInfo.Models.SourceType.WesternRestaurant;
-                        para.BillType = DXInfo.Models.BillType.WRNoMemberConsumeWindow.ToString();
-                        para.Change = dChange;
-                        para.Cash = dCash;
-                        para.OrderDishId = this.SelectedOrderDish.Id;
-                        para.PeopleCount = this.SelectedOrderDish.Quantity;
+                    para.DeskNo = DeskNo;
+                    para.SourceType = (int)DXInfo.Models.SourceType.WesternRestaurant;
+                    para.BillType = DXInfo.Models.BillType.WRNoMemberConsumeWindow.ToString();
+                    para.Change = dChange;
+                    para.Cash = dCash;
+                    para.OrderDishId = this.SelectedOrderDish.Id;
+                    para.PeopleCount = this.SelectedOrderDish.Quantity;
+                    if (!isPrint)
+                    {
                         bool checkOuted = mb.CheckOut(para, FairiesCoolerCash.Business.Helper.CardConsume);
                         if (!checkOuted)
                         {
                             Helper.ShowErrorMsg(mb.ErrorMsg);
                             return;
                         }
-                        if (this.IsThree)
-                        {
-                            LocalReport report = new LocalReport();
-                            report.ReportPath = GetThreePrintFile(DXInfo.Models.NameCodeType.ThreePrintNoMemmber);
-                            NoMemberThreePrintObject threePrintObject = new NoMemberThreePrintObject();
-                            threePrintObject.Title = title;
-                            threePrintObject.DeskNo = DeskNo;
-                            threePrintObject.PeopleCount = this.SelectedOrderDish.Quantity;
-                            threePrintObject.Amount = dAmount;
-                            threePrintObject.CreateDate = dCreateDate;
-                            threePrintObject.Change = dChange;
-                            threePrintObject.Cash = dCash;
-                            threePrintObject.ButtomTitle = GetButtomTitle(this.DeptType);
-                            threePrintObject.Sum = dSum;
-                            threePrintObject.DeptName = Dept.DeptName;
-                            threePrintObject.Voucher = dVoucher;
-                            threePrintObject.FullName = Oper.FullName;
-                            threePrintObject.UserName = User.UserName;
-                            threePrintObject.PayTypeName = SelectedPayType.Name;
-                            threePrintObject.Sn = sn;                                
-                            DataTable dt = threePrintObject.ToDataTable();
-                            DataTable dt2 = oiex.ToDataTable<DXInfo.Models.InventoryEx>();
-                            report.DataSources.Add(
-                               new ReportDataSource("DataSet1", dt)
-                               );
-                            report.DataSources.Add(
-                               new ReportDataSource("DataSet2", dt2)
-                               );
-                            PrintRDLC printRDLC = new PrintRDLC();
-                            printRDLC.Run(report);
-                        }
-                        else
-                        {
-                            WRNoMemberConsumePrintObject2 po2 = new WRNoMemberConsumePrintObject2(title, oiex, dSum, dAmount, dVoucher, dCash, dChange, SelectedPayType.Name, DeskNo,
-                                Oper.FullName, User.UserName, Dept.DeptName, dCreateDate,Dept.Comment);
-                            po2.Print();
-                        }
+                    }
+
+                    if (this.IsThree)
+                    {
+                        LocalReport report = new LocalReport();
+                        report.ReportPath = GetThreePrintFile(DXInfo.Models.NameCodeType.ThreePrintNoMemmber);
+                        NoMemberThreePrintObject threePrintObject = new NoMemberThreePrintObject();
+                        threePrintObject.Title = title;
+                        threePrintObject.DeskNo = DeskNo;
+                        threePrintObject.PeopleCount = this.SelectedOrderDish.Quantity;
+                        threePrintObject.Amount = dAmount;
+                        threePrintObject.CreateDate = dCreateDate;
+                        threePrintObject.Change = dChange;
+                        threePrintObject.Cash = dCash;
+                        threePrintObject.ButtomTitle = GetButtomTitle(this.DeptType);
+                        threePrintObject.Sum = dSum;
+                        threePrintObject.DeptName = Dept.DeptName;
+                        threePrintObject.Voucher = dVoucher;
+                        threePrintObject.FullName = Oper.FullName;
+                        threePrintObject.UserName = User.UserName;
+                        threePrintObject.PayTypeName = SelectedPayType.Name;
+                        threePrintObject.Sn = sn;
+                        DataTable dt = threePrintObject.ToDataTable();
+                        DataTable dt2 = oiex.ToDataTable<DXInfo.Models.InventoryEx>();
+                        report.DataSources.Add(
+                           new ReportDataSource("DataSet1", dt)
+                           );
+                        report.DataSources.Add(
+                           new ReportDataSource("DataSet2", dt2)
+                           );
+                        PrintRDLC printRDLC = new PrintRDLC();
+                        printRDLC.Run(report);
+                    }
+                    else
+                    {
+                        WRNoMemberConsumePrintObject2 po2 = new WRNoMemberConsumePrintObject2(title, oiex, dSum, dAmount, dVoucher, dCash, dChange, SelectedPayType.Name, DeskNo,
+                            Oper.FullName, User.UserName, Dept.DeptName, dCreateDate, Dept.Comment);
+                        po2.Print();
+                    }
+                    if (!isPrint)
+                    {
                         this.AfterCheckOut();
                         this.ResetCheckOut();
                     }
+
+
                     break;
             }
         }
         #endregion
-        
+
         #region 结账撤销
+        
         public void ResetCancelCheckOut() 
         {
             this.IsValid = false;
@@ -2042,6 +2112,7 @@ namespace FairiesCoolerCash.ViewModel
                     break;
             }            
         }
+        
         public ICommand CancelCheckOut
         {
             get
@@ -2059,7 +2130,7 @@ namespace FairiesCoolerCash.ViewModel
             decimal dVoucher = CancelConsume.Voucher;
             decimal dAmount = CancelConsume.Amount;
             decimal dLastBalance = this.CardBalance.Value;
-            DXInfo.Business.MemberManageFacade mb = new DXInfo.Business.MemberManageFacade(Uow);
+            DXInfo.Business.MemberManageFacade mb = new DXInfo.Business.MemberManageFacade(Uow,mapper);
             bool cancelCheckOuted;
             decimal dBalance = dLastBalance + dAmount;
             string title = GetTitle() + "(撤销)";
@@ -2187,7 +2258,7 @@ namespace FairiesCoolerCash.ViewModel
             decimal dBalance = dLastBalance;
             decimal dChange = CancelConsume.Change;
             decimal dCash = CancelConsume.Cash;
-            DXInfo.Business.MemberManageFacade mb = new DXInfo.Business.MemberManageFacade(Uow);
+            DXInfo.Business.MemberManageFacade mb = new DXInfo.Business.MemberManageFacade(Uow,mapper);
             List<DXInfo.Models.CardDonateInventoryEx> lCardDonateInventoryEx = GetCardDonateInventoryEx();
             DateTime dCreateDate = DateTime.Now;
 
@@ -2306,7 +2377,7 @@ namespace FairiesCoolerCash.ViewModel
             decimal dAmount = CancelConsume.Amount;
             decimal dChange = CancelConsume.Change;
             decimal dCash = CancelConsume.Cash;
-            DXInfo.Business.MemberManageFacade mb = new DXInfo.Business.MemberManageFacade(Uow);
+            DXInfo.Business.MemberManageFacade mb = new DXInfo.Business.MemberManageFacade(Uow,mapper);
             DXInfo.Business.CancelCheckoutParaObj para = new DXInfo.Business.CancelCheckoutParaObj();
             para.IsCard = false;
             para.DeptId = this.Dept.DeptId;
@@ -2314,12 +2385,7 @@ namespace FairiesCoolerCash.ViewModel
             para.UserId = this.Oper.UserId;
             para.UserName = this.User.UserName;
             para.FullName = this.Oper.FullName;
-            //para.CardId = this.Card.Id;
-            //para.CardNo = this.Card.CardNo;
-            //para.LastBalance = dLastBalance;
-            //para.Balance = dBalance;
             para.CreateDate = dCreateDate;
-            //para.IsVirtual = this.CardType.IsVirtual;
             para.IsCardLevelAuto = this.IsCardLevelAuto;
             para.ConsumeId = this.CancelConsume.Id;
             para.ConsumeType = (int)DXInfo.Models.ConsumeType.NoMember;
@@ -2397,6 +2463,52 @@ namespace FairiesCoolerCash.ViewModel
                     }
                     this.ResetCancelCheckOut();
                     break;
+            }
+        }
+        #endregion
+
+        #region 打印结账单
+        //把现有桌号结账单先打给顾客看或者打出来帮客人核对菜品。
+        private void PrintBillExecute()
+        {
+            if (this.DeptType == DXInfo.Models.DeptType.Shop)
+            {
+                if (this.SelectedDeskEx == null)
+                {
+                    MessageBox.Show("请选择桌台");
+                    return;
+                }
+                if (this.SelectedOrderDish == null)
+                {
+                    MessageBox.Show("请首先开台");
+                    return;
+                }
+                Guid orderId = this.SelectedOrderDish.Id;
+                var q = (from d in Uow.OrderMenus.GetAll()
+                         where (d.Status == 3 || d.MissQuantity > 0) && d.OrderId == orderId
+                         select d).Count();
+                if (q > 0)
+                {
+                    if (MessageBox.Show("有缺菜是否已经减单或者退单", "结账提示", MessageBoxButton.YesNo, MessageBoxImage.Question) == MessageBoxResult.No)
+                    {
+                        return;
+                    }
+                }
+            }
+
+            NoMemberBalance(true);
+        }
+        private bool PrintBillCanExecute()
+        {
+            if (this.SelectedOrderDish != null)
+                return true;
+            return false;
+        }
+        public ICommand PrintBill
+        {
+            get
+            {
+                return new RelayCommand(PrintBillExecute, PrintBillCanExecute);
             }
         }
         #endregion

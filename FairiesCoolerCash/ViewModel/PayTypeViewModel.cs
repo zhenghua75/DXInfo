@@ -5,14 +5,17 @@ using System.Text;
 using DXInfo.Data.Contracts;
 using System.Windows.Input;
 using GalaSoft.MvvmLight.CommandWpf;
+using AutoMapper;
 
 namespace FairiesCoolerCash.ViewModel
 {
     public class PayTypeViewModel : BusinessViewModelBase
     {
-        public PayTypeViewModel(IFairiesMemberManageUow uow, List<string> lValidationPropertyNames)
-            : base(uow, lValidationPropertyNames)
+        private readonly IMapper mapper;
+        public PayTypeViewModel(IFairiesMemberManageUow uow,IMapper mapper, List<string> lValidationPropertyNames)
+            : base(uow,mapper, lValidationPropertyNames)
         {
+            this.mapper = mapper;
             this.SetlPayType();
         }
 

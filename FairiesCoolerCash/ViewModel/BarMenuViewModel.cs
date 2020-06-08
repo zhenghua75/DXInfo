@@ -13,6 +13,7 @@ using System.Windows.Threading;
 using System.Windows.Input;
 using GalaSoft.MvvmLight.CommandWpf;
 using System.Data.SqlClient;
+using AutoMapper;
 
 namespace FairiesCoolerCash.ViewModel
 {
@@ -41,12 +42,14 @@ namespace FairiesCoolerCash.ViewModel
         object lockObject= new object();
         #endregion
 
-        public BarMenuViewModel(IFairiesMemberManageUow uow)
-            : base(uow,new List<string>())
+        private readonly IMapper mapper;
+        public BarMenuViewModel(IFairiesMemberManageUow uow, IMapper mapper)
+            : base(uow,mapper,new List<string>())
         {
+            this.mapper = mapper;
             this.SetTimer();
             this.SectionType = (int)DXInfo.Models.SectionType.Bar;
-            dmf = new DXInfo.Restaurant.DeskManageFacade(uow,Dept.DeptId,User.UserId);
+            dmf = new DXInfo.Restaurant.DeskManageFacade(uow,mapper,Dept.DeptId,User.UserId);
         }
         public override void Cleanup()
         {

@@ -94,9 +94,11 @@ namespace DXInfo.Business
     {
         private IFairiesMemberManageUow uow;
         public string ErrorMsg{get;set;}
-        public MemberManageFacade(IFairiesMemberManageUow uow)
+        private readonly IMapper mapper;
+        public MemberManageFacade(IFairiesMemberManageUow uow,IMapper mapper)
         {
             this.uow = uow;
+            this.mapper = mapper;
         }
 
         #region 充值
@@ -104,7 +106,7 @@ namespace DXInfo.Business
         /// 充值
         /// </summary>
         /// <param name="para"></param>
-        public void CardInMoney(CardInMoneyParaObj para)
+        public void CardInMoney(CardInMoneyParaObj para, IMapper mapper)
         {            
             if (para.Amount <= 0) throw new ArgumentException("请输入充值金额");
             if (para.PayTypeId == null || para.PayTypeId == Guid.Empty) throw new ArgumentNullException("请选择支付方式");
@@ -128,7 +130,7 @@ namespace DXInfo.Business
             oldCard.Balance = recharge.Balance;
             uow.Cards.Update(oldCard);
 
-            DXInfo.Models.CardsLog cardsLog = Mapper.Map<DXInfo.Models.Cards, DXInfo.Models.CardsLog>(oldCard);
+            DXInfo.Models.CardsLog cardsLog = mapper.Map<DXInfo.Models.Cards, DXInfo.Models.CardsLog>(oldCard);
             cardsLog.CardId = para.CardId;
             cardsLog.CreateDate = para.CreateDate;
             cardsLog.UserId = para.UserId;
@@ -244,7 +246,7 @@ namespace DXInfo.Business
             }
             uow.Cards.Update(newCard);
 
-            DXInfo.Models.CardsLog cardLog = Mapper.Map<DXInfo.Models.CardsLog>(newCard);
+            DXInfo.Models.CardsLog cardLog = mapper.Map<DXInfo.Models.CardsLog>(newCard);
             cardLog.CardId = newCard.Id;
             uow.CardsLog.Add(cardLog);
         }
@@ -264,7 +266,7 @@ namespace DXInfo.Business
             }
             uow.OrderDishes.Delete(newOrderDish);
 
-            DXInfo.Models.OrderDishesHis newOrderDishHis = Mapper.Map<DXInfo.Models.OrderDishesHis>(newOrderDish);
+            DXInfo.Models.OrderDishesHis newOrderDishHis = mapper.Map<DXInfo.Models.OrderDishesHis>(newOrderDish);
             newOrderDishHis.Status = (int)DXInfo.Models.OrderDishStatus.Checkouted;
             newOrderDishHis.LinkId = newOrderDish.Id;
             newOrderDishHis.CreateDate = createDate;
@@ -279,7 +281,7 @@ namespace DXInfo.Business
             {
                 uow.OrderDeskes.Delete(orderDesk);
 
-                DXInfo.Models.OrderDeskesHis deskHis = Mapper.Map<DXInfo.Models.OrderDeskesHis>(orderDesk);
+                DXInfo.Models.OrderDeskesHis deskHis = mapper.Map<DXInfo.Models.OrderDeskesHis>(orderDesk);
                 deskHis.Status = (int)DXInfo.Models.OrderDeskStatus.Idle;
                 deskHis.LinkId = orderDesk.Id;
                 deskHis.UserId = userId;
@@ -292,7 +294,7 @@ namespace DXInfo.Business
             DXInfo.Models.OrderMenus om = uow.OrderMenus.GetById(g => g.Id == orderMenuId);
             uow.OrderMenus.Delete(om);
 
-            DXInfo.Models.OrderMenusHis omHis = Mapper.Map<DXInfo.Models.OrderMenusHis>(om);
+            DXInfo.Models.OrderMenusHis omHis = mapper.Map<DXInfo.Models.OrderMenusHis>(om);
             omHis.OperDate = dCreateDate;
             omHis.Status = (int)DXInfo.Models.OrderMenuStatus.Checkout;
             omHis.Oper = userId;
@@ -306,7 +308,7 @@ namespace DXInfo.Business
             {
                 uow.OrderPackages.Delete(orderPackage);
 
-                DXInfo.Models.OrderPackagesHis orderPackageHis = Mapper.Map<DXInfo.Models.OrderPackagesHis>(orderPackage);
+                DXInfo.Models.OrderPackagesHis orderPackageHis = mapper.Map<DXInfo.Models.OrderPackagesHis>(orderPackage);
                 orderPackageHis.OperDate = dCreateDate;
                 orderPackageHis.Status = (int)DXInfo.Models.OrderMenuStatus.Checkout;
                 orderPackageHis.Oper = userId;
@@ -314,6 +316,7 @@ namespace DXInfo.Business
                 uow.OrderPackagesHis.Add(orderPackageHis);
             }
         }
+
         private decimal Points(Guid deptId, ObservableCollection<DXInfo.Models.InventoryEx> lsi)
         {
             decimal point = 0;
@@ -412,6 +415,9 @@ namespace DXInfo.Business
                 consume.IsValid = true;
                 consume.Sn = para.Sn;
                 consume.OperatorsOnDuty = para.OperatorsOnDuty;
+
+                consume.OrderId = para.OrderDishId;
+
                 uow.Consume.Add(consume);
 
 
@@ -464,7 +470,7 @@ namespace DXInfo.Business
                         OrderMenuUpdate(si.OrderMenuId,para.CreateDate,para.UserId);
                     }
                     DXInfo.Models.ConsumeList cl = new DXInfo.Models.ConsumeList();
-                    //cl.Amount = si.Amount;
+
                     cl.Consume = consume.Id;
                     cl.CreateDate = para.CreateDate;
                     cl.IsValid = true;
@@ -481,7 +487,6 @@ namespace DXInfo.Business
 
                     cl.Quantity = si.Quantity;
                     cl.UserId = para.UserId;
-                    //cl.Discount = dDiscount;
 
                     if (si.IsInvDynamicPrice)
                     {
@@ -505,14 +510,8 @@ namespace DXInfo.Business
                         {
                             cl.Price = si.SalePrice;
                             cl.AgreementPrice = si.AgreementPrice;
-                            //if (si.IsInvPrice && si.InvPrice != null)
-                            //{
-                             //   cl.Price = si.InvPrice.SalePrice;
-                            //}
-                            cl.Sum = si.Amount;//cl.Price * cl.Quantity;
+                            cl.Sum = si.Amount;
                             cl.Amount = si.CurrentAmount;
-                            //cl.Amount = Convert.ToInt32(si.IsDiscount ? cl.Sum * cl.Discount / 100 : cl.Sum);
-                            //cl.Amount = si.IsDiscount ? si.CurrentAmount * para.Discount / 100 : si.CurrentAmount;
                         }
                         else
                         {
@@ -554,12 +553,8 @@ namespace DXInfo.Business
                         {
                             bl.SalePrice = si.SalePrice;
                             bl.AgreementPrice = si.AgreementPrice;
-                            //if (si.IsInvPrice && si.InvPrice != null)
-                            //{
-                            //    bl.SalePrice = si.InvPrice.SalePrice;
-                            //}
-                            bl.Sum = si.Amount;//bl.SalePrice * bl.Quantity;
-                            bl.Amount = si.CurrentAmount;//Convert.ToInt32(si.IsDiscount ? bl.Sum * bl.Discount / 100 : bl.Sum);
+                            bl.Sum = si.Amount;
+                            bl.Amount = si.CurrentAmount;
                         }
                         else
                         {
@@ -591,7 +586,7 @@ namespace DXInfo.Business
                     if (si.InvPrice != null)
                     {
                         uow.Commit();
-                        DXInfo.Models.ConsumeInvPrice invPrice = Mapper.Map<DXInfo.Models.ConsumeInvPrice>(si.InvPrice);
+                        DXInfo.Models.ConsumeInvPrice invPrice = mapper.Map<DXInfo.Models.ConsumeInvPrice>(si.InvPrice);
                         invPrice.ConsumeListId = cl.Id;
                         invPrice.InvPriceId = si.InvPrice.Id;
                         uow.ConsumeInvPrice.Add(invPrice);
@@ -616,6 +611,7 @@ namespace DXInfo.Business
             {
                 if (!CardCancelConsume(para.CardNo,para.Amount)) return false;
             }
+
             using (TransactionScope transaction = new TransactionScope())
             {
                 DXInfo.Models.Consume consume = uow.Consume.GetAll().Where(w => w.Id == para.ConsumeId && w.IsValid).FirstOrDefault();
@@ -711,6 +707,76 @@ namespace DXInfo.Business
                 uow.Commit();
                 transaction.Complete();
             }
+        }
+
+        public bool CancelCheckoutOfShop(DXInfo.Models.Consume consume, Func<string, decimal, bool> CardCancelConsume,bool isCardLevelAuto,DateTime createDate)
+        {
+            List<DXInfo.Models.ConsumeList> lConsumeList = uow.ConsumeList.GetAll().Where(w => w.Consume == consume.Id && w.IsValid).ToList();
+            
+            bool isCard = consume.ConsumeType == (int)DXInfo.Models.ConsumeType.CardNoMoney||consume.ConsumeType == (int)DXInfo.Models.ConsumeType.Card;
+            DXInfo.Models.Cards card = null;
+            if (consume.Card.HasValue)
+            {
+                card = uow.Cards.GetById(o => o.Id == consume.Card);
+                if (card != null)
+                {
+                    DXInfo.Models.CardTypes cardType = uow.CardTypes.GetById(o => o.Id == card.CardType);
+                    if (cardType != null&&!cardType.IsVirtual)
+                    {
+                        if (!CardCancelConsume(card.CardNo, consume.Amount)) return false;
+                    }
+                }
+            }
+
+            using (TransactionScope transaction = new TransactionScope())
+            {
+                    consume.IsValid = false;
+                    uow.Consume.Update(consume);
+
+                if (consume.ConsumeType == (int)DXInfo.Models.ConsumeType.Card && card !=null)
+                {
+                    CardUpdate(isCardLevelAuto, consume.Card.Value, card.Balance+consume.Amount, 0);
+                }
+
+                DXInfo.Models.Bills oldBill = uow.Bills.GetAll().Where(w => w.Sn == consume.Sn && !w.BillType.Contains("Cancel")).FirstOrDefault();
+                if (oldBill != null)
+                {
+                    DXInfo.Models.Bills bill = DXInfo.Business.Helper.CloneOf<DXInfo.Models.Bills>(oldBill);
+                    bill.CreateDate = createDate;
+                    bill.BillType = DXInfo.Models.BillType.CardCancelCheckOut.ToString();
+                    uow.Bills.Add(bill);
+                    uow.Commit();
+
+                    List<DXInfo.Models.BillInvLists> lOldBillInvList = uow.BillInvLists.GetAll().Where(w => w.Bill == oldBill.Id).ToList();
+                    if (lOldBillInvList != null)
+                    {
+                        foreach (DXInfo.Models.BillInvLists oldBillInvList in lOldBillInvList)
+                        {
+                            DXInfo.Models.BillInvLists billInvList = DXInfo.Business.Helper.CloneOf<DXInfo.Models.BillInvLists>(oldBillInvList);
+                            billInvList.Bill = bill.Id;
+                            uow.BillInvLists.Add(billInvList);
+                        }
+                    }
+                }
+
+                foreach (DXInfo.Models.ConsumeList cl in lConsumeList)
+                {
+                    cl.IsValid = false;
+                    uow.ConsumeList.Update(cl);
+                }
+
+                if (consume.Point > 0 && isCard)
+                {
+                    CardCancelPoint(card.Id, createDate, consume.DeptId, consume.UserId, consume.Point);
+                }
+
+                //开台
+                //下单
+                uow.Commit();
+                transaction.Complete();
+            }
+
+            return true;
         }
         #endregion
         

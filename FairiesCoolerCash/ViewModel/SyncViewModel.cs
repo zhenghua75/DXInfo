@@ -15,15 +15,18 @@ using Microsoft.Synchronization.Data;
 using Microsoft.Synchronization.Data.SqlServer;
 using System.Windows;
 using DXInfo.Models;
+using AutoMapper;
 
 namespace FairiesCoolerCash.ViewModel
 {
     public class SyncViewModel : BusinessViewModelBase
     {
-        private DXInfo.Sync.Sync s;       
-        public SyncViewModel(IFairiesMemberManageUow uow)
-            : base(uow, new List<string>())
+        private DXInfo.Sync.Sync s;   
+        private readonly IMapper mapper;
+        public SyncViewModel(IFairiesMemberManageUow uow,IMapper mapper)
+            : base(uow,mapper, new List<string>())
         {
+            this.mapper = mapper;
             s = DXInfo.Sync.Sync.Instance();
             s.SyncMsgEvent += new DXInfo.Sync.Sync.SyncMsgEventHandler(s_SyncMsgEvent1);
         }

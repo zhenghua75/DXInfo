@@ -11,6 +11,7 @@ using System.Windows.Input;
 using GalaSoft.MvvmLight.CommandWpf;
 using Microsoft.Reporting.WinForms;
 using System.Data;
+using AutoMapper;
 
 namespace FairiesCoolerCash.ViewModel
 {
@@ -19,9 +20,11 @@ namespace FairiesCoolerCash.ViewModel
     /// </summary>
     public class CardInMoneyViewModel:BusinessViewModelBase
     {
-        public CardInMoneyViewModel(IFairiesMemberManageUow uow)
-            : base(uow, new List<string>() { "SelectedPayType","Amount" })
+        private readonly IMapper mapper;
+        public CardInMoneyViewModel(IFairiesMemberManageUow uow, IMapper mapper)
+            : base(uow,mapper, new List<string>() { "SelectedPayType","Amount" })
         {
+            this.mapper = mapper;
         }
         public override void LoadData()
         {
@@ -45,7 +48,6 @@ namespace FairiesCoolerCash.ViewModel
             decimal dLastBalance = 0;
             if (this.CardBalance.HasValue)
                 dLastBalance = this.CardBalance.Value;
-            //decimal dBalance = dAmount + dDonate + dLastBalance;
             DateTime dCreateDate = DateTime.Now;
             if (!this.CardType.IsVirtual)
             {
@@ -65,7 +67,7 @@ namespace FairiesCoolerCash.ViewModel
                 }
             }
             decimal dBalance = dLastBalance + dAmount + dDonate;
-            DXInfo.Business.MemberManageFacade mb = new DXInfo.Business.MemberManageFacade(Uow);
+            DXInfo.Business.MemberManageFacade mb = new DXInfo.Business.MemberManageFacade(Uow,mapper);
             DXInfo.Business.CardInMoneyParaObj para = new DXInfo.Business.CardInMoneyParaObj();
             para.DeptId = Dept.DeptId;
             para.DeptName = Dept.DeptName;
@@ -82,7 +84,7 @@ namespace FairiesCoolerCash.ViewModel
             para.Amount = dAmount;
             para.Donate = dDonate;
             para.RechargeType = (int)DXInfo.Models.RechargeType.CommonInMoney;
-            mb.CardInMoney(para);
+            mb.CardInMoney(para,mapper);
             if (this.IsThree)
             {
                 LocalReport report = new LocalReport();

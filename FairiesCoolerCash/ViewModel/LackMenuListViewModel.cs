@@ -8,6 +8,8 @@ using FairiesCoolerCash.Business;
 using GalaSoft.MvvmLight.CommandWpf;
 using System.Windows.Input;
 using GalaSoft.MvvmLight.Messaging;
+using AutoMapper;
+
 namespace FairiesCoolerCash.ViewModel
 {
     /// <summary>
@@ -16,10 +18,12 @@ namespace FairiesCoolerCash.ViewModel
     public class LackMenuListViewModel : ReportViewModelBase
     {
         private DXInfo.Restaurant.DeskManageFacade dmf;
-        public LackMenuListViewModel(IFairiesMemberManageUow uow)
-            : base(uow)
+        private readonly IMapper mapper;
+        public LackMenuListViewModel(IFairiesMemberManageUow uow, IMapper mapper)
+            : base(uow,mapper)
         {
-            dmf = new DXInfo.Restaurant.DeskManageFacade(Uow, this.Dept.DeptId, this.Oper.UserId);
+            this.mapper = mapper;
+            dmf = new DXInfo.Restaurant.DeskManageFacade(Uow,mapper, this.Dept.DeptId, this.Oper.UserId);
             this.SelectedOrderMenuStatus = this.lOrderMenuStatus.FirstOrDefault(f => f.Id == (int)DXInfo.Models.OrderMenuStatus.Lack);
         }
         #region 查询

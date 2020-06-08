@@ -28,6 +28,7 @@ using System.Configuration;
 using GalaSoft.MvvmLight;
 using System.Windows.Media;
 using CommonServiceLocator;
+using AutoMapper;
 
 namespace FairiesCoolerCash.ViewModel
 {
@@ -72,8 +73,11 @@ namespace FairiesCoolerCash.ViewModel
         #endregion
 
         #region 构造
-        public MainViewModel(IFairiesMemberManageUow uow) : base(uow, new List<string>())
+        private readonly IMapper mapper;
+
+        public MainViewModel(IFairiesMemberManageUow uow, IMapper mapper) : base(uow,mapper, new List<string>())
         {
+            this.mapper = mapper;
             MyPricipal = Thread.CurrentPrincipal as DXInfo.Principal.MyPrincipal;
             SetdImagePath();
             Messenger.Default.Register<RibbonMessageToken>(this, Handle_RibbonMessageToken);
@@ -92,7 +96,7 @@ namespace FairiesCoolerCash.ViewModel
             this.lCheckedOper = new List<aspnet_CustomProfile>();
             SetOperatorsOnDuty();
 
-            this.DeskManageFacade = new DXInfo.Restaurant.DeskManageFacade(uow, Dept.DeptId, User.UserId);
+            this.DeskManageFacade = new DXInfo.Restaurant.DeskManageFacade(uow,mapper, Dept.DeptId, User.UserId);
         }
         private void SetdImagePath()
         {
@@ -782,6 +786,18 @@ namespace FairiesCoolerCash.ViewModel
                 return menuNoCtLabel;
             }
         }
+        public string CodeDishLabel
+        {
+            get
+            {
+                string menuNoCtLabel = "凉菜管理";
+                if (this.MyPricipal.IsInRole("CodeDish"))
+                {
+                    menuNoCtLabel = GetSiteMapTitle("CodeDish");
+                }
+                return menuNoCtLabel;
+            }
+        }
         public string BarMenuLabel
         {
             get
@@ -938,6 +954,20 @@ namespace FairiesCoolerCash.ViewModel
                 return wRReport8Label;
             }
         }
+
+        public string WRReport12Label
+        {
+            get
+            {
+                string wRReport8Label = "凉菜消费明细查询";
+                if (this.MyPricipal.IsInRole("WRReport12"))
+                {
+                    wRReport8Label = GetSiteMapTitle("WRReport12");
+                }
+                return wRReport8Label;
+            }
+        }
+
         public string ReportHeader
         {
             get

@@ -17,15 +17,18 @@ using System.Windows.Controls;
 using System.ComponentModel.DataAnnotations;
 using FairiesCoolerCash.Business;
 using CommonServiceLocator;
+using AutoMapper;
 
 namespace FairiesCoolerCash.ViewModel
 {
     public class LoginViewModel : BusinessViewModelBase
     {
         #region 构造
-        public LoginViewModel(IFairiesMemberManageUow uow)
-            : base(uow, new List<string>() { "UserName", "Password" })
+        private readonly IMapper mapper;
+        public LoginViewModel(IFairiesMemberManageUow uow,IMapper mapper)
+            : base(uow,mapper, new List<string>() { "UserName", "Password" })
         {
+            this.mapper = mapper;
             winLoad();
             
             this.Title = ClientCommon.ClientSideTitle();

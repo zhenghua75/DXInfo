@@ -20,8 +20,10 @@ namespace FairiesCoolerCash.ViewModel
 {
     public class PointsExchangeViewModel : BusinessViewModelBase
     {
-        public PointsExchangeViewModel(IFairiesMemberManageUow uow):base(uow,new List<string>())
+        private readonly IMapper mapper;
+        public PointsExchangeViewModel(IFairiesMemberManageUow uow, IMapper mapper) :base(uow,mapper,new List<string>())
         {
+            this.mapper = mapper;
             Messenger.Default.Register<ViewCollectionViewSourceMessageToken>(this, Handle_ViewCollectionViewSourceMessageToken);
             Messenger.Default.Register<DataGridMessageToken>(this, Handle_DataGridMessageToken);
         }
@@ -161,7 +163,7 @@ namespace FairiesCoolerCash.ViewModel
             if (this.SelectedInventory != null)
             {
                 //分2种创建冷饮店的、西餐厅的
-                InventoryEx inventoryEx = Mapper.Map<DXInfo.Models.InventoryEx>(this.SelectedInventory);
+                InventoryEx inventoryEx = mapper.Map<DXInfo.Models.InventoryEx>(this.SelectedInventory);
                 inventoryEx.lTasteEx = this.lTasteEx.Clone() as DXInfo.Models.TasteExList;
                 inventoryEx.dSalePrice = this.GetdSalePrice(this.SelectedInventory);
                 inventoryEx.dSalePoint = this.GetdSalePoint(this.SelectedInventory);
@@ -171,7 +173,7 @@ namespace FairiesCoolerCash.ViewModel
                 inventoryEx.IsDiscount = true;
                 this.OCInventoryEx.Add(inventoryEx);
 
-                CardConsumeSetWindow csw = new CardConsumeSetWindow(Uow, inventoryEx);
+                CardConsumeSetWindow csw = new CardConsumeSetWindow(Uow,mapper, inventoryEx);
                 csw.ShowDialog();
             }
         }
@@ -196,7 +198,7 @@ namespace FairiesCoolerCash.ViewModel
             {
                 if (!(this.MyDataGrid.CurrentColumn.Header.ToString() == "数量" || this.MyDataGrid.CurrentColumn.Header.ToString() == "撤销"))
                 {
-                    CardConsumeSetWindow csw = new CardConsumeSetWindow(Uow, SelectedInventoryEx);
+                    CardConsumeSetWindow csw = new CardConsumeSetWindow(Uow,mapper, SelectedInventoryEx);
                     csw.ShowDialog();
                 }
             }

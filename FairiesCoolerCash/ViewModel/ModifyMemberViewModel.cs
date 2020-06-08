@@ -14,9 +14,11 @@ namespace FairiesCoolerCash.ViewModel
 {
     public class ModifyMemberViewModel : BusinessViewModelBase
     {
-        public ModifyMemberViewModel(IFairiesMemberManageUow uow, Guid memberId, Guid cardId)
-            : base(uow, new List<string>() { "SelectedCardLevel", "SelectedCardType", "CardNo", "MemberName" })
+        private readonly IMapper mapper;
+        public ModifyMemberViewModel(IFairiesMemberManageUow uow, IMapper mapper, Guid memberId, Guid cardId)
+            : base(uow,mapper, new List<string>() { "SelectedCardLevel", "SelectedCardType", "CardNo", "MemberName" })
         {
+            this.mapper = mapper;
             this.Member = uow.Members.GetById(g=>g.Id==memberId);
             this.Card = uow.Cards.GetById(g=>g.Id==cardId);
             this.CardNo = this.Card.CardNo;
@@ -89,7 +91,7 @@ namespace FairiesCoolerCash.ViewModel
             this.Member.ModifyUserId = this.Oper.UserId;
             Uow.Members.Update(this.Member);
 
-            DXInfo.Models.MembersLog memberLog = Mapper.Map<DXInfo.Models.Members, DXInfo.Models.MembersLog>(Member);
+            DXInfo.Models.MembersLog memberLog = mapper.Map<DXInfo.Models.Members, DXInfo.Models.MembersLog>(Member);
             memberLog.MemberId = Member.Id;
             memberLog.UserId = this.Oper.UserId;
             memberLog.DeptId = this.Dept.DeptId;
@@ -104,7 +106,7 @@ namespace FairiesCoolerCash.ViewModel
                     oldCard.CardPwd = this.CardPwd;
                     Uow.Cards.Update(oldCard);
 
-                    DXInfo.Models.CardsLog cardsLog = Mapper.Map<DXInfo.Models.Cards, DXInfo.Models.CardsLog>(oldCard);
+                    DXInfo.Models.CardsLog cardsLog = mapper.Map<DXInfo.Models.Cards, DXInfo.Models.CardsLog>(oldCard);
                     cardsLog.CardId = oldCard.Id;
                     cardsLog.UserId = this.Oper.UserId;
                     cardsLog.DeptId = this.Dept.DeptId;

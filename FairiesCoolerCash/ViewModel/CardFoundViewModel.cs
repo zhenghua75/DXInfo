@@ -14,9 +14,11 @@ namespace FairiesCoolerCash.ViewModel
 {
     public class CardFoundViewModel : ReportViewModelBase
     {
-        public CardFoundViewModel(IFairiesMemberManageUow uow)
-            : base(uow)
+        private readonly IMapper mapper;
+        public CardFoundViewModel(IFairiesMemberManageUow uow, IMapper mapper)
+            : base(uow,mapper)
         {
+            this.mapper = mapper;
         }
         public override void LoadData()
         {
@@ -142,7 +144,7 @@ namespace FairiesCoolerCash.ViewModel
             c.Status = 0;
             Uow.Cards.Update(c);
 
-            DXInfo.Models.CardsLog cardsLog = Mapper.Map<DXInfo.Models.Cards, DXInfo.Models.CardsLog>(c);
+            DXInfo.Models.CardsLog cardsLog = mapper.Map<DXInfo.Models.Cards, DXInfo.Models.CardsLog>(c);
             cardsLog.CardId = c.Id;
             cardsLog.CreateDate = dtNow;
             cardsLog.UserId = this.Oper.UserId;

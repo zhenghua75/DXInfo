@@ -22,10 +22,12 @@ using System.Net;
 namespace FairiesCoolerCash.ViewModel
 {
     public class StockConsumeViewModel : CardConsumeViewModel
-    {        
-        public StockConsumeViewModel(IFairiesMemberManageUow uow)
-            : base(uow)
+    {
+        private readonly IMapper mapper;
+        public StockConsumeViewModel(IFairiesMemberManageUow uow, IMapper mapper)
+            : base(uow,mapper)
         {
+            this.mapper = mapper;
         }
 
         public override void SetCurrentType()
@@ -45,11 +47,13 @@ namespace FairiesCoolerCash.ViewModel
     public class CardConsumeViewModel : ConsumeViewModelBase
     {
         public Visibility ImageColumnVisibility { get; set; }
-        
+
         #region 构造
-        public CardConsumeViewModel(IFairiesMemberManageUow uow)
-            : base(uow)
+        private readonly IMapper mapper;
+        public CardConsumeViewModel(IFairiesMemberManageUow uow, IMapper mapper)
+            : base(uow,mapper)
         {
+            this.mapper = mapper;
             this.IsCupType = BusinessCommon.IsCupType();
             bool imageColumnVisibility = BusinessCommon.ImageColumnVisibility();
             if (imageColumnVisibility)
@@ -74,7 +78,7 @@ namespace FairiesCoolerCash.ViewModel
         {
             //if (this.SelectedInventory != null)
             //{
-            InventoryEx inventoryEx = Mapper.Map<DXInfo.Models.InventoryEx>(inv);
+            InventoryEx inventoryEx = mapper.Map<DXInfo.Models.InventoryEx>(inv);
             inventoryEx.IsCupType = this.IsCupType;
             inventoryEx.IsInvPrice = this.IsInvPrice;
             inventoryEx.lTasteEx = this.lTasteEx.Clone() as DXInfo.Models.TasteExList;
@@ -127,7 +131,7 @@ namespace FairiesCoolerCash.ViewModel
                     {
                         if (!(this.MyDataGrid.CurrentColumn.Header.ToString() == "数量" || this.MyDataGrid.CurrentColumn.Header.ToString() == "撤销"))
                         {
-                            CardConsumeSetWindow csw = new CardConsumeSetWindow(Uow, SelectedInventoryEx);
+                            CardConsumeSetWindow csw = new CardConsumeSetWindow(Uow,mapper, SelectedInventoryEx);
                             csw.ShowDialog();
                         }
                     }

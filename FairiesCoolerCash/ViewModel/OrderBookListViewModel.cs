@@ -12,6 +12,8 @@ using System.Windows.Input;
 using GalaSoft.MvvmLight.CommandWpf;
 using GalaSoft.MvvmLight.Messaging;
 using System.Data.Entity.SqlServer;
+using AutoMapper;
+
 namespace FairiesCoolerCash.ViewModel
 {
     /// <summary>
@@ -19,9 +21,11 @@ namespace FairiesCoolerCash.ViewModel
     /// </summary>
     public class OrderBookListViewModel:ReportViewModelBase
     {
-        public OrderBookListViewModel(IFairiesMemberManageUow uow)
-            : base(uow)
+        private readonly IMapper mapper;
+        public OrderBookListViewModel(IFairiesMemberManageUow uow, IMapper mapper)
+            : base(uow,mapper)
         {
+            this.mapper = mapper;
         }
 
         #region 查询
@@ -142,7 +146,7 @@ namespace FairiesCoolerCash.ViewModel
             Guid orderBookId = Guid.Parse(btn.Tag.ToString());
             try
             {
-                DXInfo.Restaurant.DeskManageFacade dmf = new DXInfo.Restaurant.DeskManageFacade(Uow, Dept.DeptId, User.UserId);
+                DXInfo.Restaurant.DeskManageFacade dmf = new DXInfo.Restaurant.DeskManageFacade(Uow,mapper, Dept.DeptId, User.UserId);
                 dmf.dtOperDate = DateTime.Now;
                 dmf.CancelBook(orderBookId);
                 MessageBox.Show("取消预定成功");
@@ -175,7 +179,7 @@ namespace FairiesCoolerCash.ViewModel
                 Guid deskId = d.DeskId;
                 int quantity = d.Quantity;
 
-                DXInfo.Restaurant.DeskManageFacade dmf = new DXInfo.Restaurant.DeskManageFacade(Uow, Dept.DeptId, User.UserId);
+                DXInfo.Restaurant.DeskManageFacade dmf = new DXInfo.Restaurant.DeskManageFacade(Uow,mapper, Dept.DeptId, User.UserId);
                 dmf.dtOperDate = DateTime.Now;
                 DXInfo.Models.OrderDishes orderDish = new OrderDishes();
                 DXInfo.Models.OrderDeskes orderDesk = new OrderDeskes();

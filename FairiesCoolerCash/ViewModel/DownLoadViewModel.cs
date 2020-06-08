@@ -12,6 +12,7 @@ using GalaSoft.MvvmLight.CommandWpf;
 using FairiesCoolerCash.Business;
 using System.Configuration;
 using System.Windows;
+using AutoMapper;
 
 namespace FairiesCoolerCash.ViewModel
 {
@@ -27,9 +28,11 @@ namespace FairiesCoolerCash.ViewModel
             }
         }
         protected MyDownloadBusiness DownloadBusiness;
-        public DownLoadViewModel(IFairiesMemberManageUow uow,string resourceType)
-            : base(uow, new List<string>() )
+        private readonly IMapper mapper;
+        public DownLoadViewModel(IFairiesMemberManageUow uow,IMapper mapper,string resourceType)
+            : base(uow,mapper, new List<string>() )
         {
+            this.mapper = mapper;
             this.OCDownloadFileInfo = new ObservableCollection<DXInfo.Models.DownloadFileInfo>();
             string connectorUrlString = ClientCommon.GetConnectorUrlString();
             switch (resourceType)
@@ -112,16 +115,20 @@ namespace FairiesCoolerCash.ViewModel
     }
     public class Mp3DownLoadViewModel : DownLoadViewModel
     {
-        public Mp3DownLoadViewModel(IFairiesMemberManageUow uow)
-            : base(uow,"mp3")
+        private readonly IMapper mapper;
+        public Mp3DownLoadViewModel(IFairiesMemberManageUow uow,IMapper mapper)
+            : base(uow,mapper,"mp3")
         {
+            this.mapper = mapper;
         }
     }
     public class ImgDownloadViewModel : DownLoadViewModel
     {
-        public ImgDownloadViewModel(IFairiesMemberManageUow uow)
-            : base(uow,"images")
+        private readonly IMapper mapper;
+        public ImgDownloadViewModel(IFairiesMemberManageUow uow,IMapper mapper)
+            : base(uow,mapper,"images")
         {
+            this.mapper = mapper;
         }
     }
 }

@@ -34,8 +34,11 @@ namespace FairiesCoolerCash.ViewModel
         /// 抹零
         /// </summary>
         public bool Erasing { get; set; }
-        public MyViewModelBase(IFairiesMemberManageUow uow, List<string> lValidationPropertyNames)
+        private readonly IMapper mapper;
+
+        public MyViewModelBase(IFairiesMemberManageUow uow, IMapper mapper,List<string> lValidationPropertyNames)
         {
+            this.mapper = mapper;
             SetDept();
             SetUser();
             SetOper();
@@ -959,17 +962,17 @@ namespace FairiesCoolerCash.ViewModel
             //刷卡
             StringBuilder sb = new StringBuilder(33);
             int value = 0;
-//#if !DEBUG
+#if !DEBUG
             int st = CardRef.CoolerReadCard(sb, ref value);
-//#else
-//            int st = 0;
-//            value = 1158965;
-//            Random r = new Random();
-//            double rd = r.NextDouble();
-//            int i = Convert.ToInt32(Math.Round(rd));
-//            string[] strcardnos = { "12345678901", "12345678902" };//{ "A99993", "A99994" };
-//            sb.Append(strcardnos[i]);////"12347";"C00623";// 
-//#endif
+#else
+            int st = 0;
+            value = 1158965;
+            Random r = new Random();
+            double rd = r.NextDouble();
+            int i = Convert.ToInt32(Math.Round(rd));
+            string[] strcardnos = { "12345678901", "12345678902" };//{ "A99993", "A99994" };
+            sb.Append(strcardnos[i]);////"12347";"C00623";// 
+#endif
             if (st != 0)
             {
                 MessageBox.Show(CardRef.GetStr(st));
@@ -2236,34 +2239,7 @@ namespace FairiesCoolerCash.ViewModel
                 this.RaisePropertyChanged("OpenOperName");
             }
         }
-
-        //private bool _IsUse = false;
-        //public bool IsUse
-        //{
-        //    get
-        //    {
-        //        return _IsUse;
-        //    }
-        //    set
-        //    {
-        //        _IsUse = value;
-        //        this.RaisePropertyChanged("IsUse");
-        //    }
-        //}
-
-        //private bool _IsBook = false;
-        //public bool IsBook
-        //{
-        //    get
-        //    {
-        //        return _IsBook;
-        //    }
-        //    set
-        //    {
-        //        _IsBook = value;
-        //        this.RaisePropertyChanged("IsBook");
-        //    }
-        //}
+       
         #endregion  
 
         #region 房间
@@ -2331,7 +2307,7 @@ namespace FairiesCoolerCash.ViewModel
             lDeskEx = new List<DXInfo.Models.DeskEx>();
             foreach (DXInfo.Models.Desks desk in ldesk)
             {
-                DXInfo.Models.DeskEx deskEx = Mapper.Map<DXInfo.Models.DeskEx>(desk);
+                DXInfo.Models.DeskEx deskEx = mapper.Map<DXInfo.Models.DeskEx>(desk);
                 lDeskEx.Add(deskEx);
             }
         }

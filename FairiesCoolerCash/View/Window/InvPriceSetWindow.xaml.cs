@@ -13,6 +13,7 @@ using System.Windows.Shapes;
 using DXInfo.Models;
 using DXInfo.Data.Contracts;
 using FairiesCoolerCash.ViewModel;
+using AutoMapper;
 
 namespace FairiesCoolerCash.Business
 {
@@ -22,12 +23,14 @@ namespace FairiesCoolerCash.Business
     public partial class InvPriceSetWindow : Window
     {
         private readonly IFairiesMemberManageUow uow;
+        private readonly IMapper mapper;
         private InventoryEx iex;
-        public InvPriceSetWindow(IFairiesMemberManageUow uow, InventoryEx d)
+        public InvPriceSetWindow(IFairiesMemberManageUow uow,IMapper mapper, InventoryEx d)
         {
             this.uow = uow;
+            this.mapper = mapper;
             InitializeComponent();
-            this.DataContext = new CardConsumeSetViewModel(uow, d);
+            this.DataContext = new CardConsumeSetViewModel(uow,mapper, d);
             iex = d;
         }        
 

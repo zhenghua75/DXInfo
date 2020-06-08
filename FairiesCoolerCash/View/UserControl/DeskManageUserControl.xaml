@@ -484,6 +484,7 @@
                         <Run Text=" 人数："></Run>
                         <Run Text="{Binding SelectedOrderDish.Quantity}"></Run>
                         <Run Text="{Binding SelectedOrderBook.Quantity}"></Run>
+                        <Run Text="{Binding SelectedOrderDish.Comment,StringFormat={}预付：{0}}"></Run>
                         <Run Text="{Binding SelectedOrderBook.Customer,StringFormat={}姓名：{0}}"></Run>
                         <Run Text="{Binding SelectedOrderBook.LinkPhone,StringFormat={}电话：{0}}"></Run>
                 </TextBlock>
@@ -503,6 +504,9 @@
                     <Button Content="撤台" Command="{Binding CancelOpenDesk}" ></Button>
                     <Button Content="并单" Command="{Binding Merge}"></Button>
                     <Button Content="存单" Command="{Binding SaveOrder}"></Button>
+                    <Button Content="打印结账单" Command="{Binding PrintBill}"></Button>
+                    <Button Content="预付" Command="{Binding BookPay}"></Button>
+                    <Button Content="返结" Command="{Binding BackCheckout}"></Button>
                 </WrapPanel>
             </Grid>
         </Grid>
